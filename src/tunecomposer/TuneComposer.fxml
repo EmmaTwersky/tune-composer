@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+
+<BorderPane fx:id="scrollPane" onKeyPressed="#handleShortcuts" stylesheets="@tunecomposer.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.FXMLController">
+    <top>
+        <MenuBar prefHeight="29.0" prefWidth="2000">
+          <menus>
+            <Menu text="File">
+              <items>
+                <MenuItem onAction="#handleExitMenuItemAction" text="Exit" />
+              </items>
+            </Menu>
+            <Menu text="Edit">
+               <items>
+                  <MenuItem onAction="#handleExitMenuItemAction" text="Select All" />
+                  <MenuItem onAction="#handleExitMenuItemAction" text="Delete" />
+               </items>
+            </Menu>
+              <Menu text="Actions">
+                <items>
+                  <MenuItem onAction="#handlePlayScaleButtonAction" text="Play" />
+                  <MenuItem onAction="#handleStopPlayingButtonAction" text="Stop" />
+                </items>
+              </Menu>
+          </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <ScrollPane prefHeight="1280.0" prefWidth="2000.0">
+            <content>
+                <Pane fx:id="compositionPane" onMouseClicked="#handleCompPaneClick" prefHeight="1280" prefWidth="2000" BorderPane.alignment="CENTER" />
+            </content>
+        </ScrollPane>
+    </center>
+   <left>
+      <ToolBar orientation="VERTICAL" prefHeight="1280.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+            <RadioButton mnemonicParsing="false" text="Piano">
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton layoutX="10.0" layoutY="15.0" mnemonicParsing="false" text="Harpsichord">
+               <padding>
+                  <Insets top="30.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton layoutX="20.0" layoutY="25.0" mnemonicParsing="false" text="Marimba">
+               <padding>
+                  <Insets top="30.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton layoutX="30.0" layoutY="35.0" mnemonicParsing="false" text="Organ">
+               <padding>
+                  <Insets top="30.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton layoutX="40.0" layoutY="45.0" mnemonicParsing="false" text="Accordion">
+               <padding>
+                  <Insets top="30.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton layoutX="50.0" layoutY="55.0" mnemonicParsing="false" text="Guitar">
+               <padding>
+                  <Insets top="30.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton layoutX="60.0" layoutY="65.0" mnemonicParsing="false" text="Violin">
+               <padding>
+                  <Insets top="30.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton layoutX="70.0" layoutY="75.0" mnemonicParsing="false" text="French Horn">
+               <padding>
+                  <Insets top="30.0" />
+               </padding>
+            </RadioButton>
+        </items>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </ToolBar>
+   </left>
+</BorderPane>
