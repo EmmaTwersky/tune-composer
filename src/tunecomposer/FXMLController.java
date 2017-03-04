@@ -25,7 +25,7 @@ import javafx.util.Duration;
 
 /**
  *
- * @author Quinn
+ * @author Zach
  */
 public class FXMLController implements Initializable{
     
@@ -40,15 +40,6 @@ public class FXMLController implements Initializable{
     private final Timeline timeline = new Timeline();
     private final Rectangle redline = new Rectangle(0,0,1,1280);
     
-     /**
-     * Initialize KeyCombinations here to handle shortcuts
-     * ctrl+p to start playing from the beginning
-     * ctrl+s to stop playing
-     * ctrl+q to exit application.
-     */
-    private final KeyCombination playShortcut = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN);
-    private final KeyCombination stopShortcut = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
-    private final KeyCombination exitShortcut = new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN);
     
     /**
      * One midi player is used throughout, so we can stop a scale that is
@@ -143,21 +134,6 @@ public class FXMLController implements Initializable{
             lastNote = x + 100;
         }
     }  
-    
-    /**
-     * Handles the shortcuts ctrl+P, ctrl+S, ctrl+Q.
-     * @param event
-     */
-    @FXML
-    protected void handleShortcuts(KeyEvent event) {        
-        if (playShortcut.match(event)) {
-            play();
-        } else if (stopShortcut.match(event)) {
-            stop();
-        } else if (exitShortcut.match(event)) {
-            System.exit(0);
-        }
-    }
     
      /**
      * Initialized with our FXML, draws initial setup of composition pane.

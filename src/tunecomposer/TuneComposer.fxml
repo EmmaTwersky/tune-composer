@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
@@ -12,25 +13,40 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane fx:id="scrollPane" onKeyPressed="#handleShortcuts" stylesheets="@tunecomposer.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.FXMLController">
+<BorderPane fx:id="scrollPane" stylesheets="@tunecomposer.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.FXMLController">
     <top>
         <MenuBar prefHeight="29.0" prefWidth="2000">
           <menus>
             <Menu text="File">
               <items>
-                <MenuItem onAction="#handleExitMenuItemAction" text="Exit" />
+                <MenuItem onAction="#handleExitMenuItemAction" text="Exit">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="X" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
               </items>
             </Menu>
             <Menu text="Edit">
                <items>
-                  <MenuItem onAction="#handleExitMenuItemAction" text="Select All" />
-                  <MenuItem onAction="#handleExitMenuItemAction" text="Delete" />
+                  <MenuItem text="Select All">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <MenuItem text="Delete">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="DELETE" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
                </items>
             </Menu>
               <Menu text="Actions">
                 <items>
-                  <MenuItem onAction="#handlePlayScaleButtonAction" text="Play" />
-                  <MenuItem onAction="#handleStopPlayingButtonAction" text="Stop" />
+                  <MenuItem onAction="#handlePlayScaleButtonAction" text="Play">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <MenuItem onAction="#handleStopPlayingButtonAction" text="Stop">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
                 </items>
               </Menu>
           </menus>
