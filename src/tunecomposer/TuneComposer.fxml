@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.geometry.*?>
@@ -13,37 +14,37 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane fx:id="scrollPane" stylesheets="@tunecomposer.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.FXMLController">
+<BorderPane fx:id="scrollPane" stylesheets="@TuneComposer.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.FXMLController">
     <top>
-        <MenuBar prefHeight="29.0" prefWidth="2000">
+        <MenuBar fx:id="menuBar" prefHeight="29.0" prefWidth="2000">
           <menus>
-            <Menu text="File">
+            <Menu fx:id="menuFile" text="File">
               <items>
-                <MenuItem onAction="#handleExitMenuItemAction" text="Exit">
+                <MenuItem fx:id="menuItemExit" onAction="#handleExitMenuItemAction" text="Exit">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="X" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
               </items>
             </Menu>
-            <Menu text="Edit">
+            <Menu fx:id="menuEdit" text="Edit">
                <items>
-                  <MenuItem text="Select All">
+                  <MenuItem fx:id="menuItemSelectAll" text="Select All">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
-                  <MenuItem text="Delete">
+                  <MenuItem fx:id="menuIemDelete" text="Delete">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="DELETE" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
                </items>
             </Menu>
-              <Menu text="Actions">
+              <Menu fx:id="menuActions" text="Actions">
                 <items>
-                  <MenuItem onAction="#handlePlayScaleButtonAction" text="Play">
+                  <MenuItem fx:id="menuItemPlay" onAction="#handlePlayScaleButtonAction" text="Play">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
-                  <MenuItem onAction="#handleStopPlayingButtonAction" text="Stop">
+                  <MenuItem fx:id="menuItemStop" onAction="#handleStopPlayingButtonAction" text="Stop">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
@@ -53,51 +54,51 @@
         </MenuBar>
     </top>
     <center>
-        <ScrollPane prefHeight="1280.0" prefWidth="2000.0">
+        <ScrollPane fx:id="scrollPane2" prefHeight="1280.0" prefWidth="2000.0">
             <content>
                 <Pane fx:id="compositionPane" onMouseClicked="#handleCompPaneClick" prefHeight="1280" prefWidth="2000" BorderPane.alignment="CENTER" />
             </content>
         </ScrollPane>
     </center>
    <left>
-      <ToolBar orientation="VERTICAL" prefHeight="1280.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ToolBar fx:id="toolBar" orientation="VERTICAL" prefHeight="1280.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <RadioButton mnemonicParsing="false" text="Piano">
+            <RadioButton id="radioButtonPiano" fx:id="radioButtonPiano" mnemonicParsing="false" styleClass="radioButtonPiano" text="Piano">
                <padding>
                   <Insets top="10.0" />
                </padding>
             </RadioButton>
-            <RadioButton layoutX="10.0" layoutY="15.0" mnemonicParsing="false" text="Harpsichord">
+            <RadioButton id="radioButtonHarpsichord" fx:id="radioButtonHarpsichord" layoutX="10.0" layoutY="15.0" mnemonicParsing="false" styleClass="radioButtonHarpsichord" text="Harpsichord">
                <padding>
                   <Insets top="30.0" />
                </padding>
             </RadioButton>
-            <RadioButton layoutX="20.0" layoutY="25.0" mnemonicParsing="false" text="Marimba">
+            <RadioButton id="radioButtonMarimba" fx:id="radioButtonMarimba" layoutX="20.0" layoutY="25.0" mnemonicParsing="false" styleClass="radioButtonMarimba" text="Marimba">
                <padding>
                   <Insets top="30.0" />
                </padding>
             </RadioButton>
-            <RadioButton layoutX="30.0" layoutY="35.0" mnemonicParsing="false" text="Organ">
+            <RadioButton id="radioButtonOrgan" fx:id="Organ" layoutX="30.0" layoutY="35.0" mnemonicParsing="false" styleClass="radioButtonOrgan" text="Organ">
                <padding>
                   <Insets top="30.0" />
                </padding>
             </RadioButton>
-            <RadioButton layoutX="40.0" layoutY="45.0" mnemonicParsing="false" text="Accordion">
+            <RadioButton id="radioButtonAccordion" fx:id="radioButtonAccordion" layoutX="40.0" layoutY="45.0" mnemonicParsing="false" styleClass="radioButtonAccordion" text="Accordion">
                <padding>
                   <Insets top="30.0" />
                </padding>
             </RadioButton>
-            <RadioButton layoutX="50.0" layoutY="55.0" mnemonicParsing="false" text="Guitar">
+            <RadioButton id="radioButtonGuitar" fx:id="radioButtonGuitar" layoutX="50.0" layoutY="55.0" mnemonicParsing="false" styleClass="radioButtonGuitar" text="Guitar">
                <padding>
                   <Insets top="30.0" />
                </padding>
             </RadioButton>
-            <RadioButton layoutX="60.0" layoutY="65.0" mnemonicParsing="false" text="Violin">
+            <RadioButton id="radioButtonViolin" fx:id="radioButtonViolin" layoutX="60.0" layoutY="65.0" mnemonicParsing="false" styleClass="radioButtonViolin" text="Violin">
                <padding>
                   <Insets top="30.0" />
                </padding>
             </RadioButton>
-            <RadioButton layoutX="70.0" layoutY="75.0" mnemonicParsing="false" text="French Horn">
+            <RadioButton id="radioButtonFrenchHorn" fx:id="radioButtonFrenchHorn" layoutX="70.0" layoutY="75.0" mnemonicParsing="false" styleClass="radioButtonFrenchHorn" text="French Horn">
                <padding>
                   <Insets top="30.0" />
                </padding>
