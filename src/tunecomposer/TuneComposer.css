@@ -32,3 +32,19 @@ and open the template in the editor.
 #radioButtonFrenchHorn{
     -fx-text-fill: lightgreen;
 }
+
+#staffLine{
+    -fx-text-fill: grey;
+}
+
+#measureLine{
+    -fx-text-fill: lightgrey;
+}
+
+#redBar{
+    -fx-fill: red;
+}
+
+#noteBar{
+    -fx-fill: blue;
+}
