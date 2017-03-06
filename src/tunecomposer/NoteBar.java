@@ -5,26 +5,41 @@
  */
 package tunecomposer;
 
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
+
 /**
  *
  * @author EmmaTwersky
  */
 public class NoteBar {
-    public String instrumentName;
-    public int instrumentNumber;
+    public final int instrument;
     public int pitch;
-    
     public int startTick;
-    public int length;
+    public int noteLength;
     
-    public float xValue;
-    public float yValue;
+    public Rectangle noteDisplay;
+
+    private final int pitchRange = 128;
+    private final int noteHeight = 10;
+    private int defaultLength = 100;
     
-    public void addNote(){
-        
+    NoteBar(int instrum, double x, double y){
+        instrument = instrum;
+        pitch = pitchRange - (int) y / noteHeight;
+        startTick = (int) x;
+        noteLength = defaultLength;
+        noteDisplay = new Rectangle((int) x, (int) Math.round(y/10)*10, noteLength, noteHeight);
+        noteDisplay.setId("noteBar");
+    }
+    
+    public void display(Pane pane){
+        pane.getChildren().add(noteDisplay);        
     }
     
     public void editNote(){
         
     }
+    
+    
 }
