@@ -5,42 +5,48 @@
  */
 package tunecomposer;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 
 /**
- *
- * @author Zach
+ * @author Emma
  */
 public class FXMLController implements Initializable{
     
+    /**
+     * Set volume to maximum.      
+     */
     private static final int VOLUME = 127;
-    private static int instrument = 0;
-    private static int lastNote = 0;
     
     /**
-     * Initialize a timeline animation object and redline to 
-     * track the progression of time.
+     * Create instrument value to keep track of current instrument selection.     
      */
-    private final Timeline timeline = new Timeline();
-    private final Rectangle redline = new Rectangle(0,0,1,1280);
+    private static int instrument = 0;
     
+    /**
+     * Create array of NoteBar objects.      
+     */
+    private ArrayList<NoteBar> musicNotesArray = new ArrayList(); 
+    
+    /**
+     * Initialize default note length to 100 pixels.      
+     */
+    private static int noteLength = 100;
+    
+    /**
+     * Initialize note height to 10 pixels, this is final.      
+     */
+    private final int noteHeight = 10;        
     
     /**
      * One midi player is used throughout, so we can stop a scale that is
      * currently playing.
      */
-    private final MidiPlayer player;
+    private final MidiPlayer player; // = new MidiPlayer(100,60);
     
     /**
      * Create the pane for drawing.      
@@ -49,10 +55,35 @@ public class FXMLController implements Initializable{
     private Pane compositionPane;
 
     /**
+     * Initialize a RedBar to track the progression of time.
+     */
+    private RedBar redBarObj; // = new RedBar(compositionPane);
+    
+    /**
      * Initializes a new MidiPlayer for this instance.
      */
     public FXMLController() {
         this.player = new MidiPlayer(100,60);
+    }
+    
+    /**
+     * Initialized with our FXML, draws initial setup of composition pane.
+     * @param location
+     * @param resources
+     */
+    @FXML
+    public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
+        for (int i = 0; i < 128; i++) {
+            Line line = new Line(0, i*10, 2000, i*10);
+            line.setId("staffLine");
+            compositionPane.getChildren().add(line);
+        }
+        for (int i = 0; i < 20; i++) {
+            Line line = new Line(i*100, 0, i*100, 1280);
+            line.setId("measureLine");
+            compositionPane.getChildren().add(line);
+        }
+        redBarObj = new RedBar(compositionPane);
     }
     
     /**
@@ -65,92 +96,33 @@ public class FXMLController implements Initializable{
     }  
     
     /**
-     * Plays the sequencer and starts the timeline.
+     * Plays the sequencer and starts the RedBar animation.
      */
     protected void play() {
         playSequence();
-        playTimeline();
+        redBarObj.playAnimation(musicNotesArray);
     }
     
     /**
-     * Plays the sequencer
+     * Plays the sequencer.
      * Each time playSequence is called the sequence restarts from the beginning.
      */
     protected void playSequence() {
         player.stop();
-        player.restart();
+        //player.restart();
+        player.clear();
+        addNotesArrayToMidiPlayer();
         player.play();
     }
     
     /**
-     * Plays the redline animation on the timeline.
+     * Adds all NoteBar objects in musicNotesArray to MidiPlayer.
      */
-    protected void playTimeline() {
-        timeline.stop();
-        redline.setX(0);
-        final KeyValue kv = new KeyValue(redline.xProperty(), lastNote);
-        Duration duration = Duration.millis(lastNote * 10);
-        EventHandler onFinished = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-                timeline.stop();
-                redline.setX(0);
-            }
-        };
-        final KeyFrame kf = new KeyFrame(duration, onFinished, kv);
-        timeline.getKeyFrames().add(kf);
-        timeline.play();
-    }
-    
-    /**
-     * Stops the current sequence
-     * Each time stop() is called, the player stops playing and the timeline
-     * stops animating the redline.
-     */
-    protected void stop() {
-        player.stop();
-        timeline.stop();
-        redline.setX(0);
-    }
-    
-    /**
-     * Takes two int inputs for the x and y coordinates of the note to be added
-     * draws a rectangle and attaches its left side at the mouse click location.
-     * @param x
-     * @param y
-     */
-    public void addNote(int x, int y) {
-        System.out.println(instrument);
-        Rectangle rect = new Rectangle(x, y, 100, 10);
-        rect.setFill(Color.BLUE);
-        compositionPane.getChildren().add(rect);
-        int pitch = 127 - (y/10);
-        player.addNote(pitch, VOLUME, x, 100, instrument, 0);
-        if (x + 100 > lastNote) {
-            lastNote = x + 100;
+    private void addNotesArrayToMidiPlayer() {
+        for (int i = 0; i < musicNotesArray.size(); i++){            
+            NoteBar note = musicNotesArray.get(i); 
+            player.addNote(note.pitch, VOLUME, note.startTick, note.noteLength, note.instrument, 0);
         }
-    }  
-    
-     /**
-     * Initialized with our FXML, draws initial setup of composition pane.
-     * @param location
-     * @param resources
-     */
-    @FXML
-    public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
-        //draw all horizontal grey lines on the composition panel.
-        for (int i = 0; i < 128; i++) {
-            Line line = new Line(0, i*10, 2000, i*10);
-            line.setStroke(Color.GREY);
-            compositionPane.getChildren().add(line);
-        }
-        for (int i = 0; i < 20; i++) {
-            Line line = new Line(i*100, 0, i*100, 1280);
-            line.setStroke(Color.LIGHTGREY);
-            compositionPane.getChildren().add(line);
-        }        
-        //draw the red line on the composition panel.
-        redline.setFill(Color.RED);
-        compositionPane.getChildren().add(redline);
     }
     
     /**
@@ -164,6 +136,15 @@ public class FXMLController implements Initializable{
     }    
     
     /**
+     * Stops the current MidiPlayer, clears MidiPlayer and stops RedBar.
+     */
+    protected void stop() {
+        player.stop();
+        player.clear();
+        redBarObj.stopAnimation();
+    }  
+    
+    /**
      * When the user clicks the "Exit" menu item in the file menu, 
      * exit the program.
      * @param event the menu selection event
@@ -172,19 +153,22 @@ public class FXMLController implements Initializable{
     protected void handleExitMenuItemAction(ActionEvent event) {
         System.exit(0);
     }
-    
+
     /**
-     * Handles clicks on the composition pane, adding notes to the sequencer
-     * and incrementing the timeline.
+     * Handles clicks on the composition pane, creates new NoteBar with 
+     * default length and current instrument selection. 
+     * Adds note to the musicNotesArray and displays note on compositionPane.
      * @param event the mouse click event
      */
     @FXML
-    protected void handleCompPaneClick(MouseEvent event) {
-        addNote((int)event.getX(), (int)Math.round(event.getY()/10)*10);
+    protected void handleCompPaneClick(MouseEvent event) {       
+        NoteBar newNote = new NoteBar(instrument, event.getX(), event.getY());
+        musicNotesArray.add(newNote);
+        newNote.display(compositionPane);
     }   
     
     /**
-     * Handles changes to the instrument
+     * Handles changes to the instrument.
      * http://stackoverflow.com/questions/37902660/javafx-button-sending-arguments-to-actionevent-function
      * @param event the menu selection event
      */
