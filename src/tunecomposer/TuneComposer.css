@@ -68,3 +68,13 @@ and open the template in the editor.
 #redBar{
     -fx-fill: Red;
 }
+
+#selectedNote{
+    -fx-stroke-width: 3px; 
+    -fx-stroke: Aqua; 
+}
+
+#unselectedNote{
+    -fx-stroke-width: 3px; 
+    -fx-stroke: LightGrey; 
+}
