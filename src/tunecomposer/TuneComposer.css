@@ -10,41 +10,45 @@ and open the template in the editor.
 
 #Piano{
     -fx-text-fill: red;
+    -fx-fill: red;
 }
 #Harpsichord{
     -fx-text-fill: blue;
+    -fx-fill: blue;
 }
 #Marimba{
     -fx-text-fill: gold;
+    -fx-fill: gold;
 }
 #Organ{
     -fx-text-fill: black;
+    -fx-fill: black;
 }
 #Accordion{
-    -fx-text-fill: green
+    -fx-text-fill: green;
+    -fx-fill: green;  
 }
 #Guitar{
-    -fx-text-fill: orange
+    -fx-text-fill: orange;
+    -fx-fill: orange;
 }
 #Violin{
     -fx-text-fill: purple;
+    -fx-fill: purple;
 }
 #FrenchHorn{
     -fx-text-fill: lightgreen;
+    -fx-fill: lightgreen;
 }
 
 #staffLine{
-    -fx-text-fill: grey;
+    -fx-stroke: grey;
 }
 
 #measureLine{
-    -fx-text-fill: lightgrey;
+    -fx-stroke: lightgrey;
 }
 
 #redBar{
     -fx-fill: red;
-}
-
-#noteBar{
-    -fx-fill: blue;
 }
