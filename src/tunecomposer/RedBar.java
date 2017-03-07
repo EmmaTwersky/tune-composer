@@ -87,7 +87,7 @@ public class RedBar {
     private void findEndCoordinate(ArrayList<NoteBar> noteList) {
         for (NoteBar note: noteList) {
             if (note.startTick > finalXValue) 
-                finalXValue = note.startTick + note.noteLength;
+                finalXValue = note.startTick + note.length;
         }
     } 
 }
