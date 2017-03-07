@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 /**
+ *
  * @author EmmaTwersky
  */
 public class NoteBar {
@@ -25,24 +26,26 @@ public class NoteBar {
     private int defaultLength = 100;
     private boolean selected;
     
-    NoteBar(int instrum, int chan, double x, double y){
+    private InstrumentSelection instrumentInfo = new InstrumentSelection();
+    
+    NoteBar(String instrumName, int instrum, int chan, double x, double y){
         instrument = instrum;
         channel = chan;
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;
         noteLength = defaultLength;
         noteDisplay = new Rectangle((int) x, (int) Math.round(y/10)*10, noteLength, noteHeight);
-        noteDisplay.setId("noteBar");
+        noteDisplay.setId(instrumName);
         selected = true;
     }
     
     public void display(Pane pane){
         pane.getChildren().add(noteDisplay);        
+    }    
+
+    public void editNote(Pane pane, double x, double y, double length){
+        pane.getChildren().remove(noteDisplay);
+        noteDisplay = new Rectangle((int) x, (int) Math.round(y/10)*10, length, noteHeight);
+        pane.getChildren().add(noteDisplay);
     }
-    
-    public void editNote(){
-        
-    }
-    
-    
 }
