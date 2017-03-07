@@ -8,6 +8,10 @@ package tunecomposer;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
+import javafx.scene.Node;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
@@ -167,14 +171,19 @@ public class FXMLController implements Initializable{
         newNote.display(compositionPane);
     }   
     
+    @FXML
+    ToggleGroup instrumentSelection;
     /**
      * Handles changes to the instrument.
      * http://stackoverflow.com/questions/37902660/javafx-button-sending-arguments-to-actionevent-function
      * @param event the menu selection event
      */
     @FXML
-    protected void handleInstrumentMenuItemAction(ActionEvent event) {
-        System.out.println(event.getSource());
-    }   
-
+    protected void handleInstrumentMenuAction(ActionEvent event) {
+        Node t = (Node) instrumentSelection.getSelectedToggle();
+        System.out.println(t.getId());
+        String selectedInstrument = t.getId();
+        
+        instrument = 0;
+    }
 }
