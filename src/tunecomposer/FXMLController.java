@@ -13,6 +13,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javax.sound.midi.ShortMessage;
 
 /**
@@ -28,20 +29,22 @@ public class FXMLController implements Initializable{
     /**
      * Create instrument value to keep track of current instrument selection.     
      */
-    private int instrument = 0;
-    private int channel = 0;
+    //private int instrument = 0;
+    //private int channel = 0;
     
     /**
      * Create array of NoteBar objects.      
      */
     private ArrayList<NoteBar> musicNotesArray = new ArrayList(); 
     
+    private ArrayList<NoteBar> selectedNotesArray = new ArrayList(); 
+    
     /**
      * Initialize default note length to 100 pixels.      
      */
     private static int noteLength = 100;
     
-    private String instrumName = "Piano";
+    private String selectedInstrument = "Piano";
     
     /**
      * Initialize note height to 10 pixels, this is final.      
@@ -128,10 +131,9 @@ public class FXMLController implements Initializable{
      * Adds all NoteBar objects in musicNotesArray to MidiPlayer.
      */
     private void addNotesArrayToMidiPlayer() {
-        for (int i = 0; i < musicNotesArray.size(); i++){            
-            NoteBar note = musicNotesArray.get(i); 
+        for (NoteBar note: musicNotesArray) {            
             player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + note.channel, note.instrument, 0, 0, note.channel);
-            player.addNote(note.pitch, VOLUME, note.startTick, note.noteLength, note.channel, 0);
+            player.addNote(note.pitch, VOLUME, note.startTick, note.length, note.channel, 0);
         }
     }
     
@@ -154,6 +156,23 @@ public class FXMLController implements Initializable{
         redBarObj.stopAnimation();
     }  
     
+    @FXML
+    protected void handleSelectAllMenuItemAction(ActionEvent event) {
+        for (NoteBar note: musicNotesArray) {
+            note.selected = true;
+        }
+    }
+
+    @FXML
+    protected void handleDeleteMenuItemAction(ActionEvent event) {
+        updateSelected();
+        for (NoteBar note: selectedNotesArray) {
+            note.deleteNote(compositionPane);
+            musicNotesArray.remove(note);
+            selectedNotesArray.remove(note);
+        }
+    }
+
     /**
      * When the user clicks the "Exit" menu item in the file menu, 
      * exit the program.
@@ -171,11 +190,45 @@ public class FXMLController implements Initializable{
      * @param event the mouse click event
      */
     @FXML
-    protected void handleCompPaneClick(MouseEvent event) {       
-        NoteBar newNote = new NoteBar(instrumName, instrument, channel, event.getX(), event.getY());
+    protected void handleCompPaneClick(MouseEvent event) {
+        stop();
+        resetSelected();
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+        for (NoteBar note: musicNotesArray){
+            Rectangle r = note.noteDisplay;
+            if (r.contains(x, y)) {
+                note.selected = true;
+            }
+        }
+        updateSelected();
+        //if () //not in a note bar, create a new note and select it, unselect everything else
+        //else if //control and click create a new note bar and keep all others still selected
+        
+        NoteBar newNote = new NoteBar(selectedInstrument, event.getX(), event.getY());
         musicNotesArray.add(newNote);
         newNote.display(compositionPane);
-    }   
+    }  
+    
+    protected void updateSelected(){
+        selectedNotesArray = new ArrayList(); //not working correctly
+        for (NoteBar note: musicNotesArray) {            
+            if (note.selected) {
+                selectedNotesArray.add(note);
+                note.selectNote(compositionPane);
+            }
+        }
+    }
+    
+    protected void resetSelected(){
+        for (NoteBar note: musicNotesArray) {            
+            if (note.selected) {
+                note.selected = false;
+                note.unselectNote(compositionPane);
+            }
+        }
+        selectedNotesArray = new ArrayList(); //not working correctly
+    }
     
     @FXML
     ToggleGroup instrumentSelection;
@@ -187,11 +240,10 @@ public class FXMLController implements Initializable{
     @FXML
     protected void handleInstrumentMenuAction(ActionEvent event) {
         Node t = (Node) instrumentSelection.getSelectedToggle();
-        String selectedInstrument = t.getId();
-        instrumName = selectedInstrument;
-        int instrumentValue = instrumentInfo.getInstrumentValue(selectedInstrument);
-        int instrumentChan = instrumentInfo.getInstrumentChannel(selectedInstrument+"Channel");
-        instrument = instrumentValue;
-        channel = instrumentChan;
+        selectedInstrument = t.getId();
+        //int instrumentValue = instrumentInfo.getInstrumentValue(selectedInstrument);
+        //int instrumentChan = instrumentInfo.getInstrumentChannel(selectedInstrument+"Channel");
+        //instrument = instrumentValue;
+        //channel = instrumentChan;
     }
 }
