@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.Node;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -63,6 +61,8 @@ public class FXMLController implements Initializable{
      */
     private RedBar redBarObj; // = new RedBar(compositionPane);
     
+    
+    private InstrumentSelection instrumentInfo = new InstrumentSelection();
     /**
      * Initializes a new MidiPlayer for this instance.
      */
@@ -183,7 +183,8 @@ public class FXMLController implements Initializable{
         Node t = (Node) instrumentSelection.getSelectedToggle();
         System.out.println(t.getId());
         String selectedInstrument = t.getId();
-        InstrumentSelection.getInstrumentValue(selectedInstrument);
-        instrument = 0;
+        int instrumentValue = instrumentInfo.getInstrumentValue(selectedInstrument);
+        System.out.println(instrumentValue);
+        instrument = instrumentValue;
     }
 }
