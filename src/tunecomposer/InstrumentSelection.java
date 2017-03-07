@@ -34,8 +34,8 @@ public class InstrumentSelection {
     InstrumentSelection() {
         INSTRUMENT_VALUES.put("Piano", PIANO);
         INSTRUMENT_VALUES.put("PianoChannel", PIANO_CHANNEL);
-        INSTRUMENT_VALUES.put("Harpsicord", HARPSICORD);
-        INSTRUMENT_VALUES.put("HarpsicordChannel", HARPSICORD_CHANNEL);
+        INSTRUMENT_VALUES.put("Harpsichord", HARPSICORD);
+        INSTRUMENT_VALUES.put("HarpsichordChannel", HARPSICORD_CHANNEL);
         INSTRUMENT_VALUES.put("Marimba", MARIMBA);
         INSTRUMENT_VALUES.put("MarimbaChannel", MARIMBA_CHANNEL);
         INSTRUMENT_VALUES.put("Organ", ORGAN);
@@ -51,6 +51,10 @@ public class InstrumentSelection {
     }
     
     public int getInstrumentValue(String instrument){
-        
+        return INSTRUMENT_VALUES.get(instrument);
+    }
+    
+    public int getInstrumentChannel(String instrument){
+        return INSTRUMENT_VALUES.get(instrument);
     }
 }
