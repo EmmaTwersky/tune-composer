@@ -30,7 +30,7 @@
                 <MenuItem fx:id="menuItemExit" 
                           onAction="#handleExitMenuItemAction" 
                           text="Exit" 
-                          accelerator="Shortcut+X" >
+                          accelerator="Shortcut+Q" >
                 </MenuItem>
               </items>
             </Menu>
@@ -43,7 +43,7 @@
                   </MenuItem>
                   <MenuItem fx:id="menuIemDelete" 
                             text="Delete" 
-                            accelerator="Shortcut+D" >
+                            accelerator="Shortcut+Backspace" >
                   </MenuItem>
                </items>
             </Menu>
@@ -79,93 +79,105 @@
         </ScrollPane>
     </center>
    <left>
+      <fx:define>
+        <ToggleGroup fx:id="instrumentSelection"/>
+      </fx:define>
       <ToolBar fx:id="toolBar" 
                orientation="VERTICAL" 
                prefHeight="1280.0" 
-               prefWidth="200.0" 
+               prefWidth="150.0" 
                BorderPane.alignment="CENTER">
         <items>
-            <RadioButton id="radioButtonPiano" 
-                         fx:id="radioButtonPiano" 
+            <RadioButton fx:id="Piano" 
+                         onAction="#handleInstrumentMenuAction" 
                          mnemonicParsing="false" 
                          styleClass="radioButtonPiano" 
-                         text="Piano">
+                         text="Piano"
+                         toggleGroup="$instrumentSelection"
+                         selected = "true">
                <padding>
                   <Insets top="10.0" />
                </padding>
             </RadioButton>
-            <RadioButton id="radioButtonHarpsichord" 
-                         fx:id="radioButtonHarpsichord" 
+            <RadioButton fx:id="Harpsichord" 
+                         onAction="#handleInstrumentMenuAction" 
                          layoutX="10.0" 
                          layoutY="15.0" 
                          mnemonicParsing="false" 
                          styleClass="radioButtonHarpsichord" 
-                         text="Harpsichord">
+                         text="Harpsichord"
+                         toggleGroup="$instrumentSelection">
                <padding>
                   <Insets top="30.0" />
                </padding>
             </RadioButton>
-            <RadioButton id="radioButtonMarimba" 
-                         fx:id="radioButtonMarimba" 
+            <RadioButton fx:id="Marimba" 
+                         onAction="#handleInstrumentMenuAction" 
                          layoutX="20.0" layoutY="25.0" 
                          mnemonicParsing="false" 
                          styleClass="radioButtonMarimba" 
-                         text="Marimba">
+                         text="Marimba"
+                         toggleGroup="$instrumentSelection">
                <padding>
                   <Insets top="30.0" />
                </padding>
             </RadioButton>
-            <RadioButton id="radioButtonOrgan" 
-                         fx:id="Organ" 
+            <RadioButton fx:id="Organ" 
+                         onAction="#handleInstrumentMenuAction" 
                          layoutX="30.0" 
                          layoutY="35.0" 
                          mnemonicParsing="false" 
                          styleClass="radioButtonOrgan" 
-                         text="Organ">
+                         text="Organ"
+                         toggleGroup="$instrumentSelection">
                <padding>
                   <Insets top="30.0" />
                </padding>
             </RadioButton>
-            <RadioButton id="radioButtonAccordion" 
-                         fx:id="radioButtonAccordion" 
+            <RadioButton fx:id="Accordion" 
+                         onAction="#handleInstrumentMenuAction" 
                          layoutX="40.0" 
                          layoutY="45.0" 
                          mnemonicParsing="false" 
                          styleClass="radioButtonAccordion" 
-                         text="Accordion">
+                         text="Accordion"
+                         toggleGroup="$instrumentSelection">
                <padding>
                   <Insets top="30.0" />
                </padding>
             </RadioButton>
-            <RadioButton id="radioButtonGuitar" 
-                         fx:id="radioButtonGuitar" 
+            <RadioButton fx:id="Guitar" 
+                         onAction="#handleInstrumentMenuAction" 
                          layoutX="50.0" 
                          layoutY="55.0" 
                          mnemonicParsing="false" 
                          styleClass="radioButtonGuitar" 
-                         text="Guitar">
+                         text="Guitar"
+                         toggleGroup="$instrumentSelection">
                <padding>
                   <Insets top="30.0" />
                </padding>
             </RadioButton>
-            <RadioButton id="radioButtonViolin" 
-                         fx:id="radioButtonViolin" 
+            <RadioButton fx:id="Violin" 
+                         onAction="#handleInstrumentMenuAction" 
                          layoutX="60.0" 
                          layoutY="65.0" 
                          mnemonicParsing="false" 
                          styleClass="radioButtonViolin" 
-                         text="Violin">
+                         text="Violin"
+                         toggleGroup="$instrumentSelection">
                <padding>
                   <Insets top="30.0" />
                </padding>
             </RadioButton>
-            <RadioButton id="radioButtonFrenchHorn" 
-                         fx:id="radioButtonFrenchHorn" 
+            <RadioButton fx:id="FrenchHorn" 
+                         onAction="#handleInstrumentMenuAction" 
                          layoutX="70.0" 
                          layoutY="75.0" 
                          mnemonicParsing="false" 
                          styleClass="radioButtonFrenchHorn" 
-                         text="French Horn">
+                         text="French Horn"
+                         toggleGroup="$instrumentSelection">
                <padding>
                   <Insets top="30.0" />
                </padding>
