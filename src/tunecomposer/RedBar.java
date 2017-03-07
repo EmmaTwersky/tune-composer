@@ -23,6 +23,8 @@ public class RedBar {
     private final int screenHeight = 1280;
     private final int redBarWidth = 1;
     
+    private int finalXValue = 0;
+    
     /**
      * Creates RedBar object on given pane. 
      * Sets line to have redBarWidth and height of screenHeight,
@@ -35,6 +37,7 @@ public class RedBar {
         redBar.setId("redBar");
         parentPane.getChildren().add(redBar);
         timeline = new Timeline();
+        redBar.setVisible(false);
     }
     
     /**
@@ -44,21 +47,26 @@ public class RedBar {
      */
     public void playAnimation(ArrayList<NoteBar> noteList) {
         timeline.stop();
+        timeline.getKeyFrames().clear();
         redBar.setX(0);
-        int endCoordinate = findEndCoordinate(noteList);
+        redBar.setVisible(true);
         
-        final KeyValue kv = new KeyValue(redBar.xProperty(), endCoordinate);
-        Duration duration = Duration.millis(endCoordinate * 10);
+        findEndCoordinate(noteList);
+        System.out.println(finalXValue);
+        
+        KeyValue kv = new KeyValue(redBar.xProperty(), finalXValue);
+        Duration duration = Duration.millis(finalXValue * 10);
                 
         EventHandler onFinished = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 timeline.stop();
+                redBar.setVisible(false);
                 redBar.setX(0);
             }  
         };
         
-        final KeyFrame kf = new KeyFrame(duration, onFinished, kv);
+        KeyFrame kf = new KeyFrame(duration, onFinished, kv);
         timeline.getKeyFrames().add(kf);
         timeline.play();
     }    
@@ -68,6 +76,7 @@ public class RedBar {
      */
     public void stopAnimation() {
         timeline.stop();
+        redBar.setVisible(false);
         redBar.setX(0);
     }
     
@@ -75,12 +84,10 @@ public class RedBar {
      * Returns the X value of the right side of the final note in noteList.
      * @param noteList the list of notes being played
      */
-    private int findEndCoordinate(ArrayList<NoteBar> noteList) {
-        int largestXValue = 0;
+    private void findEndCoordinate(ArrayList<NoteBar> noteList) {
         for (NoteBar note: noteList) {
-            if (note.startTick > largestXValue) 
-                largestXValue = note.startTick;
+            if (note.startTick > finalXValue) 
+                finalXValue = note.startTick + note.noteLength;
         }
-        return largestXValue + 100;
     } 
 }
