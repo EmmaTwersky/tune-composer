@@ -29,7 +29,10 @@ public class NoteBar {
     private final int noteHeight = 10;
     private int defaultLength = 100;
     
-    private InstrumentSelection instrumentInfo = new InstrumentSelection();
+    /**
+     * Load InstrumentSelection HashMap to look up instrument key values.
+     */
+    private final InstrumentSelection instrumentInfo = new InstrumentSelection();
     
     NoteBar(String instrumName, double x, double y){
         name = instrumName;
@@ -43,10 +46,14 @@ public class NoteBar {
         selected = true;
     }
     
-    public void display(Pane pane){
-        noteDisplay.setStroke(Color.AQUA);
+    public void displayNewNote(Pane pane){
+        noteDisplay.setId("selectedNote");
         pane.getChildren().add(noteDisplay);        
     }    
+    
+    public boolean isSelected(){
+        return selected;
+    }
 
     public void editNote(Pane pane, double x, double y, double noteLength){
         pane.getChildren().remove(noteDisplay);
@@ -62,14 +69,21 @@ public class NoteBar {
     }
     
     public void selectNote(Pane pane){
+        selected = true;
         pane.getChildren().remove(noteDisplay);
         noteDisplay.setId("selectedNote");
         pane.getChildren().add(noteDisplay);
     }
     
     public void unselectNote(Pane pane){
+        selected = false;
         pane.getChildren().remove(noteDisplay);
         noteDisplay.setId(name);
         pane.getChildren().add(noteDisplay);
+    }
+    
+    public void toggleNoteSelection(Pane pane){
+        if (selected) {unselectNote(pane);}
+        else {selectNote(pane);}
     }
 }
