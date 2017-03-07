@@ -8,28 +8,28 @@ and open the template in the editor.
     Author     : eventhisone
 */
 
-#radioButtonPiano{
+#Piano{
     -fx-text-fill: red;
 }
-#radioButtonHarpsichord{
+#Harpsichord{
     -fx-text-fill: blue;
 }
-#radioButtonMarimba{
+#Marimba{
     -fx-text-fill: gold;
 }
-#adioButtonOrgan{
+#Organ{
     -fx-text-fill: black;
 }
-#radioButtonAccordion{
+#Accordion{
     -fx-text-fill: green
 }
-#radioButtonGuitar{
+#Guitar{
     -fx-text-fill: orange
 }
-#radioButtonViolin{
+#Violin{
     -fx-text-fill: purple;
 }
-#radioButtonFrenchHorn{
+#FrenchHorn{
     -fx-text-fill: lightgreen;
 }
 

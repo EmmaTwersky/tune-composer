@@ -13,6 +13,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+import javax.sound.midi.ShortMessage;
 
 /**
  * @author Emma
@@ -27,7 +28,8 @@ public class FXMLController implements Initializable{
     /**
      * Create instrument value to keep track of current instrument selection.     
      */
-    private static int instrument = 0;
+    private int instrument = 0;
+    private int channel = 0;
     
     /**
      * Create array of NoteBar objects.      
@@ -125,7 +127,8 @@ public class FXMLController implements Initializable{
     private void addNotesArrayToMidiPlayer() {
         for (int i = 0; i < musicNotesArray.size(); i++){            
             NoteBar note = musicNotesArray.get(i); 
-            player.addNote(note.pitch, VOLUME, note.startTick, note.noteLength, note.instrument, 0);
+            player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + note.channel, note.instrument, 0, 0, note.channel);
+            player.addNote(note.pitch, VOLUME, note.startTick, note.noteLength, note.channel, 0);
         }
     }
     
@@ -166,7 +169,7 @@ public class FXMLController implements Initializable{
      */
     @FXML
     protected void handleCompPaneClick(MouseEvent event) {       
-        NoteBar newNote = new NoteBar(instrument, event.getX(), event.getY());
+        NoteBar newNote = new NoteBar(instrument, channel, event.getX(), event.getY());
         musicNotesArray.add(newNote);
         newNote.display(compositionPane);
     }   
@@ -181,10 +184,10 @@ public class FXMLController implements Initializable{
     @FXML
     protected void handleInstrumentMenuAction(ActionEvent event) {
         Node t = (Node) instrumentSelection.getSelectedToggle();
-        System.out.println(t.getId());
         String selectedInstrument = t.getId();
         int instrumentValue = instrumentInfo.getInstrumentValue(selectedInstrument);
-        System.out.println(instrumentValue);
+        int instrumentChan = instrumentInfo.getInstrumentChannel(selectedInstrument+"Channel");
         instrument = instrumentValue;
+        channel = instrumentChan;
     }
 }

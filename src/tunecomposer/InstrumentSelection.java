@@ -40,8 +40,8 @@ public class InstrumentSelection {
         INSTRUMENT_VALUES.put("MarimbaChannel", MARIMBA_CHANNEL);
         INSTRUMENT_VALUES.put("Organ", ORGAN);
         INSTRUMENT_VALUES.put("OrganChannel", ORGAN_CHANNEL);
-        INSTRUMENT_VALUES.put("Accordian", ACCORDIAN);
-        INSTRUMENT_VALUES.put("AccordianChannel", ACCORDIAN_CHANNEL);
+        INSTRUMENT_VALUES.put("Accordion", ACCORDIAN);
+        INSTRUMENT_VALUES.put("AccordionChannel", ACCORDIAN_CHANNEL);
         INSTRUMENT_VALUES.put("Guitar", GUITAR);
         INSTRUMENT_VALUES.put("GuitarChannel", GUITAR_CHANNEL);
         INSTRUMENT_VALUES.put("Violin", VIOLIN);
