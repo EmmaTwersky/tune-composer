@@ -9,7 +9,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 /**
- *
  * @author EmmaTwersky
  */
 public class NoteBar {
