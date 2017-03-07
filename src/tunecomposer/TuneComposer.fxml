@@ -37,11 +37,13 @@
             <Menu fx:id="menuEdit" 
                   text="Edit">
                <items>
-                  <MenuItem fx:id="menuItemSelectAll" 
+                  <MenuItem fx:id="menuItemSelectAll"
+                            onAction="#handleSelectAllMenuItemAction"  
                             text="Select All" 
                             accelerator="Shortcut+A" >
                   </MenuItem>
                   <MenuItem fx:id="menuIemDelete" 
+                            onAction="#handleDeleteMenuItemAction"  
                             text="Delete" 
                             accelerator="Shortcut+Backspace" >
                   </MenuItem>
