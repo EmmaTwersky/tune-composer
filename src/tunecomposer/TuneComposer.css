@@ -70,11 +70,13 @@ and open the template in the editor.
 }
 
 #selectedNote{
+    -fx-fill: None;
     -fx-stroke-width: 3px; 
     -fx-stroke: Aqua; 
 }
 
 #unselectedNote{
+    -fx-fill: None;
     -fx-stroke-width: 3px; 
     -fx-stroke: LightGrey; 
 }
