@@ -5,7 +5,9 @@
  */
 package tunecomposer;
 
+import static java.awt.Color.red;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -13,39 +15,61 @@ import javafx.scene.shape.Rectangle;
  * @author EmmaTwersky
  */
 public class NoteBar {
+    public final String name;
     public final int instrument;
     public final int channel;
     public int pitch;
     public int startTick;
-    public int noteLength;
+    public int length;
+    public boolean selected = true;
     
     public Rectangle noteDisplay;
 
     private final int pitchRange = 128;
     private final int noteHeight = 10;
     private int defaultLength = 100;
-    private boolean selected;
     
     private InstrumentSelection instrumentInfo = new InstrumentSelection();
     
-    NoteBar(String instrumName, int instrum, int chan, double x, double y){
-        instrument = instrum;
-        channel = chan;
+    NoteBar(String instrumName, double x, double y){
+        name = instrumName;
+        instrument = instrumentInfo.getInstrumentValue(instrumName);
+        channel = instrumentInfo.getInstrumentChannel(instrumName+"Channel");
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;
-        noteLength = defaultLength;
-        noteDisplay = new Rectangle((int) x, (int) Math.round(y/10)*10, noteLength, noteHeight);
+        length = defaultLength;
+        noteDisplay = new Rectangle((int) x, (int) Math.round(y/noteHeight)* noteHeight, length, noteHeight);
         noteDisplay.setId(instrumName);
         selected = true;
     }
     
     public void display(Pane pane){
+        noteDisplay.setStroke(Color.AQUA);
         pane.getChildren().add(noteDisplay);        
     }    
 
-    public void editNote(Pane pane, double x, double y, double length){
+    public void editNote(Pane pane, double x, double y, double noteLength){
         pane.getChildren().remove(noteDisplay);
+        pitch = pitchRange - (int) y / noteHeight;
+        startTick = (int) x;
+        length = (int) noteLength;
         noteDisplay = new Rectangle((int) x, (int) Math.round(y/10)*10, length, noteHeight);
+        pane.getChildren().add(noteDisplay);
+    }
+    
+    public void deleteNote(Pane pane){
+        pane.getChildren().remove(noteDisplay);
+    }
+    
+    public void selectNote(Pane pane){
+        pane.getChildren().remove(noteDisplay);
+        noteDisplay.setId("selectedNote");
+        pane.getChildren().add(noteDisplay);
+    }
+    
+    public void unselectNote(Pane pane){
+        pane.getChildren().remove(noteDisplay);
+        noteDisplay.setId(name);
         pane.getChildren().add(noteDisplay);
     }
 }
