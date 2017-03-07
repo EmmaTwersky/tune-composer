@@ -183,7 +183,7 @@ public class FXMLController implements Initializable{
         Node t = (Node) instrumentSelection.getSelectedToggle();
         System.out.println(t.getId());
         String selectedInstrument = t.getId();
-        
+        InstrumentSelection.getInstrumentValue(selectedInstrument);
         instrument = 0;
     }
 }
