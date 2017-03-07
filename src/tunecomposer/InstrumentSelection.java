@@ -6,7 +6,6 @@
 package tunecomposer;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 
 /**
  * @author EmmaTwersky
@@ -30,10 +29,28 @@ public class InstrumentSelection {
     private static final int FRENCHHORN = 61; //61
     private static final int FRENCHHORN_CHANNEL = 7;
     
-    public static final HashMap INSTRUMENT_VALUES = new HashMap();
+    public HashMap<String, Integer> INSTRUMENT_VALUES = new HashMap<String, Integer>(16);
     
+    InstrumentSelection() {
+        INSTRUMENT_VALUES.put("Piano", PIANO);
+        INSTRUMENT_VALUES.put("PianoChannel", PIANO_CHANNEL);
+        INSTRUMENT_VALUES.put("Harpsicord", HARPSICORD);
+        INSTRUMENT_VALUES.put("HarpsicordChannel", HARPSICORD_CHANNEL);
+        INSTRUMENT_VALUES.put("Marimba", MARIMBA);
+        INSTRUMENT_VALUES.put("MarimbaChannel", MARIMBA_CHANNEL);
+        INSTRUMENT_VALUES.put("Organ", ORGAN);
+        INSTRUMENT_VALUES.put("OrganChannel", ORGAN_CHANNEL);
+        INSTRUMENT_VALUES.put("Accordian", ACCORDIAN);
+        INSTRUMENT_VALUES.put("AccordianChannel", ACCORDIAN_CHANNEL);
+        INSTRUMENT_VALUES.put("Guitar", GUITAR);
+        INSTRUMENT_VALUES.put("GuitarChannel", GUITAR_CHANNEL);
+        INSTRUMENT_VALUES.put("Violin", VIOLIN);
+        INSTRUMENT_VALUES.put("ViolinChannel", VIOLIN_CHANNEL);
+        INSTRUMENT_VALUES.put("FrenchHorn", FRENCHHORN);
+        INSTRUMENT_VALUES.put("FrenchHornChannel", FRENCHHORN_CHANNEL);
+    }
     
-    public int setInstrumentValue(String instrument){
+    public int getInstrumentValue(String instrument){
         
     }
 }
