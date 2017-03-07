@@ -14,6 +14,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class NoteBar {
     public final int instrument;
+    public final int channel;
     public int pitch;
     public int startTick;
     public int noteLength;
@@ -25,8 +26,9 @@ public class NoteBar {
     private int defaultLength = 100;
     private boolean selected;
     
-    NoteBar(int instrum, double x, double y){
+    NoteBar(int instrum, int chan, double x, double y){
         instrument = instrum;
+        channel = chan;
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;
         noteLength = defaultLength;
