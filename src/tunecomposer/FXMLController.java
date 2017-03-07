@@ -41,6 +41,8 @@ public class FXMLController implements Initializable{
      */
     private static int noteLength = 100;
     
+    private String instrumName = "Piano";
+    
     /**
      * Initialize note height to 10 pixels, this is final.      
      */
@@ -64,7 +66,7 @@ public class FXMLController implements Initializable{
     private RedBar redBarObj; // = new RedBar(compositionPane);
     
     
-    private InstrumentSelection instrumentInfo = new InstrumentSelection();
+    private final InstrumentSelection instrumentInfo = new InstrumentSelection();
     /**
      * Initializes a new MidiPlayer for this instance.
      */
@@ -78,16 +80,17 @@ public class FXMLController implements Initializable{
      * @param resources
      */
     @FXML
+    @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
         for (int i = 0; i < 128; i++) {
-            Line line = new Line(0, i*10, 2000, i*10);
-            line.setId("staffLine");
-            compositionPane.getChildren().add(line);
+            Line staffLine = new Line(0, i*10, 2000, i*10);
+            staffLine.setId("staffLine");
+            compositionPane.getChildren().add(staffLine);
         }
         for (int i = 0; i < 20; i++) {
-            Line line = new Line(i*100, 0, i*100, 1280);
-            line.setId("measureLine");
-            compositionPane.getChildren().add(line);
+            Line measureLine = new Line(i*100, 0, i*100, 1280);
+            measureLine.setId("measureLine");
+            compositionPane.getChildren().add(measureLine);
         }
         redBarObj = new RedBar(compositionPane);
     }
@@ -169,7 +172,7 @@ public class FXMLController implements Initializable{
      */
     @FXML
     protected void handleCompPaneClick(MouseEvent event) {       
-        NoteBar newNote = new NoteBar(instrument, channel, event.getX(), event.getY());
+        NoteBar newNote = new NoteBar(instrumName, instrument, channel, event.getX(), event.getY());
         musicNotesArray.add(newNote);
         newNote.display(compositionPane);
     }   
@@ -185,6 +188,7 @@ public class FXMLController implements Initializable{
     protected void handleInstrumentMenuAction(ActionEvent event) {
         Node t = (Node) instrumentSelection.getSelectedToggle();
         String selectedInstrument = t.getId();
+        instrumName = selectedInstrument;
         int instrumentValue = instrumentInfo.getInstrumentValue(selectedInstrument);
         int instrumentChan = instrumentInfo.getInstrumentChannel(selectedInstrument+"Channel");
         instrument = instrumentValue;
