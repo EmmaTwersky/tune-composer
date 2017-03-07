@@ -9,46 +9,62 @@ and open the template in the editor.
 */
 
 #Piano{
-    -fx-text-fill: red;
-    -fx-fill: red;
+    -fx-text-fill: FireBrick;
+    -fx-fill: FireBrick;
+    -fx-stroke-width: 3px; 
+    -fx-stroke: Grey;
 }
 #Harpsichord{
-    -fx-text-fill: blue;
-    -fx-fill: blue;
+    -fx-text-fill: Tomato;
+    -fx-fill: Tomato;
+    -fx-stroke-width: 3px; 
+    -fx-stroke: Grey;
 }
 #Marimba{
-    -fx-text-fill: gold;
-    -fx-fill: gold;
+    -fx-text-fill: Gold;
+    -fx-fill: Gold;
+    -fx-stroke-width: 3px; 
+    -fx-stroke: Grey;
 }
 #Organ{
-    -fx-text-fill: black;
-    -fx-fill: black;
+    -fx-text-fill: Violet;
+    -fx-fill: Violet;
+    -fx-stroke-width: 3px; 
+    -fx-stroke: Grey;
 }
 #Accordion{
-    -fx-text-fill: green;
-    -fx-fill: green;  
+    -fx-text-fill: MediumAquamarine;
+    -fx-fill: MediumAquamarine; 
+    -fx-stroke-width: 3px; 
+    -fx-stroke: Grey;
 }
 #Guitar{
-    -fx-text-fill: orange;
-    -fx-fill: orange;
+    -fx-text-fill: SeaGreen;
+    -fx-fill: SeaGreen;
+    -fx-stroke-width: 3px; 
+    -fx-stroke: Grey;
 }
 #Violin{
-    -fx-text-fill: purple;
-    -fx-fill: purple;
+    -fx-text-fill: Teal;
+    -fx-fill: Teal;
+    -fx-stroke-width: 3px; 
+    -fx-stroke: Grey;
 }
 #FrenchHorn{
-    -fx-text-fill: lightgreen;
-    -fx-fill: lightgreen;
+    -fx-text-fill: MediumVioletRed;
+    -fx-fill: MediumVioletRed;
+    -fx-stroke-width: 3px; 
+    -fx-stroke: Grey;
 }
 
 #staffLine{
-    -fx-stroke: grey;
+    -fx-stroke: Grey;
 }
 
 #measureLine{
-    -fx-stroke: lightgrey;
+    -fx-stroke: LightGrey;
 }
 
 #redBar{
-    -fx-fill: red;
+    -fx-fill: Red;
 }
