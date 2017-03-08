@@ -8,45 +8,45 @@ and open the template in the editor.
     Author     : eventhisone
 */
 
-#Piano{
+.Piano{
     -fx-text-fill: FireBrick;
     -fx-fill: FireBrick;
-    -fx-stroke-width: 3px; 
 }
-#Harpsichord{
+.Harpsichord{
     -fx-text-fill: Tomato;
     -fx-fill: Tomato;
-    -fx-stroke-width: 3px; 
 }
-#Marimba{
+.Marimba{
     -fx-text-fill: Gold;
     -fx-fill: Gold;
-    -fx-stroke-width: 3px; 
 }
-#Organ{
+.Organ{
     -fx-text-fill: Violet;
     -fx-fill: Violet;
-    -fx-stroke-width: 3px; 
 }
-#Accordion{
+.Accordion{
     -fx-text-fill: MediumAquamarine;
     -fx-fill: MediumAquamarine; 
-    -fx-stroke-width: 3px; 
 }
-#Guitar{
+.Guitar{
     -fx-text-fill: SeaGreen;
     -fx-fill: SeaGreen;
-    -fx-stroke-width: 3px; 
 }
-#Violin{
+.Violin{
     -fx-text-fill: Teal;
     -fx-fill: Teal;
-    -fx-stroke-width: 3px; 
 }
-#FrenchHorn{
+.FrenchHorn{
     -fx-text-fill: MediumVioletRed;
     -fx-fill: MediumVioletRed;
+}
+.selectedNote{
     -fx-stroke-width: 3px; 
+    -fx-stroke: Aqua; 
+}
+.unselectedNote{
+    -fx-stroke-width: 3px; 
+    -fx-stroke: LightGrey; 
 }
 #staffLine{
     -fx-stroke: Grey;
@@ -62,15 +62,3 @@ and open the template in the editor.
     -fx-stroke-width: 3px; 
     -fx-stroke: Aqua; 
 }
-/*
-#selectedNote{
-    -fx-fill: None;
-    -fx-stroke-width: 3px; 
-    -fx-stroke: Aqua; 
-}
-#unselectedNote{
-    -fx-fill: None;
-    -fx-stroke-width: 3px; 
-    -fx-stroke: LightGrey; 
-}
-*/
