@@ -5,7 +5,6 @@
  */
 package tunecomposer;
 
-import static java.awt.Color.red;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -27,7 +26,7 @@ public class NoteBar {
 
     private final int pitchRange = 128;
     private final int noteHeight = 10;
-    private int defaultLength = 100;
+    private final int defaultLength = 100;
     
     /**
      * Load InstrumentSelection HashMap to look up instrument key values.
