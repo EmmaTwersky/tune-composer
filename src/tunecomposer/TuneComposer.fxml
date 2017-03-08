@@ -73,8 +73,7 @@
                     prefWidth="2000.0">
             <content>
                 <Pane fx:id="compositionPane" 
-                      onMouseClicked="#handleCompPaneClick"
-                      onMouseDragged="#handleCompPaneDrag"
+                      onMousePressed="#handleCompPanePressed"
                       prefHeight="1280" 
                       prefWidth="2000" 
                       BorderPane.alignment="CENTER" />
