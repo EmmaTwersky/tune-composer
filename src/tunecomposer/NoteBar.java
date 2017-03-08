@@ -42,14 +42,15 @@ public class NoteBar {
         startTick = (int) x;
         length = defaultLength;
         noteDisplay = new Rectangle((int) x, (int) Math.round(y/noteHeight)* noteHeight, length, noteHeight);
-        noteDisplay.setId(instrumName);
+        noteDisplay.setId(name);
         selected = true;
     }
     
     public void displayNewNote(Pane pane){
-        noteDisplay.setId("selectedNote");
-        pane.getChildren().add(noteDisplay);        
-    }    
+        noteDisplay.setStroke(Color.AQUA);
+        //noteDisplay.setId("selectedNote");
+        pane.getChildren().add(noteDisplay);
+    }
     
     public boolean isSelected(){
         return selected;
@@ -71,13 +72,15 @@ public class NoteBar {
     public void selectNote(Pane pane){
         selected = true;
         pane.getChildren().remove(noteDisplay);
-        noteDisplay.setId("selectedNote");
+        noteDisplay.setStroke(Color.AQUA);
+        //noteDisplay.setId("selectedNote");
         pane.getChildren().add(noteDisplay);
     }
     
     public void unselectNote(Pane pane){
         selected = false;
         pane.getChildren().remove(noteDisplay);
+        noteDisplay.setStroke(Color.GREY);
         noteDisplay.setId(name);
         pane.getChildren().add(noteDisplay);
     }
