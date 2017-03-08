@@ -5,11 +5,8 @@
  */
 package tunecomposer;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.*;
 import javafx.scene.Node;
 import javafx.scene.control.ToggleGroup;
@@ -190,7 +187,7 @@ public class FXMLController implements Initializable{
         int x = (int) event.getX();
         int y = (int) event.getY();
         NoteBar clickedNote = clickedNote(x, y);
-        //System.out.println(clickedNote);
+
         if (clickedNote == null) {
             noNoteClicked(controlPressed, event);
         }
@@ -230,7 +227,7 @@ public class FXMLController implements Initializable{
     }
     
     @FXML
-    protected void handleCompPaneDrag(MouseDragEvent event) {
+    protected void handleCompPaneDrag(MouseEvent event) {
         stop();
         
         /*
@@ -244,11 +241,11 @@ public class FXMLController implements Initializable{
     }  
     
     protected void noNoteDragged(boolean ctrlPressed, MouseEvent event) {
-        
+        stop();
     }
     
     protected void noteDragged(boolean ctrlPressed, NoteBar clickedNote) {
-        
+        stop();
     }
     
     protected void updateSelectedNotesArray(){
