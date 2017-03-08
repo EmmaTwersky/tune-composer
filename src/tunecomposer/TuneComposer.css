@@ -12,49 +12,41 @@ and open the template in the editor.
     -fx-text-fill: FireBrick;
     -fx-fill: FireBrick;
     -fx-stroke-width: 3px; 
-    -fx-stroke: Grey;
 }
 #Harpsichord{
     -fx-text-fill: Tomato;
     -fx-fill: Tomato;
     -fx-stroke-width: 3px; 
-    -fx-stroke: Grey;
 }
 #Marimba{
     -fx-text-fill: Gold;
     -fx-fill: Gold;
     -fx-stroke-width: 3px; 
-    -fx-stroke: Grey;
 }
 #Organ{
     -fx-text-fill: Violet;
     -fx-fill: Violet;
     -fx-stroke-width: 3px; 
-    -fx-stroke: Grey;
 }
 #Accordion{
     -fx-text-fill: MediumAquamarine;
     -fx-fill: MediumAquamarine; 
     -fx-stroke-width: 3px; 
-    -fx-stroke: Grey;
 }
 #Guitar{
     -fx-text-fill: SeaGreen;
     -fx-fill: SeaGreen;
     -fx-stroke-width: 3px; 
-    -fx-stroke: Grey;
 }
 #Violin{
     -fx-text-fill: Teal;
     -fx-fill: Teal;
     -fx-stroke-width: 3px; 
-    -fx-stroke: Grey;
 }
 #FrenchHorn{
     -fx-text-fill: MediumVioletRed;
     -fx-fill: MediumVioletRed;
     -fx-stroke-width: 3px; 
-    -fx-stroke: Grey;
 }
 
 #staffLine{
@@ -68,15 +60,15 @@ and open the template in the editor.
 #redBar{
     -fx-fill: Red;
 }
-
+/*
 #selectedNote{
     -fx-fill: None;
     -fx-stroke-width: 3px; 
     -fx-stroke: Aqua; 
 }
-
 #unselectedNote{
     -fx-fill: None;
     -fx-stroke-width: 3px; 
     -fx-stroke: LightGrey; 
 }
+*/
