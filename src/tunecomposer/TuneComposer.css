@@ -48,17 +48,19 @@ and open the template in the editor.
     -fx-fill: MediumVioletRed;
     -fx-stroke-width: 3px; 
 }
-
 #staffLine{
     -fx-stroke: Grey;
 }
-
 #measureLine{
     -fx-stroke: LightGrey;
 }
-
 #redBar{
     -fx-fill: Red;
+}
+#selectionWindow{
+    -fx-fill: None;
+    -fx-stroke-width: 3px; 
+    -fx-stroke: Aqua; 
 }
 /*
 #selectedNote{
