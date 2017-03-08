@@ -74,7 +74,7 @@
             <content>
                 <Pane fx:id="compositionPane" 
                       onMouseClicked="#handleCompPaneClick"
-                      onDragDetected="#handleCompPaneDrag"
+                      onMouseDragged="#handleCompPaneDrag"
                       prefHeight="1280" 
                       prefWidth="2000" 
                       BorderPane.alignment="CENTER" />
