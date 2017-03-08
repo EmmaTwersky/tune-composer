@@ -8,6 +8,8 @@ package tunecomposer;
 import java.awt.Point;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.*;
 import javafx.scene.Node;
 import javafx.scene.control.ToggleGroup;
@@ -188,28 +190,34 @@ public class FXMLController implements Initializable{
         int x = (int) event.getX();
         int y = (int) event.getY();
         NoteBar clickedNote = clickedNote(x, y);
-        
-        System.out.println(clickedNote);
-        
+        //System.out.println(clickedNote);
         if (clickedNote == null) {
-            if (controlPressed == false) {
-                resetSelectedNotesArray();
-            }
-            NoteBar newNote = new NoteBar(selectedInstrument, event.getX(), event.getY());
-            musicNotesArray.add(newNote);
-            newNote.displayNewNote(compositionPane);
+            noNoteClicked(controlPressed, event);
         }
         else {
-            if (controlPressed) {
-                clickedNote.toggleNoteSelection(compositionPane);
-            }
-            else {
-                resetSelectedNotesArray();
-                clickedNote.selectNote(compositionPane);
-            }
+            noteClicked(controlPressed, clickedNote);
         }
         updateSelectedNotesArray();
     }  
+    
+    protected void noNoteClicked(boolean ctrlPressed, MouseEvent event) {
+        if (ctrlPressed == false) {
+                resetSelectedNotesArray();
+            }
+        NoteBar newNote = new NoteBar(selectedInstrument, event.getX(), event.getY());
+        musicNotesArray.add(newNote);
+        newNote.displayNewNote(compositionPane);
+    }
+    
+    protected void noteClicked(boolean ctrlPressed, NoteBar clickedNote) {
+        if (ctrlPressed) {
+            clickedNote.toggleNoteSelection(compositionPane);
+        }
+        else {
+            resetSelectedNotesArray();
+            clickedNote.selectNote(compositionPane);
+        }
+    }
     
     protected NoteBar clickedNote(int x, int y) {
         for (NoteBar note: musicNotesArray){
@@ -224,7 +232,24 @@ public class FXMLController implements Initializable{
     @FXML
     protected void handleCompPaneDrag(MouseDragEvent event) {
         stop();
+        
+        /*
+        EventHandler onEntered = new EventHandler<DragEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ;
+            }  
+        };
+        */
     }  
+    
+    protected void noNoteDragged(boolean ctrlPressed, MouseEvent event) {
+        
+    }
+    
+    protected void noteDragged(boolean ctrlPressed, NoteBar clickedNote) {
+        
+    }
     
     protected void updateSelectedNotesArray(){
         selectedNotesArray.clear();
