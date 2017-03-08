@@ -7,6 +7,7 @@ package tunecomposer;
 
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.*;
 import javafx.scene.Node;
 import javafx.scene.control.ToggleGroup;
@@ -173,6 +174,8 @@ public class FXMLController implements Initializable{
         System.exit(0);
     }
 
+    Rectangle window;
+    
     /**
      * Handles clicks on the composition pane, creates new NoteBar with 
      * default length and current instrument selection. 
@@ -180,23 +183,56 @@ public class FXMLController implements Initializable{
      * @param event the mouse click event
      */
     @FXML
-    protected void handleCompPaneClick(MouseEvent event) {
+    protected void handleCompPanePressed(MouseEvent event) {
         stop();
-        boolean controlPressed = event.isControlDown();
-
+        
         int x = (int) event.getX();
         int y = (int) event.getY();
+        boolean controlPressed = event.isControlDown();
         NoteBar clickedNote = clickedNote(x, y);
-
-        if (clickedNote == null) {
-            noNoteClicked(controlPressed, event);
-        }
-        else {
-            noteClicked(controlPressed, clickedNote);
-        }
-        updateSelectedNotesArray();
-    }  
+        window = new Rectangle(x,y,100,100);
+        window.setId("selectionWindow");
+        //compositionPane.getChildren().add(window);
+        
+        //clickedNote.setOnMouseDragged()
+        compositionPane.setOnMouseDragged(dragEventHandler);
+        compositionPane.setOnMouseClicked(clickEventHandler);
+        //compositionPane.setOnDragDone(stopDragWindowEvent);
+        //clickedNote.setOnDragDetected(dragNotesEvent);
+    }
     
+    EventHandler<MouseEvent> dragEventHandler = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            compositionPane.getChildren().remove(window);
+            int width = (int) (event.getX() - window.getX());
+            int height = (int) (event.getY() - window.getY());
+            window.resize(width, height);
+            compositionPane.getChildren().add(window);
+        }
+    };
+    
+    EventHandler<MouseEvent> clickEventHandler = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+            boolean controlPressed = event.isControlDown();
+            NoteBar clickedNote = clickedNote(x, y);
+            if (clickedNote == null) {noNoteClicked(controlPressed, event);}
+            else {noteClicked(controlPressed, clickedNote);}
+            updateSelectedNotesArray();
+        }
+    };
+    
+    /*
+    EventHandler<MouseEvent> stopDragWindowEvent = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            compositionPane.getChildren().remove(window);
+        }
+    };
+    */
     protected void noNoteClicked(boolean ctrlPressed, MouseEvent event) {
         if (ctrlPressed == false) {
                 resetSelectedNotesArray();
@@ -224,28 +260,6 @@ public class FXMLController implements Initializable{
             }
         }
         return null;
-    }
-    
-    @FXML
-    protected void handleCompPaneDrag(MouseEvent event) {
-        stop();
-        
-        /*
-        EventHandler onEntered = new EventHandler<DragEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                ;
-            }  
-        };
-        */
-    }  
-    
-    protected void noNoteDragged(boolean ctrlPressed, MouseEvent event) {
-        stop();
-    }
-    
-    protected void noteDragged(boolean ctrlPressed, NoteBar clickedNote) {
-        stop();
     }
     
     protected void updateSelectedNotesArray(){
