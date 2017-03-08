@@ -23,10 +23,12 @@ public class NoteBar {
     public boolean selected = true;
     
     public Rectangle noteDisplay;
+    public Rectangle editRectangle;
 
     private final int pitchRange = 128;
     private final int noteHeight = 10;
     private final int defaultLength = 100;
+    private final int clickToEditLength = 100;
     
     /**
      * Load InstrumentSelection HashMap to look up instrument key values.
@@ -37,11 +39,18 @@ public class NoteBar {
         name = instrumName;
         instrument = instrumentInfo.getInstrumentValue(instrumName);
         channel = instrumentInfo.getInstrumentChannel(instrumName+"Channel");
+        
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;
         length = defaultLength;
-        noteDisplay = new Rectangle((int) x, (int) Math.round(y/noteHeight)* noteHeight, length, noteHeight);
+        
+        int xLocation = (int) x;
+        int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
+        noteDisplay = new Rectangle(xLocation, yLocation, length, noteHeight);
         noteDisplay.setId(name);
+        
+        editRectangle = new Rectangle((xLocation + length) - clickToEditLength, yLocation, length, noteHeight);
+        
         selected = true;
     }
     
@@ -57,10 +66,15 @@ public class NoteBar {
 
     public void editNote(Pane pane, double x, double y, double noteLength){
         pane.getChildren().remove(noteDisplay);
+        
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;
         length = (int) noteLength;
-        noteDisplay = new Rectangle((int) x, (int) Math.round(y/10)*10, length, noteHeight);
+        int xLocation = (int) x;
+        int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
+        editRectangle = new Rectangle((xLocation + length) - clickToEditLength, yLocation, length, noteHeight);
+        noteDisplay = new Rectangle(xLocation, yLocation, length, noteHeight);
+        
         pane.getChildren().add(noteDisplay);
     }
     
@@ -80,7 +94,7 @@ public class NoteBar {
         selected = false;
         pane.getChildren().remove(noteDisplay);
         noteDisplay.setStroke(Color.GREY);
-        noteDisplay.setId(name);
+        //noteDisplay.setId(name);
         pane.getChildren().add(noteDisplay);
     }
     
