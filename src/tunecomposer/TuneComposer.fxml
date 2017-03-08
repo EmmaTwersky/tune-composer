@@ -93,7 +93,7 @@
             <RadioButton fx:id="Piano" 
                          onAction="#handleInstrumentMenuAction" 
                          mnemonicParsing="false" 
-                         styleClass="radioButtonPiano" 
+                         styleClass="Piano" 
                          text="Piano"
                          toggleGroup="$instrumentSelection"
                          selected = "true">
@@ -106,7 +106,7 @@
                          layoutX="10.0" 
                          layoutY="15.0" 
                          mnemonicParsing="false" 
-                         styleClass="radioButtonHarpsichord" 
+                         styleClass="Harpsichord" 
                          text="Harpsichord"
                          toggleGroup="$instrumentSelection">
                <padding>
@@ -117,7 +117,7 @@
                          onAction="#handleInstrumentMenuAction" 
                          layoutX="20.0" layoutY="25.0" 
                          mnemonicParsing="false" 
-                         styleClass="radioButtonMarimba" 
+                         styleClass="Marimba" 
                          text="Marimba"
                          toggleGroup="$instrumentSelection">
                <padding>
@@ -129,7 +129,7 @@
                          layoutX="30.0" 
                          layoutY="35.0" 
                          mnemonicParsing="false" 
-                         styleClass="radioButtonOrgan" 
+                         styleClass="Organ" 
                          text="Organ"
                          toggleGroup="$instrumentSelection">
                <padding>
@@ -141,7 +141,7 @@
                          layoutX="40.0" 
                          layoutY="45.0" 
                          mnemonicParsing="false" 
-                         styleClass="radioButtonAccordion" 
+                         styleClass="Accordion" 
                          text="Accordion"
                          toggleGroup="$instrumentSelection">
                <padding>
@@ -153,7 +153,7 @@
                          layoutX="50.0" 
                          layoutY="55.0" 
                          mnemonicParsing="false" 
-                         styleClass="radioButtonGuitar" 
+                         styleClass="Guitar" 
                          text="Guitar"
                          toggleGroup="$instrumentSelection">
                <padding>
@@ -165,7 +165,7 @@
                          layoutX="60.0" 
                          layoutY="65.0" 
                          mnemonicParsing="false" 
-                         styleClass="radioButtonViolin" 
+                         styleClass="Violin" 
                          text="Violin"
                          toggleGroup="$instrumentSelection">
                <padding>
@@ -177,7 +177,7 @@
                          layoutX="70.0" 
                          layoutY="75.0" 
                          mnemonicParsing="false" 
-                         styleClass="radioButtonFrenchHorn" 
+                         styleClass="FrenchHorn" 
                          text="French Horn"
                          toggleGroup="$instrumentSelection">
                <padding>
