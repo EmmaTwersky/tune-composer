@@ -29,8 +29,7 @@ public class TuneComposer extends Application {
     public void start(Stage primaryStage) throws IOException {  
         Parent root = FXMLLoader.load(getClass().getResource("TuneComposer.fxml"));
         Scene scene = new Scene(root);
-        primaryStage.setTitle("Scale Player");
-        scene.getStylesheets().add("TuneComposer.css");
+        primaryStage.setTitle("Tune Composer");
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
             System.exit(0);
