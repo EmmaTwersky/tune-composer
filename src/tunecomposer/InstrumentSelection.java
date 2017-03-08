@@ -29,7 +29,7 @@ public class InstrumentSelection {
     private static final int FRENCHHORN = 61; //61
     private static final int FRENCHHORN_CHANNEL = 7;
     
-    public HashMap<String, Integer> INSTRUMENT_VALUES = new HashMap<String, Integer>(16);
+    public HashMap<String, Integer> INSTRUMENT_VALUES = new HashMap<String, Integer>(16);// put channels in different hashmap
     
     InstrumentSelection() {
         INSTRUMENT_VALUES.put("Piano", PIANO);
