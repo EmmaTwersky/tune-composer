@@ -6,7 +6,6 @@
 package tunecomposer;
 
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -47,7 +46,8 @@ public class NoteBar {
         int xLocation = (int) x;
         int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
         noteDisplay = new Rectangle(xLocation, yLocation, length, noteHeight);
-        noteDisplay.setId(name);
+        noteDisplay.getStyleClass().add(name);
+        //set event handler methods
         
         editRectangle = new Rectangle((xLocation + length) - clickToEditLength, yLocation, length, noteHeight);
         
@@ -55,8 +55,8 @@ public class NoteBar {
     }
     
     public void displayNewNote(Pane pane){
-        noteDisplay.setStroke(Color.AQUA);
-        //noteDisplay.setId("selectedNote");
+        //noteDisplay.setStroke(Color.AQUA);
+        noteDisplay.getStyleClass().add("selectedNote");
         pane.getChildren().add(noteDisplay);
     }
     
@@ -85,15 +85,16 @@ public class NoteBar {
     public void selectNote(Pane pane){
         selected = true;
         pane.getChildren().remove(noteDisplay);
-        noteDisplay.setStroke(Color.AQUA);
-        //noteDisplay.setId("selectedNote");
+        noteDisplay.getStyleClass().remove("unselectedNote");
+        noteDisplay.getStyleClass().add("selectedNote");
         pane.getChildren().add(noteDisplay);
     }
     
     public void unselectNote(Pane pane){
         selected = false;
         pane.getChildren().remove(noteDisplay);
-        noteDisplay.setStroke(Color.GREY);
+        noteDisplay.getStyleClass().remove("selectedNote");
+        noteDisplay.getStyleClass().add("unselectedNote");
         //noteDisplay.setId(name);
         pane.getChildren().add(noteDisplay);
     }
