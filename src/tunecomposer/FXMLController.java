@@ -76,8 +76,8 @@ public class FXMLController implements Initializable{
      * Initialize FXML, draws initial setup of composition pane and 
      * initialized the RedBar.
      * 
-     * @param location
-     * @param resources
+     * @param location the source of the scene
+     * @param resources the resources of the utility of the scene
      * @see RedBar
      */
     @FXML
@@ -237,9 +237,9 @@ public class FXMLController implements Initializable{
     }
     
     /**
-     * Handles mouse press on the compositionPane, stops current MidiPlayer,
-     * gets initial value of mouse, and initializes selection window.
-     * Updates selected notes for NoteBar handleOnPressed updates.
+     * Handles mouse press on the compositionPane.
+     * Stops current MidiPlayer, gets initial value of mouse, and initializes 
+     * selection window. Updates selected notes for NoteBar handleOnPressed updates.
      * 
      * @param event the mouse click event
      * @see <NoteBar.java>
@@ -260,8 +260,9 @@ public class FXMLController implements Initializable{
     };
     
     /**
-     * Handles mouse dragged on the compositionPane, drags selection window,
-     * highlights notes intersecting the window and updates selected notes.
+     * Handles mouse dragged on the compositionPane. 
+     * Drags selection window, highlights notes intersecting the window and 
+     * updates selected notes.
      * 
      * @param event the mouse click event
      */
@@ -310,34 +311,4 @@ public class FXMLController implements Initializable{
         
         updateSelectedNotesArray();
     };
-    
-    /**
-     * Moves all of the selected notes.
-     * 
-     * @param x new X coordinate of the note
-     * @param y new Y coordinate of the note
-     */
-    /*
-    public void moveNotes(int newX, int newY){
-        updateSelectedNotesArray();
-        System.out.println(selectedNotesArray);
-        for (NoteBar note: selectedNotesArray) {
-            note.moveNote(newX, newY);
-        }
-    }
-    */
-    
-    /**
-     * Changes all of the selected notes lengths.
-     * 
-     * @param noteLength
-     */
-    /*
-    public void changeNoteLengths(int noteLength){ 
-        updateSelectedNotesArray();
-        for (NoteBar note: selectedNotesArray) {
-            note.changeNoteLength(noteLength);
-        }
-    }
-    */
 }
