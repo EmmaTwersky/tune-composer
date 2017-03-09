@@ -11,18 +11,29 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 /**
+ * This class creates and animates the red bar which shows the moment at which
+ * the MidiPlayer is playing.
+ * 
  * @author EmmaTwersky
  */
 public class RedBar {
-    private final Timeline timeline; // = new Timeline(); final??
-    private final Rectangle redBar;// = new Rectangle(0,0,1,1280); final??
+    /**
+     * Creates time line for animation and Rectangle red bar object.
+     */
+    private final Timeline timeline;
+    private final Rectangle redBar;
     
-    private final float movementSpeed = 100;
-    private final Pane parentPane;
-    
+    /**
+     * Sets final movement speed to 100, screen height to 1280 and width to 1 pixel.
+     */
+    private final float movementSpeed = 100;    
     private final int screenHeight = 1280;
     private final int redBarWidth = 1;
     
+    /**
+     * Sets final parent pane and initializes end of notes to time 0.
+     */
+    private final Pane parentPane;
     private int compositionEnd = 0;
     
     /**
