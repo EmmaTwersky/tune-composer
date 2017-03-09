@@ -14,8 +14,8 @@ import java.util.HashMap;
 public class InstrumentSelection {
     private static final int PIANO = 0; //1-8
     private static final int PIANO_CHANNEL = 0;
-    private static final int HARPSICORD = 7; //7
-    private static final int HARPSICORD_CHANNEL = 1;
+    private static final int HARPSICHORD = 7; //7
+    private static final int HARPSICHORD_CHANNEL = 1;
     private static final int MARIMBA = 13; //13
     private static final int MARIMBA_CHANNEL = 2;
     private static final int ORGAN = 17; //17-24
@@ -34,7 +34,7 @@ public class InstrumentSelection {
 
     InstrumentSelection() {
         INSTRUMENT_VALUES.put("Piano", PIANO);
-        INSTRUMENT_VALUES.put("Harpsichord", HARPSICORD);
+        INSTRUMENT_VALUES.put("Harpsichord", HARPSICHORD);
         INSTRUMENT_VALUES.put("Marimba", MARIMBA);
         INSTRUMENT_VALUES.put("Organ", ORGAN);
         INSTRUMENT_VALUES.put("Accordion", ACCORDIAN);
@@ -43,7 +43,7 @@ public class InstrumentSelection {
         INSTRUMENT_VALUES.put("FrenchHorn", FRENCHHORN);
         
         INSTRUMENT_CHANNELS.put("Piano", PIANO_CHANNEL);
-        INSTRUMENT_CHANNELS.put("Harpsichord", HARPSICORD_CHANNEL);
+        INSTRUMENT_CHANNELS.put("Harpsichord", HARPSICHORD_CHANNEL);
         INSTRUMENT_CHANNELS.put("Marimba", MARIMBA_CHANNEL);
         INSTRUMENT_CHANNELS.put("Organ", ORGAN_CHANNEL);
         INSTRUMENT_CHANNELS.put("Accordion", ACCORDIAN_CHANNEL);
