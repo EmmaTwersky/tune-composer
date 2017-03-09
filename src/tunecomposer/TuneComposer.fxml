@@ -42,7 +42,7 @@
                             text="Select All" 
                             accelerator="Shortcut+A" >
                   </MenuItem>
-                  <MenuItem fx:id="menuIemDelete" 
+                  <MenuItem fx:id="menuItemDelete" 
                             onAction="#handleDeleteMenuItemAction"  
                             text="Delete" 
                             accelerator="Shortcut+Backspace" >
@@ -68,17 +68,21 @@
         </MenuBar>
     </top>
     <center>
-        <ScrollPane fx:id="scrollPane2" 
-                    prefHeight="1280.0" 
-                    prefWidth="2000.0">
-            <content>
-                <Pane fx:id="compositionPane" 
-                      onMousePressed="#handleCompPanePressed"
-                      prefHeight="1280" 
-                      prefWidth="2000" 
-                      BorderPane.alignment="CENTER" />
-            </content>
-        </ScrollPane>
+            <ScrollPane 
+                prefHeight="1280.0" 
+                prefWidth="2000.0">
+                <content> 
+                    <Pane   
+                        fx:id="compositionPane" 
+                        onMousePressed="#handlePanePressed"
+                        onMouseDragged="#handlePaneDragged"
+                        onMouseReleased="#handlePaneReleased"
+                        prefHeight="1280" 
+                        prefWidth="2000" 
+                        BorderPane.alignment="CENTER">
+                    </Pane> 
+                </content>
+            </ScrollPane>
     </center>
    <left>
       <fx:define>
@@ -102,9 +106,7 @@
                </padding>
             </RadioButton>
             <RadioButton fx:id="Harpsichord" 
-                         onAction="#handleInstrumentMenuAction" 
-                         layoutX="10.0" 
-                         layoutY="15.0" 
+                         onAction="#handleInstrumentMenuAction"  
                          mnemonicParsing="false" 
                          styleClass="Harpsichord" 
                          text="Harpsichord"
@@ -115,7 +117,6 @@
             </RadioButton>
             <RadioButton fx:id="Marimba" 
                          onAction="#handleInstrumentMenuAction" 
-                         layoutX="20.0" layoutY="25.0" 
                          mnemonicParsing="false" 
                          styleClass="Marimba" 
                          text="Marimba"
@@ -126,8 +127,6 @@
             </RadioButton>
             <RadioButton fx:id="Organ" 
                          onAction="#handleInstrumentMenuAction" 
-                         layoutX="30.0" 
-                         layoutY="35.0" 
                          mnemonicParsing="false" 
                          styleClass="Organ" 
                          text="Organ"
@@ -150,8 +149,6 @@
             </RadioButton>
             <RadioButton fx:id="Guitar" 
                          onAction="#handleInstrumentMenuAction" 
-                         layoutX="50.0" 
-                         layoutY="55.0" 
                          mnemonicParsing="false" 
                          styleClass="Guitar" 
                          text="Guitar"
@@ -162,8 +159,6 @@
             </RadioButton>
             <RadioButton fx:id="Violin" 
                          onAction="#handleInstrumentMenuAction" 
-                         layoutX="60.0" 
-                         layoutY="65.0" 
                          mnemonicParsing="false" 
                          styleClass="Violin" 
                          text="Violin"
@@ -173,9 +168,7 @@
                </padding>
             </RadioButton>
             <RadioButton fx:id="FrenchHorn" 
-                         onAction="#handleInstrumentMenuAction" 
-                         layoutX="70.0" 
-                         layoutY="75.0" 
+                         onAction="#handleInstrumentMenuAction"  
                          mnemonicParsing="false" 
                          styleClass="FrenchHorn" 
                          text="French Horn"
