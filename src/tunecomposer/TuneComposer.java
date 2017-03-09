@@ -1,6 +1,3 @@
-/*
- * CS 300-A, 2017S
- */
 package tunecomposer;
 
 import java.io.IOException;
@@ -13,15 +10,12 @@ import javafx.stage.WindowEvent;
 
 /**
  * TuneComposer allows the user to create simple midi melodies and play them.
- * @author Richie Farman 
- * @author Quinn Salkind
- * @author Zach Turner
- * @since January 26, 2017
  */
 public class TuneComposer extends Application {
 
     /**
      * Construct the scene and start the application.
+     * 
      * @param primaryStage the stage for the main window
      * @throws java.io.IOException
      */
@@ -39,6 +33,7 @@ public class TuneComposer extends Application {
 
     /**
      * Launch the application.
+     * 
      * @param args the command line arguments are ignored
      */
     public static void main(String[] args) {
