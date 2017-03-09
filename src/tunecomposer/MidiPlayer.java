@@ -1,6 +1,3 @@
-/*
- * CS 300-A, 2017S
- */
 package tunecomposer;
 
 import javax.sound.midi.*;
@@ -51,7 +48,7 @@ public class MidiPlayer
     }
 
     /**
-     * adds a new MidiEvent to the current composition.
+     * Adds a new MidiEvent to the current composition.
      * Assumes all parameters are legal values (in the appropriate range).
      * This method is very low level but gives you greater freedom to
      * add almost any kind of Midi event you wish.
@@ -99,8 +96,8 @@ public class MidiPlayer
     }
 
     /**
-     * plays all the Midi events in all the tracks of this composition
-     * immediately
+     * Plays all the Midi events in all the tracks of this composition
+     * immediately.
      */
     public void play()
     {
@@ -110,7 +107,7 @@ public class MidiPlayer
     }
     
     /**
-     * restarts the composition
+     * Restarts the composition.
      */
     public void restart()
     {
@@ -118,7 +115,7 @@ public class MidiPlayer
     }
 
     /**
-     * stops all the Midi events currently playing or yet to be played
+     * Stops all the Midi events currently playing or yet to be played.
      */
     public void stop()
     {
@@ -126,7 +123,7 @@ public class MidiPlayer
     }
 
     /**
-     * removes all Midi events from the current composition.
+     * Removes all Midi events from the current composition.
      */
     public void clear()
     {
