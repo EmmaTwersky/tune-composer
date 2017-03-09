@@ -14,16 +14,16 @@ import javafx.util.Duration;
  * @author EmmaTwersky
  */
 public class RedBar {
-    private Timeline timeline; // = new Timeline(); final??
-    private Rectangle redBar;// = new Rectangle(0,0,1,1280); final??
+    private final Timeline timeline; // = new Timeline(); final??
+    private final Rectangle redBar;// = new Rectangle(0,0,1,1280); final??
     
     private final float movementSpeed = 100;
-    private Pane parentPane;
+    private final Pane parentPane;
     
     private final int screenHeight = 1280;
     private final int redBarWidth = 1;
     
-    private int finalXValue = 0;
+    private int compositionEnd = 0;
     
     /**
      * Creates RedBar object on given pane. 
@@ -33,7 +33,7 @@ public class RedBar {
      */
     RedBar(Pane pane) {
         parentPane = pane;
-        redBar = new Rectangle(0,0,redBarWidth,screenHeight);
+        redBar = new Rectangle(0, 0, redBarWidth, screenHeight);
         redBar.setId("redBar");
         parentPane.getChildren().add(redBar);
         timeline = new Timeline();
@@ -52,10 +52,9 @@ public class RedBar {
         redBar.setVisible(true);
         
         findEndCoordinate(noteList);
-        System.out.println(finalXValue);
         
-        KeyValue kv = new KeyValue(redBar.xProperty(), finalXValue);
-        Duration duration = Duration.millis(finalXValue * 10);
+        KeyValue kv = new KeyValue(redBar.xProperty(), compositionEnd);
+        Duration duration = Duration.millis(compositionEnd * 10);
                 
         EventHandler onFinished = new EventHandler<ActionEvent>() {
             @Override
@@ -86,8 +85,9 @@ public class RedBar {
      */
     private void findEndCoordinate(ArrayList<NoteBar> noteList) {
         for (NoteBar note: noteList) {
-            if (note.startTick > finalXValue) 
-                finalXValue = note.startTick + note.length;
+            int noteEnd = note.startTick + note.length;
+            if (noteEnd > compositionEnd) 
+                compositionEnd = noteEnd;
         }
     } 
 }
