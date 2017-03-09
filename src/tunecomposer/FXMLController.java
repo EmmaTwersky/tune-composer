@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer;
 
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.*;
 import javafx.scene.Node;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
@@ -19,9 +12,18 @@ import javafx.scene.shape.Rectangle;
 import javax.sound.midi.ShortMessage;
 
 /**
+ * This class controls the <TuneComposer.fxml> which creates a MidiPlayer, 
+ * then handles events on the pane and in the menu bar to play the MidiPlayer.
+ * 
  * @author Emma
  */
 public class FXMLController implements Initializable{
+    
+    /**
+     * Create array of NoteBar objects and selected NoteBar objects.      
+     */
+    protected static final ArrayList<NoteBar> MUSIC_NOTES_ARRAY = new ArrayList(); 
+    protected static final ArrayList<NoteBar> SELECTED_NOTES_ARRAY = new ArrayList(); 
     
     /**
      * Set volume to maximum.      
@@ -29,59 +31,67 @@ public class FXMLController implements Initializable{
     private static final int VOLUME = 127;
     
     /**
-     * Create array of NoteBar objects and selected NoteBar objects.      
+     * Initialize default note to "Piano".      
      */
-    private ArrayList<NoteBar> musicNotesArray = new ArrayList(); 
-    private ArrayList<NoteBar> selectedNotesArray = new ArrayList(); 
-    
-    /**
-     * Initialize default note to "Piano" with length to 100 pixels.      
-     */
-    private static String selectedInstrument = "Piano";
-    private static int noteLength = 100;
-    
-    /**
-     * Set note height to 10 pixels, this is final.      
+    protected String selectedInstrument = "Piano";
+
+    /** 
+     * Set note height to 10 pixels and note length to 100 pixels. 
      */
     private final int noteHeight = 10; 
-    private final int barLength = 100;
+    private final int initialNoteLength = 100;
+    
+    /**
+     * Set pitch range from 1 to 127 and bar range, the number of measures on 
+     * the screen, to 20.
+     */
     private final int pitchRange = 128;
     private final int barRange = 20;
     
     /**
-     * One midi player is used throughout, so we can stop a scale that is
-     * currently playing.
+     * One midi player is used throughout, so that it can be stopped.
+     * Set resolution to 100 and beats per minute to 60.
      */
     private final int resolution = 100;
     private final int beatsPerMinute = 60;
     private final MidiPlayer player = new MidiPlayer(resolution, beatsPerMinute);
     
     /**
-     * Create the pane for drawing.      
-     */
-    @FXML
-    private Pane compositionPane;
-
-    /**
      * Initialize a RedBar to track the progression of time.
      */
     private RedBar redBarObj; // = new RedBar(compositionPane);
     
     /**
-     * Initialized with our FXML, draws initial setup of composition pane.
+     * Initialize a Rectangle window to select notes on dragged.
+     */
+    private Rectangle window;
+    
+    /**
+     * Create the pane which the note events take place on.      
+     */
+    @FXML
+    public Pane compositionPane; 
+    
+    /**
+     * Initialize FXML, draws initial setup of composition pane and 
+     * initialized the RedBar.
+     * 
      * @param location
      * @param resources
+     * @see RedBar
      */
     @FXML
     @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
         for (int i = 0; i < pitchRange; i++) {
-            Line staffLine = new Line(0, i*noteHeight, barRange*barLength, i*noteHeight);
+            Line staffLine = new Line(0, i*noteHeight, 
+                    barRange*initialNoteLength, i*noteHeight);
             staffLine.setId("staffLine");
             compositionPane.getChildren().add(staffLine);
         }
         for (int i = 0; i < barRange; i++) {
-            Line measureLine = new Line(i*barLength, 0, i*barLength, pitchRange*noteHeight);
+            Line measureLine = new Line(i*initialNoteLength, 0, 
+                    i*initialNoteLength, pitchRange*noteHeight);
             measureLine.setId("measureLine");
             compositionPane.getChildren().add(measureLine);
         }
@@ -89,7 +99,31 @@ public class FXMLController implements Initializable{
     }
     
     /**
+     * Fills the selectedNotesArray with the currently selected notes.
+     */
+    public static void updateSelectedNotesArray(){
+        SELECTED_NOTES_ARRAY.clear();
+        for (NoteBar note: MUSIC_NOTES_ARRAY) {            
+            if (note.isSelected()) {
+                note.selectNote();
+                SELECTED_NOTES_ARRAY.add(note);
+            }
+        }
+    }
+    
+    /**
+     * Empties the selectedNotesArray and un-selects all notes.
+     */
+    public static void resetSelectedNotesArray(){
+        for (NoteBar note: SELECTED_NOTES_ARRAY) {            
+            note.unselectNote();
+        }
+        SELECTED_NOTES_ARRAY.clear();
+    }
+    
+    /**
      * Handles the play button from the Actions menu.
+     * 
      * @param event the menu selection event
      */
     @FXML 
@@ -98,20 +132,20 @@ public class FXMLController implements Initializable{
     }  
     
     /**
-     * Plays the sequencer and starts the RedBar animation.
+     * Plays the sequence and begins the RedBar animation.
      */
     protected void play() {
         playSequence();
-        redBarObj.playAnimation(musicNotesArray);
+        redBarObj.playAnimation(MUSIC_NOTES_ARRAY);
     }
     
     /**
-     * Plays the sequencer.
-     * Each time playSequence is called the sequence restarts from the beginning.
+     * Plays the MidiPLayer.
+     * Each time playSequence is called the sequence clears, adds all notes 
+     * to the player, and starts from the beginning.
      */
     protected void playSequence() {
         player.stop();
-        //player.restart();
         player.clear();
         addNotesArrayToMidiPlayer();
         player.play();
@@ -121,15 +155,34 @@ public class FXMLController implements Initializable{
      * Adds all NoteBar objects in musicNotesArray to MidiPlayer.
      */
     private void addNotesArrayToMidiPlayer() {
-        for (NoteBar note: musicNotesArray) {            
-            player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + note.channel, note.instrument, 0, 0, note.channel);
-            player.addNote(note.pitch, VOLUME, note.startTick, note.length, note.channel, 0);
+        for (NoteBar note: MUSIC_NOTES_ARRAY) {            
+            player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + note.channel, 
+                    note.instrument, 0, 0, note.channel);
+            player.addNote(note.pitch, VOLUME, note.startTick, 
+                    note.length, note.channel, 0);
         }
     }
     
     /**
-     * When the user clicks the "Stop playing" button in the actions menu, 
-     * stop playing the scale.
+     * Constructs ToggleGroup from <TuneComposer.fxml>.
+     */
+    @FXML
+    ToggleGroup instrumentSelection;
+    
+    /**
+     * Handles changes to the instrument selection menu.
+     * 
+     * @param event the menu selection event
+     */
+    @FXML
+    protected void handleInstrumentMenuAction(ActionEvent event) {
+        Node toggle = (Node) instrumentSelection.getSelectedToggle();
+        selectedInstrument = toggle.getId();
+    }
+    
+    /**
+     * Handles the Stop menu item.
+     * 
      * @param event the button click event
      */
     @FXML 
@@ -140,155 +193,151 @@ public class FXMLController implements Initializable{
     /**
      * Stops the current MidiPlayer, clears MidiPlayer and stops RedBar.
      */
-    protected void stop() {
+    public void stop() {
         player.stop();
         player.clear();
         redBarObj.stopAnimation();
     }  
     
+    /**
+     * Handles the Select All menu item and selects all notes.
+     * 
+     * @param event the button click event
+     */
     @FXML
     protected void handleSelectAllMenuItemAction(ActionEvent event) {
-        for (NoteBar note: musicNotesArray) {
-            note.selectNote(compositionPane);
-        }
-        updateSelectedNotesArray();
-    }
-
-    @FXML
-    protected void handleDeleteMenuItemAction(ActionEvent event) {
-        for (NoteBar note: selectedNotesArray) {
-            note.deleteNote(compositionPane);
-            musicNotesArray.remove(note);
-            //selectedNotesArray.remove(note);
+        for (NoteBar note: MUSIC_NOTES_ARRAY) {
+            note.selectNote();
         }
         updateSelectedNotesArray();
     }
 
     /**
-     * When the user clicks the "Exit" menu item in the file menu, 
-     * exit the program.
+     * Handles the Delete menu item and deletes all selected notes.
+     * 
+     * @param event the button click event
+     */
+    @FXML
+    protected void handleDeleteMenuItemAction(ActionEvent event) {
+        for (NoteBar note: SELECTED_NOTES_ARRAY) {
+            note.deleteNote();
+            MUSIC_NOTES_ARRAY.remove(note);
+        }
+        updateSelectedNotesArray();
+    }
+
+    /**
+     * Handles the Exit menu item and exits the scene.
+     * 
      * @param event the menu selection event
      */
     @FXML
     protected void handleExitMenuItemAction(ActionEvent event) {
         System.exit(0);
     }
-
-    Rectangle window;
     
     /**
-     * Handles clicks on the composition pane, creates new NoteBar with 
-     * default length and current instrument selection. 
-     * Adds note to the musicNotesArray and displays note on compositionPane.
+     * Handles mouse press on the compositionPane, stops current MidiPlayer,
+     * gets initial value of mouse, and initializes selection window.
+     * Updates selected notes for NoteBar handleOnPressed updates.
+     * 
      * @param event the mouse click event
+     * @see <NoteBar.java>
      */
     @FXML
-    protected void handleCompPanePressed(MouseEvent event) {
+    protected void handlePanePressed(MouseEvent event) {
         stop();
         
         int x = (int) event.getX();
         int y = (int) event.getY();
-        boolean controlPressed = event.isControlDown();
-        NoteBar clickedNote = clickedNote(x, y);
-        window = new Rectangle(x,y,100,100);
-        window.setId("selectionWindow");
-        //compositionPane.getChildren().add(window);
         
-        //clickedNote.setOnMouseDragged()
-        compositionPane.setOnMouseDragged(dragEventHandler);
-        compositionPane.setOnMouseClicked(clickEventHandler);
-        //compositionPane.setOnDragDone(stopDragWindowEvent);
-        //clickedNote.setOnDragDetected(dragNotesEvent);
-    }
-    
-    EventHandler<MouseEvent> dragEventHandler = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-            compositionPane.getChildren().remove(window);
-            int width = (int) (event.getX() - window.getX());
-            int height = (int) (event.getY() - window.getY());
-            window.resize(width, height);
-            compositionPane.getChildren().add(window);
-        }
+        window = new Rectangle(x, y, 0, 0);
+        window.setId("selectionWindow");
+        window.setVisible(false);
+        compositionPane.getChildren().add(window);  
+        
+        updateSelectedNotesArray();
     };
-    
-    EventHandler<MouseEvent> clickEventHandler = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-            int x = (int) event.getX();
-            int y = (int) event.getY();
-            boolean controlPressed = event.isControlDown();
-            NoteBar clickedNote = clickedNote(x, y);
-            if (clickedNote == null) {noNoteClicked(controlPressed, event);}
-            else {noteClicked(controlPressed, clickedNote);}
-            updateSelectedNotesArray();
-        }
-    };
-    
-    /*
-    EventHandler<MouseEvent> stopDragWindowEvent = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-            compositionPane.getChildren().remove(window);
-        }
-    };
-    */
-    protected void noNoteClicked(boolean ctrlPressed, MouseEvent event) {
-        if (ctrlPressed == false) {
-                resetSelectedNotesArray();
-            }
-        NoteBar newNote = new NoteBar(selectedInstrument, event.getX(), event.getY());
-        musicNotesArray.add(newNote);
-        newNote.displayNewNote(compositionPane);
-    }
-    
-    protected void noteClicked(boolean ctrlPressed, NoteBar clickedNote) {
-        if (ctrlPressed) {
-            clickedNote.toggleNoteSelection(compositionPane);
-        }
-        else {
-            resetSelectedNotesArray();
-            clickedNote.selectNote(compositionPane);
-        }
-    }
-    
-    protected NoteBar clickedNote(int x, int y) {
-        for (NoteBar note: musicNotesArray){
-            Rectangle r = note.noteDisplay;
-            if (r.contains(x, y)) {
-                return note;
-            }
-        }
-        return null;
-    }
-    
-    protected void updateSelectedNotesArray(){
-        selectedNotesArray.clear();
-        for (NoteBar note: musicNotesArray) {            
-            if (note.isSelected()) {
-                note.selectNote(compositionPane);
-                selectedNotesArray.add(note);
-            }
-        }
-    }
-    
-    protected void resetSelectedNotesArray(){
-        for (NoteBar note: selectedNotesArray) {            
-            note.unselectNote(compositionPane);
-        }
-        selectedNotesArray.clear();
-    }
-    
-    @FXML
-    ToggleGroup instrumentSelection;
     
     /**
-     * Handles changes to the instrument.
-     * @param event the menu selection event
+     * Handles mouse dragged on the compositionPane, drags selection window,
+     * highlights notes intersecting the window and updates selected notes.
+     * 
+     * @param event the mouse click event
      */
     @FXML
-    protected void handleInstrumentMenuAction(ActionEvent event) {
-        Node t = (Node) instrumentSelection.getSelectedToggle();
-        selectedInstrument = t.getId();
+    protected void handlePaneDragged(MouseEvent event) {        
+        window.setVisible(true);
+        
+        int width = (int) (event.getX() - window.getX());
+        int height = (int) (event.getY() - window.getY());
+        window.setWidth(width);
+        window.setHeight(height);
+        
+        for (NoteBar note: MUSIC_NOTES_ARRAY) {
+            Rectangle r = note.noteDisplay;
+            if (window.intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
+                note.selectNote();
+            }
+            else {
+                note.unselectNote();
+            }
+        }
+        
+        updateSelectedNotesArray();
+    };
+    
+    /**
+     * Handles mouse released event. 
+     * Removes the selection window from the pane, then creates a new note and 
+     * adds note to pane. If control is clicked notes remain selected, otherwise 
+     * selected notes are cleared. Also updates selected notes.
+     * 
+     * @param event the mouse click event
+     */
+    @FXML
+    protected void handlePaneReleased(MouseEvent event) {
+        compositionPane.getChildren().remove(window);  
+        
+        if (event.isStillSincePress()) {
+            if (!event.isControlDown()) {
+                resetSelectedNotesArray(); 
+            }
+            NoteBar newNote = new NoteBar(selectedInstrument, 
+                    event.getX(), event.getY(), compositionPane);       
+            MUSIC_NOTES_ARRAY.add(newNote);
+        }
+        
+        updateSelectedNotesArray();
+    };
+    
+    /**
+     * Moves all of the selected notes.
+     * 
+     * @param x new X coordinate of the note
+     * @param y new Y coordinate of the note
+     */
+    /*
+    public void moveNotes(int newX, int newY){
+        updateSelectedNotesArray();
+        System.out.println(selectedNotesArray);
+        for (NoteBar note: selectedNotesArray) {
+            note.moveNote(newX, newY);
+        }
     }
+    */
+    
+    /**
+     * Changes all of the selected notes lengths.
+     * 
+     * @param noteLength
+     */
+    /*
+    public void changeNoteLengths(int noteLength){ 
+        updateSelectedNotesArray();
+        for (NoteBar note: selectedNotesArray) {
+            note.changeNoteLength(noteLength);
+        }
+    }
+    */
 }
