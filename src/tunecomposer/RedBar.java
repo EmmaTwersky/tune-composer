@@ -29,6 +29,7 @@ public class RedBar {
      * Creates RedBar object on given pane. 
      * Sets line to have redBarWidth and height of screenHeight,
      * begins at top left corner of pane (0,0).
+     * 
      * @param pane the pane the RedBar is on
      */
     RedBar(Pane pane) {
@@ -41,8 +42,9 @@ public class RedBar {
     }
     
     /**
-     * Moves the line across the screen at the speed set by 
-     * movementSpeed, disappears at end of last note displayed.
+     * Moves the line across the screen at the speed set by movementSpeed, 
+     * disappears at end of last note displayed.
+     * 
      * @param noteList List of NoteBar objects that visually represent notes on the screen
      */
     public void playAnimation(ArrayList<NoteBar> noteList) {
@@ -81,6 +83,7 @@ public class RedBar {
     
     /**
      * Returns the X value of the right side of the final note in noteList.
+     * 
      * @param noteList the list of notes being played
      */
     private void findEndCoordinate(ArrayList<NoteBar> noteList) {
