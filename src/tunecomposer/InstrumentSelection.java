@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer;
 
 import java.util.HashMap;
@@ -10,8 +5,12 @@ import java.util.HashMap;
 /**
  * @author EmmaTwersky
  */
-
 public class InstrumentSelection {
+    /**
+     * The Midi value of a given instrument name, found at
+     * <https://www.midi.org/specifications/item/gm-level-1-sound-set>.
+     * The channels signify that each instrument is a private MidiEvent channel.
+     */
     private static final int PIANO = 0; //1-8
     private static final int PIANO_CHANNEL = 0;
     private static final int HARPSICHORD = 7; //7
@@ -29,9 +28,15 @@ public class InstrumentSelection {
     private static final int FRENCHHORN = 61; //61
     private static final int FRENCHHORN_CHANNEL = 7;
     
+    /**
+     * Initializes the HashMaps to store the value and channel information.
+     */
     public HashMap<String, Integer> INSTRUMENT_VALUES = new HashMap<String, Integer>(8);
     public HashMap<String, Integer> INSTRUMENT_CHANNELS = new HashMap<String, Integer>(8);
 
+    /**
+     * Constructs the value and channel HashMaps.
+     */
     InstrumentSelection() {
         INSTRUMENT_VALUES.put("Piano", PIANO);
         INSTRUMENT_VALUES.put("Harpsichord", HARPSICHORD);
@@ -52,10 +57,22 @@ public class InstrumentSelection {
         INSTRUMENT_CHANNELS.put("FrenchHorn", FRENCHHORN_CHANNEL);
     }
     
+    /**
+     * Returns the Midi value of a given instrument name.
+     * 
+     * @param instrument the instrument name
+     * @return the integer value the MidiPlayer recognizes for that instrument
+     */
     public int getInstrumentValue(String instrument){
         return INSTRUMENT_VALUES.get(instrument);
     }
     
+    /**
+     * Returns a channel value for a given instrument name.
+     * 
+     * @param instrument the instrument name
+     * @return the integer value the MidiPlayer channel
+     */
     public int getInstrumentChannel(String instrument){
         return INSTRUMENT_CHANNELS.get(instrument);
     }
