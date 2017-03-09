@@ -29,25 +29,27 @@ public class InstrumentSelection {
     private static final int FRENCHHORN = 61; //61
     private static final int FRENCHHORN_CHANNEL = 7;
     
-    public HashMap<String, Integer> INSTRUMENT_VALUES = new HashMap<String, Integer>(16);// put channels in different hashmap
-    
+    public HashMap<String, Integer> INSTRUMENT_VALUES = new HashMap<String, Integer>(8);
+    public HashMap<String, Integer> INSTRUMENT_CHANNELS = new HashMap<String, Integer>(8);
+
     InstrumentSelection() {
         INSTRUMENT_VALUES.put("Piano", PIANO);
-        INSTRUMENT_VALUES.put("PianoChannel", PIANO_CHANNEL);
         INSTRUMENT_VALUES.put("Harpsichord", HARPSICORD);
-        INSTRUMENT_VALUES.put("HarpsichordChannel", HARPSICORD_CHANNEL);
         INSTRUMENT_VALUES.put("Marimba", MARIMBA);
-        INSTRUMENT_VALUES.put("MarimbaChannel", MARIMBA_CHANNEL);
         INSTRUMENT_VALUES.put("Organ", ORGAN);
-        INSTRUMENT_VALUES.put("OrganChannel", ORGAN_CHANNEL);
         INSTRUMENT_VALUES.put("Accordion", ACCORDIAN);
-        INSTRUMENT_VALUES.put("AccordionChannel", ACCORDIAN_CHANNEL);
         INSTRUMENT_VALUES.put("Guitar", GUITAR);
-        INSTRUMENT_VALUES.put("GuitarChannel", GUITAR_CHANNEL);
         INSTRUMENT_VALUES.put("Violin", VIOLIN);
-        INSTRUMENT_VALUES.put("ViolinChannel", VIOLIN_CHANNEL);
         INSTRUMENT_VALUES.put("FrenchHorn", FRENCHHORN);
-        INSTRUMENT_VALUES.put("FrenchHornChannel", FRENCHHORN_CHANNEL);
+        
+        INSTRUMENT_CHANNELS.put("Piano", PIANO_CHANNEL);
+        INSTRUMENT_CHANNELS.put("Harpsichord", HARPSICORD_CHANNEL);
+        INSTRUMENT_CHANNELS.put("Marimba", MARIMBA_CHANNEL);
+        INSTRUMENT_CHANNELS.put("Organ", ORGAN_CHANNEL);
+        INSTRUMENT_CHANNELS.put("Accordion", ACCORDIAN_CHANNEL);
+        INSTRUMENT_CHANNELS.put("Guitar", GUITAR_CHANNEL);
+        INSTRUMENT_CHANNELS.put("Violin", VIOLIN_CHANNEL);
+        INSTRUMENT_CHANNELS.put("FrenchHorn", FRENCHHORN_CHANNEL);
     }
     
     public int getInstrumentValue(String instrument){
@@ -55,6 +57,6 @@ public class InstrumentSelection {
     }
     
     public int getInstrumentChannel(String instrument){
-        return INSTRUMENT_VALUES.get(instrument);
+        return INSTRUMENT_CHANNELS.get(instrument);
     }
 }
