@@ -3,6 +3,7 @@ package tunecomposer;
 import java.util.HashMap;
 
 /**
+ * This class creates and stores HashMaps to access MidiPlayer value constants.
  * @author EmmaTwersky
  */
 public class InstrumentSelection {
