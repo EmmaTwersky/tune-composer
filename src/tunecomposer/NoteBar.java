@@ -269,7 +269,10 @@ public class NoteBar {
                 }
             }
             
-            snapNoteInPlace(noteDisplay.getX(), noteDisplay.getY());
+            for (NoteBar note: FXMLController.SELECTED_NOTES_ARRAY) {
+                note.snapNoteInPlace(note.noteDisplay.getX(), note.noteDisplay.getY());
+            }     
+            
             event.consume();
         }
     };
