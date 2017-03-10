@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * TuneComposer allows the user to create simple midi melodies and play them.
+ * This class creates and launches the Tune Compose window and application.
  */
 public class TuneComposer extends Application {
 
