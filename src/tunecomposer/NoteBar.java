@@ -13,7 +13,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class NoteBar {
     /**
-     * Create variables for the note's name, instrument number, channel number,
+     * Create variables for the note name, instrument number, channel number,
      * pitch, starting value, and length. 
      */
     public final String name;
