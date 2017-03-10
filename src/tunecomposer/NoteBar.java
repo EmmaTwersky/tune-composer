@@ -100,9 +100,11 @@ public class NoteBar {
      * @param x the new top left corner x value of the noteDisplay
      * @param y the new top left corner y value of the noteDisplay
      */
-    public void moveNote(int x, int y){        
-        noteDisplay.setX(x);
-        noteDisplay.setY(y);
+    public void moveNote(int x, int y){ 
+        int translateX = x + (int) noteDisplay.getX();
+        int translateY = y + (int) noteDisplay.getY();
+        noteDisplay.setX(translateX);
+        noteDisplay.setY(translateY);
     }
     
     /**
@@ -199,22 +201,17 @@ public class NoteBar {
             initialY = (int) event.getY();
 
             draggingLength = false;
-            
-            if (event.isControlDown()) {
-                toggleNoteSelection();
-            }
-            else {
-                FXMLController.resetSelectedNotesArray(); 
-                selectNote();
-            }
+                        
+            FXMLController.updateSelectedNotesArray();
+            event.consume();
         }
     };
     
     /**
      * Handles note dragged event.
-     * Drags to move the note or drags to change length, based on note click 
-     * location conventions. Translates note and consumes event. Also updates
-     * note lists.
+     * Selects and drags to move the note or drags to change length, 
+     * based on note click location conventions. Translates note and consumes 
+     * event. Also updates note lists.
      * 
      * @param event the mouse click event
      */
@@ -225,35 +222,53 @@ public class NoteBar {
             int y = (int) event.getY();
             int editLengthMax = (int) noteDisplay.getX() + length;
             int editLengthMin = editLengthMax - clickToEditLength;
-            FXMLController.updateSelectedNotesArray();
+            
+            if (!selected) {
+                FXMLController.resetSelectedNotesArray(); 
+                selectNote();
+            }
             
             if (editLengthMin <= x && x <= editLengthMax) {
                 draggingLength = true;
-                //FXMLController.changeNoteLengths((x - initialX) + length);
-                changeNoteLength((x - initialX) + length);
+                for (NoteBar note: FXMLController.SELECTED_NOTES_ARRAY) {
+                    note.changeNoteLength((x - initialX) + length);
+                }
             }
             if (!draggingLength) {
-                int translateX = (x - initialX) + (int) noteDisplay.getX();
-                int translateY = (y - initialY) + (int) noteDisplay.getY();
-                //FXMLController.moveNotes(translateX, translateY);
-                moveNote(translateX, translateY);
+                int translateX = (x - initialX);
+                int translateY = (y - initialY);
+                for (NoteBar note: FXMLController.SELECTED_NOTES_ARRAY) {
+                    note.moveNote(translateX, translateY);
+                }
             }
             
             initialX = x;
             initialY = y;
+            FXMLController.updateSelectedNotesArray();
             event.consume();
         }
     };
     
     /**
      * Handles mouse released.
-     * Snaps note into place on lines and consumes event.
+     * Snaps note into place on lines, handles click note selections
+     * based on the control button and consumes event.
      * 
      * @param event the mouse click event
      */
     EventHandler<MouseEvent> handleNoteReleased = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
+            if (event.isStillSincePress()) {
+                if (event.isControlDown()) {
+                    toggleNoteSelection();
+                }
+                else {
+                    FXMLController.resetSelectedNotesArray(); 
+                    selectNote();
+                }
+            }
+            
             snapNoteInPlace(noteDisplay.getX(), noteDisplay.getY());
             event.consume();
         }
