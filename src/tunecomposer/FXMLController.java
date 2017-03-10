@@ -24,6 +24,7 @@ public class FXMLController implements Initializable{
      */
     protected static final ArrayList<NoteBar> MUSIC_NOTES_ARRAY = new ArrayList(); 
     protected static final ArrayList<NoteBar> SELECTED_NOTES_ARRAY = new ArrayList(); 
+    private ArrayList<NoteBar> STORE_TEMPSELECTED_NOTES_ARRAY = new ArrayList(); 
     
     /**
      * Set volume to maximum.      
@@ -239,7 +240,7 @@ public class FXMLController implements Initializable{
     /**
      * Handles mouse press on the compositionPane.
      * Stops current MidiPlayer, gets initial value of mouse, and initializes 
-     * selection window. Updates selected notes for NoteBar handleOnPressed updates.
+     * selection window. Holds currently selected notes for drag window.
      * 
      * @param event the mouse click event
      * @see <NoteBar.java>
@@ -254,15 +255,19 @@ public class FXMLController implements Initializable{
         window = new Rectangle(x, y, 0, 0);
         window.setId("selectionWindow");
         window.setVisible(false);
-        compositionPane.getChildren().add(window);  
+        compositionPane.getChildren().add(window); 
         
-        updateSelectedNotesArray();
+        if (event.isControlDown()) {
+            for (NoteBar note: SELECTED_NOTES_ARRAY) {
+            STORE_TEMPSELECTED_NOTES_ARRAY.add(note);
+            }
+        }
     };
     
     /**
      * Handles mouse dragged on the compositionPane. 
      * Drags selection window, highlights notes intersecting the window and 
-     * updates selected notes.
+     * updates selected notes based on control button.
      * 
      * @param event the mouse click event
      */
@@ -276,12 +281,14 @@ public class FXMLController implements Initializable{
         window.setHeight(height);
         
         for (NoteBar note: MUSIC_NOTES_ARRAY) {
-            Rectangle r = note.noteDisplay;
-            if (window.intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
-                note.selectNote();
-            }
-            else {
-                note.unselectNote();
+            if (!STORE_TEMPSELECTED_NOTES_ARRAY.contains(note)) {
+                Rectangle r = note.noteDisplay;
+                if (window.intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
+                    note.selectNote();
+                }
+                else {
+                    note.unselectNote();
+                }
             }
         }
         
@@ -299,6 +306,7 @@ public class FXMLController implements Initializable{
     @FXML
     protected void handlePaneReleased(MouseEvent event) {
         compositionPane.getChildren().remove(window);  
+        STORE_TEMPSELECTED_NOTES_ARRAY.clear();
         
         if (event.isStillSincePress()) {
             if (!event.isControlDown()) {
