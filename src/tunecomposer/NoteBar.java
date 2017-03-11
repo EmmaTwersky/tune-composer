@@ -127,11 +127,12 @@ public class NoteBar {
     /**
      * Changes note length.
      * 
-     * @param noteLength the new note length
+     * @param lengthChange the amount to increment the length
      */
-    public void changeNoteLength(int noteLength){ 
-        if (noteLength > minNoteLength) {
-            length = noteLength;
+    public void changeNoteLength(int lengthChange){ 
+        int newLength = length + lengthChange;
+        if (newLength > minNoteLength) {
+            length = newLength;
             noteDisplay.setWidth(length);
         }
     }
@@ -230,16 +231,16 @@ public class NoteBar {
             
             if (editLengthMin <= x && x <= editLengthMax) {
                 draggingLength = true;
-                for (NoteBar note: FXMLController.SELECTED_NOTES_ARRAY) {
-                    note.changeNoteLength((x - initialX) + length);
-                }
+                FXMLController.SELECTED_NOTES_ARRAY.forEach((note) -> {
+                    note.changeNoteLength(x - initialX);
+                });
             }
             if (!draggingLength) {
                 int translateX = (x - initialX);
                 int translateY = (y - initialY);
-                for (NoteBar note: FXMLController.SELECTED_NOTES_ARRAY) {
+                FXMLController.SELECTED_NOTES_ARRAY.forEach((note) -> {
                     note.moveNote(translateX, translateY);
-                }
+                });
             }
             
             initialX = x;
@@ -269,9 +270,9 @@ public class NoteBar {
                 }
             }
             
-            for (NoteBar note: FXMLController.SELECTED_NOTES_ARRAY) {
+            FXMLController.SELECTED_NOTES_ARRAY.forEach((note) -> {
                 note.snapNoteInPlace(note.noteDisplay.getX(), note.noteDisplay.getY());
-            }     
+            });     
             
             event.consume();
         }
