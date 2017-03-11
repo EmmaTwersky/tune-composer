@@ -18,10 +18,10 @@
             stylesheets="@TuneComposer.css" 
             xmlns="http://javafx.com/javafx/8" 
             xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="tunecomposer.FXMLController">
+            fx:controller="tunecomposer.MenuController">
     <top>
         <MenuBar fx:id="menuBar" 
-                 prefHeight="29.0" 
+                 prefHeight="30" 
                  prefWidth="2000">
           <menus>
             <Menu fx:id="menuFile" 
@@ -68,119 +68,9 @@
         </MenuBar>
     </top>
     <center>
-            <ScrollPane 
-                prefHeight="1280.0" 
-                prefWidth="2000.0">
-                <content> 
-                    <Pane   
-                        fx:id="compositionPane" 
-                        onMousePressed="#handlePanePressed"
-                        onMouseDragged="#handlePaneDragged"
-                        onMouseReleased="#handlePaneReleased"
-                        prefHeight="1280" 
-                        prefWidth="2000" 
-                        BorderPane.alignment="CENTER">
-                    </Pane> 
-                </content>
-            </ScrollPane>
+        <fx:include fx:id="compositionPane" source="CompositionPane.fxml"/>
     </center>
    <left>
-      <fx:define>
-        <ToggleGroup fx:id="instrumentSelection"/>
-      </fx:define>
-      <ToolBar fx:id="toolBar" 
-               orientation="VERTICAL" 
-               prefHeight="1280.0" 
-               prefWidth="150.0" 
-               BorderPane.alignment="CENTER">
-        <items>
-            <RadioButton fx:id="Piano" 
-                         onAction="#handleInstrumentMenuAction" 
-                         mnemonicParsing="false" 
-                         styleClass="Piano" 
-                         text="Piano"
-                         toggleGroup="$instrumentSelection"
-                         selected = "true">
-               <padding>
-                  <Insets top="10.0" />
-               </padding>
-            </RadioButton>
-            <RadioButton fx:id="Harpsichord" 
-                         onAction="#handleInstrumentMenuAction"  
-                         mnemonicParsing="false" 
-                         styleClass="Harpsichord" 
-                         text="Harpsichord"
-                         toggleGroup="$instrumentSelection">
-               <padding>
-                  <Insets top="30.0" />
-               </padding>
-            </RadioButton>
-            <RadioButton fx:id="Marimba" 
-                         onAction="#handleInstrumentMenuAction" 
-                         mnemonicParsing="false" 
-                         styleClass="Marimba" 
-                         text="Marimba"
-                         toggleGroup="$instrumentSelection">
-               <padding>
-                  <Insets top="30.0" />
-               </padding>
-            </RadioButton>
-            <RadioButton fx:id="Organ" 
-                         onAction="#handleInstrumentMenuAction" 
-                         mnemonicParsing="false" 
-                         styleClass="Organ" 
-                         text="Organ"
-                         toggleGroup="$instrumentSelection">
-               <padding>
-                  <Insets top="30.0" />
-               </padding>
-            </RadioButton>
-            <RadioButton fx:id="Accordion" 
-                         onAction="#handleInstrumentMenuAction" 
-                         layoutX="40.0" 
-                         layoutY="45.0" 
-                         mnemonicParsing="false" 
-                         styleClass="Accordion" 
-                         text="Accordion"
-                         toggleGroup="$instrumentSelection">
-               <padding>
-                  <Insets top="30.0" />
-               </padding>
-            </RadioButton>
-            <RadioButton fx:id="Guitar" 
-                         onAction="#handleInstrumentMenuAction" 
-                         mnemonicParsing="false" 
-                         styleClass="Guitar" 
-                         text="Guitar"
-                         toggleGroup="$instrumentSelection">
-               <padding>
-                  <Insets top="30.0" />
-               </padding>
-            </RadioButton>
-            <RadioButton fx:id="Violin" 
-                         onAction="#handleInstrumentMenuAction" 
-                         mnemonicParsing="false" 
-                         styleClass="Violin" 
-                         text="Violin"
-                         toggleGroup="$instrumentSelection">
-               <padding>
-                  <Insets top="30.0" />
-               </padding>
-            </RadioButton>
-            <RadioButton fx:id="FrenchHorn" 
-                         onAction="#handleInstrumentMenuAction"  
-                         mnemonicParsing="false" 
-                         styleClass="FrenchHorn" 
-                         text="French Horn"
-                         toggleGroup="$instrumentSelection">
-               <padding>
-                  <Insets top="30.0" />
-               </padding>
-            </RadioButton>
-        </items>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-      </ToolBar>
+        <fx:include fx:id="instrumentPane" source="InstrumentPane.fxml"/>
    </left>
 </BorderPane>
