@@ -53,6 +53,17 @@ public class NoteBar {
     private final InstrumentSelection instrumentInfo = new InstrumentSelection();
     
     /**
+     * Creates instances for the initial pressed values of the mouse for events.
+     */
+    private int initialX;
+    private int initialY;
+    
+    /**
+     * Creates boolean to ensure dragging to change length is a separate instance.
+     */
+    private boolean draggingLength;
+        
+    /**
      * Initialize the note bar object and variables, then constructs the display
      * and adds the note to the pane.
      * 
@@ -170,22 +181,6 @@ public class NoteBar {
         else {selectNote();}
     }
     
-    /**
-     * Initialize pane controller for static use in event handling.
-     */
-    FXMLController FXMLController;
-    
-    /**
-     * Creates instances for the initial pressed values of the mouse for events.
-     */
-    private int initialX;
-    private int initialY;
-    
-    /**
-     * Creates boolean to ensure dragging to change length is a separate instance.
-     */
-    private boolean draggingLength;
-    
   /**
      * Handles note pressed event. 
      * Sets initial pressed values of the mouse, sets dragLength to false and
@@ -193,7 +188,6 @@ public class NoteBar {
      * FXMLController to update selection array.
      * 
      * @param event the mouse click event
-     * @see FXMLController
      */
     EventHandler<MouseEvent> handleNotePressed = new EventHandler<MouseEvent>() {
         @Override
@@ -203,7 +197,7 @@ public class NoteBar {
 
             draggingLength = false;
                         
-            FXMLController.updateSelectedNotesArray();
+            TunePlayer.updateSelectedNotesArray();
             event.consume();
         }
     };
@@ -225,27 +219,27 @@ public class NoteBar {
             int editLengthMin = editLengthMax - clickToEditLength;
             
             if (!selected) {
-                FXMLController.resetSelectedNotesArray(); 
+                TunePlayer.resetSelectedNotesArray(); 
                 selectNote();
             }
             
             if (editLengthMin <= x && x <= editLengthMax) {
                 draggingLength = true;
-                FXMLController.SELECTED_NOTES_ARRAY.forEach((note) -> {
+                TunePlayer.SELECTED_NOTES_ARRAY.forEach((note) -> {
                     note.changeNoteLength(x - initialX);
                 });
             }
             if (!draggingLength) {
                 int translateX = (x - initialX);
                 int translateY = (y - initialY);
-                FXMLController.SELECTED_NOTES_ARRAY.forEach((note) -> {
+                TunePlayer.SELECTED_NOTES_ARRAY.forEach((note) -> {
                     note.moveNote(translateX, translateY);
                 });
             }
             
             initialX = x;
             initialY = y;
-            FXMLController.updateSelectedNotesArray();
+            TunePlayer.updateSelectedNotesArray();
             event.consume();
         }
     };
@@ -265,12 +259,12 @@ public class NoteBar {
                     toggleNoteSelection();
                 }
                 else {
-                    FXMLController.resetSelectedNotesArray(); 
+                    TunePlayer.resetSelectedNotesArray(); 
                     selectNote();
                 }
             }
             
-            FXMLController.SELECTED_NOTES_ARRAY.forEach((note) -> {
+            TunePlayer.SELECTED_NOTES_ARRAY.forEach((note) -> {
                 note.snapNoteInPlace(note.noteDisplay.getX(), note.noteDisplay.getY());
             });     
             
