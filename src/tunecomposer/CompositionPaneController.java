@@ -18,7 +18,7 @@ public class CompositionPaneController implements Initializable {
     /**
      * Create array to temporarily store selected NoteBar objects.      
      */
-    private final ArrayList<NoteBar> STORE_TEMPSELECTED_NOTES_ARRAY = new ArrayList(); 
+    private final ArrayList<NoteBar> TEMP_SELECTED_NOTES_ARRAY = new ArrayList(); 
     
     /** 
      * Set note height to 10 pixels and note length to 100 pixels. 
@@ -97,7 +97,7 @@ public class CompositionPaneController implements Initializable {
         
         if (event.isControlDown()) {
             TunePlayer.SELECTED_NOTES_ARRAY.forEach((note) -> {
-                STORE_TEMPSELECTED_NOTES_ARRAY.add(note);
+                TEMP_SELECTED_NOTES_ARRAY.add(note);
             });
         }
     };
@@ -119,7 +119,7 @@ public class CompositionPaneController implements Initializable {
         window.setHeight(height);
         
         for (NoteBar note: TunePlayer.MUSIC_NOTES_ARRAY) {
-            if (!STORE_TEMPSELECTED_NOTES_ARRAY.contains(note)) {
+            if (!TEMP_SELECTED_NOTES_ARRAY.contains(note)) {
                 Rectangle r = note.noteDisplay;
                 if (window.intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
                     note.selectNote();
@@ -144,7 +144,7 @@ public class CompositionPaneController implements Initializable {
     @FXML
     protected void handlePaneReleased(MouseEvent event) {
         compositionPane.getChildren().remove(window);  
-        STORE_TEMPSELECTED_NOTES_ARRAY.clear();
+        TEMP_SELECTED_NOTES_ARRAY.clear();
         
         if (event.isStillSincePress()) {
             if (!event.isControlDown()) {
