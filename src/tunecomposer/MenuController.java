@@ -8,21 +8,7 @@ import javafx.fxml.*;
  * 
  * @author Emma
  */
-public class MenuController implements Initializable{    
-    /**
-     * Initialize FXML, draws initial setup of composition pane and 
-     * initialized the RedBar.
-     * 
-     * @param location the source of the scene
-     * @param resources the resources of the utility of the scene
-     * @see RedBar
-     */
-    @FXML
-    @Override
-    public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
- 
-    }
-    
+public class MenuController {    
     /**
      * Handles the play button from the Actions menu.
      * 
