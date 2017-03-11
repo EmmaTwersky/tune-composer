@@ -5,8 +5,8 @@ import javafx.fxml.*;
 
 /**
  * This class controls the menu bar and menu bar actions.
- * 
- * @author Emma
+ *
+ * @author Emma Twersky
  */
 public class MenuController {    
     /**
