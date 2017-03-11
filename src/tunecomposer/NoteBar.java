@@ -83,7 +83,6 @@ public class NoteBar {
         
         int xLocation = (int) x;
         int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
-        pane = compositionPane;
         noteDisplay = new Rectangle(xLocation, yLocation, length, noteHeight);
         noteDisplay.getStyleClass().add(name);
 
@@ -93,6 +92,7 @@ public class NoteBar {
                 
         selected = true;
         noteDisplay.getStyleClass().add("selectedNote");
+        pane = compositionPane;
         pane.getChildren().add(noteDisplay);
     }
     
@@ -183,9 +183,7 @@ public class NoteBar {
     
   /**
      * Handles note pressed event. 
-     * Sets initial pressed values of the mouse, sets dragLength to false and
-     * follows given conventions on control button selection. Relies on 
-     * FXMLController to update selection array.
+     * Sets initial pressed values of the mouse and consumes the event.
      * 
      * @param event the mouse click event
      */
@@ -194,10 +192,6 @@ public class NoteBar {
         public void handle(MouseEvent event) {            
             initialX = (int) event.getX();
             initialY = (int) event.getY();
-
-            draggingLength = false;
-                        
-            TunePlayer.updateSelectedNotesArray();
             event.consume();
         }
     };
@@ -221,6 +215,7 @@ public class NoteBar {
             if (!selected) {
                 TunePlayer.resetSelectedNotesArray(); 
                 selectNote();
+                TunePlayer.updateSelectedNotesArray();
             }
             
             if (editLengthMin <= x && x <= editLengthMax) {
@@ -239,7 +234,6 @@ public class NoteBar {
             
             initialX = x;
             initialY = y;
-            TunePlayer.updateSelectedNotesArray();
             event.consume();
         }
     };
@@ -254,6 +248,8 @@ public class NoteBar {
     EventHandler<MouseEvent> handleNoteReleased = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
+            draggingLength = false;
+
             if (event.isStillSincePress()) {
                 if (event.isControlDown()) {
                     toggleNoteSelection();
