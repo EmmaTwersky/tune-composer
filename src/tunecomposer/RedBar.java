@@ -24,9 +24,8 @@ public class RedBar {
     private final Rectangle redBar;
     
     /**
-     * Sets final movement speed to 100, screen height to 1280 and width to 1 pixel.
+     * Sets screen height to 1280 and width to 1 pixel.
      */
-    private final float movementSpeed = 100;    
     private final int screenHeight = 1280;
     private final int redBarWidth = 1;
     
