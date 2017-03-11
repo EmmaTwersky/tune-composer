@@ -9,7 +9,7 @@ import javafx.scene.shape.Rectangle;
  * This class creates and edits NoteBar objects to display notes in the tune 
  * and be played in MidiPLayer.
  * 
- * @author EmmaTwersky
+ * @author Emma Twersky
  */
 public class NoteBar {
     /**
