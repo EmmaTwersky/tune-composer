@@ -14,7 +14,7 @@ import javafx.util.Duration;
  * This class creates and animates the red bar which shows the moment at which
  * the MidiPlayer is playing.
  * 
- * @author EmmaTwersky
+ * @author Emma Twersky
  */
 public class RedBar {
     /**
