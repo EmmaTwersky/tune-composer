@@ -11,7 +11,7 @@ import javafx.scene.shape.Rectangle;
 /**
  * This controller creates the music pane and handles ouse events on the pane.
  *
- * @author EmmaTwersky
+ * @author Emma Twersky
  */
 public class CompositionPaneController implements Initializable {
 
