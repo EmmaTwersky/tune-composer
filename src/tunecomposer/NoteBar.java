@@ -189,7 +189,8 @@ public class NoteBar {
      */
     EventHandler<MouseEvent> handleNotePressed = new EventHandler<MouseEvent>() {
         @Override
-        public void handle(MouseEvent event) {            
+        public void handle(MouseEvent event) {
+            CompositionPaneController.tunePlayerObj.stop();
             initialX = (int) event.getX();
             initialY = (int) event.getY();
             event.consume();
