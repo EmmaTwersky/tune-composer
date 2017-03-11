@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer;
 
 import java.util.ArrayList;
@@ -14,7 +9,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 /**
- * FXML Controller class
+ * This controller creates the music pane and handles ouse events on the pane.
  *
  * @author EmmaTwersky
  */
@@ -155,7 +150,7 @@ public class CompositionPaneController implements Initializable {
             if (!event.isControlDown()) {
                 TunePlayer.resetSelectedNotesArray(); 
             }
-            NoteBar newNote = new NoteBar(MenuController.selectedInstrument, 
+            NoteBar newNote = new NoteBar(InstrumentToolBarController.selectedInstrument, 
                     event.getX(), event.getY(), compositionPane);       
             TunePlayer.MUSIC_NOTES_ARRAY.add(newNote);
         }
