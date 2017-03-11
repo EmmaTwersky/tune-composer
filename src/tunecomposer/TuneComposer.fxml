@@ -14,51 +14,40 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane fx:id="scrollPane" 
-            stylesheets="@TuneComposer.css" 
+<BorderPane stylesheets="@TuneComposer.css" 
             xmlns="http://javafx.com/javafx/8" 
             xmlns:fx="http://javafx.com/fxml/1" 
             fx:controller="tunecomposer.MenuController">
     <top>
-        <MenuBar fx:id="menuBar" 
-                 prefHeight="30" 
-                 prefWidth="2000">
+        <MenuBar>
           <menus>
-            <Menu fx:id="menuFile" 
-                  text="File">
+            <Menu text="File">
               <items>
-                <MenuItem fx:id="menuItemExit" 
-                          onAction="#handleExitMenuItemAction" 
+                <MenuItem onAction="#handleExitMenuItemAction" 
                           text="Exit" 
                           accelerator="Shortcut+Q" >
                 </MenuItem>
               </items>
             </Menu>
-            <Menu fx:id="menuEdit" 
-                  text="Edit">
+            <Menu text="Edit">
                <items>
-                  <MenuItem fx:id="menuItemSelectAll"
-                            onAction="#handleSelectAllMenuItemAction"  
+                  <MenuItem onAction="#handleSelectAllMenuItemAction"  
                             text="Select All" 
                             accelerator="Shortcut+A" >
                   </MenuItem>
-                  <MenuItem fx:id="menuItemDelete" 
-                            onAction="#handleDeleteMenuItemAction"  
+                  <MenuItem onAction="#handleDeleteMenuItemAction"  
                             text="Delete" 
                             accelerator="Shortcut+Backspace" >
                   </MenuItem>
                </items>
             </Menu>
-              <Menu fx:id="menuActions" 
-                    text="Actions">
+              <Menu text="Actions">
                 <items>
-                  <MenuItem fx:id="menuItemPlay" 
-                            onAction="#handlePlayScaleButtonAction" 
+                  <MenuItem onAction="#handlePlayScaleButtonAction" 
                             text="Play" 
                             accelerator="Shortcut+P" >
                   </MenuItem>
-                  <MenuItem fx:id="menuItemStop" 
-                            onAction="#handleStopPlayingButtonAction" 
+                  <MenuItem onAction="#handleStopPlayingButtonAction" 
                             text="Stop" 
                             accelerator="Shortcut+S" >
                   </MenuItem>
@@ -71,6 +60,6 @@
         <fx:include fx:id="compositionPane" source="CompositionPane.fxml"/>
     </center>
    <left>
-        <fx:include fx:id="instrumentPane" source="InstrumentPane.fxml"/>
+        <fx:include fx:id="instrumentToolBar" source="InstrumentToolBar.fxml"/>
    </left>
 </BorderPane>
