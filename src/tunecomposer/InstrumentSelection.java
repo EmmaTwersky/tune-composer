@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * This class creates and stores HashMaps to access MidiPlayer value constants.
  * 
- * @author EmmaTwersky
+ * @author Emma Twersky
  */
 public class InstrumentSelection {
     /**
