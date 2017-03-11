@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer;
 
 import java.util.ArrayList;
@@ -10,6 +5,8 @@ import javafx.scene.layout.Pane;
 import javax.sound.midi.ShortMessage;
 
 /**
+ * This class stores and controls the notes and creates the MidiPlayer to 
+ * manipulate the tune.
  *
  * @author EmmaTwersky
  */
@@ -66,7 +63,7 @@ public class TunePlayer {
         SELECTED_NOTES_ARRAY.clear();
     }
     
-        /**
+    /**
      * Plays the sequence and begins the RedBar animation.
      */
     protected void play() {
