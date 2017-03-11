@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane 
+    stylesheets="@TuneComposer.css" 
+    xmlns="http://javafx.com/javafx/8" 
+    xmlns:fx="http://javafx.com/fxml/1" 
+    fx:controller="tunecomposer.CompositionPaneController" 
+    prefHeight="1280.0" 
+    prefWidth="2000.0">
+    <content> 
+        <Pane   
+            fx:id="compositionPane"
+            onMousePressed="#handlePanePressed"
+            onMouseDragged="#handlePaneDragged"
+            onMouseReleased="#handlePaneReleased"
+            BorderPane.alignment="CENTER">
+        </Pane> 
+    </content>
+</ScrollPane>
