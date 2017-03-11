@@ -47,7 +47,6 @@ public class TunePlayer {
         SELECTED_NOTES_ARRAY.clear();
         for (NoteBar note: MUSIC_NOTES_ARRAY) {            
             if (note.isSelected()) {
-                note.selectNote();
                 SELECTED_NOTES_ARRAY.add(note);
             }
         }
@@ -57,8 +56,10 @@ public class TunePlayer {
      * Empties the selectedNotesArray and un-selects all notes.
      */
     public static void resetSelectedNotesArray(){
-        for (NoteBar note: SELECTED_NOTES_ARRAY) {            
-            note.unselectNote();
+        for (NoteBar note: MUSIC_NOTES_ARRAY) {            
+            if (note.isSelected()) {
+                note.unselectNote();
+            }
         }
         SELECTED_NOTES_ARRAY.clear();
     }
