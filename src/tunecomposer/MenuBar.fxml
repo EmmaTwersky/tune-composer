@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<MenuBar xmlns="http://javafx.com/javafx/8" 
+         xmlns:fx="http://javafx.com/fxml/1" 
+         fx:controller="tunecomposer.MenuBarController">
+    <menus>
+      <Menu text="File">
+        <items>
+          <MenuItem onAction="#handleExitMenuItemAction" 
+                    text="Exit" 
+                    accelerator="Shortcut+Q" >
+          </MenuItem>
+        </items>
+      </Menu>
+      <Menu text="Edit">
+         <items>
+            <MenuItem onAction="#handleSelectAllMenuItemAction"  
+                      text="Select All" 
+                      accelerator="Shortcut+A" >
+            </MenuItem>
+            <MenuItem onAction="#handleDeleteMenuItemAction"  
+                      text="Delete" 
+                      accelerator="Shortcut+Backspace" >
+            </MenuItem>
+         </items>
+      </Menu>
+        <Menu text="Actions">
+          <items>
+            <MenuItem onAction="#handlePlayScaleButtonAction" 
+                      text="Play" 
+                      accelerator="Shortcut+P" >
+            </MenuItem>
+            <MenuItem onAction="#handleStopPlayingButtonAction" 
+                      text="Stop" 
+                      accelerator="Shortcut+S" >
+            </MenuItem>
+          </items>
+        </Menu>
+    </menus>
+</MenuBar>
