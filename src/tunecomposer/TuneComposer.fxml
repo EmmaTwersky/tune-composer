@@ -16,45 +16,9 @@
 
 <BorderPane stylesheets="@TuneComposer.css" 
             xmlns="http://javafx.com/javafx/8" 
-            xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="tunecomposer.MenuController">
+            xmlns:fx="http://javafx.com/fxml/1" >
     <top>
-        <MenuBar>
-          <menus>
-            <Menu text="File">
-              <items>
-                <MenuItem onAction="#handleExitMenuItemAction" 
-                          text="Exit" 
-                          accelerator="Shortcut+Q" >
-                </MenuItem>
-              </items>
-            </Menu>
-            <Menu text="Edit">
-               <items>
-                  <MenuItem onAction="#handleSelectAllMenuItemAction"  
-                            text="Select All" 
-                            accelerator="Shortcut+A" >
-                  </MenuItem>
-                  <MenuItem onAction="#handleDeleteMenuItemAction"  
-                            text="Delete" 
-                            accelerator="Shortcut+Backspace" >
-                  </MenuItem>
-               </items>
-            </Menu>
-              <Menu text="Actions">
-                <items>
-                  <MenuItem onAction="#handlePlayScaleButtonAction" 
-                            text="Play" 
-                            accelerator="Shortcut+P" >
-                  </MenuItem>
-                  <MenuItem onAction="#handleStopPlayingButtonAction" 
-                            text="Stop" 
-                            accelerator="Shortcut+S" >
-                  </MenuItem>
-                </items>
-              </Menu>
-          </menus>
-        </MenuBar>
+        <fx:include fx:id="menuBar" source="MenuBar.fxml"/>
     </top>
     <center>
         <fx:include fx:id="compositionPane" source="CompositionPane.fxml"/>
