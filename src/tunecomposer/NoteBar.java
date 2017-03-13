@@ -48,9 +48,9 @@ public class NoteBar {
     private final int minNoteLength = 5;
     
     /**
-     * Load InstrumentSelection HashMap to look up instrument key values.
+     * Load InstrumentInfo HashMap to look up instrument key values.
      */
-    private final InstrumentSelection instrumentInfo = new InstrumentSelection();
+    private final InstrumentInfo instrumentInfo = new InstrumentInfo();
     
     /**
      * Creates instances for the initial pressed values of the mouse for events.
