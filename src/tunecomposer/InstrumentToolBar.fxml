@@ -12,6 +12,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
+<!-- Remove repeated code in the padding? -->
+
 <?import javafx.scene.layout.Pane?>
 
 <ToolBar 
