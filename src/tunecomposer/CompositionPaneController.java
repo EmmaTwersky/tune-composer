@@ -18,20 +18,20 @@ public class CompositionPaneController implements Initializable {
     /**
      * Create array to temporarily store selected NoteBar objects.      
      */
-    private final ArrayList<NoteBar> TEMP_SELECTED_NOTES_ARRAY = new ArrayList(); 
+    private final ArrayList<NoteBar> temp_selected_notes_array = new ArrayList(); 
     
     /** 
      * Set note height to 10 pixels and note length to 100 pixels. 
      */
-    private final int noteHeight = 10; 
-    private final int initialNoteLength = 100;
+    private static final int NOTE_HEIGHT = 10; 
+    private static final int INITIAL_NOTE_LENGTH = 100;
     
     /**
      * Set pitch range from 1 to 127 and bar range, the number of measures on 
      * the screen, to 20.
      */
-    private final int pitchRange = 128;
-    private final int barRange = 20; 
+    private static final int PITCH_RANGE = 128;
+    private static final int BAR_RANGE = 20; 
     
     /**
      * Create the tune player to compose and play notes on the composition pane.
@@ -60,15 +60,15 @@ public class CompositionPaneController implements Initializable {
     @FXML
     @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
-        for (int i = 0; i < pitchRange; i++) {
-            Line staffLine = new Line(0, i*noteHeight, 
-                    barRange*initialNoteLength, i*noteHeight);
+        for (int i = 0; i < PITCH_RANGE; i++) {
+            Line staffLine = new Line(0, i * NOTE_HEIGHT, 
+                    BAR_RANGE * INITIAL_NOTE_LENGTH, i * NOTE_HEIGHT);
             staffLine.setId("staffLine");
             compositionPane.getChildren().add(staffLine);
         }
-        for (int i = 0; i < barRange; i++) {
-            Line measureLine = new Line(i*initialNoteLength, 0, 
-                    i*initialNoteLength, pitchRange*noteHeight);
+        for (int i = 0; i < BAR_RANGE; i++) {
+            Line measureLine = new Line(i * INITIAL_NOTE_LENGTH, 0, 
+                    i * INITIAL_NOTE_LENGTH, PITCH_RANGE * NOTE_HEIGHT);
             measureLine.setId("measureLine");
             compositionPane.getChildren().add(measureLine);
         }
@@ -90,6 +90,7 @@ public class CompositionPaneController implements Initializable {
         int x = (int) event.getX();
         int y = (int) event.getY();
         
+        // create the window in FXML???? how??
         window = new Rectangle(x, y, 0, 0);
         window.setId("selectionWindow");
         window.setVisible(false);
@@ -97,7 +98,7 @@ public class CompositionPaneController implements Initializable {
         
         if (event.isControlDown()) {
             TunePlayer.SELECTED_NOTES_ARRAY.forEach((note) -> {
-                TEMP_SELECTED_NOTES_ARRAY.add(note);
+                temp_selected_notes_array.add(note);
             });
         }
     };
@@ -119,13 +120,13 @@ public class CompositionPaneController implements Initializable {
         window.setHeight(height);
         
         for (NoteBar note: TunePlayer.MUSIC_NOTES_ARRAY) {
-            if (!TEMP_SELECTED_NOTES_ARRAY.contains(note)) {
+            if (!temp_selected_notes_array.contains(note)) {
                 Rectangle r = note.noteDisplay;
                 if (window.intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
-                    note.selectNote();
+                    note.select();
                 }
                 else {
-                    note.unselectNote();
+                    note.unselect();
                 }
             }
         }
@@ -144,14 +145,13 @@ public class CompositionPaneController implements Initializable {
     @FXML
     protected void handlePaneReleased(MouseEvent event) {
         compositionPane.getChildren().remove(window);  
-        TEMP_SELECTED_NOTES_ARRAY.clear();
+        temp_selected_notes_array.clear();
         
         if (event.isStillSincePress()) {
             if (!event.isControlDown()) {
                 TunePlayer.resetSelectedNotesArray(); 
             }
-            NoteBar newNote = new NoteBar(InstrumentToolBarController.selectedInstrument, 
-                    event.getX(), event.getY(), compositionPane);       
+            NoteBar newNote = new NoteBar(event.getX(), event.getY(), compositionPane);       
             TunePlayer.MUSIC_NOTES_ARRAY.add(newNote);
         }
         
