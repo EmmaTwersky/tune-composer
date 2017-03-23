@@ -1,3 +1,5 @@
+// Refactor handler into another method.
+// Clarify frame rate's purpose of value 10??
 package tunecomposer;
 
 import java.util.ArrayList;
@@ -26,8 +28,9 @@ public class RedBar {
     /**
      * Sets screen height to 1280 and width to 1 pixel.
      */
-    private final int screenHeight = 1280;
-    private final int redBarWidth = 1;
+    private static final int SCREEN_HEIGHT = 1280;
+    private static final int REDBAR_WIDTH = 1;
+    private static final int FRAME_RATE = 10;
     
     /**
      * Sets final parent pane and initializes end of notes to time 0.
@@ -44,7 +47,7 @@ public class RedBar {
      */
     RedBar(Pane pane) {
         parentPane = pane;
-        redBar = new Rectangle(0, 0, redBarWidth, screenHeight);
+        redBar = new Rectangle(0, 0, REDBAR_WIDTH, SCREEN_HEIGHT);
         redBar.setId("redBar");
         parentPane.getChildren().add(redBar);
         timeline = new Timeline();
@@ -66,15 +69,12 @@ public class RedBar {
         findEndCoordinate(noteList);
         
         KeyValue kv = new KeyValue(redBar.xProperty(), compositionEnd);
-        Duration duration = Duration.millis(compositionEnd * 10);
+        Duration duration = Duration.millis(compositionEnd * FRAME_RATE);
                 
-        EventHandler onFinished = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                timeline.stop();
-                redBar.setVisible(false);
-                redBar.setX(0);
-            }  
+        EventHandler onFinished = (EventHandler<ActionEvent>) (ActionEvent event) -> {
+            timeline.stop();
+            redBar.setVisible(false);
+            redBar.setX(0);  
         };
         
         KeyFrame kf = new KeyFrame(duration, onFinished, kv);
@@ -97,10 +97,9 @@ public class RedBar {
      * @param noteList the list of notes being played
      */
     private void findEndCoordinate(ArrayList<NoteBar> noteList) {
-        for (NoteBar note: noteList) {
-            int noteEnd = note.startTick + note.length;
-            if (noteEnd > compositionEnd) 
-                compositionEnd = noteEnd;
-        }
+        noteList.stream().map((note) -> note.startTick + note.length).filter(
+                (noteEnd) -> (noteEnd > compositionEnd)).forEachOrdered((noteEnd) -> {
+            compositionEnd = noteEnd;
+        });
     } 
 }
