@@ -36,10 +36,10 @@ public class MenuBarController {
      */
     @FXML
     protected void handleSelectAllMenuItemAction(ActionEvent event) {
-        TunePlayer.MUSIC_NOTES_ARRAY.forEach((note) -> {
+        CompositionPaneController.MUSIC_NOTES_ARRAY.forEach((note) -> {
             note.select();
         });
-        TunePlayer.updateSelectedNotesArray();
+        CompositionPaneController.updateSelectedNotesArray();
     }
 
     /**
@@ -49,11 +49,11 @@ public class MenuBarController {
      */
     @FXML
     protected void handleDeleteMenuItemAction(ActionEvent event) {
-        for (NoteBar note: TunePlayer.SELECTED_NOTES_ARRAY) {
+        for (NoteBar note: CompositionPaneController.SELECTED_NOTES_ARRAY) {
             note.delete();
-            TunePlayer.MUSIC_NOTES_ARRAY.remove(note);
+            CompositionPaneController.MUSIC_NOTES_ARRAY.remove(note);
         }
-        TunePlayer.updateSelectedNotesArray();
+        CompositionPaneController.updateSelectedNotesArray();
     }
 
     /**
