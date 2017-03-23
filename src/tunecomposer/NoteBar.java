@@ -1,5 +1,7 @@
-//consider seperating model and view? (note from Janet but unclear what this means)
-//shorten handlers with stategy pattern or abstraction of methods?
+// Consider seperating model and view? (note from Janet but unclear what this means)
+// Shorten handlers with stategy pattern or abstraction of methods?
+// Fix bug in which some note bars are no longer able to display that they are selected. 
+//      However, they are edited with the other note bars.
 package tunecomposer;
 
 import javafx.event.EventHandler;
