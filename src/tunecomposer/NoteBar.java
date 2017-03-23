@@ -1,3 +1,5 @@
+//consider seperating model and veiw? (note from Janet but unclear what this means)
+//shorten handlers with stategy pattern or abstraction of methods?
 package tunecomposer;
 
 import javafx.event.EventHandler;
@@ -72,10 +74,10 @@ public class NoteBar {
      * @param y the top left corner y value of the note clicked
      * @param compositionPane the pane the note is created on
      */
-    NoteBar(String instrumName, double x, double y, Pane compositionPane){
-        name = instrumName;
-        instrument = instrumentInfo.getInstrumentValue(instrumName);
-        channel = instrumentInfo.getInstrumentChannel(instrumName);
+    NoteBar(double x, double y, Pane compositionPane){
+        name = InstrumentToolBarController.selectedInstrument;
+        instrument = instrumentInfo.getInstrumentValue(name);
+        channel = instrumentInfo.getInstrumentChannel(name);
         
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;
@@ -111,7 +113,7 @@ public class NoteBar {
      * @param x the new top left corner x value of the noteDisplay
      * @param y the new top left corner y value of the noteDisplay
      */
-    public void moveNote(int x, int y){ 
+    public void move(int x, int y){ 
         int translateX = x + (int) noteDisplay.getX();
         int translateY = y + (int) noteDisplay.getY();
         noteDisplay.setX(translateX);
@@ -124,7 +126,7 @@ public class NoteBar {
      * @param x the top left corner x value of the noteDisplay
      * @param y the top left corner y value of the noteDisplay
      */
-    public void snapNoteInPlace(double x, double y){        
+    public void snapInPlace(double x, double y){        
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;
         
@@ -140,7 +142,7 @@ public class NoteBar {
      * 
      * @param lengthChange the amount to increment the length
      */
-    public void changeNoteLength(int lengthChange){ 
+    public void changeLength(int lengthChange){ 
         int newLength = length + lengthChange;
         if (newLength > minNoteLength) {
             length = newLength;
@@ -151,34 +153,36 @@ public class NoteBar {
     /**
      * Deletes note from pane.
      */
-    public void deleteNote(){
+    public void delete(){
         pane.getChildren().remove(noteDisplay);
     }
     
     /**
      * Selects note and displays selection box around note.
      */
-    public void selectNote(){
+    public void select(){
         selected = true;
         noteDisplay.getStyleClass().remove("unselectedNote");
         noteDisplay.getStyleClass().add("selectedNote");
+        TunePlayer.updateSelectedNotesArray(); 
     }
     
     /**
      * Un-selects note and removes selection box around note.
      */
-    public void unselectNote(){
+    public void unselect(){
         selected = false;
         noteDisplay.getStyleClass().remove("selectedNote");
         noteDisplay.getStyleClass().add("unselectedNote");
+        TunePlayer.updateSelectedNotesArray(); 
     }
     
     /**
      * Switches value of selected.
      */
-    public void toggleNoteSelection(){
-        if (selected) {unselectNote();}
-        else {selectNote();}
+    public void toggleSelection(){
+        if (selected) {unselect();}
+        else {select();}
     }
     
   /**
@@ -193,6 +197,13 @@ public class NoteBar {
             CompositionPaneController.tunePlayerObj.stop();
             initialX = (int) event.getX();
             initialY = (int) event.getY();
+            
+            int editLengthMax = (int) noteDisplay.getX() + length;
+            int editLengthMin = editLengthMax - clickToEditLength;
+            if (editLengthMin <= initialX && initialX <= editLengthMax) {
+                draggingLength = true;
+            }
+                
             event.consume();
         }
     };
@@ -210,26 +221,22 @@ public class NoteBar {
         public void handle(MouseEvent event) {
             int x = (int) event.getX();
             int y = (int) event.getY();
-            int editLengthMax = (int) noteDisplay.getX() + length;
-            int editLengthMin = editLengthMax - clickToEditLength;
             
             if (!selected) {
                 TunePlayer.resetSelectedNotesArray(); 
-                selectNote();
-                TunePlayer.updateSelectedNotesArray();
+                select();
             }
             
-            if (editLengthMin <= x && x <= editLengthMax) {
-                draggingLength = true;
+            if (draggingLength) {
                 TunePlayer.SELECTED_NOTES_ARRAY.forEach((note) -> {
-                    note.changeNoteLength(x - initialX);
+                    note.changeLength(x - initialX);
                 });
             }
-            if (!draggingLength) {
+            else {
                 int translateX = (x - initialX);
                 int translateY = (y - initialY);
                 TunePlayer.SELECTED_NOTES_ARRAY.forEach((note) -> {
-                    note.moveNote(translateX, translateY);
+                    note.move(translateX, translateY);
                 });
             }
             
@@ -253,16 +260,16 @@ public class NoteBar {
 
             if (event.isStillSincePress()) {
                 if (event.isControlDown()) {
-                    toggleNoteSelection();
+                    toggleSelection();
                 }
                 else {
                     TunePlayer.resetSelectedNotesArray(); 
-                    selectNote();
+                    select();
                 }
             }
             
             TunePlayer.SELECTED_NOTES_ARRAY.forEach((note) -> {
-                note.snapNoteInPlace(note.noteDisplay.getX(), note.noteDisplay.getY());
+                note.snapInPlace(note.noteDisplay.getX(), note.noteDisplay.getY());
             });     
             
             event.consume();
