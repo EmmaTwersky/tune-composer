@@ -1,6 +1,5 @@
 package tunecomposer;
 
-import java.util.ArrayList;
 import javafx.scene.layout.Pane;
 import javax.sound.midi.ShortMessage;
 
@@ -10,13 +9,7 @@ import javax.sound.midi.ShortMessage;
  *
  * @author EmmaTwersky
  */
-public class TunePlayer {
-    /**
-     * Create array of NoteBar objects and selected NoteBar objects.      
-     */
-    protected static final ArrayList<NoteBar> MUSIC_NOTES_ARRAY = new ArrayList(); 
-    protected static final ArrayList<NoteBar> SELECTED_NOTES_ARRAY = new ArrayList();
-    
+public class TunePlayer {    
     /**
      * Set volume to maximum.      
      */
@@ -41,35 +34,11 @@ public class TunePlayer {
     }
     
     /**
-     * Fills the selectedNotesArray with the currently selected notes.
-     */
-    public static void updateSelectedNotesArray(){
-        SELECTED_NOTES_ARRAY.clear();
-        for (NoteBar note: MUSIC_NOTES_ARRAY) {            
-            if (note.isSelected()) {
-                SELECTED_NOTES_ARRAY.add(note);
-            }
-        }
-    }
-    
-    /**
-     * Empties the selectedNotesArray and un-selects all notes.
-     */
-    public static void resetSelectedNotesArray(){
-        for (NoteBar note: MUSIC_NOTES_ARRAY) {            
-            if (note.isSelected()) {
-                note.unselectNote();
-            }
-        }
-        SELECTED_NOTES_ARRAY.clear();
-    }
-    
-    /**
      * Plays the sequence and begins the RedBar animation.
      */
     protected void play() {
         playSequence();
-        redBarObj.playAnimation(MUSIC_NOTES_ARRAY);
+        redBarObj.playAnimation(CompositionPaneController.MUSIC_NOTES_ARRAY);
     }
     
     /**
@@ -88,7 +57,7 @@ public class TunePlayer {
      * Adds all NoteBar objects in musicNotesArray to MidiPlayer.
      */
     private void addNotesArrayToMidiPlayer() {
-        for (NoteBar note: MUSIC_NOTES_ARRAY) {            
+        for (NoteBar note: CompositionPaneController.MUSIC_NOTES_ARRAY) {            
             player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + note.channel, 
                     note.instrument, 0, 0, note.channel);
             player.addNote(note.pitch, VOLUME, note.startTick, 
