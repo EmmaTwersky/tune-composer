@@ -1,4 +1,4 @@
-//consider seperating model and veiw? (note from Janet but unclear what this means)
+//consider seperating model and view? (note from Janet but unclear what this means)
 //shorten handlers with stategy pattern or abstraction of methods?
 package tunecomposer;
 
