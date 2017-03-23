@@ -1,3 +1,4 @@
+// Create the selection window in the FXML? let it move all directions.
 package tunecomposer;
 
 import java.util.ArrayList;
@@ -9,12 +10,17 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 /**
- * This controller creates the music pane and handles ouse events on the pane.
+ * This controller creates the music pane and handles mouse events on the pane.
  *
  * @author Emma Twersky
  */
 public class CompositionPaneController implements Initializable {
-
+    /**
+     * Create array of NoteBar objects and selected NoteBar objects.      
+     */
+    protected static final ArrayList<NoteBar> MUSIC_NOTES_ARRAY = new ArrayList(); 
+    protected static final ArrayList<NoteBar> SELECTED_NOTES_ARRAY = new ArrayList();
+    
     /**
      * Create array to temporarily store selected NoteBar objects.      
      */
@@ -76,6 +82,30 @@ public class CompositionPaneController implements Initializable {
     }   
     
     /**
+     * Fills the selectedNotesArray with the currently selected notes.
+     */
+    public static void updateSelectedNotesArray(){
+        SELECTED_NOTES_ARRAY.clear();
+        for (NoteBar note: MUSIC_NOTES_ARRAY) {            
+            if (note.isSelected()) {
+                SELECTED_NOTES_ARRAY.add(note);
+            }
+        }
+    }
+    
+    /**
+     * Empties the selectedNotesArray and un-selects all notes.
+     */
+    public static void resetSelectedNotesArray(){
+        for (NoteBar note: MUSIC_NOTES_ARRAY) {            
+            if (note.isSelected()) {
+                note.unselect();
+            }
+        }
+        SELECTED_NOTES_ARRAY.clear();
+    }
+    
+    /**
      * Handles mouse press on the compositionPane.
      * Stops current MidiPlayer, gets initial value of mouse, and initializes 
      * selection window. Holds currently selected notes for drag window.
@@ -90,14 +120,13 @@ public class CompositionPaneController implements Initializable {
         int x = (int) event.getX();
         int y = (int) event.getY();
         
-        // create the window in FXML???? how??
         window = new Rectangle(x, y, 0, 0);
         window.setId("selectionWindow");
         window.setVisible(false);
         compositionPane.getChildren().add(window); 
         
         if (event.isControlDown()) {
-            TunePlayer.SELECTED_NOTES_ARRAY.forEach((note) -> {
+            SELECTED_NOTES_ARRAY.forEach((note) -> {
                 temp_selected_notes_array.add(note);
             });
         }
@@ -119,7 +148,7 @@ public class CompositionPaneController implements Initializable {
         window.setWidth(width);
         window.setHeight(height);
         
-        for (NoteBar note: TunePlayer.MUSIC_NOTES_ARRAY) {
+        for (NoteBar note: MUSIC_NOTES_ARRAY) {
             if (!temp_selected_notes_array.contains(note)) {
                 Rectangle r = note.noteDisplay;
                 if (window.intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
@@ -131,7 +160,7 @@ public class CompositionPaneController implements Initializable {
             }
         }
         
-        TunePlayer.updateSelectedNotesArray();
+        updateSelectedNotesArray();
     };
     
     /**
@@ -149,12 +178,12 @@ public class CompositionPaneController implements Initializable {
         
         if (event.isStillSincePress()) {
             if (!event.isControlDown()) {
-                TunePlayer.resetSelectedNotesArray(); 
+                resetSelectedNotesArray(); 
             }
             NoteBar newNote = new NoteBar(event.getX(), event.getY(), compositionPane);       
-            TunePlayer.MUSIC_NOTES_ARRAY.add(newNote);
+            MUSIC_NOTES_ARRAY.add(newNote);
         }
         
-        TunePlayer.updateSelectedNotesArray();
+        updateSelectedNotesArray();
     };
 }
