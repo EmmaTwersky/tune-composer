@@ -37,7 +37,7 @@ public class MenuBarController {
     @FXML
     protected void handleSelectAllMenuItemAction(ActionEvent event) {
         TunePlayer.MUSIC_NOTES_ARRAY.forEach((note) -> {
-            note.selectNote();
+            note.select();
         });
         TunePlayer.updateSelectedNotesArray();
     }
@@ -50,7 +50,7 @@ public class MenuBarController {
     @FXML
     protected void handleDeleteMenuItemAction(ActionEvent event) {
         for (NoteBar note: TunePlayer.SELECTED_NOTES_ARRAY) {
-            note.deleteNote();
+            note.delete();
             TunePlayer.MUSIC_NOTES_ARRAY.remove(note);
         }
         TunePlayer.updateSelectedNotesArray();
