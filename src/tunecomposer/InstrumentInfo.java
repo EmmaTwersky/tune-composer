@@ -1,3 +1,4 @@
+// Change to enum type or put in node setUserData in fxml
 package tunecomposer;
 
 import java.util.HashMap;
