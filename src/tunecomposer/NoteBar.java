@@ -164,7 +164,7 @@ public class NoteBar {
         selected = true;
         noteDisplay.getStyleClass().remove("unselectedNote");
         noteDisplay.getStyleClass().add("selectedNote");
-        TunePlayer.updateSelectedNotesArray(); 
+        CompositionPaneController.updateSelectedNotesArray(); 
     }
     
     /**
@@ -174,7 +174,7 @@ public class NoteBar {
         selected = false;
         noteDisplay.getStyleClass().remove("selectedNote");
         noteDisplay.getStyleClass().add("unselectedNote");
-        TunePlayer.updateSelectedNotesArray(); 
+        CompositionPaneController.updateSelectedNotesArray(); 
     }
     
     /**
@@ -223,19 +223,19 @@ public class NoteBar {
             int y = (int) event.getY();
             
             if (!selected) {
-                TunePlayer.resetSelectedNotesArray(); 
+                CompositionPaneController.resetSelectedNotesArray(); 
                 select();
             }
             
             if (draggingLength) {
-                TunePlayer.SELECTED_NOTES_ARRAY.forEach((note) -> {
+                CompositionPaneController.SELECTED_NOTES_ARRAY.forEach((note) -> {
                     note.changeLength(x - initialX);
                 });
             }
             else {
                 int translateX = (x - initialX);
                 int translateY = (y - initialY);
-                TunePlayer.SELECTED_NOTES_ARRAY.forEach((note) -> {
+                CompositionPaneController.SELECTED_NOTES_ARRAY.forEach((note) -> {
                     note.move(translateX, translateY);
                 });
             }
@@ -263,12 +263,12 @@ public class NoteBar {
                     toggleSelection();
                 }
                 else {
-                    TunePlayer.resetSelectedNotesArray(); 
+                    CompositionPaneController.resetSelectedNotesArray(); 
                     select();
                 }
             }
             
-            TunePlayer.SELECTED_NOTES_ARRAY.forEach((note) -> {
+            CompositionPaneController.SELECTED_NOTES_ARRAY.forEach((note) -> {
                 note.snapInPlace(note.noteDisplay.getX(), note.noteDisplay.getY());
             });     
             
