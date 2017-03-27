@@ -1,3 +1,4 @@
+// Change to enum type or put in node setUserData in fxml
 package tunecomposer;
 
 import java.util.HashMap;
@@ -7,7 +8,7 @@ import java.util.HashMap;
  * 
  * @author Emma Twersky
  */
-public class InstrumentSelection {
+public class InstrumentInfo {
     /**
      * The Midi value of a given instrument name, found at
      * <https://www.midi.org/specifications/item/gm-level-1-sound-set>.
@@ -46,7 +47,7 @@ public class InstrumentSelection {
     /**
      * Constructs the value and channel HashMaps.
      */
-    InstrumentSelection() {
+    InstrumentInfo() {
         INSTRUMENT_VALUES.put("Piano", PIANO);
         INSTRUMENT_VALUES.put("Harpsichord", HARPSICHORD);
         INSTRUMENT_VALUES.put("Marimba", MARIMBA);

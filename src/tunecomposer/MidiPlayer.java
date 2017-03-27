@@ -4,6 +4,7 @@ import javax.sound.midi.*;
 
 /**
  * This class provides a simple interface for playing MIDI sounds.
+ * 
  * @author Dale Skrien
  * @since September 6, 2016 
  */
@@ -11,14 +12,15 @@ public class MidiPlayer
 {
     private static final int NUM_TRACKS = 8;
 
-    /** the sequencer that stores Midi events and plays them when requested */
+    /** The sequencer that stores Midi events and plays them when requested. */
     private Sequencer sequencer;
 
-    /** the number of beats per minute that is used when a sound is played */
+    /** The number of beats per minute that is used when a sound is played. */
     private int beatsPerMinute;
 
     /**
      * Creates a new MidiPlayer with the given parameters.
+     * 
      * @param resolution     the number of ticks per beat
      * @param beatsPerMinute the number of beats per minute
      */
@@ -101,7 +103,7 @@ public class MidiPlayer
      */
     public void play()
     {
-        // this next line should be unnecessary, but seems to be needed
+        // This next line should be unnecessary, but seems to be needed.
         sequencer.setTempoInBPM(beatsPerMinute);
         sequencer.start();
     }

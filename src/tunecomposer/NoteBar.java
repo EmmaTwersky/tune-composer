@@ -1,3 +1,7 @@
+// Consider seperating model and view? (note from Janet but unclear what this means)
+// Shorten handlers with stategy pattern or abstraction of methods?
+// Fix bug in which some note bars are no longer able to display that they are selected. 
+//      However, they are edited with the other note bars.
 package tunecomposer;
 
 import javafx.event.EventHandler;
@@ -9,11 +13,11 @@ import javafx.scene.shape.Rectangle;
  * This class creates and edits NoteBar objects to display notes in the tune 
  * and be played in MidiPLayer.
  * 
- * @author Emma
+ * @author Emma Twersky
  */
 public class NoteBar {
     /**
-     * Create variables for the note's name, instrument number, channel number,
+     * Create variables for the note name, instrument number, channel number,
      * pitch, starting value, and length. 
      */
     public final String name;
@@ -48,10 +52,21 @@ public class NoteBar {
     private final int minNoteLength = 5;
     
     /**
-     * Load InstrumentSelection HashMap to look up instrument key values.
+     * Load InstrumentInfo HashMap to look up instrument key values.
      */
-    private final InstrumentSelection instrumentInfo = new InstrumentSelection();
+    private final InstrumentInfo instrumentInfo = new InstrumentInfo();
     
+    /**
+     * Creates instances for the initial pressed values of the mouse for events.
+     */
+    private int initialX;
+    private int initialY;
+    
+    /**
+     * Creates boolean to ensure dragging to change length is a separate instance.
+     */
+    private boolean draggingLength;
+        
     /**
      * Initialize the note bar object and variables, then constructs the display
      * and adds the note to the pane.
@@ -61,10 +76,10 @@ public class NoteBar {
      * @param y the top left corner y value of the note clicked
      * @param compositionPane the pane the note is created on
      */
-    NoteBar(String instrumName, double x, double y, Pane compositionPane){
-        name = instrumName;
-        instrument = instrumentInfo.getInstrumentValue(instrumName);
-        channel = instrumentInfo.getInstrumentChannel(instrumName);
+    NoteBar(double x, double y, Pane compositionPane){
+        name = InstrumentToolBarController.selectedInstrument;
+        instrument = instrumentInfo.getInstrumentValue(name);
+        channel = instrumentInfo.getInstrumentChannel(name);
         
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;
@@ -72,7 +87,6 @@ public class NoteBar {
         
         int xLocation = (int) x;
         int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
-        pane = compositionPane;
         noteDisplay = new Rectangle(xLocation, yLocation, length, noteHeight);
         noteDisplay.getStyleClass().add(name);
 
@@ -82,6 +96,7 @@ public class NoteBar {
                 
         selected = true;
         noteDisplay.getStyleClass().add("selectedNote");
+        pane = compositionPane;
         pane.getChildren().add(noteDisplay);
     }
     
@@ -100,9 +115,11 @@ public class NoteBar {
      * @param x the new top left corner x value of the noteDisplay
      * @param y the new top left corner y value of the noteDisplay
      */
-    public void moveNote(int x, int y){        
-        noteDisplay.setX(x);
-        noteDisplay.setY(y);
+    public void move(int x, int y){ 
+        int translateX = x + (int) noteDisplay.getX();
+        int translateY = y + (int) noteDisplay.getY();
+        noteDisplay.setX(translateX);
+        noteDisplay.setY(translateY);
     }
     
     /**
@@ -111,7 +128,7 @@ public class NoteBar {
      * @param x the top left corner x value of the noteDisplay
      * @param y the top left corner y value of the noteDisplay
      */
-    public void snapNoteInPlace(double x, double y){        
+    public void snapInPlace(double x, double y){        
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;
         
@@ -125,11 +142,12 @@ public class NoteBar {
     /**
      * Changes note length.
      * 
-     * @param noteLength the new note length
+     * @param lengthChange the amount to increment the length
      */
-    public void changeNoteLength(int noteLength){ 
-        if (noteLength > minNoteLength) {
-            length = noteLength;
+    public void changeLength(int lengthChange){ 
+        int newLength = length + lengthChange;
+        if (newLength > minNoteLength) {
+            length = newLength;
             noteDisplay.setWidth(length);
         }
     }
@@ -137,84 +155,66 @@ public class NoteBar {
     /**
      * Deletes note from pane.
      */
-    public void deleteNote(){
+    public void delete(){
         pane.getChildren().remove(noteDisplay);
     }
     
     /**
      * Selects note and displays selection box around note.
      */
-    public void selectNote(){
+    public void select(){
         selected = true;
         noteDisplay.getStyleClass().remove("unselectedNote");
         noteDisplay.getStyleClass().add("selectedNote");
+        CompositionPaneController.updateSelectedNotesArray(); 
     }
     
     /**
      * Un-selects note and removes selection box around note.
      */
-    public void unselectNote(){
+    public void unselect(){
         selected = false;
         noteDisplay.getStyleClass().remove("selectedNote");
         noteDisplay.getStyleClass().add("unselectedNote");
+        CompositionPaneController.updateSelectedNotesArray(); 
     }
     
     /**
      * Switches value of selected.
      */
-    public void toggleNoteSelection(){
-        if (selected) {unselectNote();}
-        else {selectNote();}
+    public void toggleSelection(){
+        if (selected) {unselect();}
+        else {select();}
     }
-    
-    /**
-     * Initialize pane controller for static use in event handling.
-     */
-    FXMLController FXMLController;
-    
-    /**
-     * Creates instances for the initial pressed values of the mouse for events.
-     */
-    private int initialX;
-    private int initialY;
-    
-    /**
-     * Creates boolean to ensure dragging to change length is a separate instance.
-     */
-    private boolean draggingLength;
     
   /**
      * Handles note pressed event. 
-     * Sets initial pressed values of the mouse, sets dragLength to false and
-     * follows given conventions on control button selection. Relies on 
-     * FXMLController to update selection array.
+     * Sets initial pressed values of the mouse and consumes the event.
      * 
      * @param event the mouse click event
-     * @see FXMLController
      */
     EventHandler<MouseEvent> handleNotePressed = new EventHandler<MouseEvent>() {
         @Override
-        public void handle(MouseEvent event) {            
+        public void handle(MouseEvent event) {
+            CompositionPaneController.tunePlayerObj.stop();
             initialX = (int) event.getX();
             initialY = (int) event.getY();
-
-            draggingLength = false;
             
-            if (event.isControlDown()) {
-                toggleNoteSelection();
+            int editLengthMax = (int) noteDisplay.getX() + length;
+            int editLengthMin = editLengthMax - clickToEditLength;
+            if (editLengthMin <= initialX && initialX <= editLengthMax) {
+                draggingLength = true;
             }
-            else {
-                FXMLController.resetSelectedNotesArray(); 
-                selectNote();
-            }
+                
+            event.consume();
         }
     };
     
     /**
      * Handles note dragged event.
-     * Drags to move the note or drags to change length, based on note click 
-     * location conventions. Translates note and consumes event. Also updates
-     * note lists.
+     * Selects and drags to move the note or drags to change length, 
+     * based on note click location conventions. Translates note and consumes 
+     * event. Also updates note lists.
      * 
      * @param event the mouse click event
      */
@@ -223,20 +223,23 @@ public class NoteBar {
         public void handle(MouseEvent event) {
             int x = (int) event.getX();
             int y = (int) event.getY();
-            int editLengthMax = (int) noteDisplay.getX() + length;
-            int editLengthMin = editLengthMax - clickToEditLength;
-            FXMLController.updateSelectedNotesArray();
             
-            if (editLengthMin <= x && x <= editLengthMax) {
-                draggingLength = true;
-                //FXMLController.changeNoteLengths((x - initialX) + length);
-                changeNoteLength((x - initialX) + length);
+            if (!selected) {
+                CompositionPaneController.resetSelectedNotesArray(); 
+                select();
             }
-            if (!draggingLength) {
-                int translateX = (x - initialX) + (int) noteDisplay.getX();
-                int translateY = (y - initialY) + (int) noteDisplay.getY();
-                //FXMLController.moveNotes(translateX, translateY);
-                moveNote(translateX, translateY);
+            
+            if (draggingLength) {
+                CompositionPaneController.SELECTED_NOTES_ARRAY.forEach((note) -> {
+                    note.changeLength(x - initialX);
+                });
+            }
+            else {
+                int translateX = (x - initialX);
+                int translateY = (y - initialY);
+                CompositionPaneController.SELECTED_NOTES_ARRAY.forEach((note) -> {
+                    note.move(translateX, translateY);
+                });
             }
             
             initialX = x;
@@ -247,14 +250,30 @@ public class NoteBar {
     
     /**
      * Handles mouse released.
-     * Snaps note into place on lines and consumes event.
+     * Snaps note into place on lines, handles click note selections
+     * based on the control button and consumes event.
      * 
      * @param event the mouse click event
      */
     EventHandler<MouseEvent> handleNoteReleased = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
-            snapNoteInPlace(noteDisplay.getX(), noteDisplay.getY());
+            draggingLength = false;
+
+            if (event.isStillSincePress()) {
+                if (event.isControlDown()) {
+                    toggleSelection();
+                }
+                else {
+                    CompositionPaneController.resetSelectedNotesArray(); 
+                    select();
+                }
+            }
+            
+            CompositionPaneController.SELECTED_NOTES_ARRAY.forEach((note) -> {
+                note.snapInPlace(note.noteDisplay.getX(), note.noteDisplay.getY());
+            });     
+            
             event.consume();
         }
     };

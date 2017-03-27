@@ -1,0 +1,133 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.input.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<!-- Remove repeated code in the padding? -->
+
+<?import javafx.scene.layout.Pane?>
+
+<ToolBar 
+    stylesheets = "@TuneComposer.css" 
+    xmlns = "http://javafx.com/javafx/8" 
+    xmlns:fx = "http://javafx.com/fxml/1" 
+    fx:controller = "tunecomposer.InstrumentToolBarController"
+    orientation = "VERTICAL" 
+    prefWidth = "150.0" 
+    >
+    <items>
+      <fx:define>
+          <ToggleGroup
+                fx:id = "instrumentSelection"/>
+      </fx:define>
+      <RadioButton 
+            fx:id = "Piano" 
+            onAction = "#handleInstrumentMenuAction" 
+            mnemonicParsing = "false" 
+            styleClass = "Piano" 
+            text = "Piano"
+            toggleGroup = "$instrumentSelection"
+            userData = "0"
+            selected = "true">
+            <padding>
+               <Insets top = "20" left = "15"/>
+            </padding>
+      </RadioButton>
+      <RadioButton 
+            fx:id = "Harpsichord" 
+            onAction = "#handleInstrumentMenuAction"  
+            mnemonicParsing = "false" 
+            styleClass = "Harpsichord" 
+            text = "Harpsichord"
+            toggleGroup = "$instrumentSelection"
+            userData = "7">
+            <padding>
+                <Insets top = "30" left = "15"/>
+            </padding>
+      </RadioButton>
+      <RadioButton 
+            fx:id = "Marimba" 
+            onAction = "#handleInstrumentMenuAction" 
+            mnemonicParsing = "false" 
+            styleClass = "Marimba" 
+            text = "Marimba"
+            toggleGroup = "$instrumentSelection"
+            userData = "13">
+            <padding>
+               <Insets top = "30" left = "15"/>
+            </padding>
+      </RadioButton>
+      <RadioButton 
+            fx:id = "Organ" 
+            onAction = "#handleInstrumentMenuAction" 
+            mnemonicParsing = "false" 
+            styleClass = "Organ" 
+            text = "Organ"
+            toggleGroup = "$instrumentSelection"
+            userData = "17">
+            <padding>
+               <Insets top = "30" left = "15"/>
+            </padding>
+      </RadioButton>
+      <RadioButton 
+            fx:id = "Accordion" 
+            onAction = "#handleInstrumentMenuAction"  
+            mnemonicParsing = "false" 
+            styleClass = "Accordion" 
+            text = "Accordion"
+            toggleGroup = "$instrumentSelection"
+            userData = "22">
+            <padding>
+               <Insets top = "30" left = "15"/>
+            </padding>
+      </RadioButton>
+      <RadioButton 
+            fx:id = "Guitar" 
+            onAction = "#handleInstrumentMenuAction" 
+            mnemonicParsing = "false" 
+            styleClass = "Guitar" 
+            text = "Guitar"
+            toggleGroup = "$instrumentSelection"
+            userData = "25">
+            <padding>
+               <Insets top = "30" left = "15"/>
+            </padding>
+      </RadioButton>
+      <RadioButton 
+            fx:id = "Violin" 
+            onAction = "#handleInstrumentMenuAction" 
+            mnemonicParsing = "false" 
+            styleClass = "Violin" 
+            text = "Violin"
+            toggleGroup = "$instrumentSelection"
+            userData = "41">
+            <padding>
+               <Insets top = "30" left = "15"/>
+            </padding>
+      </RadioButton>
+      <RadioButton 
+            fx:id = "FrenchHorn" 
+            onAction = "#handleInstrumentMenuAction"  
+            mnemonicParsing = "false" 
+            styleClass = "FrenchHorn" 
+            text = "French Horn"
+            toggleGroup = "$instrumentSelection"
+            userData = "61">
+            <padding>
+               <Insets top = "30" left = "15"/>
+            </padding>
+      </RadioButton>
+    </items>
+    <BorderPane.margin>
+       <Insets />
+    </BorderPane.margin>
+</ToolBar>

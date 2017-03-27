@@ -1,11 +1,6 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
 /* 
-    Created on : Mar 4, 2017, 1:07:34 PM
-    Author     : eventhisone
+    TuneComposer.css creates the style sheet for the scene.
+    Author: Emma Twersky
 */
 
 /* Sets colors for each of the eight instrument's text and note bars. */
@@ -13,30 +8,37 @@ and open the template in the editor.
     -fx-text-fill: FireBrick;
     -fx-fill: FireBrick;
 }
+
 .Harpsichord{
     -fx-text-fill: Tomato;
     -fx-fill: Tomato;
 }
+
 .Marimba{
-    -fx-text-fill: Gold;
-    -fx-fill: Gold;
+    -fx-text-fill: Goldenrod;
+    -fx-fill: Goldenrod;
 }
+
 .Organ{
-    -fx-text-fill: Violet;
-    -fx-fill: Violet;
-}
-.Accordion{
     -fx-text-fill: MediumAquamarine;
     -fx-fill: MediumAquamarine; 
 }
-.Guitar{
+
+.Accordion{
     -fx-text-fill: SeaGreen;
-    -fx-fill: SeaGreen;
+    -fx-fill: SeaGreen;  
 }
+
+.Guitar{
+    -fx-text-fill: CornflowerBlue;
+    -fx-fill: CornflowerBlue;
+}
+
 .Violin{
-    -fx-text-fill: Teal;
-    -fx-fill: Teal;
+    -fx-text-fill: Violet;
+    -fx-fill: Violet;
 }
+
 .FrenchHorn{
     -fx-text-fill: MediumVioletRed;
     -fx-fill: MediumVioletRed;
@@ -47,8 +49,9 @@ and open the template in the editor.
     -fx-stroke-width: 3px; 
     -fx-stroke: Aqua; 
 }
+
 .unselectedNote{
-    -fx-stroke-width: 3px; 
+    -fx-stroke-width: 2px; 
     -fx-stroke: LightGrey; 
 }
 
@@ -56,6 +59,7 @@ and open the template in the editor.
 #staffLine{
     -fx-stroke: Grey;
 }
+
 #measureLine{
     -fx-stroke: LightGrey;
 }
