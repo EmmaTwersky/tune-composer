@@ -13,6 +13,9 @@ import javafx.scene.shape.Rectangle;
  */
 public abstract class SoundObject {
     
+     /**
+     * A rectangle to display on the screen.
+     */
     public Rectangle rectangleVisual;
     
     
