@@ -15,7 +15,16 @@ import javafx.scene.shape.Rectangle;
  */
 public class Gesture extends SoundObject{
     
+    
+    /**
+     * Array of SoundObjects that can include Gestures or NoteBars. Does not contain
+     * all elements within the gesture, only ungrouped notes and outermost gestures.
+     */
     private ArrayList<SoundObject> itemsInGesture = new ArrayList<SoundObject>();
+    /**
+     * The gesture that this is contained within. If null, then this has no 
+     * encapsulating gesture.
+     */
     private Gesture parentGesture;
     private boolean selected;
     
@@ -35,7 +44,10 @@ public class Gesture extends SoundObject{
         select();
     }
     
-    
+    /**
+     * Creates gestureBox rectangle using dimensions of objects in itemsInGesture.
+     * 
+     */
     private void makeGestureBox(){
         //rectangleVisual = new Rectangle(1,1,1,1);
         int left = findLeftMostCord();
@@ -47,7 +59,11 @@ public class Gesture extends SoundObject{
         rectangleVisual = new Rectangle(left, top, width, height);
     }
     
-    
+    /**
+     * Change the selection state of all notes contained within this gesture.
+     * Will not set them all to the same value, only negates each note's current
+     * state. 
+     */
     @Override
     public void toggleSelection(){
         for (int i=0; i<itemsInGesture.size();i++){
@@ -55,6 +71,10 @@ public class Gesture extends SoundObject{
         }
     }
     
+    
+    /**
+     * Sets all notes within this group as selected. 
+     */
     @Override
     public void select(){
         for (int i=0; i<itemsInGesture.size();i++){
@@ -67,6 +87,9 @@ public class Gesture extends SoundObject{
     }
     
     
+    /**
+     * Sets all notes within this group as unselected
+     */
     @Override
     public void unselect(){
         for (int i=0; i<itemsInGesture.size();i++){
@@ -79,16 +102,30 @@ public class Gesture extends SoundObject{
     }
     
     
+    /**
+     * returns whether object is selected.
+     * @return boolean representing state of selected
+     */
     @Override
     public boolean isSelected() {
         return selected;
     }
     
+    
+    /**
+     * returns array of all first-depth items of this gesture.
+     * @return 
+     */
     public ArrayList<SoundObject> getItemsInGesture() {
         return itemsInGesture;
     }
     
     
+    /**
+     * Prepares for destruction of this object.
+     * Sets parentGesture of all objects in itemsInGesture to null. Deletes 
+     * gestureBox rectangle. No reference of this obj will exist.
+     */
     public void ungroup(){
         for (SoundObject item : itemsInGesture){
             item.setParentGesture(null);
@@ -97,6 +134,13 @@ public class Gesture extends SoundObject{
     }
     
     
+    /**
+     * Shifts all elements of gesture by given increment. This move includes notes
+     * and gestureBoxes.
+     * 
+     * @param xInc number of horizontal pixels to shift notes
+     * @param yInc number of vertical pixels to shift notes
+     */
     @Override
     public void move(int xInc, int yInc){
         for (SoundObject item : itemsInGesture){
@@ -105,7 +149,12 @@ public class Gesture extends SoundObject{
         makeGestureBox();
     }
     
-    
+    /**
+     * Resizes all notes of gesture by given increment. 
+     * Also updates the size of all gestureBoxes.
+     * 
+     * @param xInc number of pixels to change note duration by
+     */
     @Override
     public void changeLength(int inc){
         System.out.println(itemsInGesture);
@@ -116,19 +165,33 @@ public class Gesture extends SoundObject{
         System.out.println(itemsInGesture);
     }
     
-    
+    /**
+     * Sets parentGesture field to given value. If null, then sets field to null.
+     * Useful for updating relationships of gestures and creating the hierarchy.
+     * Not for referencing the outer-most Gesture. 
+     * 
+     * @param parent the Gesture object that this object has been grouped in.
+     */
     @Override
     public void setParentGesture(Gesture parent){
         parentGesture = parent;
     }
     
     
+    /**
+     * Returns this objects parentGesture.
+     */
     @Override
     public Gesture getParentGesture(){
         return parentGesture;
     }
     
     
+    /**
+     * Recursiveley snap all items in gesture to closest note.
+     * @param x
+     * @param y 
+     */
     @Override
     public void snapInPlace(double x, double y) {
         for (SoundObject item : itemsInGesture){
@@ -137,6 +200,9 @@ public class Gesture extends SoundObject{
         makeGestureBox();
     }
     
+    /**
+     * Recursiveley snap all items in gesture to closest note
+     */
     @Override
     public void snapInPlace() {
         for (SoundObject item : itemsInGesture){
@@ -146,6 +212,9 @@ public class Gesture extends SoundObject{
     }
     
     
+    /**
+     * delete all items in this gesture and the border surrounding them.
+     */
     @Override
     public void delete(){    
         for (SoundObject item : itemsInGesture){
@@ -155,6 +224,10 @@ public class Gesture extends SoundObject{
     }
     
     
+    /**
+     * find x value of the rightmost side of the farthest right note.
+     * @return 
+     */
     @Override
     public int findRightMostCord() {
         int rightMost = 0;
@@ -168,6 +241,11 @@ public class Gesture extends SoundObject{
     }
     
     
+    /**
+     * Find the leftmost coordinate out of all rectangles contained within
+     * gesture.
+     * @return 
+     */
     @Override
     public int findLeftMostCord() {
         int leftMost = 0;
@@ -180,6 +258,11 @@ public class Gesture extends SoundObject{
         return leftMost;
     }
 
+    
+    /**
+     * Find topmost coordinate out of all rectangles contained within this gesture.
+     * @return 
+     */
     @Override
     public int findTopMostCord() {
         int topMost = 0;
@@ -193,6 +276,11 @@ public class Gesture extends SoundObject{
     }
     
     
+    /**
+     * Find bottom-most coordinate out of all rectangles contained within this
+     * gesture.
+     * @return 
+     */
     @Override
     public int findBottomMostCord() {
         int bottomMost = 0;
