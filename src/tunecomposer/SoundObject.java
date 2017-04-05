@@ -26,11 +26,24 @@ public abstract class SoundObject {
     public abstract void delete();
     public abstract void changeLength(int lengthInc);
     public abstract void snapInPlace(double x, double y);
+    public abstract void snapInPlace();
     public abstract int findRightMostCord();
     public abstract int findLeftMostCord();
     public abstract int findTopMostCord();
     public abstract int findBottomMostCord();
-
     public abstract void addToMidi(int vol, MidiPlayer player);
     
+    
+    public abstract SoundObject getTopParentGesture();
+//    /**
+//     * Find and return the most encapsulating gesture to this note.
+//     * @return 
+//     */
+//    public SoundObject getTopParentGesture() {
+//        SoundObject tmp = this;
+//        while (tmp.getParentGesture() != null) {
+//            tmp = tmp.getParentGesture();
+//        }
+//        return tmp;
+//    }
 }

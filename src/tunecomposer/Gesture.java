@@ -28,10 +28,11 @@ public class Gesture extends SoundObject{
             item.setParentGesture(this);
             itemsInGesture.add(item);
         }
-        selected = true;
         
         this.makeGestureBox();
         compositionPane.getChildren().add(rectangleVisual);
+        
+        select();
     }
     
     
@@ -44,7 +45,6 @@ public class Gesture extends SoundObject{
         int width = right - left;
         int height = bott - top;
         rectangleVisual = new Rectangle(left, top, width, height);
-        select();
     }
     
     
@@ -84,6 +84,10 @@ public class Gesture extends SoundObject{
         return selected;
     }
     
+    public ArrayList<SoundObject> getItemsInGesture() {
+        return itemsInGesture;
+    }
+    
     
     public void ungroup(){
         for (SoundObject item : itemsInGesture){
@@ -98,14 +102,18 @@ public class Gesture extends SoundObject{
         for (SoundObject item : itemsInGesture){
             item.move(xInc, yInc);
         }
+        makeGestureBox();
     }
     
     
     @Override
     public void changeLength(int inc){
+        System.out.println(itemsInGesture);
         for (SoundObject item : itemsInGesture){
             item.changeLength(inc);
         }
+        makeGestureBox();
+        System.out.println(itemsInGesture);
     }
     
     
@@ -126,11 +134,20 @@ public class Gesture extends SoundObject{
         for (SoundObject item : itemsInGesture){
             item.snapInPlace(x, y);
         }
+        makeGestureBox();
+    }
+    
+    @Override
+    public void snapInPlace() {
+        for (SoundObject item : itemsInGesture){
+            item.snapInPlace();
+        }
+        makeGestureBox();
     }
     
     
     @Override
-    public void delete(){
+    public void delete(){    
         for (SoundObject item : itemsInGesture){
             item.delete();
         }
@@ -202,4 +219,16 @@ public class Gesture extends SoundObject{
 
     }
     
+    
+    /**
+     * Find and return the most encapsulating gesture to this note.
+     * @return 
+     */
+    public SoundObject getTopParentGesture() {
+        SoundObject tmp = this;
+        while (tmp.getParentGesture() != null) {
+            tmp = tmp.getParentGesture();
+        }
+        return tmp;
+    }
 }

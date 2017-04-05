@@ -122,8 +122,8 @@ public class NoteBar extends SoundObject{
     /**
      * Moves note freely on pane.
      * 
-     * @param x the new top left corner x value of the noteDisplay
-     * @param y the new top left corner y value of the noteDisplay
+     * @param x the increment to change current x value by
+     * @param y the increment to change current y value by
      */
     @Override
     public void move(int x, int y){ 
@@ -150,6 +150,21 @@ public class NoteBar extends SoundObject{
         rectangleVisual.setY(yLocation);
         rectangleVisual.getStyleClass().add(name);
     }
+    
+    public void snapInPlace() {
+        int x = (int) rectangleVisual.getX();
+        int y = (int) rectangleVisual.getY();
+        
+        pitch = pitchRange - (int) y / noteHeight;
+        startTick = (int) x;
+        
+        int xLocation = (int) x;
+        int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
+        rectangleVisual.setX(xLocation);
+        rectangleVisual.setY(yLocation);
+        rectangleVisual.getStyleClass().add(name);
+    }
+    
     
     /**
      * Changes note length.
@@ -179,7 +194,7 @@ public class NoteBar extends SoundObject{
     @Override
     public void select(){
         selected = true;
-        rectangleVisual.getStyleClass().remove("unselectedNote");
+        rectangleVisual.getStyleClass().removeAll("unselectedNote");
         rectangleVisual.getStyleClass().add("selectedNote");
         CompositionPaneController.updateSelectedSoundObjectArray(); 
     }
@@ -190,7 +205,7 @@ public class NoteBar extends SoundObject{
     @Override
     public void unselect(){
         selected = false;
-        rectangleVisual.getStyleClass().remove("selectedNote");
+        rectangleVisual.getStyleClass().removeAll("selectedNote");
         rectangleVisual.getStyleClass().add("unselectedNote");
         CompositionPaneController.updateSelectedSoundObjectArray(); 
     }
@@ -233,7 +248,6 @@ public class NoteBar extends SoundObject{
     public int findRightMostCord() {
         return (int) rectangleVisual.getX() + length;
     }
-    
     
     public int findLeftMostCord() {
         return (int) rectangleVisual.getX();
@@ -298,21 +312,23 @@ public class NoteBar extends SoundObject{
             int x = (int) event.getX();
             int y = (int) event.getY();
             
+            SoundObject topSoundObject = getTopParentGesture();            
+            
             if (!selected) {
                 CompositionPaneController.resetSelectedNotesArray(); 
-                select();
+                topSoundObject.select();
             }
             
             if (draggingLength) {
-                CompositionPaneController.selected_soundobject_array.forEach((note) -> {
-                    note.changeLength(x - initialX);
+                CompositionPaneController.selected_soundobject_array.forEach((soundItem) -> {
+                    soundItem.changeLength(x - initialX);
                 });
             }
             else {
                 int translateX = (x - initialX);
                 int translateY = (y - initialY);
-                CompositionPaneController.selected_soundobject_array.forEach((note) -> {
-                    note.move(translateX, translateY);
+                CompositionPaneController.selected_soundobject_array.forEach((soundItem) -> {
+                    soundItem.move(translateX, translateY);
                 });
             }
             
@@ -333,25 +349,45 @@ public class NoteBar extends SoundObject{
         @Override
         public void handle(MouseEvent event) {
             draggingLength = false;
-
+            
+            SoundObject topSoundObject = getTopParentGesture();
+            
             if (event.isStillSincePress()) {
                 if (event.isControlDown()) {
-                    toggleSelection();
+                    topSoundObject.toggleSelection();
                 }
                 else {
-                    CompositionPaneController.resetSelectedNotesArray(); 
-                    select();
+                    CompositionPaneController.resetSelectedNotesArray();
+                    topSoundObject.select();
                 }
             }
             
-            CompositionPaneController.selected_soundobject_array.forEach((soundItem) -> {
-                if (soundItem instanceof SoundObject) {
-                    soundItem.snapInPlace(soundItem.rectangleVisual.getX(), 
-                                          soundItem.rectangleVisual.getY());
-                }
-            });     
+            for (SoundObject soundItem : 
+                        CompositionPaneController.selected_soundobject_array) {
+                
+                soundItem.snapInPlace();
+                
+            }
+            
+//            CompositionPaneController.selected_soundobject_array.forEach((soundItem) -> {
+//                soundItem.snapInPlace(soundItem.rectangleVisual.getX(), 
+//                                      soundItem.rectangleVisual.getY());
+//            });     
             
             event.consume();
         }
     };
+    
+    
+    /**
+     * Find and return the most encapsulating gesture to this note.
+     * @return 
+     */
+    public SoundObject getTopParentGesture() {
+        SoundObject tmp = this;
+        while (tmp.getParentGesture() != null) {
+            tmp = tmp.getParentGesture();
+        }
+        return tmp;
+    }
 }

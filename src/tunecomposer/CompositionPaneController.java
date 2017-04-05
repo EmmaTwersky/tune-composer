@@ -94,8 +94,6 @@ public class CompositionPaneController implements Initializable {
                 }
             }
         }
-        if (soundObject_array.size() == 0 ) {
-        }
     }
     
     /**
@@ -120,8 +118,6 @@ public class CompositionPaneController implements Initializable {
      */
     @FXML
     protected void handlePanePressed(MouseEvent event) {
-        
-        
         tunePlayerObj.stop();
         
         int x = (int) event.getX();
@@ -197,16 +193,35 @@ public class CompositionPaneController implements Initializable {
     
     @FXML
     public void makeGroup() {
-        Gesture newGest;
-        newGest = new Gesture(soundObject_array, compositionPane);
+        Gesture newGest = new Gesture(selected_soundobject_array, compositionPane);
+        
         for (SoundObject item : soundObject_array) {
             if (selected_soundobject_array.contains(item)) {
                 soundObject_array.remove(item);
                 selected_soundobject_array.remove(item);
             }
         }
+        
         soundObject_array.add(newGest);
         selected_soundobject_array.add(newGest);
+    }
+    
+    @FXML
+    public void unGroup() {
+        if (selected_soundobject_array.size() == 1 ) {
+            SoundObject item = selected_soundobject_array.get(0);
+            if (item instanceof Gesture) {
+                ArrayList<SoundObject> list = ((Gesture) item).getItemsInGesture();
+                for (SoundObject i : list) {
+                    selected_soundobject_array.add(i);
+                    soundObject_array.add(i);
+                }
+                selected_soundobject_array.remove(item);
+                soundObject_array.remove(item);
+                ((Gesture) item).ungroup();
+                
+            }
+        }
     }
     
     @FXML
