@@ -1,29 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.scene.input.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
 
-<BorderPane stylesheets="@TuneComposer.css" 
-            xmlns="http://javafx.com/javafx/8" 
-            xmlns:fx="http://javafx.com/fxml/1" >
+<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@TuneComposer.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <top>
-        <fx:include fx:id="menuBar" source="MenuBar.fxml"/>
+        <fx:include fx:id="menuBar" source="MenuBar.fxml" />
     </top>
     <center>
-        <fx:include fx:id="compositionPane" source="CompositionPane.fxml"/>
+        <fx:include fx:id="compositionPane" source="CompositionPane.fxml" />
     </center>
    <left>
-        <fx:include fx:id="instrumentToolBar" source="InstrumentToolBar.fxml"/>
+        <fx:include fx:id="instrumentToolBar" source="InstrumentToolBar.fxml" />
    </left>
 </BorderPane>

@@ -15,6 +15,7 @@ public abstract class SoundObject {
     
     public Rectangle rectangleVisual;
     
+    
     public abstract void select();
     public abstract void unselect();
     public abstract void toggleSelection();
@@ -26,5 +27,10 @@ public abstract class SoundObject {
     public abstract void changeLength(int lengthInc);
     public abstract void snapInPlace(double x, double y);
     public abstract int findRightMostCord();
+    public abstract int findLeftMostCord();
+    public abstract int findTopMostCord();
+    public abstract int findBottomMostCord();
+
+    public abstract void addToMidi(int vol, MidiPlayer player);
     
 }

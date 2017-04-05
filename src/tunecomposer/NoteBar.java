@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javax.sound.midi.ShortMessage;
 
 /**
  * This class creates and edits NoteBar objects to display notes in the tune 
@@ -26,6 +27,7 @@ public class NoteBar extends SoundObject{
     public int pitch;
     public int startTick;
     public int length;
+    public static final int HEIGHT = 10;
     
     /**
      * Gesture this note is grouped under. Does not reference most outward 
@@ -42,7 +44,6 @@ public class NoteBar extends SoundObject{
     gestureBox* Creates pane the note is on and the visual rectangle the note is displayed as.
     */
     public Pane pane;
-    public Rectangle rectangleVisual;
 
     /**
     * Creates fixed height and set ranges for pitch. 
@@ -113,6 +114,7 @@ public class NoteBar extends SoundObject{
      * 
      * @return boolean, if note is selected
      */
+    @Override
     public boolean isSelected(){
         return selected;
     }
@@ -123,6 +125,7 @@ public class NoteBar extends SoundObject{
      * @param x the new top left corner x value of the noteDisplay
      * @param y the new top left corner y value of the noteDisplay
      */
+    @Override
     public void move(int x, int y){ 
         int translateX = x + (int) rectangleVisual.getX();
         int translateY = y + (int) rectangleVisual.getY();
@@ -136,6 +139,7 @@ public class NoteBar extends SoundObject{
      * @param x the top left corner x value of the noteDisplay
      * @param y the top left corner y value of the noteDisplay
      */
+    @Override
     public void snapInPlace(double x, double y){        
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;
@@ -152,6 +156,7 @@ public class NoteBar extends SoundObject{
      * 
      * @param lengthChange the amount to increment the length
      */
+    @Override
     public void changeLength(int lengthChange){ 
         int newLength = length + lengthChange;
         if (newLength > minNoteLength) {
@@ -163,6 +168,7 @@ public class NoteBar extends SoundObject{
     /**
      * Deletes note from pane.
      */
+    @Override
     public void delete(){
         pane.getChildren().remove(rectangleVisual);
     }
@@ -170,6 +176,7 @@ public class NoteBar extends SoundObject{
     /**
      * Selects note and displays selection box around note.
      */
+    @Override
     public void select(){
         selected = true;
         rectangleVisual.getStyleClass().remove("unselectedNote");
@@ -180,6 +187,7 @@ public class NoteBar extends SoundObject{
     /**
      * Un-selects note and removes selection box around note.
      */
+    @Override
     public void unselect(){
         selected = false;
         rectangleVisual.getStyleClass().remove("selectedNote");
@@ -190,6 +198,7 @@ public class NoteBar extends SoundObject{
     /**
      * Switches value of selected.
      */
+    @Override
     public void toggleSelection(){
         if (selected) {unselect();}
         else {select();}
@@ -197,8 +206,10 @@ public class NoteBar extends SoundObject{
     
     /**
      * Returns parent gesture that this note was originally grouped with;
-     * ie. will not return a gesture's parent gesture. Null if it has no parent. 
+     * ie. will not return a gesture's parent gesture. Null if it has no parent.
+     * @return 
      */
+    @Override
     public Gesture getParentGesture() {
         return parentGesture;
     }
@@ -206,7 +217,9 @@ public class NoteBar extends SoundObject{
     /**
      * Set parent gesture for this note. Set to null if ungrouping. Do not 
      * overwrite parentGesture if not null.
+     * @param parent
      */
+    @Override
     public void setParentGesture(Gesture parent) {
         parentGesture = parent;
     }
@@ -214,9 +227,38 @@ public class NoteBar extends SoundObject{
     
     /**
      * returns x coordinate of right side of rectangle.
+     * @return 
      */
+    @Override
     public int findRightMostCord() {
         return (int) rectangleVisual.getX() + length;
+    }
+    
+    
+    public int findLeftMostCord() {
+        return (int) rectangleVisual.getX();
+    }
+    
+    public int findTopMostCord() {
+        return (int) rectangleVisual.getY();
+    }
+
+    public int findBottomMostCord() {
+        return (int) rectangleVisual.getY() + HEIGHT;
+    }
+
+    
+    /**
+     * Adds note to MidiPlayer.
+     * @param vol
+     * @param player 
+     */
+    @Override
+    public void addToMidi(int vol, MidiPlayer player){
+        player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + channel, 
+                            instrument, 0, 0, channel);
+        player.addNote(pitch, vol, startTick, 
+                            length, channel, 0);
     }
     
   /**

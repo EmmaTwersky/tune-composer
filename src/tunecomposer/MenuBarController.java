@@ -1,14 +1,17 @@
 package tunecomposer;
 
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
+import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
 
 /**
  * This class controls the menu bar and menu bar actions.
  *
  * @author Emma Twersky
  */
-public class MenuBarController {    
+public class MenuBarController {  
     /**
      * Handles the play button from the Actions menu.
      * 
@@ -53,17 +56,39 @@ public class MenuBarController {
             soundItem.delete();
             CompositionPaneController.soundObject_array.remove(soundItem);
         }
+        if (CompositionPaneController.selected_soundobject_array.size() == 0) {
+        }
         CompositionPaneController.updateSelectedSoundObjectArray();
     }
     
     @FXML
-    protected void handleGrouping(ActionEvent event){
+    protected void handleGrouping(ActionEvent event) throws IOException{
         System.out.println("GROUPING");
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("CompositionPane.fxml"));
+        Parent par = loader.load();
+        CompositionPaneController controller = loader.getController();
+        
+        if (controller == null) {
+            System.out.println("controller is null");
+        }
+        controller.makeGroup();
+//       Pane pane = CompositionPaneController.compositionPane;
+//       Gesture newGest = new Gesture(CompositionPaneController.soundObject_array, compositionPane);
+//        for (SoundObject item : soundObject_array) {
+//            if (selected_soundobject_array.contains(item)) {
+//                soundObject_array.remove(item);
+//                selected_soundobject_array.remove(item);
+//            }
+//        }
+//        soundObject_array.add(newGest);
+//        selected_soundobject_array.add(newGest);
     }
     
     @FXML
     protected void handleUngrouping(ActionEvent event){
         System.out.println("UUUNNNNNGROUPING");
+//        CompositionPaneController.unGroup(event);
     }
 
     /**

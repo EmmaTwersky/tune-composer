@@ -57,11 +57,8 @@ public class TunePlayer {
      * Adds all NoteBar objects in musicNotesArray to MidiPlayer.
      */
     private void addNotesArrayToMidiPlayer() {
-        for (NoteBar note: CompositionPaneController.soundObject_array) {            
-            player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + note.channel, 
-                    note.instrument, 0, 0, note.channel);
-            player.addNote(note.pitch, VOLUME, note.startTick, 
-                    note.length, note.channel, 0);
+        for (SoundObject soundItem: CompositionPaneController.soundObject_array) {            
+            soundItem.addToMidi(VOLUME, player);
         }
     }
     

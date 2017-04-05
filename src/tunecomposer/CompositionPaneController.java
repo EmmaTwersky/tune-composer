@@ -2,6 +2,7 @@
 package tunecomposer;
 
 import java.util.ArrayList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
@@ -87,11 +88,13 @@ public class CompositionPaneController implements Initializable {
     public static void updateSelectedSoundObjectArray(){
         selected_soundobject_array.clear();
         for (SoundObject soundItem: soundObject_array) {
-            if ( soundItem.getParentGesture() != null ){
+            if ( soundItem.getParentGesture() == null ){
                 if (soundItem.isSelected()) {
                     selected_soundobject_array.add(soundItem);
                 }
             }
+        }
+        if (soundObject_array.size() == 0 ) {
         }
     }
     
@@ -100,10 +103,8 @@ public class CompositionPaneController implements Initializable {
      */
     public static void resetSelectedNotesArray(){
         for (SoundObject soundItem: soundObject_array) { 
-            if ( soundItem.getParentGesture() != null ){
-                if (soundItem.isSelected()) {
-                    soundItem.unselect();
-                }
+            if (soundItem.isSelected()) {
+                soundItem.unselect();
             }
         }
         selected_soundobject_array.clear();
@@ -119,6 +120,8 @@ public class CompositionPaneController implements Initializable {
      */
     @FXML
     protected void handlePanePressed(MouseEvent event) {
+        
+        
         tunePlayerObj.stop();
         
         int x = (int) event.getX();
@@ -165,6 +168,7 @@ public class CompositionPaneController implements Initializable {
         }
         
         updateSelectedSoundObjectArray();
+
     };
     
     /**
@@ -190,4 +194,23 @@ public class CompositionPaneController implements Initializable {
         
         updateSelectedSoundObjectArray();
     };
+    
+    @FXML
+    public void makeGroup() {
+        Gesture newGest;
+        newGest = new Gesture(soundObject_array, compositionPane);
+        for (SoundObject item : soundObject_array) {
+            if (selected_soundobject_array.contains(item)) {
+                soundObject_array.remove(item);
+                selected_soundobject_array.remove(item);
+            }
+        }
+        soundObject_array.add(newGest);
+        selected_soundobject_array.add(newGest);
+    }
+    
+    @FXML
+    public void unGroup(ActionEvent event) {
+        
+    }
 }
