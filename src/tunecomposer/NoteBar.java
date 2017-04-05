@@ -15,7 +15,7 @@ import javafx.scene.shape.Rectangle;
  * 
  * @author Emma Twersky
  */
-public class NoteBar {
+public class NoteBar implements SoundObject{
     /**
      * Create variables for the note name, instrument number, channel number,
      * pitch, starting value, and length. 
@@ -26,6 +26,12 @@ public class NoteBar {
     public int pitch;
     public int startTick;
     public int length;
+    
+    /**
+     * Gesture this note is grouped under. Does not reference most outward 
+     * gesture. Null if this is not in any gesture.
+     */
+    private Gesture parentGesture;
     
     /**
     * Creates boolean value of if the note is currently selected.
@@ -84,6 +90,8 @@ public class NoteBar {
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;
         length = defaultLength;
+        
+        parentGesture = null;
         
         int xLocation = (int) x;
         int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
@@ -186,6 +194,23 @@ public class NoteBar {
         if (selected) {unselect();}
         else {select();}
     }
+    
+    /**
+     * Returns parent gesture that this note was originally grouped with;
+     * ie. will not return a gesture's parent gesture. Null if it has no parent. 
+     */
+    public Gesture getParentGesture() {
+        return parentGesture;
+    }
+    
+    /**
+     * Set parent gesture for this note. Set to null if ungrouping. Do not 
+     * overwrite parentGesture if not null.
+     */
+    public void setParentGesture(Gesture parent) {
+        parentGesture = parent;
+    }
+    
     
   /**
      * Handles note pressed event. 
