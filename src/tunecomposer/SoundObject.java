@@ -5,18 +5,26 @@
  */
 package tunecomposer;
 
+import javafx.scene.shape.Rectangle;
+
 /**
  *
  * @author vivancr
  */
-public interface SoundObject {
+public abstract class SoundObject {
     
-    public void select();
-    public void unselect();
-    public void toggleSelection();
-    public void setParentGesture(Gesture parent);
-    public Gesture getParentGesture();
-    public void move(int x, int y);
-    public void changeLength(int lengthInc);
+    public Rectangle rectangleVisual;
+    
+    public abstract void select();
+    public abstract void unselect();
+    public abstract void toggleSelection();
+    public abstract boolean isSelected();
+    public abstract void setParentGesture(Gesture parent);
+    public abstract Gesture getParentGesture();
+    public abstract void move(int x, int y);
+    public abstract void delete();
+    public abstract void changeLength(int lengthInc);
+    public abstract void snapInPlace(double x, double y);
+    public abstract int findRightMostCord();
     
 }

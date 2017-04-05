@@ -60,13 +60,13 @@ public class RedBar {
      * 
      * @param noteList List of NoteBar objects that visually represent notes on the screen
      */
-    public void playAnimation(ArrayList<NoteBar> noteList) {
+    public void playAnimation(ArrayList<SoundObject> soundObjList) {
         timeline.stop();
         timeline.getKeyFrames().clear();
         redBar.setX(0);
         redBar.setVisible(true);
         
-        findEndCoordinate(noteList);
+        findEndCoordinate(soundObjList);
         
         KeyValue kv = new KeyValue(redBar.xProperty(), compositionEnd);
         Duration duration = Duration.millis(compositionEnd * FRAME_RATE);
@@ -96,10 +96,18 @@ public class RedBar {
      * 
      * @param noteList the list of notes being played
      */
-    private void findEndCoordinate(ArrayList<NoteBar> noteList) {
-        noteList.stream().map((note) -> note.startTick + note.length).filter(
-                (noteEnd) -> (noteEnd > compositionEnd)).forEachOrdered((noteEnd) -> {
-            compositionEnd = noteEnd;
-        });
+    private void findEndCoordinate(ArrayList<SoundObject> soundList) {
+//        noteList.stream().map((note) -> note.startTick + note.length).filter(
+//                (noteEnd) -> (noteEnd > compositionEnd)).forEachOrdered((noteEnd) -> {
+//            compositionEnd = noteEnd;
+//        });
+        int rightMost = 0;
+        for (SoundObject item : soundList){
+            int itemRightmost = item.findRightMostCord();
+            if (itemRightmost > rightMost) {
+                rightMost = itemRightmost;
+            }
+        }
+        compositionEnd = rightMost;
     } 
 }

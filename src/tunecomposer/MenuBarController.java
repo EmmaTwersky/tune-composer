@@ -36,10 +36,10 @@ public class MenuBarController {
      */
     @FXML
     protected void handleSelectAllMenuItemAction(ActionEvent event) {
-        CompositionPaneController.MUSIC_NOTES_ARRAY.forEach((note) -> {
+        CompositionPaneController.soundObject_array.forEach((note) -> {
             note.select();
         });
-        CompositionPaneController.updateSelectedNotesArray();
+        CompositionPaneController.updateSelectedSoundObjectArray();
     }
 
     /**
@@ -49,11 +49,21 @@ public class MenuBarController {
      */
     @FXML
     protected void handleDeleteMenuItemAction(ActionEvent event) {
-        for (NoteBar note: CompositionPaneController.SELECTED_NOTES_ARRAY) {
-            note.delete();
-            CompositionPaneController.MUSIC_NOTES_ARRAY.remove(note);
+        for (SoundObject soundItem: CompositionPaneController.selected_soundobject_array) {
+            soundItem.delete();
+            CompositionPaneController.soundObject_array.remove(soundItem);
         }
-        CompositionPaneController.updateSelectedNotesArray();
+        CompositionPaneController.updateSelectedSoundObjectArray();
+    }
+    
+    @FXML
+    protected void handleGrouping(ActionEvent event){
+        System.out.println("GROUPING");
+    }
+    
+    @FXML
+    protected void handleUngrouping(ActionEvent event){
+        System.out.println("UUUNNNNNGROUPING");
     }
 
     /**

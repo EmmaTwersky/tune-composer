@@ -10,11 +10,12 @@ import javafx.scene.shape.Rectangle;
  *
  * @author lonbern
  */
-public class Gesture implements SoundObject{
+public class Gesture extends SoundObject{
     
     private ArrayList<SoundObject> itemsInGesture = new ArrayList<SoundObject>();
-    private Rectangle gestureBox;
+    private Rectangle rectangleVisual;
     private Gesture parentGesture;
+    private boolean selected;
     
     
     Gesture(ArrayList<SoundObject> selectedItems){
@@ -24,6 +25,7 @@ public class Gesture implements SoundObject{
             
             itemsInGesture.add(item);
         }
+        selected = true;
         
         this.makeGestureBox();
                 
@@ -49,8 +51,8 @@ public class Gesture implements SoundObject{
             itemsInGesture.get(i).select();
         }
         
-        gestureBox.getStyleClass().removeAll();
-        gestureBox.getStyleClass().add("selectedGesture");
+        rectangleVisual.getStyleClass().removeAll();
+        rectangleVisual.getStyleClass().add("selectedGesture");
         
     }
     
@@ -61,9 +63,13 @@ public class Gesture implements SoundObject{
             itemsInGesture.get(i).unselect();
         }
         
-        gestureBox.getStyleClass().removeAll();
-        gestureBox.getStyleClass().add("unselectedGesture");
+        rectangleVisual.getStyleClass().removeAll();
+        rectangleVisual.getStyleClass().add("unselectedGesture");
         
+    }
+    
+    public boolean isSelected() {
+        return selected;
     }
     
     public void ungroup(){
@@ -87,5 +93,25 @@ public class Gesture implements SoundObject{
         return parentGesture;
     }
     
+    public void snapInPlace(double x, double y) {
+        for (SoundObject item : itemsInGesture){
+            item.snapInPlace(x, y);
+        }
+    }
+    
+    public void delete(){
+        
+    }
+    
+    public int findRightMostCord() {
+        int rightMost = 0;
+        for (SoundObject item : itemsInGesture){
+            int itemRightmost = item.findRightMostCord();
+            if (itemRightmost > rightMost) {
+                rightMost = itemRightmost;
+            }
+        }
+        return rightMost;
+    }
     
 }

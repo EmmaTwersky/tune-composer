@@ -18,13 +18,13 @@ public class CompositionPaneController implements Initializable {
     /**
      * Create array of NoteBar objects and selected NoteBar objects.      
      */
-    protected static final ArrayList<NoteBar> MUSIC_NOTES_ARRAY = new ArrayList(); 
-    protected static final ArrayList<NoteBar> SELECTED_NOTES_ARRAY = new ArrayList();
+    protected static final ArrayList<SoundObject> soundObject_array = new ArrayList(); 
+    protected static final ArrayList<SoundObject> selected_soundobject_array = new ArrayList();
     
     /**
      * Create array to temporarily store selected NoteBar objects.      
      */
-    private final ArrayList<NoteBar> temp_selected_notes_array = new ArrayList(); 
+    private final ArrayList<SoundObject> temp_selected_soundobj_array = new ArrayList(); 
     
     /** 
      * Set note height to 10 pixels and note length to 100 pixels. 
@@ -84,11 +84,13 @@ public class CompositionPaneController implements Initializable {
     /**
      * Fills the selectedNotesArray with the currently selected notes.
      */
-    public static void updateSelectedNotesArray(){
-        SELECTED_NOTES_ARRAY.clear();
-        for (NoteBar note: MUSIC_NOTES_ARRAY) {            
-            if (note.isSelected()) {
-                SELECTED_NOTES_ARRAY.add(note);
+    public static void updateSelectedSoundObjectArray(){
+        selected_soundobject_array.clear();
+        for (SoundObject soundItem: soundObject_array) {
+            if ( soundItem.getParentGesture() != null ){
+                if (soundItem.isSelected()) {
+                    selected_soundobject_array.add(soundItem);
+                }
             }
         }
     }
@@ -97,12 +99,14 @@ public class CompositionPaneController implements Initializable {
      * Empties the selectedNotesArray and un-selects all notes.
      */
     public static void resetSelectedNotesArray(){
-        for (NoteBar note: MUSIC_NOTES_ARRAY) {            
-            if (note.isSelected()) {
-                note.unselect();
+        for (SoundObject soundItem: soundObject_array) { 
+            if ( soundItem.getParentGesture() != null ){
+                if (soundItem.isSelected()) {
+                    soundItem.unselect();
+                }
             }
         }
-        SELECTED_NOTES_ARRAY.clear();
+        selected_soundobject_array.clear();
     }
     
     /**
@@ -126,8 +130,8 @@ public class CompositionPaneController implements Initializable {
         compositionPane.getChildren().add(window); 
         
         if (event.isControlDown()) {
-            SELECTED_NOTES_ARRAY.forEach((note) -> {
-                temp_selected_notes_array.add(note);
+            selected_soundobject_array.forEach((note) -> {
+                temp_selected_soundobj_array.add(note);
             });
         }
     };
@@ -148,19 +152,19 @@ public class CompositionPaneController implements Initializable {
         window.setWidth(width);
         window.setHeight(height);
         
-        for (NoteBar note: MUSIC_NOTES_ARRAY) {
-            if (!temp_selected_notes_array.contains(note)) {
-                Rectangle r = note.noteDisplay;
+        for (SoundObject soundItem: soundObject_array) {
+            if (!temp_selected_soundobj_array.contains(soundItem)) {
+                Rectangle r = soundItem.rectangleVisual;
                 if (window.intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
-                    note.select();
+                    soundItem.select();
                 }
                 else {
-                    note.unselect();
+                    soundItem.unselect();
                 }
             }
         }
         
-        updateSelectedNotesArray();
+        updateSelectedSoundObjectArray();
     };
     
     /**
@@ -174,16 +178,16 @@ public class CompositionPaneController implements Initializable {
     @FXML
     protected void handlePaneReleased(MouseEvent event) {
         compositionPane.getChildren().remove(window);  
-        temp_selected_notes_array.clear();
+        temp_selected_soundobj_array.clear();
         
         if (event.isStillSincePress()) {
             if (!event.isControlDown()) {
                 resetSelectedNotesArray(); 
             }
             NoteBar newNote = new NoteBar(event.getX(), event.getY(), compositionPane);       
-            MUSIC_NOTES_ARRAY.add(newNote);
+            soundObject_array.add(newNote);
         }
         
-        updateSelectedNotesArray();
+        updateSelectedSoundObjectArray();
     };
 }

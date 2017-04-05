@@ -28,6 +28,14 @@
                       text="Delete" 
                       accelerator="Shortcut+Backspace" >
             </MenuItem>
+            <MenuItem onAction="#handleGrouping"  
+                      text="Group" 
+                      accelerator="Shortcut+G" >
+            </MenuItem>
+            <MenuItem onAction="#handleUngrouping"  
+                      text="Ungroup" 
+                      accelerator="Shortcut+SHIFT+G" >
+            </MenuItem>
          </items>
       </Menu>
         <Menu text="Actions">

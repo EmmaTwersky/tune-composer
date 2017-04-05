@@ -15,7 +15,7 @@ import javafx.scene.shape.Rectangle;
  * 
  * @author Emma Twersky
  */
-public class NoteBar implements SoundObject{
+public class NoteBar extends SoundObject{
     /**
      * Create variables for the note name, instrument number, channel number,
      * pitch, starting value, and length. 
@@ -39,10 +39,10 @@ public class NoteBar implements SoundObject{
     public boolean selected = true;
     
     /**
-    * Creates pane the note is on and the visual rectangle the note is displayed as.
+    gestureBox* Creates pane the note is on and the visual rectangle the note is displayed as.
     */
     public Pane pane;
-    public Rectangle noteDisplay;
+    public Rectangle rectangleVisual;
 
     /**
     * Creates fixed height and set ranges for pitch. 
@@ -95,17 +95,17 @@ public class NoteBar implements SoundObject{
         
         int xLocation = (int) x;
         int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
-        noteDisplay = new Rectangle(xLocation, yLocation, length, noteHeight);
-        noteDisplay.getStyleClass().add(name);
+        rectangleVisual = new Rectangle(xLocation, yLocation, length, noteHeight);
+        rectangleVisual.getStyleClass().add(name);
 
-        noteDisplay.setOnMousePressed(handleNotePressed);
-        noteDisplay.setOnMouseDragged(handleNoteDragged);
-        noteDisplay.setOnMouseReleased(handleNoteReleased);
+        rectangleVisual.setOnMousePressed(handleNotePressed);
+        rectangleVisual.setOnMouseDragged(handleNoteDragged);
+        rectangleVisual.setOnMouseReleased(handleNoteReleased);
                 
         selected = true;
-        noteDisplay.getStyleClass().add("selectedNote");
+        rectangleVisual.getStyleClass().add("selectedNote");
         pane = compositionPane;
-        pane.getChildren().add(noteDisplay);
+        pane.getChildren().add(rectangleVisual);
     }
     
     /**
@@ -124,10 +124,10 @@ public class NoteBar implements SoundObject{
      * @param y the new top left corner y value of the noteDisplay
      */
     public void move(int x, int y){ 
-        int translateX = x + (int) noteDisplay.getX();
-        int translateY = y + (int) noteDisplay.getY();
-        noteDisplay.setX(translateX);
-        noteDisplay.setY(translateY);
+        int translateX = x + (int) rectangleVisual.getX();
+        int translateY = y + (int) rectangleVisual.getY();
+        rectangleVisual.setX(translateX);
+        rectangleVisual.setY(translateY);
     }
     
     /**
@@ -142,9 +142,9 @@ public class NoteBar implements SoundObject{
         
         int xLocation = (int) x;
         int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
-        noteDisplay.setX(xLocation);
-        noteDisplay.setY(yLocation);
-        noteDisplay.getStyleClass().add(name);
+        rectangleVisual.setX(xLocation);
+        rectangleVisual.setY(yLocation);
+        rectangleVisual.getStyleClass().add(name);
     }
     
     /**
@@ -156,7 +156,7 @@ public class NoteBar implements SoundObject{
         int newLength = length + lengthChange;
         if (newLength > minNoteLength) {
             length = newLength;
-            noteDisplay.setWidth(length);
+            rectangleVisual.setWidth(length);
         }
     }
     
@@ -164,7 +164,7 @@ public class NoteBar implements SoundObject{
      * Deletes note from pane.
      */
     public void delete(){
-        pane.getChildren().remove(noteDisplay);
+        pane.getChildren().remove(rectangleVisual);
     }
     
     /**
@@ -172,9 +172,9 @@ public class NoteBar implements SoundObject{
      */
     public void select(){
         selected = true;
-        noteDisplay.getStyleClass().remove("unselectedNote");
-        noteDisplay.getStyleClass().add("selectedNote");
-        CompositionPaneController.updateSelectedNotesArray(); 
+        rectangleVisual.getStyleClass().remove("unselectedNote");
+        rectangleVisual.getStyleClass().add("selectedNote");
+        CompositionPaneController.updateSelectedSoundObjectArray(); 
     }
     
     /**
@@ -182,9 +182,9 @@ public class NoteBar implements SoundObject{
      */
     public void unselect(){
         selected = false;
-        noteDisplay.getStyleClass().remove("selectedNote");
-        noteDisplay.getStyleClass().add("unselectedNote");
-        CompositionPaneController.updateSelectedNotesArray(); 
+        rectangleVisual.getStyleClass().remove("selectedNote");
+        rectangleVisual.getStyleClass().add("unselectedNote");
+        CompositionPaneController.updateSelectedSoundObjectArray(); 
     }
     
     /**
@@ -212,6 +212,13 @@ public class NoteBar implements SoundObject{
     }
     
     
+    /**
+     * returns x coordinate of right side of rectangle.
+     */
+    public int findRightMostCord() {
+        return (int) rectangleVisual.getX() + length;
+    }
+    
   /**
      * Handles note pressed event. 
      * Sets initial pressed values of the mouse and consumes the event.
@@ -225,7 +232,7 @@ public class NoteBar implements SoundObject{
             initialX = (int) event.getX();
             initialY = (int) event.getY();
             
-            int editLengthMax = (int) noteDisplay.getX() + length;
+            int editLengthMax = (int) rectangleVisual.getX() + length;
             int editLengthMin = editLengthMax - clickToEditLength;
             if (editLengthMin <= initialX && initialX <= editLengthMax) {
                 draggingLength = true;
@@ -255,14 +262,14 @@ public class NoteBar implements SoundObject{
             }
             
             if (draggingLength) {
-                CompositionPaneController.SELECTED_NOTES_ARRAY.forEach((note) -> {
+                CompositionPaneController.selected_soundobject_array.forEach((note) -> {
                     note.changeLength(x - initialX);
                 });
             }
             else {
                 int translateX = (x - initialX);
                 int translateY = (y - initialY);
-                CompositionPaneController.SELECTED_NOTES_ARRAY.forEach((note) -> {
+                CompositionPaneController.selected_soundobject_array.forEach((note) -> {
                     note.move(translateX, translateY);
                 });
             }
@@ -295,8 +302,11 @@ public class NoteBar implements SoundObject{
                 }
             }
             
-            CompositionPaneController.SELECTED_NOTES_ARRAY.forEach((note) -> {
-                note.snapInPlace(note.noteDisplay.getX(), note.noteDisplay.getY());
+            CompositionPaneController.selected_soundobject_array.forEach((soundItem) -> {
+                if (soundItem instanceof SoundObject) {
+                    soundItem.snapInPlace(soundItem.rectangleVisual.getX(), 
+                                          soundItem.rectangleVisual.getY());
+                }
             });     
             
             event.consume();

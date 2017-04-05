@@ -55,6 +55,21 @@
     -fx-stroke: LightGrey; 
 }
 
+
+.selectedGesture{
+    -fx-stroke-width: 3px;
+    -fx-stroke: black;
+    -fx-fill: transparent;
+    -fx-stroke-dasharray: 5;
+}
+
+.unselectedGesture{
+    -fx-stroke-width: 2px;
+    -fx-stroke: grey;
+    -fx-fill: transparent;
+    -fx-stroke-dasharray: 5;
+}
+
 /* Sets ID for staff and measure lines. */
 #staffLine{
     -fx-stroke: Grey;

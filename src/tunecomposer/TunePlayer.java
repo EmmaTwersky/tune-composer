@@ -38,7 +38,7 @@ public class TunePlayer {
      */
     protected void play() {
         playSequence();
-        redBarObj.playAnimation(CompositionPaneController.MUSIC_NOTES_ARRAY);
+        redBarObj.playAnimation(CompositionPaneController.soundObject_array);
     }
     
     /**
@@ -57,7 +57,7 @@ public class TunePlayer {
      * Adds all NoteBar objects in musicNotesArray to MidiPlayer.
      */
     private void addNotesArrayToMidiPlayer() {
-        for (NoteBar note: CompositionPaneController.MUSIC_NOTES_ARRAY) {            
+        for (NoteBar note: CompositionPaneController.soundObject_array) {            
             player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + note.channel, 
                     note.instrument, 0, 0, note.channel);
             player.addNote(note.pitch, VOLUME, note.startTick, 
