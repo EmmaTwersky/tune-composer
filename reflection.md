@@ -21,7 +21,7 @@ implement a funcitoning program that was refactored to this point due to lack of
 finish this refactoring for the next project and make it very elegant.
 
 ## Time Spent:
-> 
+> As a team, we spend about 70 hours on this project.
 
 ## Team:
 > Our team worked really well on this project. We communicated really well on meeting times and pair-programmed really well
