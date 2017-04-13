@@ -4,42 +4,42 @@
 */
 
 /* Sets colors for each of the eight instrument's text and note bars. */
-.Piano{
+#Piano{
     -fx-text-fill: FireBrick;
     -fx-fill: FireBrick;
 }
 
-.Harpsichord{
+#Harpsichord{
     -fx-text-fill: Tomato;
     -fx-fill: Tomato;
 }
 
-.Marimba{
+#Marimba{
     -fx-text-fill: Goldenrod;
     -fx-fill: Goldenrod;
 }
 
-.Organ{
+#Organ{
     -fx-text-fill: MediumAquamarine;
     -fx-fill: MediumAquamarine; 
 }
 
-.Accordion{
+#Accordion{
     -fx-text-fill: SeaGreen;
     -fx-fill: SeaGreen;  
 }
 
-.Guitar{
+#Guitar{
     -fx-text-fill: CornflowerBlue;
     -fx-fill: CornflowerBlue;
 }
 
-.Violin{
+#Violin{
     -fx-text-fill: Violet;
     -fx-fill: Violet;
 }
 
-.FrenchHorn{
+#FrenchHorn{
     -fx-text-fill: MediumVioletRed;
     -fx-fill: MediumVioletRed;
 }
@@ -80,12 +80,12 @@
 }
 
 /* Sets style for the red bar. */
-#redBar{
+#RED_BAR{
     -fx-fill: Red;
 }
 
 /* Sets selection window style. */
-#selectionWindow{
+#SELECTION_WINDOW{
     -fx-fill: None;
     -fx-stroke-width: 3px; 
     -fx-stroke: Aqua; 

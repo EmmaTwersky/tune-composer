@@ -1,25 +1,12 @@
 package tunecomposer;
 
-import javafx.scene.layout.Pane;
-import javax.sound.midi.ShortMessage;
-
 /**
  * This class stores and controls the notes and creates the MidiPlayer to 
  * manipulate the tune.
  *
  * @author EmmaTwersky
  */
-public class TunePlayer {    
-    /**
-     * Set volume to maximum.      
-     */
-    private static final int VOLUME = 127;
-    
-    /**
-     * Initialize a RedBar to track the progression of time.
-     */
-    private final RedBar redBarObj;
-    
+public class TunePlayer {        
     /**
      * One midi player is used throughout, so that it can be stopped.
      * Set resolution to 100 and beats per minute to 60.
@@ -28,9 +15,8 @@ public class TunePlayer {
     private final int beatsPerMinute = 60;
     private final MidiPlayer player;
     
-    TunePlayer(Pane compositionPane) {
+    TunePlayer() {
         this.player = new MidiPlayer(resolution, beatsPerMinute);
-        redBarObj = new RedBar(compositionPane);
     }
     
     /**
@@ -38,7 +24,6 @@ public class TunePlayer {
      */
     protected void play() {
         playSequence();
-        redBarObj.playAnimation(CompositionPaneController.soundObject_array);
     }
     
     /**
@@ -57,8 +42,8 @@ public class TunePlayer {
      * Adds all NoteBar objects in musicNotesArray to MidiPlayer.
      */
     private void addNotesArrayToMidiPlayer() {
-        for (SoundObject soundItem: CompositionPaneController.soundObject_array) {            
-            soundItem.addToMidi(VOLUME, player);
+        for (SoundObject sObj: SoundObjectPaneController.SOUNDOBJECT_ARRAY) {
+            sObj.addToMidiPlayer(player);
         }
     }
     
@@ -68,6 +53,5 @@ public class TunePlayer {
     public void stop() {
         player.stop();
         player.clear();
-        redBarObj.stopAnimation();
-    } 
+    }
 }

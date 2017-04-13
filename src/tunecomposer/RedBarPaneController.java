@@ -1,5 +1,4 @@
 // Refactor handler into another method.
-// Clarify frame rate's purpose of value 10??
 package tunecomposer;
 
 import java.util.ArrayList;
@@ -8,7 +7,8 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.layout.Pane;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -18,63 +18,62 @@ import javafx.util.Duration;
  * 
  * @author Emma Twersky
  */
-public class RedBar {
+public class RedBarPaneController implements Initializable {
     /**
      * Creates time line for animation and Rectangle red bar object.
      */
-    private final Timeline timeline;
-    private final Rectangle redBar;
+    private Timeline timeline;
+    
+    @FXML
+    private Rectangle RED_BAR;
     
     /**
-     * Sets screen height to 1280 and width to 1 pixel.
+     * Sets frame rate, AKA animation speed, to 10.
      */
-    private static final int SCREEN_HEIGHT = 1280;
-    private static final int REDBAR_WIDTH = 1;
     private static final int FRAME_RATE = 10;
     
     /**
-     * Sets final parent pane and initializes end of notes to time 0.
+     * Initializes end of notes to time 0.
      */
-    private final Pane parentPane;
     private int compositionEnd = 0;
+    
+    @FXML
+    public CompositionPaneController compositionPaneController;
+    
+    @FXML
+    public RedBarPaneController redBarPaneController;
     
     /**
      * Creates RedBar object on given pane. 
      * Sets line to have redBarWidth and height of screenHeight,
      * begins at top left corner of pane (0,0).
-     * 
-     * @param pane the pane the RedBar is on
      */
-    RedBar(Pane pane) {
-        parentPane = pane;
-        redBar = new Rectangle(0, 0, REDBAR_WIDTH, SCREEN_HEIGHT);
-        redBar.setId("redBar");
-        parentPane.getChildren().add(redBar);
+    @FXML
+    @Override
+    public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
         timeline = new Timeline();
-        redBar.setVisible(false);
+        RED_BAR.setVisible(false);
     }
     
     /**
      * Moves the line across the screen at the speed set by movementSpeed, 
      * disappears at end of last note displayed.
-     * 
-     * @param noteList List of NoteBar objects that visually represent notes on the screen
      */
-    public void playAnimation(ArrayList<SoundObject> soundObjList) {
+    public void playAnimation() {
         timeline.stop();
         timeline.getKeyFrames().clear();
-        redBar.setX(0);
-        redBar.setVisible(true);
+        RED_BAR.setX(0);
+        RED_BAR.setVisible(true);
         
-        findEndCoordinate(soundObjList);
+        findEndCoordinate(SoundObjectPaneController.SOUNDOBJECT_ARRAY);
         
-        KeyValue kv = new KeyValue(redBar.xProperty(), compositionEnd);
+        KeyValue kv = new KeyValue(RED_BAR.xProperty(), compositionEnd);
         Duration duration = Duration.millis(compositionEnd * FRAME_RATE);
                 
         EventHandler onFinished = (EventHandler<ActionEvent>) (ActionEvent event) -> {
             timeline.stop();
-            redBar.setVisible(false);
-            redBar.setX(0);  
+            RED_BAR.setVisible(false);
+            RED_BAR.setX(0);  
         };
         
         KeyFrame kf = new KeyFrame(duration, onFinished, kv);
@@ -87,8 +86,8 @@ public class RedBar {
      */
     public void stopAnimation() {
         timeline.stop();
-        redBar.setVisible(false);
-        redBar.setX(0);
+        RED_BAR.setVisible(false);
+        RED_BAR.setX(0);
     }
     
     /**
@@ -96,18 +95,12 @@ public class RedBar {
      * 
      * @param noteList the list of notes being played
      */
-    private void findEndCoordinate(ArrayList<SoundObject> soundList) {
-//        noteList.stream().map((note) -> note.startTick + note.length).filter(
-//                (noteEnd) -> (noteEnd > compositionEnd)).forEachOrdered((noteEnd) -> {
-//            compositionEnd = noteEnd;
-//        });
-        int rightMost = 0;
-        for (SoundObject item : soundList){
-            int itemRightmost = item.findRightMostCord();
-            if (itemRightmost > rightMost) {
-                rightMost = itemRightmost;
-            }
+    private void findEndCoordinate(ArrayList<SoundObject> itemList) {
+        for (SoundObject sObj : itemList) {
+            Rectangle r = sObj.visualRectangle;
+            int end = (int) (r.getX() + r.getWidth());
+            if (end > compositionEnd)
+                compositionEnd = end;
         }
-        compositionEnd = rightMost;
     } 
 }

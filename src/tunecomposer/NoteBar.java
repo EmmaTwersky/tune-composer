@@ -1,7 +1,4 @@
-// Consider seperating model and view? (note from Janet but unclear what this means)
 // Shorten handlers with stategy pattern or abstraction of methods?
-// Fix bug in which some note bars are no longer able to display that they are selected. 
-//      However, they are edited with the other note bars.
 package tunecomposer;
 
 import javafx.event.EventHandler;
@@ -19,29 +16,18 @@ import javax.sound.midi.ShortMessage;
 public class NoteBar extends SoundObject{
     /**
      * Create variables for the note name, instrument number, channel number,
-     * pitch, starting value, and length. 
+ pitch, starting value, and duration. 
      */
     public final String name;
     public final int instrument;
     public final int channel;
     public int pitch;
     public int startTick;
-    public int length;
+    public int duration;
     public static final int HEIGHT = 10;
     
     /**
-     * Gesture this note is grouped under. Does not reference most outward 
-     * gesture. Null if this is not in any gesture.
-     */
-    private Gesture parentGesture;
-    
-    /**
-    * Creates boolean value of if the note is currently selected.
-    */
-    public boolean selected = true;
-    
-    /**
-    gestureBox* Creates pane the note is on and the visual rectangle the note is displayed as.
+    Creates pane the note is on and the visual rectangle the note is displayed as.
     */
     public Pane pane;
 
@@ -50,63 +36,50 @@ public class NoteBar extends SoundObject{
     */
     private final int pitchRange = 128;
     private final int noteHeight = 10;
+    private static final int VOLUME = 127;
     
     /**
-    * Sets default length, minimum length and default click range to edit length. 
+    * Sets default duration, minimum duration and default click range to edit duration. 
     */
     private final int defaultLength = 100;
-    private final int clickToEditLength = 10; // 10 worked better, but 5 was indicated
-    private final int minNoteLength = 5;
     
     /**
      * Load InstrumentInfo HashMap to look up instrument key values.
      */
     private final InstrumentInfo instrumentInfo = new InstrumentInfo();
-    
-    /**
-     * Creates instances for the initial pressed values of the mouse for events.
-     */
-    private int initialX;
-    private int initialY;
-    
-    /**
-     * Creates boolean to ensure dragging to change length is a separate instance.
-     */
-    private boolean draggingLength;
         
     /**
      * Initialize the note bar object and variables, then constructs the display
      * and adds the note to the pane.
      * 
-     * @param instrumName the string name of the instrument
      * @param x the top left corner x value of the note clicked
      * @param y the top left corner y value of the note clicked
-     * @param compositionPane the pane the note is created on
      */
-    NoteBar(double x, double y, Pane compositionPane){
+    NoteBar(double x, double y, Pane musicPane){
         name = InstrumentToolBarController.selectedInstrument;
         instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
         
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;
-        length = defaultLength;
-        
-        parentGesture = null;
-        
+        duration = defaultLength;
+                
         int xLocation = (int) x;
         int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
-        rectangleVisual = new Rectangle(xLocation, yLocation, length, noteHeight);
-        rectangleVisual.getStyleClass().add(name);
+        visualRectangle = new Rectangle(xLocation, yLocation, duration, noteHeight);
+        visualRectangle.setId(name);
 
-        rectangleVisual.setOnMousePressed(handleNotePressed);
-        rectangleVisual.setOnMouseDragged(handleNoteDragged);
-        rectangleVisual.setOnMouseReleased(handleNoteReleased);
+        visualRectangle.setOnMousePressed(handleNotePressed);
+        visualRectangle.setOnMouseDragged(handleNoteDragged);
+        visualRectangle.setOnMouseReleased(handleNoteReleased);
                 
-        selected = true;
-        rectangleVisual.getStyleClass().add("selectedNote");
-        pane = compositionPane;
-        pane.getChildren().add(rectangleVisual);
+        visualRectangle.getStyleClass().add("selectedNote");
+        
+        pane = musicPane;
+        pane.getChildren().add(visualRectangle);
+        select();
+
+//        containedSoundObjects.add(this);
     }
     
     /**
@@ -127,56 +100,42 @@ public class NoteBar extends SoundObject{
      */
     @Override
     public void move(int x, int y){ 
-        int translateX = x + (int) rectangleVisual.getX();
-        int translateY = y + (int) rectangleVisual.getY();
-        rectangleVisual.setX(translateX);
-        rectangleVisual.setY(translateY);
+        int translateX = x + (int) visualRectangle.getX();
+        int translateY = y + (int) visualRectangle.getY();
+        visualRectangle.setX(translateX);
+        visualRectangle.setY(translateY);
     }
     
     /**
      * Fixes note to sit in-between staff lines.
-     * 
-     * @param x the top left corner x value of the noteDisplay
-     * @param y the top left corner y value of the noteDisplay
      */
     @Override
-    public void snapInPlace(double x, double y){        
-        pitch = pitchRange - (int) y / noteHeight;
-        startTick = (int) x;
-        
-        int xLocation = (int) x;
-        int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
-        rectangleVisual.setX(xLocation);
-        rectangleVisual.setY(yLocation);
-        rectangleVisual.getStyleClass().add(name);
-    }
-    
     public void snapInPlace() {
-        int x = (int) rectangleVisual.getX();
-        int y = (int) rectangleVisual.getY();
+        int x = (int) visualRectangle.getX();
+        int y = (int) visualRectangle.getY();
         
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;
         
         int xLocation = (int) x;
         int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
-        rectangleVisual.setX(xLocation);
-        rectangleVisual.setY(yLocation);
-        rectangleVisual.getStyleClass().add(name);
+        visualRectangle.setX(xLocation);
+        visualRectangle.setY(yLocation);
+        visualRectangle.getStyleClass().add(name);
     }
     
     
     /**
-     * Changes note length.
+     * Changes note duration.
      * 
-     * @param lengthChange the amount to increment the length
+     * @param lengthChange the amount to increment the duration
      */
     @Override
     public void changeLength(int lengthChange){ 
-        int newLength = length + lengthChange;
+        int newLength = duration + lengthChange;
         if (newLength > minNoteLength) {
-            length = newLength;
-            rectangleVisual.setWidth(length);
+            duration = newLength;
+            visualRectangle.setWidth(duration);
         }
     }
     
@@ -185,7 +144,7 @@ public class NoteBar extends SoundObject{
      */
     @Override
     public void delete(){
-        pane.getChildren().remove(rectangleVisual);
+        pane.getChildren().remove(visualRectangle);
     }
     
     /**
@@ -193,10 +152,9 @@ public class NoteBar extends SoundObject{
      */
     @Override
     public void select(){
-        selected = true;
-        rectangleVisual.getStyleClass().removeAll("unselectedNote");
-        rectangleVisual.getStyleClass().add("selectedNote");
-        CompositionPaneController.updateSelectedSoundObjectArray(); 
+        visualRectangle.getStyleClass().removeAll("unselectedNote");
+        visualRectangle.getStyleClass().add("selectedNote");
+        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
     }
     
     /**
@@ -204,10 +162,9 @@ public class NoteBar extends SoundObject{
      */
     @Override
     public void unselect(){
-        selected = false;
-        rectangleVisual.getStyleClass().removeAll("selectedNote");
-        rectangleVisual.getStyleClass().add("unselectedNote");
-        CompositionPaneController.updateSelectedSoundObjectArray(); 
+        visualRectangle.getStyleClass().removeAll("selectedNote");
+        visualRectangle.getStyleClass().add("unselectedNote");
+        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
     }
     
     /**
@@ -218,63 +175,7 @@ public class NoteBar extends SoundObject{
         if (selected) {unselect();}
         else {select();}
     }
-    
-    /**
-     * Returns parent gesture that this note was originally grouped with;
-     * ie. will not return a gesture's parent gesture. Null if it has no parent.
-     * @return 
-     */
-    @Override
-    public Gesture getParentGesture() {
-        return parentGesture;
-    }
-    
-    /**
-     * Set parent gesture for this note. Set to null if ungrouping. Do not 
-     * overwrite parentGesture if not null.
-     * @param parent
-     */
-    @Override
-    public void setParentGesture(Gesture parent) {
-        parentGesture = parent;
-    }
-    
-    
-    /**
-     * returns x coordinate of right side of rectangle.
-     * @return 
-     */
-    @Override
-    public int findRightMostCord() {
-        return (int) rectangleVisual.getX() + length;
-    }
-    
-    public int findLeftMostCord() {
-        return (int) rectangleVisual.getX();
-    }
-    
-    public int findTopMostCord() {
-        return (int) rectangleVisual.getY();
-    }
-
-    public int findBottomMostCord() {
-        return (int) rectangleVisual.getY() + HEIGHT;
-    }
-
-    
-    /**
-     * Adds note to MidiPlayer.
-     * @param vol
-     * @param player 
-     */
-    @Override
-    public void addToMidi(int vol, MidiPlayer player){
-        player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + channel, 
-                            instrument, 0, 0, channel);
-        player.addNote(pitch, vol, startTick, 
-                            length, channel, 0);
-    }
-    
+        
   /**
      * Handles note pressed event. 
      * Sets initial pressed values of the mouse and consumes the event.
@@ -288,7 +189,7 @@ public class NoteBar extends SoundObject{
             initialX = (int) event.getX();
             initialY = (int) event.getY();
             
-            int editLengthMax = (int) rectangleVisual.getX() + length;
+            int editLengthMax = (int) visualRectangle.getX() + duration;
             int editLengthMin = editLengthMax - clickToEditLength;
             if (editLengthMin <= initialX && initialX <= editLengthMax) {
                 draggingLength = true;
@@ -300,7 +201,7 @@ public class NoteBar extends SoundObject{
     
     /**
      * Handles note dragged event.
-     * Selects and drags to move the note or drags to change length, 
+     * Selects and drags to move the note or drags to change duration, 
      * based on note click location conventions. Translates note and consumes 
      * event. Also updates note lists.
      * 
@@ -311,23 +212,21 @@ public class NoteBar extends SoundObject{
         public void handle(MouseEvent event) {
             int x = (int) event.getX();
             int y = (int) event.getY();
-            
-            SoundObject topSoundObject = getTopParentGesture();            
-            
+                        
             if (!selected) {
-                CompositionPaneController.resetSelectedNotesArray(); 
-                topSoundObject.select();
+                SoundObjectPaneController.unselectAllSoundObjects(); 
+                select();
             }
             
             if (draggingLength) {
-                CompositionPaneController.selected_soundobject_array.forEach((soundItem) -> {
+                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((soundItem) -> {
                     soundItem.changeLength(x - initialX);
                 });
             }
             else {
                 int translateX = (x - initialX);
                 int translateY = (y - initialY);
-                CompositionPaneController.selected_soundobject_array.forEach((soundItem) -> {
+                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((soundItem) -> {
                     soundItem.move(translateX, translateY);
                 });
             }
@@ -349,45 +248,31 @@ public class NoteBar extends SoundObject{
         @Override
         public void handle(MouseEvent event) {
             draggingLength = false;
-            
-            SoundObject topSoundObject = getTopParentGesture();
-            
+                        
             if (event.isStillSincePress()) {
                 if (event.isControlDown()) {
-                    topSoundObject.toggleSelection();
+                    toggleSelection();
                 }
                 else {
-                    CompositionPaneController.resetSelectedNotesArray();
-                    topSoundObject.select();
+                    SoundObjectPaneController.unselectAllSoundObjects();
+                    select();
                 }
             }
             
-            for (SoundObject soundItem : 
-                        CompositionPaneController.selected_soundobject_array) {
-                
+            for (SoundObject soundItem : SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
                 soundItem.snapInPlace();
-                
             }
-            
-//            CompositionPaneController.selected_soundobject_array.forEach((soundItem) -> {
-//                soundItem.snapInPlace(soundItem.rectangleVisual.getX(), 
-//                                      soundItem.rectangleVisual.getY());
-//            });     
-            
+              
             event.consume();
         }
     };
-    
-    
-    /**
-     * Find and return the most encapsulating gesture to this note.
-     * @return 
-     */
-    public SoundObject getTopParentGesture() {
-        SoundObject tmp = this;
-        while (tmp.getParentGesture() != null) {
-            tmp = tmp.getParentGesture();
-        }
-        return tmp;
+
+    @Override
+    public void addToMidiPlayer(MidiPlayer player) {
+        player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + this.channel, 
+                this.instrument, 0, 0, this.channel);
+        player.addNote(this.pitch, VOLUME, this.startTick, 
+                this.duration, this.channel, 0);
     }
+    
 }

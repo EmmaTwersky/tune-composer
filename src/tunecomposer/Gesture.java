@@ -1,74 +1,80 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer;
-import java.util.ArrayList;
-import javafx.event.EventType;
-import javafx.fxml.FXML;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-/**
- *
- * @author lonbern
- */
+
 public class Gesture extends SoundObject{
+
+    public Pane pane;
+         
+    public double topX, topY, bottomX, bottomY;
     
     
-    /**
-     * Array of SoundObjects that can include Gestures or NoteBars. Does not contain
-     * all elements within the gesture, only ungrouped notes and outermost gestures.
-     */
-    private ArrayList<SoundObject> itemsInGesture = new ArrayList<SoundObject>();
-    /**
-     * The gesture that this is contained within. If null, then this has no 
-     * encapsulating gesture.
-     */
-    private Gesture parentGesture;
-    private boolean selected;
-    
-    @FXML
-    public Pane compositionPane;
-    
-    
-    Gesture(ArrayList<SoundObject> selectedItems, Pane compositionPane){
-        for (SoundObject item : selectedItems){
-            item.setParentGesture(this);
-            itemsInGesture.add(item);
-        }
+    Gesture(Pane musicPane){
+        SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
+            sObj.containedSoundObjects.forEach((note) -> {
+                this.containedSoundObjects.add(note);
+            });
+        });
         
-        this.makeGestureBox();
-        compositionPane.getChildren().add(rectangleVisual);
+        visualRectangle = new Rectangle(0, 0, 0, 0);
+        visualRectangle.getStyleClass().add("selectedGesture");
+
+        visualRectangle.setOnMousePressed(handleGesturePressed);
+        visualRectangle.setOnMouseDragged(handleGestureDragged);
+        visualRectangle.setOnMouseReleased(handleGestureReleased);
         
-        select();
+        refreshVisualRectangle();
+        
+        pane = musicPane;
+        pane.getChildren().add(visualRectangle);
     }
     
     /**
-     * Creates gestureBox rectangle using dimensions of objects in itemsInGesture.
-     * 
+     * Refreshes the current coordinates of the visualRectangle.
      */
-    private void makeGestureBox(){
-        //rectangleVisual = new Rectangle(1,1,1,1);
-        int left = findLeftMostCord();
-        int right = findRightMostCord();
-        int top = findTopMostCord();
-        int bott = findBottomMostCord();
-        int width = right - left;
-        int height = bott - top;
-        rectangleVisual = new Rectangle(left, top, width, height);
+    private void refreshVisualRectangle(){
+        setVisualRectangleCoords();
+        double width = bottomX - topX;
+        double height = topY - bottomY;
+        visualRectangle.setX(topX);
+        visualRectangle.setY(topY);
+        visualRectangle.setWidth(width);
+        visualRectangle.setHeight(height);
+    }
+    
+    /**
+     * Finds and sets the current surrounding coordinates of the Gesture.
+     */
+    public void setVisualRectangleCoords() {
+        for (SoundObject sObj : containedSoundObjects){
+            Rectangle r = sObj.visualRectangle;
+            if (topX > r.getX()) {
+                topX = r.getX();
+            }
+            if (topY > r.getY()) {
+                topY = r.getY();
+            }
+            if (bottomX < r.getX() + r.getWidth()) {
+                bottomX = r.getX() + r.getWidth();
+            }
+            if (bottomY < r.getY() + r.getHeight()) {
+                bottomY = r.getY() + r.getHeight();
+            }
+        }
     }
     
     /**
      * Change the selection state of all notes contained within this gesture.
-     * Will not set them all to the same value, only negates each note's current
+     * Will not set them all to the same value, only negates each current
      * state. 
      */
     @Override
     public void toggleSelection(){
-        for (int i=0; i<itemsInGesture.size();i++){
-            itemsInGesture.get(i).toggleSelection();
-        }
+        this.containedSoundObjects.forEach((note) -> {
+            note.toggleSelection();
+        });
     }
     
     
@@ -77,246 +83,185 @@ public class Gesture extends SoundObject{
      */
     @Override
     public void select(){
-        for (int i=0; i<itemsInGesture.size();i++){
-            itemsInGesture.get(i).select();
-        }
+        this.containedSoundObjects.forEach((note) -> {
+            note.select();
+        });
         
         selected = true;
-        rectangleVisual.getStyleClass().removeAll();
-        rectangleVisual.getStyleClass().add("selectedGesture");
+        visualRectangle.getStyleClass().removeAll("unselectedGesture");
+        visualRectangle.getStyleClass().add("selectedGesture");
     }
     
     
     /**
-     * Sets all notes within this group as unselected
+     * Sets all notes within this group as unselected.
      */
     @Override
     public void unselect(){
-        for (int i=0; i<itemsInGesture.size();i++){
-            itemsInGesture.get(i).unselect();
-        }
+        this.containedSoundObjects.forEach((note) -> {
+            note.unselect();
+        });
         
         selected = false;
-        rectangleVisual.getStyleClass().removeAll();
-        rectangleVisual.getStyleClass().add("unselectedGesture");
+        visualRectangle.getStyleClass().removeAll("selectedGesture");
+        visualRectangle.getStyleClass().add("unselectedGesture");
     }
     
     
     /**
-     * returns whether object is selected.
+     * Returns whether object is selected.
+     * 
      * @return boolean representing state of selected
      */
     @Override
     public boolean isSelected() {
         return selected;
-    }
-    
-    
-    /**
-     * returns array of all first-depth items of this gesture.
-     * @return 
-     */
-    public ArrayList<SoundObject> getItemsInGesture() {
-        return itemsInGesture;
-    }
-    
-    
-    /**
-     * Prepares for destruction of this object.
-     * Sets parentGesture of all objects in itemsInGesture to null. Deletes 
-     * gestureBox rectangle. No reference of this obj will exist.
-     */
-    public void ungroup(){
-        for (SoundObject item : itemsInGesture){
-            item.setParentGesture(null);
-        }
-        compositionPane.getChildren().remove(rectangleVisual);
-    }
-    
+    }        
     
     /**
      * Shifts all elements of gesture by given increment. This move includes notes
      * and gestureBoxes.
      * 
-     * @param xInc number of horizontal pixels to shift notes
-     * @param yInc number of vertical pixels to shift notes
+     * @param x number of horizontal pixels to shift notes
+     * @param y number of vertical pixels to shift notes
      */
     @Override
-    public void move(int xInc, int yInc){
-        for (SoundObject item : itemsInGesture){
-            item.move(xInc, yInc);
-        }
-        makeGestureBox();
+    public void move(int x, int y){
+        containedSoundObjects.forEach((note) -> {
+            note.move(x, y);
+        });
+        refreshVisualRectangle();
     }
     
     /**
      * Resizes all notes of gesture by given increment. 
      * Also updates the size of all gestureBoxes.
      * 
-     * @param xInc number of pixels to change note duration by
+     * @param l number of pixels to change note duration by
      */
     @Override
-    public void changeLength(int inc){
-        System.out.println(itemsInGesture);
-        for (SoundObject item : itemsInGesture){
-            item.changeLength(inc);
-        }
-        makeGestureBox();
-        System.out.println(itemsInGesture);
+    public void changeLength(int l){
+        containedSoundObjects.forEach((note) -> {
+            note.changeLength(l);
+        });
+        refreshVisualRectangle();
     }
     
     /**
-     * Sets parentGesture field to given value. If null, then sets field to null.
-     * Useful for updating relationships of gestures and creating the hierarchy.
-     * Not for referencing the outer-most Gesture. 
-     * 
-     * @param parent the Gesture object that this object has been grouped in.
-     */
-    @Override
-    public void setParentGesture(Gesture parent){
-        parentGesture = parent;
-    }
-    
-    
-    /**
-     * Returns this objects parentGesture.
-     */
-    @Override
-    public Gesture getParentGesture(){
-        return parentGesture;
-    }
-    
-    
-    /**
-     * Recursiveley snap all items in gesture to closest note.
-     * @param x
-     * @param y 
-     */
-    @Override
-    public void snapInPlace(double x, double y) {
-        for (SoundObject item : itemsInGesture){
-            item.snapInPlace(x, y);
-        }
-        makeGestureBox();
-    }
-    
-    /**
-     * Recursiveley snap all items in gesture to closest note
+     * Recursively snap all items in gesture to closest note.
      */
     @Override
     public void snapInPlace() {
-        for (SoundObject item : itemsInGesture){
-            item.snapInPlace();
-        }
-        makeGestureBox();
+        containedSoundObjects.forEach((note) -> {
+            note.snapInPlace();
+        });
+        refreshVisualRectangle();
     }
     
+    /**
+     * Prepares to un-group the gesture.
+     */
+    public void ungroup(){    
+        pane.getChildren().remove(visualRectangle);
+    }
     
     /**
-     * delete all items in this gesture and the border surrounding them.
+     * Delete all items in this gesture and the border surrounding them.
      */
     @Override
     public void delete(){    
-        for (SoundObject item : itemsInGesture){
-            item.delete();
-        }
-        compositionPane.getChildren().remove(rectangleVisual);
+        containedSoundObjects.forEach((note) -> {
+            note.delete();
+        });
+        pane.getChildren().remove(visualRectangle);
     }
     
+    @Override
+    public void addToMidiPlayer(MidiPlayer player) {
+        this.containedSoundObjects.forEach((sObj) -> {
+            sObj.addToMidiPlayer(player);
+        });
+    }
+    
+  /**
+     * Handles note pressed event. 
+     * Sets initial pressed values of the mouse and consumes the event.
+     * 
+     * @param event the mouse click event
+     */
+    EventHandler<MouseEvent> handleGesturePressed = (MouseEvent event) -> {
+        CompositionPaneController.tunePlayerObj.stop();
+        initialX = (int) event.getX();
+        initialY = (int) event.getY();
+        
+        int editLengthMax = (int) (visualRectangle.getX() + visualRectangle.getWidth());
+        int editLengthMin = editLengthMax - clickToEditLength;
+        if (editLengthMin <= initialX && initialX <= editLengthMax) {
+            draggingLength = true;
+        }
+        
+        event.consume();
+    };
     
     /**
-     * find x value of the rightmost side of the farthest right note.
-     * @return 
+     * Handles note dragged event.
+     * Selects and drags to move the note or drags to change duration, 
+     * based on note click location conventions. Translates note and consumes 
+     * event. Also updates note lists.
+     * 
+     * @param event the mouse click event
      */
-    @Override
-    public int findRightMostCord() {
-        int rightMost = 0;
-        for (SoundObject item : itemsInGesture){
-            int itemRightmost = item.findRightMostCord();
-            if (itemRightmost > rightMost) {
-                rightMost = itemRightmost;
+    EventHandler<MouseEvent> handleGestureDragged = (MouseEvent event) -> {
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+        
+        if (!selected) {
+            SoundObjectPaneController.unselectAllSoundObjects();
+            select();
+        }
+        
+        if (draggingLength) {
+            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
+                sObj.changeLength(x - initialX);
+            });
+        }
+        else {
+            int translateX = (x - initialX);
+            int translateY = (y - initialY);
+            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
+                sObj.move(translateX, translateY);
+            });
+        }
+        
+        initialX = x;
+        initialY = y;
+        event.consume();
+    };
+    
+    /**
+     * Handles mouse released.
+     * Snaps note into place on lines, handles click note selections
+     * based on the control button and consumes event.
+     * 
+     * @param event the mouse click event
+     */
+    EventHandler<MouseEvent> handleGestureReleased = (MouseEvent event) -> {
+        draggingLength = false;
+        
+        if (event.isStillSincePress()) {
+            if (event.isControlDown()) {
+                toggleSelection();
+            }
+            else {
+                SoundObjectPaneController.unselectAllSoundObjects();
+                select();
             }
         }
-        return rightMost;
-    }
-    
-    
-    /**
-     * Find the leftmost coordinate out of all rectangles contained within
-     * gesture.
-     * @return 
-     */
-    @Override
-    public int findLeftMostCord() {
-        int leftMost = 0;
-        for (SoundObject item : itemsInGesture){
-            int itemLeftmost = item.findLeftMostCord();
-            if (itemLeftmost < leftMost) {
-                leftMost = itemLeftmost;
-            }
-        }
-        return leftMost;
-    }
-
-    
-    /**
-     * Find topmost coordinate out of all rectangles contained within this gesture.
-     * @return 
-     */
-    @Override
-    public int findTopMostCord() {
-        int topMost = 0;
-        for (SoundObject item : itemsInGesture){
-            int itemTopmost = item.findTopMostCord();
-            if (itemTopmost < topMost) {
-                topMost = itemTopmost;
-            }
-        }
-        return topMost;
-    }
-    
-    
-    /**
-     * Find bottom-most coordinate out of all rectangles contained within this
-     * gesture.
-     * @return 
-     */
-    @Override
-    public int findBottomMostCord() {
-        int bottomMost = 0;
-        for (SoundObject item : itemsInGesture){
-            int itemBottomMost = item.findBottomMostCord();
-            if (itemBottomMost > bottomMost) {
-                bottomMost = itemBottomMost;
-            }
-        }
-        return bottomMost;
-    }
-    
-    
-    /**
-     *
-     * @param vol
-     * @param player
-     */
-    @Override
-    public void addToMidi(int vol, MidiPlayer player) {
-        for (SoundObject item : itemsInGesture){
-            item.addToMidi(vol, player);
-        }
-
-    }
-    
-    
-    /**
-     * Find and return the most encapsulating gesture to this note.
-     * @return 
-     */
-    public SoundObject getTopParentGesture() {
-        SoundObject tmp = this;
-        while (tmp.getParentGesture() != null) {
-            tmp = tmp.getParentGesture();
-        }
-        return tmp;
-    }
+        
+        SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
+            sObj.snapInPlace();
+        });
+        
+        event.consume();
+    };
 }

@@ -1,52 +1,44 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer;
 
+import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 
-/**
- *
- * @author vivancr
- */
 public abstract class SoundObject {
     
      /**
      * A rectangle to display on the screen.
      */
-    public Rectangle rectangleVisual;
+    public Rectangle visualRectangle;
+    public ArrayList<SoundObject> containedSoundObjects;
     
+    public final int clickToEditLength = 10; // 10 worked better, but 5 was indicated
+    public final int minNoteLength = 5;
+    
+    /**
+    * Creates boolean value of if the note is currently selected.
+    */
+    public boolean selected = true;
+    
+    /**
+     * Creates instances for the initial pressed values of the mouse for events.
+     */
+    public int initialX;
+    public int initialY;
+
+    /**
+     * Creates boolean to ensure dragging to change duration is a separate instance.
+     */
+    public boolean draggingLength;
     
     public abstract void select();
     public abstract void unselect();
     public abstract void toggleSelection();
     public abstract boolean isSelected();
-    public abstract void setParentGesture(Gesture parent);
-    public abstract Gesture getParentGesture();
+    
     public abstract void move(int x, int y);
-    public abstract void delete();
     public abstract void changeLength(int lengthInc);
-    public abstract void snapInPlace(double x, double y);
     public abstract void snapInPlace();
-    public abstract int findRightMostCord();
-    public abstract int findLeftMostCord();
-    public abstract int findTopMostCord();
-    public abstract int findBottomMostCord();
-    public abstract void addToMidi(int vol, MidiPlayer player);
+    public abstract void delete();
     
-    
-    public abstract SoundObject getTopParentGesture();
-//    /**
-//     * Find and return the most encapsulating gesture to this note.
-//     * @return 
-//     */
-//    public SoundObject getTopParentGesture() {
-//        SoundObject tmp = this;
-//        while (tmp.getParentGesture() != null) {
-//            tmp = tmp.getParentGesture();
-//        }
-//        return tmp;
-//    }
+    public abstract void addToMidiPlayer(MidiPlayer player);
 }

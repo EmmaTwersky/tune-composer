@@ -3,8 +3,6 @@ package tunecomposer;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
-import javafx.scene.Parent;
-import javafx.scene.layout.Pane;
 
 /**
  * This class controls the menu bar and menu bar actions.
@@ -12,6 +10,12 @@ import javafx.scene.layout.Pane;
  * @author Emma Twersky
  */
 public class MenuBarController {  
+    @FXML
+    public CompositionPaneController compositionPaneController;
+ 
+    @FXML
+    public SoundObjectPaneController soundObjectPaneController;
+        
     /**
      * Handles the play button from the Actions menu.
      * 
@@ -19,7 +23,7 @@ public class MenuBarController {
      */
     @FXML 
     protected void handlePlayScaleButtonAction(ActionEvent event) {
-        CompositionPaneController.tunePlayerObj.play();
+        compositionPaneController.play();
     }
     
     /**
@@ -29,7 +33,7 @@ public class MenuBarController {
      */
     @FXML 
     protected void handleStopPlayingButtonAction(ActionEvent event) {
-        CompositionPaneController.tunePlayerObj.stop();
+        compositionPaneController.stop();
     }     
     
     /**
@@ -39,10 +43,10 @@ public class MenuBarController {
      */
     @FXML
     protected void handleSelectAllMenuItemAction(ActionEvent event) {
-        CompositionPaneController.soundObject_array.forEach((note) -> {
-            note.select();
+        SoundObjectPaneController.SOUNDOBJECT_ARRAY.forEach((sObj) -> {
+            sObj.select();
         });
-        CompositionPaneController.updateSelectedSoundObjectArray();
+        SoundObjectPaneController.updateSelectedSoundObjectArray();
     }
 
     /**
@@ -52,31 +56,21 @@ public class MenuBarController {
      */
     @FXML
     protected void handleDeleteMenuItemAction(ActionEvent event) {
-        for (SoundObject soundItem: CompositionPaneController.selected_soundobject_array) {
-            soundItem.delete();
-            CompositionPaneController.soundObject_array.remove(soundItem);
+        for (SoundObject sObj: SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
+            sObj.delete();
+            SoundObjectPaneController.SOUNDOBJECT_ARRAY.remove(sObj);
         }
-        if (CompositionPaneController.selected_soundobject_array.size() == 0) {
-        }
-        CompositionPaneController.updateSelectedSoundObjectArray();
+        SoundObjectPaneController.updateSelectedSoundObjectArray();
     }
     
     @FXML
     protected void handleGrouping(ActionEvent event) throws IOException{        
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("CompositionPane.fxml"));
-        Parent par = loader.load();
-        CompositionPaneController controller = loader.getController();
-
-        controller.makeGroup();
+        soundObjectPaneController.group();
     }
     
     @FXML
     protected void handleUngrouping(ActionEvent event) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("CompositionPane.fxml"));
-        Parent par = loader.load();
-        CompositionPaneController controller = loader.getController();
-        
-        controller.unGroup();
+        soundObjectPaneController.ungroup();
     }
 
     /**
