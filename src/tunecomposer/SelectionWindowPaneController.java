@@ -31,10 +31,7 @@ public class SelectionWindowPaneController implements Initializable {
         SELECTION_WINDOW.setVisible(false);
     }
     
-    public void translateWindow(double x, double y) {   
-//        topX = SELECTION_WINDOW.getX();
-//        topY = SELECTION_WINDOW.getY();
-        
+    public void translateWindow(double x, double y) {           
         if ((x > dragStartX) && (y > dragStartY)) {
             width = x - dragStartX;
             height = y - dragStartY;
