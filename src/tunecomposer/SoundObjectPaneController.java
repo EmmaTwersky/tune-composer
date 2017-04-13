@@ -17,13 +17,13 @@ public class SoundObjectPaneController {
     /**
      * Create array of NoteBar objects and selected NoteBar objects.      
      */
-    public static final ArrayList<SoundObject> SOUNDOBJECT_ARRAY = new ArrayList(); 
-    public static final ArrayList<SoundObject> SELECTED_SOUNDOBJECT_ARRAY = new ArrayList();
+    public static ArrayList<SoundObject> SOUNDOBJECT_ARRAY = new ArrayList(); 
+    public static ArrayList<SoundObject> SELECTED_SOUNDOBJECT_ARRAY = new ArrayList();
          
     /**
      * Create array to temporarily store selected NoteBar objects.      
      */
-    public static final ArrayList<SoundObject> TEMP_SELECTED_SOUNDOBJ_ARRAY = new ArrayList();
+    public static ArrayList<SoundObject> TEMP_SELECTED_SOUNDOBJ_ARRAY = new ArrayList();
     
     /**
      * Fills the SELECTED_SOUNDOBJECT_ARRAY with the currently selected notes.
@@ -52,7 +52,7 @@ public class SoundObjectPaneController {
     public void group() {
         Gesture g = new Gesture(soundObjectPane);
         
-        unselectAllSoundObjects();
+//        unselectAllSoundObjects();
         
         g.containedSoundObjects.forEach((sObj) -> {
             SOUNDOBJECT_ARRAY.remove(sObj);

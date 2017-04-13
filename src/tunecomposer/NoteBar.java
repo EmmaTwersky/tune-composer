@@ -69,9 +69,7 @@ public class NoteBar extends SoundObject{
         visualRectangle = new Rectangle(xLocation, yLocation, duration, noteHeight);
         visualRectangle.setId(name);
 
-        visualRectangle.setOnMousePressed(handleNotePressed);
-        visualRectangle.setOnMouseDragged(handleNoteDragged);
-        visualRectangle.setOnMouseReleased(handleNoteReleased);
+        setHandlers();
                 
         visualRectangle.getStyleClass().add("selectedNote");
         
@@ -124,7 +122,6 @@ public class NoteBar extends SoundObject{
         visualRectangle.getStyleClass().add(name);
     }
     
-    
     /**
      * Changes note duration.
      * 
@@ -152,6 +149,7 @@ public class NoteBar extends SoundObject{
      */
     @Override
     public void select(){
+        selected = true;
         visualRectangle.getStyleClass().removeAll("unselectedNote");
         visualRectangle.getStyleClass().add("selectedNote");
         SoundObjectPaneController.updateSelectedSoundObjectArray(); 
@@ -162,6 +160,7 @@ public class NoteBar extends SoundObject{
      */
     @Override
     public void unselect(){
+        selected = false;
         visualRectangle.getStyleClass().removeAll("selectedNote");
         visualRectangle.getStyleClass().add("unselectedNote");
         SoundObjectPaneController.updateSelectedSoundObjectArray(); 
@@ -174,6 +173,13 @@ public class NoteBar extends SoundObject{
     public void toggleSelection(){
         if (selected) {unselect();}
         else {select();}
+    }
+    
+    @Override
+    public void setHandlers() {
+        visualRectangle.setOnMousePressed(handleNotePressed);
+        visualRectangle.setOnMouseDragged(handleNoteDragged);
+        visualRectangle.setOnMouseReleased(handleNoteReleased);
     }
         
   /**

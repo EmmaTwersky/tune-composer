@@ -1,5 +1,7 @@
 package tunecomposer;
 
+import java.io.IOException;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
@@ -29,6 +31,9 @@ public class CompositionPaneController implements Initializable {
     
     @FXML
     public RedBarPaneController redBarPaneController;
+ 
+    @FXML
+    public SoundObjectPaneController soundObjectPaneController;
     
     /**
      * Initialize FXML, draws initial setup of composition pane and 
@@ -51,6 +56,14 @@ public class CompositionPaneController implements Initializable {
     public void stop() {
         tunePlayerObj.stop();
         redBarPaneController.stopAnimation();
+    }
+    
+    public void group() {        
+        soundObjectPaneController.group();
+    }
+    
+    public void ungroup() {
+        soundObjectPaneController.ungroup();
     }
     
     /**

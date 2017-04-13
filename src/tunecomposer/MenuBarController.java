@@ -12,9 +12,6 @@ import javafx.fxml.*;
 public class MenuBarController {  
     @FXML
     public CompositionPaneController compositionPaneController;
- 
-    @FXML
-    public SoundObjectPaneController soundObjectPaneController;
         
     /**
      * Handles the play button from the Actions menu.
@@ -65,12 +62,12 @@ public class MenuBarController {
     
     @FXML
     protected void handleGrouping(ActionEvent event) throws IOException{        
-        soundObjectPaneController.group();
+        compositionPaneController.group();
     }
     
     @FXML
     protected void handleUngrouping(ActionEvent event) throws IOException{
-        soundObjectPaneController.ungroup();
+        compositionPaneController.ungroup();
     }
 
     /**

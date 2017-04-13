@@ -8,22 +8,21 @@ public class Gesture extends SoundObject{
 
     public Pane pane;
          
-    public double topX, topY, bottomX, bottomY;
-    
+    public double topX = 0;
+    public double topY = 0;
+    public double bottomX = 0;
+    public double bottomY = 0;
     
     Gesture(Pane musicPane){
         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
-            sObj.containedSoundObjects.forEach((note) -> {
-                this.containedSoundObjects.add(note);
-            });
+            containedSoundObjects.add(sObj);
+            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.remove(sObj);
+            SoundObjectPaneController.SOUNDOBJECT_ARRAY.remove(sObj);
+            sObj.setHandlers();
         });
         
-        visualRectangle = new Rectangle(0, 0, 0, 0);
-        visualRectangle.getStyleClass().add("selectedGesture");
-
-        visualRectangle.setOnMousePressed(handleGesturePressed);
-        visualRectangle.setOnMouseDragged(handleGestureDragged);
-        visualRectangle.setOnMouseReleased(handleGestureReleased);
+        this.visualRectangle = new Rectangle(0, 0, 0, 0);
+        this.visualRectangle.getStyleClass().add("selectedGesture");
         
         refreshVisualRectangle();
         
@@ -163,6 +162,9 @@ public class Gesture extends SoundObject{
      */
     public void ungroup(){    
         pane.getChildren().remove(visualRectangle);
+        for (SoundObject sObj : containedSoundObjects) {
+            sObj.setHandlers();
+        }
     }
     
     /**
@@ -264,4 +266,11 @@ public class Gesture extends SoundObject{
         
         event.consume();
     };
+
+    @Override
+    public void setHandlers() {
+        visualRectangle.setOnMousePressed(handleGesturePressed);
+        visualRectangle.setOnMouseDragged(handleGestureDragged);
+        visualRectangle.setOnMouseReleased(handleGestureReleased);
+    }
 }
