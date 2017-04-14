@@ -104,8 +104,7 @@ public class MoveAction extends Action {
     public void execute() {
         //movement already done, so nothing to do.
         executed = true;
-        
-        lastX = 
+      
     }
     
 }

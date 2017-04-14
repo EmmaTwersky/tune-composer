@@ -1,12 +1,11 @@
 package tunecomposer;
 
-import java.io.IOException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+
 
 /**
  * This controller creates the composition pane which contains the TunePlayer 
@@ -135,7 +134,7 @@ public class CompositionPaneController implements Initializable {
             if (!event.isControlDown()) {
                 SoundObjectPaneController.unselectAllSoundObjects(); 
             }
-            NoteBar newNote = new NoteBar(event.getX(), event.getY(), soundObjectPane);       
+            NoteBar newNote = new NoteBar(event.getX(), event.getY(), soundObjectPane);
             SoundObjectPaneController.SOUNDOBJECT_ARRAY.add(newNote);
         }
         
