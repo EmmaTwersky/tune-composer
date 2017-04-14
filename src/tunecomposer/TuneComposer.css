@@ -57,17 +57,17 @@
 
 
 .selectedGesture{
-    -fx-stroke-width: 3px;
-    -fx-stroke: black;
-    -fx-fill: transparent;
-    -fx-stroke-dasharray: 5;
+    -fx-stroke-width: 2px;
+    -fx-stroke: Aqua;
+    -fx-fill: Transparent;
+    -fx-stroke-dash-array: 1 5 4 2;
 }
 
 .unselectedGesture{
     -fx-stroke-width: 2px;
-    -fx-stroke: grey;
-    -fx-fill: transparent;
-    -fx-stroke-dasharray: 5;
+    -fx-stroke: DarkGrey;
+    -fx-fill: Transparent;
+    -fx-stroke-dash-array: 1 5 4 2;
 }
 
 /* Sets ID for staff and measure lines. */

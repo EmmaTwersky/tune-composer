@@ -17,45 +17,46 @@
     <top>
         <MenuBar>
             <menus>
-              <Menu text="File">
-                <items>
-                  <MenuItem onAction="#handleExitMenuItemAction" 
+                <Menu text="File">
+                    <items>
+                        <MenuItem 
+                            onAction="#handleExitMenuItemAction" 
                             text="Exit" 
                             accelerator="Shortcut+Q" >
-                  </MenuItem>
-                </items>
-              </Menu>
-              <Menu text="Edit">
-                 <items>
-                    <MenuItem onAction="#handleSelectAllMenuItemAction"  
-                              text="Select All" 
-                              accelerator="Shortcut+A" >
-                    </MenuItem>
-                    <MenuItem onAction="#handleDeleteMenuItemAction"  
+                        </MenuItem>
+                    </items>
+                </Menu>
+                <Menu text="Edit">
+                    <items>
+                            <MenuItem onAction="#handleDeleteMenuItemAction"  
                               text="Delete" 
                               accelerator="Shortcut+Backspace" >
-                    </MenuItem>
-                    <MenuItem onAction="#handleGrouping"  
+                            </MenuItem>
+                            <MenuItem onAction="#handleSelectAllMenuItemAction"  
+                              text="Select All" 
+                              accelerator="Shortcut+A" >
+                            </MenuItem>
+                            <MenuItem onAction="#handleGrouping"  
                               text="Group" 
                               accelerator="Shortcut+G" >
-                    </MenuItem>
-                    <MenuItem onAction="#handleUngrouping"  
+                            </MenuItem>
+                            <MenuItem onAction="#handleUngrouping"  
                               text="Ungroup" 
                               accelerator="Shortcut+SHIFT+G" >
-                    </MenuItem>
-                 </items>
-              </Menu>
+                            </MenuItem>
+                    </items>
+                </Menu>
                 <Menu text="Actions">
-                  <items>
-                    <MenuItem onAction="#handlePlayScaleButtonAction" 
-                              text="Play" 
-                              accelerator="Shortcut+P" >
-                    </MenuItem>
-                    <MenuItem onAction="#handleStopPlayingButtonAction" 
-                              text="Stop" 
-                              accelerator="Shortcut+S" >
-                    </MenuItem>
-                  </items>
+                    <items>
+                        <MenuItem onAction="#handlePlayScaleButtonAction" 
+                            text="Play" 
+                            accelerator="Shortcut+P" >
+                        </MenuItem>
+                        <MenuItem onAction="#handleStopPlayingButtonAction" 
+                            text="Stop" 
+                            accelerator="Shortcut+S" >
+                        </MenuItem>
+                    </items>
                 </Menu>
             </menus>
         </MenuBar>

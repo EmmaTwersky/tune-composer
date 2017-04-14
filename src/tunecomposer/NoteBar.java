@@ -70,9 +70,7 @@ public class NoteBar extends SoundObject{
         visualRectangle.setId(name);
 
         setHandlers();
-                
-        visualRectangle.getStyleClass().add("selectedNote");
-        
+                        
         pane = musicPane;
         pane.getChildren().add(visualRectangle);
         select();
@@ -175,7 +173,6 @@ public class NoteBar extends SoundObject{
         else {select();}
     }
     
-    @Override
     public void setHandlers() {
         visualRectangle.setOnMousePressed(handleNotePressed);
         visualRectangle.setOnMouseDragged(handleNoteDragged);
@@ -197,7 +194,7 @@ public class NoteBar extends SoundObject{
             
             int editLengthMax = (int) visualRectangle.getX() + duration;
             int editLengthMin = editLengthMax - clickToEditLength;
-            if (editLengthMin <= initialX && initialX <= editLengthMax) {
+            if ((editLengthMin <= initialX) && (initialX <= editLengthMax)) {
                 draggingLength = true;
             }
                 

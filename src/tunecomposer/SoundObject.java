@@ -9,7 +9,7 @@ public abstract class SoundObject {
      * A rectangle to display on the screen.
      */
     public Rectangle visualRectangle;
-    public ArrayList<SoundObject> containedSoundObjects = new ArrayList();
+    public ArrayList<SoundObject> containedSoundObjects;
     
     public final int clickToEditLength = 10; // 10 worked better, but 5 was indicated
     public final int minNoteLength = 5;
@@ -39,8 +39,6 @@ public abstract class SoundObject {
     public abstract void changeLength(int lengthInc);
     public abstract void snapInPlace();
     public abstract void delete();
-    
-    public abstract void setHandlers();
-    
+        
     public abstract void addToMidiPlayer(MidiPlayer player);
 }

@@ -65,12 +65,12 @@ public class SoundObjectPaneController {
     public void ungroup() {
         for (SoundObject sObj : SELECTED_SOUNDOBJECT_ARRAY) {
             if (sObj instanceof Gesture) {
-                SOUNDOBJECT_ARRAY.remove(sObj);
+                ((Gesture) sObj).ungroup();
                 sObj.containedSoundObjects.forEach((innerSObj) -> {
-                    innerSObj.select();
+//                    innerSObj.select();
                     SOUNDOBJECT_ARRAY.add(innerSObj);
                 });
-                ((Gesture) sObj).ungroup();
+                SOUNDOBJECT_ARRAY.remove(sObj);
             }
         }
         updateSelectedSoundObjectArray();
