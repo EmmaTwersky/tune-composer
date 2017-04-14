@@ -56,4 +56,28 @@ public class ActionManager {
         redoStack.push(redoAction);
     }
     
+    
+    /**
+     * Check if undo stack is empty. Returns false if it contains Actions, true
+     * if it is empty.
+     * @return boolean: true==empty, false==not empty
+     */
+    public boolean isUndoStackEmpty() {
+        if (undoStack.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+    
+        /**
+     * Check if redo stack is empty. Returns false if it contains Actions, true
+     * if it is empty.
+     * @return boolean: true==empty, false==not empty
+     */
+    public boolean isRedoStackEmpty() {
+        if (redoStack.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
 }

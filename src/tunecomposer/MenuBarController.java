@@ -17,7 +17,7 @@ public class MenuBarController {
     private ActionManager actionManager;
     
     
-        /**
+    /**
      * Initialize FXML. Creates ActionManager to control undo and redos. Sets
      * CompPaneController to have the same reference.
      * @param location the source of the scene
@@ -26,6 +26,7 @@ public class MenuBarController {
     @FXML
     public void initialize(java.net.URL location, 
                                         java.util.ResourceBundle resources) {
+        System.out.println("menubar");
         actionManager = new ActionManager();
         try {
             compositionPaneController.setActionManager(actionManager);
@@ -35,6 +36,7 @@ public class MenuBarController {
             System.exit(1);
         }
     }   
+
     
     @FXML
     public CompositionPaneController compositionPaneController;
