@@ -17,10 +17,27 @@ public class ActionManager {
     Stack<Action> undoStack;
     Stack<Action> redoStack;
     
+    /**
+     * Constructs the undo and redo stacks. They take any type Action object.
+     */
     public ActionManager(){
-        
+        undoStack = new Stack<>();
+        redoStack = new Stack<>();
     }
     
+    /**
+     * Perform the given action. Then push this item into the undoStack.
+     * @param action Action type object to be performed in program. 
+     */
+    public void execute(Action action) {
+        action.execute();
+        undoStack.push(action);
+    }
+    
+    /**
+     * Pop top item on undoStack. Undo the action, then push it onto the
+     * redoStack.
+     */
     public void undo(){
         Action undoAction;
         undoAction = undoStack.pop();
@@ -28,6 +45,10 @@ public class ActionManager {
         undoStack.push(undoAction);
     }
     
+    /**
+     * Pop top item from redoStack. Redo the action's effects, and push it back
+     * onto the undoStack.
+     */
     public void redo(){
         Action redoAction;
         redoAction = redoStack.pop();

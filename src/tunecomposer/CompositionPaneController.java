@@ -35,8 +35,14 @@ public class CompositionPaneController implements Initializable {
     public SoundObjectPaneController soundObjectPaneController;
     
     /**
+     * Object that contains the undo and redo stack for the program. 
+     */
+    private ActionManager actionManager;
+    
+    /**
      * Initialize FXML, draws initial setup of composition pane and 
-     * initialized the RedBar.
+     * initialized the RedBar. Sets SoundObjectPaneController to reference
+     * the same ActionManager object.
      * 
      * @param location the source of the scene
      * @param resources the resources of the utility of the scene
@@ -140,4 +146,27 @@ public class CompositionPaneController implements Initializable {
         
         SoundObjectPaneController.updateSelectedSoundObjectArray();
     };
+    
+    
+    /**
+     * Set the actionManager to the instance that contains the undo and 
+     * redo stacks. If given manager is null, then throws NullPointerException.
+     * @param manager
+     * @throws NullPointerException
+     */
+    public void setActionManager(ActionManager manager) 
+                                     throws NullPointerException{
+        if (manager == null) {
+            throw new NullPointerException();
+        }
+        actionManager = manager;
+        try {
+            soundObjectPaneController.setActionManager(actionManager);
+        } catch (NullPointerException ex) {
+            System.out.println("In CompPaneController.setActionManager(), "
+                    + "passed null to "
+                    + "soundObjectPaneController.setActionManager(manager)");
+            System.exit(1);
+        }
+    }
 }

@@ -3,6 +3,7 @@ package tunecomposer;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
+import java.lang.NullPointerException;
 
 /**
  * FXML Controller class
@@ -13,6 +14,11 @@ public class SoundObjectPaneController {
 
     @FXML
     public Pane soundObjectPane;
+    
+    /**
+     * Object that contains the undo and redo stack for the program. 
+     */
+    private ActionManager actionManager;
     
     /**
      * Create array of NoteBar objects and selected NoteBar objects.      
@@ -75,4 +81,20 @@ public class SoundObjectPaneController {
         }
         updateSelectedSoundObjectArray();
     }
-}
+    
+    
+    /**
+     * Set the actionManager to the instance that contains the undo and 
+     * redo stacks. If given manager is null, then throws NullPointerException.
+     * @param manager
+     * @throws NullPointerException
+     */
+    public void setActionManager(ActionManager manager) 
+                                     throws NullPointerException{
+        if (manager == null) {
+            throw new NullPointerException();
+        }
+        actionManager = manager;
+    }
+    
+}//end Class

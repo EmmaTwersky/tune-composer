@@ -10,6 +10,32 @@ import javafx.fxml.*;
  * @author Emma Twersky
  */
 public class MenuBarController {  
+    
+    /**
+     * Object that contains the undo and redo stack for the program. 
+     */
+    private ActionManager actionManager;
+    
+    
+        /**
+     * Initialize FXML. Creates ActionManager to control undo and redos. Sets
+     * CompPaneController to have the same reference.
+     * @param location the source of the scene
+     * @param resources the resources of the utility of the scene
+     */
+    @FXML
+    public void initialize(java.net.URL location, 
+                                        java.util.ResourceBundle resources) {
+        actionManager = new ActionManager();
+        try {
+            compositionPaneController.setActionManager(actionManager);
+        } catch (NullPointerException ex) {
+            System.out.println("In initialize MenuBarController, passed null"
+                   + " to CompPaneController.setActionManager(manager)");
+            System.exit(1);
+        }
+    }   
+    
     @FXML
     public CompositionPaneController compositionPaneController;
         
