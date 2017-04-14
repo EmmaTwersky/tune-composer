@@ -289,4 +289,15 @@ public final class Gesture extends SoundObject{
             sObj.visualRectangle.setOnMouseReleased(handleGestureReleased);
         });
     }
+
+    
+    /**
+     * Reference to pane that the gesture should be added to. Useful for action
+     * executions.
+     * @param paneToAddTo 
+     */
+    @Override
+    public void addToPane(Pane paneToAddTo) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

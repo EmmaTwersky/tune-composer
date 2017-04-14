@@ -55,7 +55,7 @@ public class NoteBar extends SoundObject{
      * @param x the top left corner x value of the note clicked
      * @param y the top left corner y value of the note clicked
      */
-    NoteBar(double x, double y, Pane musicPane){
+    public NoteBar(double x, double y, Pane musicPane){
         name = InstrumentToolBarController.selectedInstrument;
         instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
@@ -78,6 +78,36 @@ public class NoteBar extends SoundObject{
 //        containedSoundObjects.add(this);
     }
     
+     /**
+     * Initialize the note bar object and variables, then constructs the 
+     * display and doesn't add it to any pane.
+     * 
+     * @param x the top left corner x value of the note clicked
+     * @param y the top left corner y value of the note clicked
+     */
+    public NoteBar(double x, double y){
+        name = InstrumentToolBarController.selectedInstrument;
+        instrument = instrumentInfo.getInstrumentValue(name);
+        channel = instrumentInfo.getInstrumentChannel(name);
+        
+        pitch = pitchRange - (int) y / noteHeight;
+        startTick = (int) x;
+        duration = defaultLength;
+                
+        int xLocation = (int) x;
+        int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
+        visualRectangle = new Rectangle(xLocation, yLocation, duration, noteHeight);
+        visualRectangle.setId(name);
+
+        setHandlers();
+
+        select();
+
+//        containedSoundObjects.add(this);
+    }
+    
+    
+
     /**
      * Returns if note is selected.
      * 
@@ -135,12 +165,23 @@ public class NoteBar extends SoundObject{
     }
     
     /**
-     * Deletes note from pane.
+     * Removes note from pane.
      */
     @Override
     public void delete(){
         pane.getChildren().remove(visualRectangle);
     }
+    
+    /**
+     * Adds the note to the given pane. Sets this.pane equal to given pane.
+     * Does not manage selection. Does not handle if given pane is null.
+     * @param noteBarPane 
+     */
+    public void addToPane(Pane noteBarPane) {
+        pane = noteBarPane;
+        pane.getChildren().add(visualRectangle);
+    }
+    
     
     /**
      * Selects note and displays selection box around note.

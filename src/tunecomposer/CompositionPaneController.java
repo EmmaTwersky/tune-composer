@@ -5,6 +5,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.AddNote;
 
 
 /**
@@ -51,6 +53,9 @@ public class CompositionPaneController implements Initializable {
     @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
         tunePlayerObj = new TunePlayer();
+        System.out.println("asdfasdfasfd");
+        actionManager = new ActionManager();
+        soundObjectPaneController.setActionManager(actionManager);
     }   
     
     public void play() {
@@ -140,8 +145,11 @@ public class CompositionPaneController implements Initializable {
             if (!event.isControlDown()) {
                 SoundObjectPaneController.unselectAllSoundObjects(); 
             }
-            NoteBar newNote = new NoteBar(event.getX(), event.getY(), soundObjectPane);
-            SoundObjectPaneController.SOUNDOBJECT_ARRAY.add(newNote);
+            AddNote addAction;
+            addAction = new AddNote(event.getX(), event.getY(), soundObjectPane);
+            actionManager.execute(addAction);
+//            NoteBar newNote = new NoteBar(event.getX(), event.getY(), soundObjectPane);
+//            SoundObjectPaneController.SOUNDOBJECT_ARRAY.add(newNote);
         }
         
         SoundObjectPaneController.updateSelectedSoundObjectArray();
