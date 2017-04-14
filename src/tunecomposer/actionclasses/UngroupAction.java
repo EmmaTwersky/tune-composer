@@ -23,14 +23,10 @@ public class UngroupAction extends AbstractGroupAction {
      */
     public UngroupAction(ArrayList<Rectangle> selList, Pane _gestPane) {
         theGesture = findTopGesture(selList);
-        if (theGesture == null) {
-            throw UnGroupableException;
-        }
+
         
         gestureBox = findGestureBox(theGesture);
-        if (gestureBox == null) {
-            throw unGroupableException;
-        }
+
        
         gesturePane = _gestPane;
         

@@ -17,7 +17,7 @@ public abstract class AbstractGroupAction extends Action{
     /**
      * Gesture box rectangle
      */
-    private Rectangle gestureBox;
+    Rectangle gestureBox;
     
     
     /**
