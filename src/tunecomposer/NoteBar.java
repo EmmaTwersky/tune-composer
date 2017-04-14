@@ -173,6 +173,7 @@ public class NoteBar extends SoundObject{
         else {select();}
     }
     
+    @Override
     public void setHandlers() {
         visualRectangle.setOnMousePressed(handleNotePressed);
         visualRectangle.setOnMouseDragged(handleNoteDragged);

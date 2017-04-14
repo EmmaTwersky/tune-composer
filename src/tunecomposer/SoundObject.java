@@ -39,6 +39,8 @@ public abstract class SoundObject {
     public abstract void changeLength(int lengthInc);
     public abstract void snapInPlace();
     public abstract void delete();
+    
+    public abstract void setHandlers();
         
     public abstract void addToMidiPlayer(MidiPlayer player);
 }

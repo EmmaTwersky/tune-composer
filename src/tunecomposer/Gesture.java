@@ -5,7 +5,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
-public class Gesture extends SoundObject{
+public final class Gesture extends SoundObject{
 
     public Pane pane;
          
@@ -16,6 +16,7 @@ public class Gesture extends SoundObject{
     
     Gesture(Pane musicPane){
         visualRectangle = new Rectangle();
+        visualRectangle.setMouseTransparent(true);
         containedSoundObjects = new ArrayList();
         
         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
@@ -169,9 +170,9 @@ public class Gesture extends SoundObject{
      */
     public void ungroup(){    
         pane.getChildren().remove(visualRectangle);
-//        for (SoundObject sObj : containedSoundObjects) {
-//            sObj.setHandlers();
-//        }
+        for (SoundObject sObj : containedSoundObjects) {
+            sObj.setHandlers();
+        }
     }
     
     /**
@@ -198,21 +199,20 @@ public class Gesture extends SoundObject{
      * 
      * @param event the mouse click event
      */
-    EventHandler<MouseEvent> handleGesturePressed = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-            CompositionPaneController.tunePlayerObj.stop();
-            initialX = (int) event.getX();
-            initialY = (int) event.getY();
-
-            int editLengthMax = (int) (visualRectangle.getX() + visualRectangle.getWidth());
+    EventHandler<MouseEvent> handleGesturePressed = (MouseEvent event) -> {
+        CompositionPaneController.tunePlayerObj.stop();
+        initialX = (int) event.getX();
+        initialY = (int) event.getY();
+        
+        for (SoundObject sObj : containedSoundObjects) {
+            int editLengthMax = (int) (sObj.visualRectangle.getX() + sObj.visualRectangle.getWidth());
             int editLengthMin = editLengthMax - clickToEditLength;
             if ((editLengthMin <= initialX) && (initialX <= editLengthMax)) {
                 draggingLength = true;
             }
-
-            event.consume();
         }
+        
+        event.consume();
     };
     
     /**
@@ -223,35 +223,32 @@ public class Gesture extends SoundObject{
      * 
      * @param event the mouse click event
      */
-    EventHandler<MouseEvent> handleGestureDragged = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-            int x = (int) event.getX();
-            int y = (int) event.getY();
-
-            if (!selected) {
-                SoundObjectPaneController.unselectAllSoundObjects();
-                select();
-            }
-
-            if (draggingLength) {
-                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
-                    sObj.changeLength(x - initialX);
-                });
-            }
-            else {
-                int translateX = (x - initialX);
-                int translateY = (y - initialY);
-                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
-                    sObj.move(translateX, translateY);
-                });
-            }
-
-            initialX = x;
-            initialY = y;
-            
-            event.consume();
+    EventHandler<MouseEvent> handleGestureDragged = (MouseEvent event) -> {
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+        
+        if (!selected) {
+            SoundObjectPaneController.unselectAllSoundObjects();
+            select();
         }
+        
+        if (draggingLength) {
+            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
+                sObj.changeLength(x - initialX);
+            });
+        }
+        else {
+            int translateX = (x - initialX);
+            int translateY = (y - initialY);
+            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
+                sObj.move(translateX, translateY);
+            });
+        }
+        
+        initialX = x;
+        initialY = y;
+        
+        event.consume();
     };
     
     /**
@@ -284,9 +281,12 @@ public class Gesture extends SoundObject{
         }
     };
 
+    @Override
     public void setHandlers() {
-        visualRectangle.setOnMousePressed(handleGesturePressed);
-        visualRectangle.setOnMouseDragged(handleGestureDragged);
-        visualRectangle.setOnMouseReleased(handleGestureReleased);
+        this.containedSoundObjects.forEach((sObj) -> {
+            sObj.visualRectangle.setOnMousePressed(handleGesturePressed);
+            sObj.visualRectangle.setOnMouseDragged(handleGestureDragged);
+            sObj.visualRectangle.setOnMouseReleased(handleGestureReleased);
+        });
     }
 }
