@@ -15,6 +15,7 @@ public abstract class SoundObject {
     * An ArrayList of the SoundObjects contained within the object.
     */
     public ArrayList<SoundObject> containedSoundObjects;
+    public Pane pane;
     
     /**
     * Sets given values for SoundObject dragging when clicked.

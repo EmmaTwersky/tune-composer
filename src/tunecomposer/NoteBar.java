@@ -59,12 +59,15 @@ public class NoteBar extends SoundObject{
      * 
      * @param x the top left corner x value of the note clicked
      * @param y the top left corner y value of the note clicked
+     * @param _actionManager
+     * @param soundObjectPane
      */
-    public NoteBar(double x, double y, ActionManager _actionManager){
+    public NoteBar(double x, double y, ActionManager _actionManager, Pane soundObjectPane){
         name = InstrumentToolBarController.selectedInstrument;
         instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
         actionManager = _actionManager;
+        pane = soundObjectPane;
         
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;
@@ -88,7 +91,7 @@ public class NoteBar extends SoundObject{
         selected = true;
         visualRectangle.getStyleClass().removeAll("unselectedNote");
         visualRectangle.getStyleClass().add("selectedNote");
-//        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
+        SoundObjectPaneController.updateSelectedSoundObjectArray(pane); 
     }
     
     /**
@@ -99,7 +102,7 @@ public class NoteBar extends SoundObject{
         selected = false;
         visualRectangle.getStyleClass().removeAll("selectedNote");
         visualRectangle.getStyleClass().add("unselectedNote");
-//        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
+        SoundObjectPaneController.updateSelectedSoundObjectArray(pane); 
     }
     
     /**
@@ -214,6 +217,7 @@ public class NoteBar extends SoundObject{
     
     MoveAction sObjMove;
     StretchAction sObjStretch;
+    
     /**
      * Handles note pressed event. 
      * Sets initial pressed values of the mouse and consumes the event.
@@ -225,6 +229,7 @@ public class NoteBar extends SoundObject{
         @Override
         public void handle(MouseEvent event) {
             CompositionPaneController.tunePlayerObj.stop();
+            
             initialX = (int) event.getX();
             initialY = (int) event.getY();
             
@@ -261,17 +266,17 @@ public class NoteBar extends SoundObject{
             int y = (int) event.getY();
                         
             if (!selected) {
-//                SoundObjectPaneController.unselectAllSoundObjects(); 
+                SoundObjectPaneController.unselectAllSoundObjects(pane); 
                 select();
             }
             
             if (draggingLength) {
-                sObjStretch.stretch(x-initialX);
+                sObjStretch.stretch(x - initialX);
             }
             else {
                 int translateX = (x - initialX);
                 int translateY = (y - initialY);
-                sObjMove.move(translateX,translateY);
+                sObjMove.move(translateX, translateY);
             }
             
             initialX = x;
@@ -296,12 +301,12 @@ public class NoteBar extends SoundObject{
                     toggleSelection();
                 }
                 else {
-//                    SoundObjectPaneController.unselectAllSoundObjects();
+                    SoundObjectPaneController.unselectAllSoundObjects(pane);
                     select();
                 }
             }
             
-            else if (draggingLength){
+            if (draggingLength){
                 sObjStretch.execute();
                 ArrayList<Action> actionList = new ArrayList();
                 actionList.add(sObjStretch);

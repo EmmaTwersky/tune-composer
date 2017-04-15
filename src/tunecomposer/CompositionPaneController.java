@@ -136,7 +136,7 @@ public class CompositionPaneController implements Initializable {
             }
         }
                 
-        soundObjectPaneController.updateSelectedSoundObjectArray();
+        soundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane);
     };
     
     /**
@@ -154,24 +154,20 @@ public class CompositionPaneController implements Initializable {
         
         if (event.isStillSincePress()) {
             if (!event.isControlDown()) {
-                soundObjectPaneController.unselectAllSoundObjects(); 
+                SoundObjectPaneController.unselectAllSoundObjects(soundObjectPane); 
             }
             
             AddNote addAction;
-            addAction = new AddNote(event.getX(), event.getY(), soundObjectPane, 
-                                    actionManager);
+            addAction = new AddNote(event.getX(), event.getY(), actionManager, soundObjectPane);
             
             ArrayList<Action> addActionArray = new ArrayList<>();
             addActionArray.add(addAction);
-//            NoteBar newNote = addAction.getNote();
             
             actionManager.execute(addActionArray);
             actionManager.putInUndoStack(addActionArray);
-            
-//            SoundObjectPaneController.SOUNDOBJECT_ARRAY.add(newNote);
         }
         
-        soundObjectPaneController.updateSelectedSoundObjectArray();
+        soundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane);
     };
     
     

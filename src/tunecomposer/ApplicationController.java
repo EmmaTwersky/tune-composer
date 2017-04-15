@@ -86,7 +86,7 @@ public class ApplicationController implements Initializable {
             ((SoundObject) r.getUserData()).select();
         }
 
-        compositionPaneController.soundObjectPaneController.updateSelectedSoundObjectArray();
+        SoundObjectPaneController.updateSelectedSoundObjectArray(compositionPaneController.soundObjectPane);
     }
 
     /**
@@ -98,9 +98,8 @@ public class ApplicationController implements Initializable {
     protected void handleDeleteMenuItemAction(ActionEvent event) {
         for (SoundObject sObj: SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
             sObj.removeFromPane(compositionPaneController.soundObjectPane);
-//            SoundObjectPaneController.SOUNDOBJECT_ARRAY.remove(sObj);
         }
-        compositionPaneController.soundObjectPaneController.updateSelectedSoundObjectArray();
+        SoundObjectPaneController.updateSelectedSoundObjectArray(compositionPaneController.soundObjectPane);
     }
     
     /**

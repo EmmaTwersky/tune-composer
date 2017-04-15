@@ -34,9 +34,9 @@ public class SoundObjectPaneController {
     /**
      * Fills the SELECTED_SOUNDOBJECT_ARRAY with the currently selected notes.
      */
-    public void updateSelectedSoundObjectArray(){
+    public static void updateSelectedSoundObjectArray(Pane pane){
         SELECTED_SOUNDOBJECT_ARRAY.clear();
-        for (Node n: soundObjectPane.getChildren()) {
+        for (Node n: pane.getChildren()) {
             Rectangle r = (Rectangle) n;
             SoundObject sObj = (SoundObject) (r).getUserData();
             if (sObj.isSelected()) {
@@ -47,9 +47,10 @@ public class SoundObjectPaneController {
     
     /**
      * Empties the SELECTED_SOUNDOBJECT_ARRAY and un-selects all notes.
+     * @param pane
      */
-    public void unselectAllSoundObjects(){
-        for (Node n: soundObjectPane.getChildren()) {
+    public static void unselectAllSoundObjects(Pane pane){
+        for (Node n: pane.getChildren()) {
             Rectangle r = (Rectangle) n;
             SoundObject sObj = (SoundObject) (r).getUserData();
             if (sObj.isSelected()) {
@@ -61,6 +62,7 @@ public class SoundObjectPaneController {
         
     public void group() {
         Gesture g = new Gesture();
+        g.visualRectangle.setUserData(g);
         g.addToPane(soundObjectPane);
         
 //        unselectAllSoundObjects();
@@ -70,7 +72,7 @@ public class SoundObjectPaneController {
 //        });
 //        SOUNDOBJECT_ARRAY.add(g);
         
-        updateSelectedSoundObjectArray();
+        updateSelectedSoundObjectArray(soundObjectPane);
     }
     
     public void ungroup() {
@@ -78,13 +80,12 @@ public class SoundObjectPaneController {
             if (sObj instanceof Gesture) {
                 ((Gesture) sObj).ungroup(soundObjectPane);
                 sObj.containedSoundObjects.forEach((innerSObj) -> {
-//                    innerSObj.select();
-//                    SOUNDOBJECT_ARRAY.add(innerSObj);
+                    innerSObj.select();
+                    innerSObj.visualRectangle.setUserData(innerSObj);
                 });
-//                SOUNDOBJECT_ARRAY.remove(sObj);
             }
         }
-        updateSelectedSoundObjectArray();
+        updateSelectedSoundObjectArray(soundObjectPane);
     }
     
     
@@ -101,5 +102,4 @@ public class SoundObjectPaneController {
         }
         actionManager = manager;
     }
-    
 }

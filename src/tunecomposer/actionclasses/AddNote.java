@@ -32,12 +32,10 @@ public class AddNote extends Action {
      * @param y the y value for the top left corner of the note's position
      * @param _notePane Reference to the notePane.
      * @param actionManager
-     * @param actionHandler
      * 
      */
-    public AddNote(double x, double  y, Pane _notePane, 
-                                        ActionManager actionManager)  {
-        note = new NoteBar(x, y, actionManager);
+    public AddNote(double x, double  y, ActionManager actionManager, Pane _notePane)  {
+        note = new NoteBar(x, y, actionManager, _notePane);
         notePane = _notePane;
     }
     
