@@ -1,14 +1,15 @@
 package tunecomposer;
 
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
-import javafx.fxml.*;
 
 /**
  * This controller creates the application and handles the menu item selections.
  *
  * @author Emma Twersky
  */
-public class ApplicationController {  
+public class ApplicationController implements Initializable {  
     
     /**
      * Object that contains the undo and redo stack for the program. 
