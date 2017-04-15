@@ -15,7 +15,7 @@ import tunecomposer.SoundObject;
  */
 public class GroupAction extends AbstractGroupAction {
     
-    
+    ArrayList<SoundObject> affectedObjs;
     
     /**
      * @param selList

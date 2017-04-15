@@ -57,4 +57,9 @@ public class SelectionWindowPaneController implements Initializable {
         SELECTION_WINDOW.setWidth(width);
         SELECTION_WINDOW.setHeight(height);
     }
+    
+    public void resetWindow() {
+        topX = 2000;
+        topY = 1280;
+    }
 }

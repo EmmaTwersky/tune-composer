@@ -28,7 +28,9 @@ public class MoveAction extends Action {
     private int startX;
     private int startY;
     
-    
+    ArrayList<SoundObject> affectedObjs;
+    boolean executed;
+
     /**
      * Sets up object to allow sounds to be moved. selList must contain all
      * SoundObjects to be infected, including NoteBars and GestureBoxes. Action

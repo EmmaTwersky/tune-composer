@@ -21,7 +21,8 @@ public class SelectAction extends Action {
      */
     private final boolean selectObjs;
     
-    
+    ArrayList<SoundObject> affectedObjs;
+
     
     /**
      * Sets up Action object as select or unselect. 
@@ -58,7 +59,6 @@ public class SelectAction extends Action {
      */
     @Override
     public void execute() {
-        addGestureSiblings();
         for (SoundObject obj : affectedObjs) {
             if (selectObjs == true) {
                 obj.select();

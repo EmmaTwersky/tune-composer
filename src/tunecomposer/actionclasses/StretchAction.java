@@ -26,6 +26,10 @@ public class StretchAction extends Action{
      */
     int initialLength;
     
+    boolean executed;
+    ArrayList<SoundObject> affectedObjs;
+
+    
         /**
      * Sets up object to allow sound objects to be stretched. selList must contain all
      * SoundObjects to be infected, including NoteBars and GestureBoxes.

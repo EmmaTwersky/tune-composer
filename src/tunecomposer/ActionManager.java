@@ -1,12 +1,13 @@
 package tunecomposer;
 
+import java.util.ArrayList;
 import java.util.Stack;
 import tunecomposer.actionclasses.Action;
 
 public class ActionManager {
     
-    Stack<Action> undoStack;
-    Stack<Action> redoStack;
+    Stack<ArrayList<Action>> undoStack;
+    Stack<ArrayList<Action>> redoStack;
     
     /**
      * Constructs the undo and redo stacks. They take any type Action object.
@@ -21,8 +22,42 @@ public class ActionManager {
      * @param action Action type object to be performed in program. 
      */
     public void execute(Action action) {
+        if (action == null) {
+            System.out.println("given actionList in ActionManager.execute(Action) is null");
+            Thread.dumpStack();
+        }
         action.execute();
-        undoStack.push(action);
+    }
+    
+    
+    /**
+     * Executes all given actions in the provided ArrayList of Actions. Does the
+     * same thing as this.execute(..) on every item. Does nothing if given null.
+     * @param actionList 
+     */
+    public void execute(ArrayList<Action> actionList) {
+        if (actionList == null) {
+            System.out.println("given actionList in ActionManager.execute(ArrayList<Action>) is null");
+            Thread.dumpStack();
+        }
+        for (Action a : actionList) {
+            this.execute(a);
+        }
+    }
+    
+    
+    /**
+     * Puts given ArrayList of actions into the stack. If actionArray is null,
+     * then does nothing.
+     * @param actionArray 
+     */
+    public void putInUndoStack(ArrayList<Action> actionArray) {
+        if (actionArray == null) {
+            System.out.println("given actionList in ActionManager.putInUndoStack(ArrayList<Action>) is null");
+            Thread.dumpStack();
+        }
+        redoStack.clear();
+        undoStack.push(actionArray);
     }
     
     /**
@@ -33,10 +68,13 @@ public class ActionManager {
         if (undoStack.isEmpty()) {
             return;
         }
-        Action undoAction;
-        undoAction = undoStack.pop();
-        undoAction.undo();
-        undoStack.push(undoAction);
+        ArrayList<Action> undoActions;
+        undoActions = undoStack.pop();
+        for (Action a : undoActions) {
+            a.undo();
+        }
+        redoStack.push(undoActions);
+        
     }
     
     /**
@@ -47,10 +85,12 @@ public class ActionManager {
         if (redoStack.isEmpty()) {
             return;
         }
-        Action redoAction;
-        redoAction = redoStack.pop();
-        redoAction.redo();
-        redoStack.push(redoAction);
+        ArrayList<Action> redoActions;
+        redoActions = redoStack.pop();
+        for (Action a : redoActions) {
+            a.redo();   
+        }
+        undoStack.push(redoActions);
     }
     
     

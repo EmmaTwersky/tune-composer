@@ -17,6 +17,8 @@ import tunecomposer.SoundObject;
  */
 public class UngroupAction extends AbstractGroupAction {
     
+    ArrayList<SoundObject> affectedObjs;
+
     /**
      * @param selList
      *          All selected rectangles must have their top-most gesture be 

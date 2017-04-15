@@ -1,10 +1,12 @@
 package tunecomposer;
 
+import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.AddNote;
 
 /**
@@ -37,7 +39,7 @@ public class CompositionPaneController implements Initializable {
     /**
      * Object that contains the undo and redo stack for the program. 
      */
-    private ActionManager actionManager;
+    public ActionManager actionManager;
     
     /**
      * Initialize FXML and sets SoundObjectPaneController to reference
@@ -154,10 +156,16 @@ public class CompositionPaneController implements Initializable {
             if (!event.isControlDown()) {
                 SoundObjectPaneController.unselectAllSoundObjects(); 
             }
+            
             AddNote addAction;
             addAction = new AddNote(event.getX(), event.getY(), soundObjectPane);
+            ArrayList<Action> addActionArray = new ArrayList<>();
+            addActionArray.add(addAction);
             NoteBar newNote = addAction.getNote();
-            actionManager.execute(addAction);
+            
+            actionManager.execute(addActionArray);
+            actionManager.putInUndoStack(addActionArray);
+            
             SoundObjectPaneController.SOUNDOBJECT_ARRAY.add(newNote);
 //            NoteBar newNote = new NoteBar(event.getX(), event.getY(), soundObjectPane);
         }
