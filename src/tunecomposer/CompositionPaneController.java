@@ -167,7 +167,7 @@ public class CompositionPaneController implements Initializable {
             actionManager.putInUndoStack(addActionArray);
         }
         
-        soundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane);
+        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane);
     };
     
     
