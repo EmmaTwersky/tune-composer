@@ -49,7 +49,7 @@ public class NoteBar extends SoundObject{
     /**
     * Sets default duration, minimum duration and default click range to edit duration. 
     */
-    private final int defaultLength = 100;
+    private final int DEFAULT_LENGTH = 100;
     
     /**
      * Load InstrumentInfo HashMap to look up instrument key values.
@@ -74,7 +74,7 @@ public class NoteBar extends SoundObject{
         
         pitch = PITCH_RANGE - (int) y / NOTE_HEIGHT;
         startTick = (int) x;
-        duration = defaultLength;
+        duration = DEFAULT_LENGTH;
                 
         int xLocation = (int) x;
         int yLocation = (int) Math.round(y / NOTE_HEIGHT) * NOTE_HEIGHT;
