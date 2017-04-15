@@ -3,6 +3,7 @@ package tunecomposer;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -52,7 +53,6 @@ public class CompositionPaneController implements Initializable {
     @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
         tunePlayerObj = new TunePlayer();
-//        System.out.println("Action manager on soundObjPane set to Action manager instance");
         actionManager = new ActionManager();
         soundObjectPaneController.setActionManager(actionManager);
     }   
@@ -61,8 +61,8 @@ public class CompositionPaneController implements Initializable {
      * Plays the current composition on the CompositionPane.
      */
     public void play() {
-        tunePlayerObj.play();
-        redBarPaneController.playAnimation();
+        tunePlayerObj.play(soundObjectPane);
+        redBarPaneController.playAnimation(soundObjectPane);
     }
     
     /**
@@ -123,20 +123,20 @@ public class CompositionPaneController implements Initializable {
         
         selectionWindowPaneController.translateWindow(event.getX(), event.getY());
         
-        SoundObjectPaneController.SOUNDOBJECT_ARRAY.stream().filter((SoundObject sObj) 
-                -> !SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.contains(sObj)).
-                forEachOrdered((SoundObject sObj) -> {
-            Rectangle r = sObj.visualRectangle;
-            if (selectionWindowPaneController.SELECTION_WINDOW.
-                    intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
-                sObj.select();
+        for (Node n: soundObjectPane.getChildren()) {
+            Rectangle r = (Rectangle) n;
+            SoundObject sObj = (SoundObject) (r).getUserData();
+            if (!SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.contains(sObj)) {
+                if (selectionWindowPaneController.SELECTION_WINDOW.intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
+                    sObj.select();
+                }
+                else {
+                    sObj.unselect();
+                }
             }
-            else {
-                sObj.unselect();
-            }
-        });
-        
-        SoundObjectPaneController.updateSelectedSoundObjectArray();
+        }
+                
+        soundObjectPaneController.updateSelectedSoundObjectArray();
     };
     
     /**
@@ -154,23 +154,22 @@ public class CompositionPaneController implements Initializable {
         
         if (event.isStillSincePress()) {
             if (!event.isControlDown()) {
-                SoundObjectPaneController.unselectAllSoundObjects(); 
+                soundObjectPaneController.unselectAllSoundObjects(); 
             }
             
             AddNote addAction;
             addAction = new AddNote(event.getX(), event.getY(), soundObjectPane);
             ArrayList<Action> addActionArray = new ArrayList<>();
             addActionArray.add(addAction);
-            NoteBar newNote = addAction.getNote();
+//            NoteBar newNote = addAction.getNote();
             
             actionManager.execute(addActionArray);
             actionManager.putInUndoStack(addActionArray);
             
-            SoundObjectPaneController.SOUNDOBJECT_ARRAY.add(newNote);
-//            NoteBar newNote = new NoteBar(event.getX(), event.getY(), soundObjectPane);
+//            SoundObjectPaneController.SOUNDOBJECT_ARRAY.add(newNote);
         }
         
-        SoundObjectPaneController.updateSelectedSoundObjectArray();
+        soundObjectPaneController.updateSelectedSoundObjectArray();
     };
     
     

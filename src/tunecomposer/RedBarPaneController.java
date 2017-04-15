@@ -9,6 +9,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -37,12 +39,6 @@ public class RedBarPaneController implements Initializable {
      */
     private int compositionEnd = 0;
     
-    @FXML
-    public CompositionPaneController compositionPaneController;
-    
-    @FXML
-    public RedBarPaneController redBarPaneController;
-    
     /**
      * Creates RedBar object on given pane. 
      * Sets line to have redBarWidth and height of screenHeight,
@@ -59,13 +55,13 @@ public class RedBarPaneController implements Initializable {
      * Moves the line across the screen at the speed set by movementSpeed, 
      * disappears at end of last note displayed.
      */
-    public void playAnimation() {
+    public void playAnimation(Pane soundObjectPane) {
         timeline.stop();
         timeline.getKeyFrames().clear();
         RED_BAR.setX(0);
         RED_BAR.setVisible(true);
         
-        findEndCoordinate(SoundObjectPaneController.SOUNDOBJECT_ARRAY);
+        findEndCoordinate(soundObjectPane);
         
         KeyValue kv = new KeyValue(RED_BAR.xProperty(), compositionEnd);
         Duration duration = Duration.millis(compositionEnd * FRAME_RATE);
@@ -95,9 +91,10 @@ public class RedBarPaneController implements Initializable {
      * 
      * @param noteList the list of notes being played
      */
-    private void findEndCoordinate(ArrayList<SoundObject> itemList) {
-        for (SoundObject sObj : itemList) {
-            Rectangle r = sObj.visualRectangle;
+    private void findEndCoordinate(Pane soundObjectPane) {
+        compositionEnd = 0;
+        for (Node sObj : soundObjectPane.getChildren()) {
+            Rectangle r = (Rectangle) sObj;
             int end = (int) (r.getX() + r.getWidth());
             if (end > compositionEnd)
                 compositionEnd = end;

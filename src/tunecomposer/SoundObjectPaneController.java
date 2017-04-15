@@ -3,7 +3,8 @@ package tunecomposer;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
-import java.lang.NullPointerException;
+import javafx.scene.Node;
+import javafx.scene.shape.Rectangle;
 
 /**
  * FXML Controller class
@@ -23,7 +24,6 @@ public class SoundObjectPaneController {
     /**
      * Create array of NoteBar objects and selected NoteBar objects.      
      */
-    public static ArrayList<SoundObject> SOUNDOBJECT_ARRAY = new ArrayList(); 
     public static ArrayList<SoundObject> SELECTED_SOUNDOBJECT_ARRAY = new ArrayList();
          
     /**
@@ -34,9 +34,12 @@ public class SoundObjectPaneController {
     /**
      * Fills the SELECTED_SOUNDOBJECT_ARRAY with the currently selected notes.
      */
-    public static void updateSelectedSoundObjectArray(){
+    public void updateSelectedSoundObjectArray(){
         SELECTED_SOUNDOBJECT_ARRAY.clear();
-        for (SoundObject sObj: SOUNDOBJECT_ARRAY) {
+        
+        for (Node n: soundObjectPane.getChildren()) {
+            Rectangle r = (Rectangle) n;
+            SoundObject sObj = (SoundObject) (r).getUserData();
             if (sObj.isSelected()) {
                 SELECTED_SOUNDOBJECT_ARRAY.add(sObj);
             }
@@ -46,8 +49,10 @@ public class SoundObjectPaneController {
     /**
      * Empties the SELECTED_SOUNDOBJECT_ARRAY and un-selects all notes.
      */
-    public static void unselectAllSoundObjects(){
-        for (SoundObject sObj: SOUNDOBJECT_ARRAY) { 
+    public void unselectAllSoundObjects(){
+        for (Node n: soundObjectPane.getChildren()) {
+            Rectangle r = (Rectangle) n;
+            SoundObject sObj = (SoundObject) (r).getUserData();
             if (sObj.isSelected()) {
                 sObj.unselect();
             }
@@ -61,10 +66,10 @@ public class SoundObjectPaneController {
         
 //        unselectAllSoundObjects();
         
-        g.containedSoundObjects.forEach((sObj) -> {
-            SOUNDOBJECT_ARRAY.remove(sObj);
-        });
-        SOUNDOBJECT_ARRAY.add(g);
+//        g.containedSoundObjects.forEach((sObj) -> {
+//            SOUNDOBJECT_ARRAY.remove(sObj);
+//        });
+//        SOUNDOBJECT_ARRAY.add(g);
         
         updateSelectedSoundObjectArray();
     }
@@ -75,9 +80,9 @@ public class SoundObjectPaneController {
                 ((Gesture) sObj).ungroup(soundObjectPane);
                 sObj.containedSoundObjects.forEach((innerSObj) -> {
 //                    innerSObj.select();
-                    SOUNDOBJECT_ARRAY.add(innerSObj);
+//                    SOUNDOBJECT_ARRAY.add(innerSObj);
                 });
-                SOUNDOBJECT_ARRAY.remove(sObj);
+//                SOUNDOBJECT_ARRAY.remove(sObj);
             }
         }
         updateSelectedSoundObjectArray();
@@ -98,4 +103,4 @@ public class SoundObjectPaneController {
         actionManager = manager;
     }
     
-}//end Class
+}
