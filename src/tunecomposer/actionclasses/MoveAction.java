@@ -5,11 +5,7 @@
  */
 package tunecomposer.actionclasses;
 
-import tunecomposer.actionclasses.Action;
 import java.util.ArrayList;
-import javafx.scene.Group;
-import javafx.scene.layout.Pane;
-import tunecomposer.Gesture;
 import tunecomposer.SoundObject;
 
 /**
@@ -32,13 +28,6 @@ public class MoveAction extends Action {
     private int startX;
     private int startY;
     
-    /**
-     * Reference to notePane and gesturePane to allow moving rectangles and 
-     * Gesture boxes.
-     */
-    private Pane notePane;
-    private Pane gesturePane;
-    
     
     /**
      * Sets up object to allow sounds to be moved. selList must contain all
@@ -49,13 +38,10 @@ public class MoveAction extends Action {
      *          selList must contain all SoundObjects to be affected, including 
      *          NoteBars and GestureBoxes. Action will not look for SoundObjects 
      *          that should be selected by relation to a selected Gesture.
-     * @param _notePane Reference to the notePane.     
-     * @param _gesturePane reference to the gesture pane.
+     * @param x initial x location of mouse click.     
+     * @param y initial y location of mouse click.
      */
-    public MoveAction(ArrayList<SoundObject> selList, 
-                        Pane _notePane, Pane _gesturePane, int x, int y) {
-        notePane = _notePane;
-        gesturePane = _gesturePane;
+    public MoveAction(ArrayList<SoundObject> selList, int x, int y) {
         
         startX = x;
         startY = y;
@@ -74,12 +60,13 @@ public class MoveAction extends Action {
      * @param mouseX x coord of mouse
      * @param mouseY y coord of mouse
      */
-    public void move(double mouseX, double mouseY) {
-        addGestureSiblings();
-        //move logic
+    public void move(int mouseX, int mouseY) {
         
-        lastX = (int) mouseX;
-        lastY = (int) mouseY; 
+        affectedObjs.forEach((sObj) -> {
+            sObj.move(mouseX, mouseY);
+        });
+        lastX = mouseX;
+        lastY = mouseY; 
     }
     
     
@@ -89,9 +76,9 @@ public class MoveAction extends Action {
     */
     @Override
     public void undo() {
-        //for r in affectedObjs
-            //r.x = r.x - (lastX - startX)
-            //r.y = r.y - (lastY - startY)
+        affectedObjs.forEach((sObj)->{
+            sObj.move(lastX-startX, lastY-startY);
+        });
     }
 
     /**
@@ -101,7 +88,7 @@ public class MoveAction extends Action {
      */
     @Override
     public void execute() {
-        //movement already done, so nothing to do.
+        
         executed = true;
       
     }
