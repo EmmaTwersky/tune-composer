@@ -2,13 +2,15 @@ package tunecomposer;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
+import javafx.fxml.Initializable;
+
 
 /**
  * This controller creates the application and handles the menu item selections.
  *
  * @author Emma Twersky
  */
-public class ApplicationController {  
+public class ApplicationController implements Initializable {  
     
     /**
      * Object that contains the undo and redo stack for the program. 
@@ -27,6 +29,7 @@ public class ApplicationController {
      * @param resources the resources of the utility of the scene
      */
     @FXML
+    @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
         actionManager = new ActionManager();
         try {
@@ -55,6 +58,8 @@ public class ApplicationController {
      */
     @FXML 
     protected void handleUndoMenuItemAction(ActionEvent event) {
+        compositionPaneController.stop();
+        actionManager.undo();
     }
     
     /**
@@ -64,6 +69,8 @@ public class ApplicationController {
      */
     @FXML 
     protected void handleRedoMenuItemAction(ActionEvent event) {
+        compositionPaneController.stop();
+        actionManager.redo();
     }
     
     /**
