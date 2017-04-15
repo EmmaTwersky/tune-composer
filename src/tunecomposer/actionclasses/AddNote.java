@@ -73,5 +73,4 @@ public class AddNote extends Action {
     public NoteBar getNote() {
         return note;
     }
-    
 }

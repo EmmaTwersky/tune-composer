@@ -1,10 +1,13 @@
 package tunecomposer;
 
+import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
+import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.SelectAction;
 
 /**
  * This controller creates the application and handles the menu item selections.
@@ -36,8 +39,7 @@ public class ApplicationController implements Initializable {
         try {
             compositionPaneController.setActionManager(actionManager);
         } catch (NullPointerException ex) {
-            System.out.println("In initialize MenuBarController, passed null"
-                   + " to CompPaneController.setActionManager(manager)");
+            System.out.println("Null");
             System.exit(1);
         }
     }   
@@ -81,11 +83,23 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleSelectAllMenuItemAction(ActionEvent event) {
+        SelectAction selectAction;
+        ArrayList<SoundObject> allObjs = new ArrayList();
+                        
         for (Node sObj : compositionPaneController.soundObjectPane.getChildren()) {
             Rectangle r = (Rectangle) sObj;
-            ((SoundObject) r.getUserData()).select();
+            SoundObject s = (SoundObject) r.getUserData();
+            if (!s.isSelected()) {
+                allObjs.add(s);
+            }
         }
-
+        
+        selectAction = new SelectAction(allObjs);
+        ArrayList<Action> selectActionArray = new ArrayList<>();
+        selectActionArray.add(selectAction);
+        actionManager.execute(selectActionArray);
+        actionManager.putInUndoStack(selectActionArray);
+        
         SoundObjectPaneController.updateSelectedSoundObjectArray(compositionPaneController.soundObjectPane);
     }
 

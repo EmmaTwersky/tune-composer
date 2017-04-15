@@ -1,32 +1,28 @@
 package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
-import javafx.scene.layout.Pane;
-import tunecomposer.NoteBar;
 import tunecomposer.SoundObject;
 
+/**
+ * This class creates the SelectAction for the ActionManager.
+ * 
+ * @author EmmaTwersky
+ */
 public class SelectAction extends Action {
     
     /**
      * Array of SoundObjects to be affected by the action.
      */
     ArrayList<SoundObject> affectedObjs;
-    
-    /**
-     * Pane that all SoundObject visuals live within.
-     */
-    private final Pane soundObjectPane;
 
     /**
-     * Sets up Action object as select or unselect. 
+     * Sets up Action to select a SoundObject. 
      * Does not yet change the selection state of notes. 
-     * That is for the execute() method.
+     * 
      * @param selList selList must contain all SoundObjects to be affected
-     * @param soundObjPane Pane that holds all SoundObject visuals
      */
-    public SelectAction(ArrayList<SoundObject> selList, Pane soundObjPane) {
+    public SelectAction(ArrayList<SoundObject> selList) {
         affectedObjs = (ArrayList<SoundObject>) selList.clone();
-        soundObjectPane = soundObjPane;
     }
         
     /**
@@ -39,6 +35,9 @@ public class SelectAction extends Action {
         }
     }
     
+    /**
+     * Undoes selection on the affected notes.
+     */
     @Override
     public void undo() {
         for (SoundObject sObj : affectedObjs) {
@@ -46,10 +45,23 @@ public class SelectAction extends Action {
         }
     }
     
+    /**
+     * Redoes the selection on the affected notes.
+     */
     @Override
     public void redo() {
-        for (SoundObject sObj : affectedObjs) {
-            sObj.select();
-        }
+        execute();
+    }
+    
+    public void changeAffectedObjs(ArrayList<SoundObject> selList) {
+        affectedObjs = selList;
     }
 }
+
+//    SelectAction selectAction;
+//    ArrayList<SoundObject> allObjs = new ArrayList();
+//    selectAction = new SelectAction(allObjs);
+//    ArrayList<Action> selectActionArray = new ArrayList<>();
+//    selectActionArray.add(selectAction);
+//    actionManager.execute(selectActionArray);
+//    actionManager.putInUndoStack(selectActionArray);

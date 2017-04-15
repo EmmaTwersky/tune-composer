@@ -219,6 +219,8 @@ public class NoteBar extends SoundObject{
                 this.duration, this.channel, 0);
     }
     
+    
+    
     /**
      * Handles note pressed event. 
      * Sets initial pressed values of the mouse and consumes the event.
