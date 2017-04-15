@@ -1,9 +1,10 @@
 package tunecomposer;
 
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.fxml.Initializable;
-
 
 /**
  * This controller creates the application and handles the menu item selections.

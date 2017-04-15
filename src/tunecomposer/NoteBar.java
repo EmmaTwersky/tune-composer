@@ -1,4 +1,3 @@
-// Shorten handlers with stategy pattern or abstraction of methods?
 package tunecomposer;
 
 import javafx.event.EventHandler;
@@ -17,7 +16,7 @@ import javax.sound.midi.ShortMessage;
 public class NoteBar extends SoundObject{
     /**
      * Create variables for the note name, instrument number, channel number,
- pitch, starting value, and duration. 
+     * pitch, starting value, and duration. 
      */
     public final String name;
     public final int instrument;
@@ -45,8 +44,8 @@ public class NoteBar extends SoundObject{
     private final InstrumentInfo instrumentInfo = new InstrumentInfo();
     
      /**
-     * Initialize the note bar object and variables, then constructs the 
-     * display and doesn't add it to any pane.
+     * Initialize the NoteBar object and variables, then constructs the 
+     * display and does not add it to a pane.
      * 
      * @param x the top left corner x value of the note clicked
      * @param y the top left corner y value of the note clicked
@@ -70,8 +69,37 @@ public class NoteBar extends SoundObject{
         select();
     }
     
+    /**
+     * Selects note and displays visualRectangle selection.
+     */
+    @Override
+    public final void select(){
+        selected = true;
+        visualRectangle.getStyleClass().removeAll("unselectedNote");
+        visualRectangle.getStyleClass().add("selectedNote");
+        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
+    }
     
-
+    /**
+     * Un-selects note and removes visualRectangle selection.
+     */
+    @Override
+    public void unselect(){
+        selected = false;
+        visualRectangle.getStyleClass().removeAll("selectedNote");
+        visualRectangle.getStyleClass().add("unselectedNote");
+        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
+    }
+    
+    /**
+     * Switches value of selected.
+     */
+    @Override
+    public void toggleSelection(){
+        if (selected) {unselect();}
+        else {select();}
+    }
+    
     /**
      * Returns if note is selected.
      * 
@@ -97,6 +125,20 @@ public class NoteBar extends SoundObject{
     }
     
     /**
+     * Changes note duration.
+     * 
+     * @param lengthChange the amount to increment the duration
+     */
+    @Override
+    public void changeLength(int lengthChange){ 
+        int newLength = duration + lengthChange;
+        if (newLength > minLength) {
+            duration = newLength;
+            visualRectangle.setWidth(duration);
+        }
+    }
+
+    /**
      * Fixes note to sit in-between staff lines.
      */
     @Override
@@ -115,22 +157,17 @@ public class NoteBar extends SoundObject{
     }
     
     /**
-     * Changes note duration.
-     * 
-     * @param lengthChange the amount to increment the duration
+     * Sets the visualRectangle's mouse event handlers. 
      */
     @Override
-    public void changeLength(int lengthChange){ 
-        int newLength = duration + lengthChange;
-        if (newLength > minLength) {
-            duration = newLength;
-            visualRectangle.setWidth(duration);
-        }
+    public final void setHandlers() {
+        visualRectangle.setOnMousePressed(handleNotePressed);
+        visualRectangle.setOnMouseDragged(handleNoteDragged);
+        visualRectangle.setOnMouseReleased(handleNoteReleased);
     }
     
     /**
      * Adds the note to the given pane. 
-     * Sets this.pane equal to given pane.
      * Does not manage selection. Does not handle if given pane is null. 
      * 
      * @param soundObjectPane
@@ -142,8 +179,8 @@ public class NoteBar extends SoundObject{
     
     /**
      * Removes the note from the given pane. 
-     * Sets this.pane equal to given pane.
      * Does not manage selection. Does not handle if given pane is null. 
+     * 
      * @param soundObjectPane
      */
     @Override
@@ -152,46 +189,22 @@ public class NoteBar extends SoundObject{
     }
     
     /**
-     * Selects note and displays selection box around note.
+     * Adds the note to the MidiPlayer. 
+     * 
+     * @param player given TunePlayer object
      */
     @Override
-    public final void select(){
-        selected = true;
-        visualRectangle.getStyleClass().removeAll("unselectedNote");
-        visualRectangle.getStyleClass().add("selectedNote");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
+    public void addToMidiPlayer(MidiPlayer player) {
+        player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + this.channel, 
+                this.instrument, 0, 0, this.channel);
+        player.addNote(this.pitch, VOLUME, this.startTick, 
+                this.duration, this.channel, 0);
     }
     
     /**
-     * Un-selects note and removes selection box around note.
-     */
-    @Override
-    public void unselect(){
-        selected = false;
-        visualRectangle.getStyleClass().removeAll("selectedNote");
-        visualRectangle.getStyleClass().add("unselectedNote");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
-    }
-    
-    /**
-     * Switches value of selected.
-     */
-    @Override
-    public void toggleSelection(){
-        if (selected) {unselect();}
-        else {select();}
-    }
-    
-    @Override
-    public final void setHandlers() {
-        visualRectangle.setOnMousePressed(handleNotePressed);
-        visualRectangle.setOnMouseDragged(handleNoteDragged);
-        visualRectangle.setOnMouseReleased(handleNoteReleased);
-    }
-        
-  /**
      * Handles note pressed event. 
      * Sets initial pressed values of the mouse and consumes the event.
+     * Also checks if dragging the note to change length.
      * 
      * @param event the mouse click event
      */
@@ -278,14 +291,5 @@ public class NoteBar extends SoundObject{
               
             event.consume();
         }
-    };
-
-    @Override
-    public void addToMidiPlayer(MidiPlayer player) {
-        player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + this.channel, 
-                this.instrument, 0, 0, this.channel);
-        player.addNote(this.pitch, VOLUME, this.startTick, 
-                this.duration, this.channel, 0);
-    }
-    
+    };    
 }
