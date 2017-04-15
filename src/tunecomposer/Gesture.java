@@ -42,6 +42,24 @@ public final class Gesture extends SoundObject{
     }
     
     /**
+     * Gesture constructor that sets containedObjects equal to given ArrayList
+     * of SoundObjects instead of copying the SELECTED_SOUNDOBJECT_ARRAY
+     * @param selList ArrayList of SoundObjects within this group 
+     */
+    public Gesture(ArrayList<SoundObject>  selList) {
+        visualRectangle = new Rectangle();
+        visualRectangle.setMouseTransparent(true);
+        containedSoundObjects = new ArrayList();
+      
+        containedSoundObjects = new ArrayList();
+        containedSoundObjects = (ArrayList<SoundObject>) selList.clone();
+        
+        refreshVisualRectangle();
+        
+        select();
+    }
+    
+    /**
      * Refreshes the current coordinates of the visualRectangle display.
      */
     private void refreshVisualRectangle(){
@@ -208,6 +226,7 @@ public final class Gesture extends SoundObject{
             sObj.removeFromPane(soundObjectPane);
         });
         soundObjectPane.getChildren().remove(visualRectangle);
+        //TODO need a method to reset handlers of children to what they would be without this group
     }
     
     /**

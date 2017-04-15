@@ -41,6 +41,16 @@ public class DeleteAction extends Action {
         soundObjectPane = _pane;
     }
     
+    /**
+     * Removes all rectangles from their respective notePane or gestPane. Sets
+     * execute to true so undo() can be performed. 
+     */
+    @Override
+    public void execute() { 
+        for (SoundObject sObj: affectedObjs) {
+            sObj.removeFromPane(soundObjectPane);
+        }
+    }
     
     /**
      * Adds all rectangles back to their original panes. Holds a reference of 
@@ -53,15 +63,10 @@ public class DeleteAction extends Action {
         }
     }
 
-    /**
-     * Removes all rectangles from their respective notePane or gestPane. Sets
-     * execute to true so undo() can be performed. 
-     */
+    
     @Override
-    public void execute() { 
-        for (SoundObject sObj: affectedObjs) {
-            sObj.removeFromPane(soundObjectPane);
-        }
+    public void redo() {
+        
     }
     
 }

@@ -41,7 +41,7 @@ public class GroupAction extends AbstractGroupAction {
      * @param _pane reference to the soundObjectPane.
      */
     public GroupAction(ArrayList<SoundObject> selList, Pane _pane) {
-        gesture = new Gesture();
+        gesture = new Gesture(selList);
         
         soundObjectPane = _pane;
         
@@ -49,8 +49,9 @@ public class GroupAction extends AbstractGroupAction {
     }
     
     
+    @Override
     public void execute() {
-        
+        gesture.addToPane(soundObjectPane);
         //addGestureSiblings()
         //find top, bot, left, right extremes
         //make gestureBox
@@ -63,5 +64,8 @@ public class GroupAction extends AbstractGroupAction {
     public void undo() {
         // call ungroup from super.
     }
-            
+    
+    public void redo() {
+        
+    }
 }
