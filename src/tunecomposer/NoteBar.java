@@ -31,6 +31,12 @@ public class NoteBar extends SoundObject{
     public final int HEIGHT = 10;
 
     /**
+     * actionManager instance that holds the undo and redo stacks this note 
+     * lives within. 
+     */
+    private ActionManager actionManager;
+    
+    /**
     * Creates fixed height and set ranges for pitch. 
     */
     private final int pitchRange = 128;
@@ -54,7 +60,7 @@ public class NoteBar extends SoundObject{
      * @param x the top left corner x value of the note clicked
      * @param y the top left corner y value of the note clicked
      */
-    public NoteBar(double x, double y){
+    public NoteBar(double x, double y, ActionManager actionManager){
         name = InstrumentToolBarController.selectedInstrument;
         instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
