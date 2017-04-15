@@ -84,6 +84,12 @@ public class StretchAction extends Action{
         });
     }
     
+    @Override
+    public void redo(){
+        affectedObjs.forEach((sObj) -> {
+            sObj.changeLength(finalLength-initialLength);
+        });
+    }
     
     
 }

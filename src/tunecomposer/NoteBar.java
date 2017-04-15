@@ -234,6 +234,16 @@ public class NoteBar extends SoundObject{
             initialX = (int) event.getX();
             initialY = (int) event.getY();
             
+            if (!selected) {
+                if(!event.isControlDown()){
+                    SoundObjectPaneController.unselectAllSoundObjects(pane);
+                }
+                select();
+            }
+            else if (event.isControlDown()){
+                unselect();
+            }
+            
             int editLengthMax = (int) visualRectangle.getX() + duration;
             int editLengthMin = editLengthMax - clickToEditLength;
             if ((editLengthMin <= initialX) && (initialX <= editLengthMax)) {
@@ -266,10 +276,6 @@ public class NoteBar extends SoundObject{
             int x = (int) event.getX();
             int y = (int) event.getY();
                         
-            if (!selected) {
-                SoundObjectPaneController.unselectAllSoundObjects(pane); 
-                select();
-            }
             
             if (draggingLength) {
                 sObjStretch.stretch(x - initialX);
@@ -297,15 +303,6 @@ public class NoteBar extends SoundObject{
         @Override
         public void handle(MouseEvent event) {
                         
-            if (event.isStillSincePress()) {
-                if (event.isControlDown()) {
-                    toggleSelection();
-                }
-                else {
-                    SoundObjectPaneController.unselectAllSoundObjects(pane);
-                    select();
-                }
-            }
             
             if (draggingLength){
                 sObjStretch.setFinalX(initialX);

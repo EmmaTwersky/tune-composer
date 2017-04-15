@@ -78,6 +78,7 @@ public class MoveAction extends Action {
     public void undo() {
         affectedObjs.forEach((sObj)->{
             sObj.move(startX-lastX, startY-lastY);
+            sObj.snapInPlace();
         });
     }
     
@@ -95,7 +96,15 @@ public class MoveAction extends Action {
     public void execute() {
         
         executed = true;
-      
+        
+    }
+    
+    @Override
+    public void redo() {
+        affectedObjs.forEach((sObj)->{
+            sObj.move(lastX-startX, lastY-startY);
+            sObj.snapInPlace();
+        });
     }
     
 }
