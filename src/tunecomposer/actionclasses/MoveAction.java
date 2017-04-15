@@ -67,8 +67,6 @@ public class MoveAction extends Action {
         affectedObjs.forEach((sObj) -> {
             sObj.move(mouseX, mouseY);
         });
-        lastX = mouseX;
-        lastY = mouseY; 
     }
     
     
@@ -79,8 +77,13 @@ public class MoveAction extends Action {
     @Override
     public void undo() {
         affectedObjs.forEach((sObj)->{
-            sObj.move(lastX-startX, lastY-startY);
+            sObj.move(startX-lastX, startY-lastY);
         });
+    }
+    
+    public void setLastCoords(int x, int y){
+        lastX = x;
+        lastY = y;
     }
 
     /**

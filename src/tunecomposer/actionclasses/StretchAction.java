@@ -57,7 +57,10 @@ public class StretchAction extends Action{
         affectedObjs.forEach((sObj) -> {
             sObj.changeLength(lengthInc);
         });
-        finalLength = lengthInc;
+    }
+    
+    public void setFinalX(int x){
+        finalLength = x;
     }
     
     /**
@@ -77,7 +80,7 @@ public class StretchAction extends Action{
     @Override
     public void undo() {
         affectedObjs.forEach((sObj) -> {
-            sObj.changeLength(finalLength-initialLength);
+            sObj.changeLength(initialLength-finalLength);
         });
     }
     

@@ -302,6 +302,7 @@ public class NoteBar extends SoundObject{
             }
             
             else if (draggingLength){
+                sObjStretch.setFinalX(initialX);
                 sObjStretch.execute();
                 ArrayList<Action> actionList = new ArrayList();
                 actionList.add(sObjStretch);
@@ -309,6 +310,7 @@ public class NoteBar extends SoundObject{
             }
             
             else{
+                sObjMove.setLastCoords(initialX,initialY);
                 sObjMove.execute();
                 ArrayList<Action> actionList = new ArrayList();
 
