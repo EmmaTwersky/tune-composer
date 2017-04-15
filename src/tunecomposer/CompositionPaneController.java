@@ -5,9 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.AddNote;
-
 
 /**
  * This controller creates the composition pane which contains the TunePlayer 
@@ -28,13 +26,13 @@ public class CompositionPaneController implements Initializable {
     public Pane soundObjectPane;
     
     @FXML
+    public SoundObjectPaneController soundObjectPaneController;
+    
+    @FXML
     public SelectionWindowPaneController selectionWindowPaneController;
     
     @FXML
     public RedBarPaneController redBarPaneController;
- 
-    @FXML
-    public SoundObjectPaneController soundObjectPaneController;
     
     /**
      * Object that contains the undo and redo stack for the program. 
@@ -42,8 +40,7 @@ public class CompositionPaneController implements Initializable {
     private ActionManager actionManager;
     
     /**
-     * Initialize FXML, draws initial setup of composition pane and 
-     * initialized the RedBar. Sets SoundObjectPaneController to reference
+     * Initialize FXML and sets SoundObjectPaneController to reference
      * the same ActionManager object.
      * 
      * @param location the source of the scene
@@ -53,31 +50,43 @@ public class CompositionPaneController implements Initializable {
     @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
         tunePlayerObj = new TunePlayer();
-        System.out.println("asdfasdfasfd");
+//        System.out.println("Action manager on soundObjPane set to Action manager instance");
         actionManager = new ActionManager();
         soundObjectPaneController.setActionManager(actionManager);
     }   
     
+    /**
+     * Plays the current composition on the CompositionPane.
+     */
     public void play() {
         tunePlayerObj.play();
         redBarPaneController.playAnimation();
     }
     
+    /**
+     * Stops the current composition on the CompositionPane from playing.
+     */
     public void stop() {
         tunePlayerObj.stop();
         redBarPaneController.stopAnimation();
     }
     
+    /**
+     * Groups the currently selected SoundObjects on the CompositionPane.
+     */
     public void group() {        
         soundObjectPaneController.group();
     }
     
+    /**
+     * Ungroups the currently selected SoundObjects on the CompositionPane.
+     */
     public void ungroup() {
         soundObjectPaneController.ungroup();
     }
     
     /**
-     * Handles mouse press on the musicPane.
+     * Handles mouse press on the SoundObjectPane.
      * Stops current MidiPlayer, gets initial value of mouse, and initializes 
      * selection window. Holds currently selected notes for drag window.
      * 
@@ -100,7 +109,7 @@ public class CompositionPaneController implements Initializable {
     };
     
     /**
-     * Handles mouse dragged on the musicPane. 
+     * Handles mouse dragged on the SoundObjectPane. 
      * Drags selection window, highlights notes intersecting the window and 
      * updates selected notes based on control button.
      * 
@@ -112,18 +121,18 @@ public class CompositionPaneController implements Initializable {
         
         selectionWindowPaneController.translateWindow(event.getX(), event.getY());
         
-        for (SoundObject sObj: SoundObjectPaneController.SOUNDOBJECT_ARRAY) {
-            if (!SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.contains(sObj)) {
-                Rectangle r = sObj.visualRectangle;
-                if (selectionWindowPaneController.SELECTION_WINDOW.
-                        intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
-                    sObj.select();
-                }
-                else {
-                    sObj.unselect();
-                }
+        SoundObjectPaneController.SOUNDOBJECT_ARRAY.stream().filter((SoundObject sObj) 
+                -> !SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.contains(sObj)).
+                forEachOrdered((SoundObject sObj) -> {
+            Rectangle r = sObj.visualRectangle;
+            if (selectionWindowPaneController.SELECTION_WINDOW.
+                    intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
+                sObj.select();
             }
-        }
+            else {
+                sObj.unselect();
+            }
+        });
         
         SoundObjectPaneController.updateSelectedSoundObjectArray();
     };
@@ -158,13 +167,13 @@ public class CompositionPaneController implements Initializable {
     
     
     /**
-     * Set the actionManager to the instance that contains the undo and 
-     * redo stacks. If given manager is null, then throws NullPointerException.
-     * @param manager
+     * Set the actionManager to the Application's passed in ActionManager instance.
+     * If given manager is null, then throws NullPointerException.
+     * 
+     * @param manager the ActionManager for the current TuneComposer application
      * @throws NullPointerException
      */
-    public void setActionManager(ActionManager manager) 
-                                     throws NullPointerException{
+    public void setActionManager(ActionManager manager) throws NullPointerException{
         if (manager == null) {
             throw new NullPointerException();
         }

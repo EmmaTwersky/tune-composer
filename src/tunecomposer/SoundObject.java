@@ -6,17 +6,29 @@ import javafx.scene.shape.Rectangle;
 
 public abstract class SoundObject {
     
-     /**
-     * A rectangle to display on the screen.
-     */
+    /**
+    * A rectangle to display on the screen.
+    */
     public Rectangle visualRectangle;
-    public ArrayList<SoundObject> containedSoundObjects;
-    
-    public final int clickToEditLength = 10; // 10 worked better, but 5 was indicated
-    public final int minNoteLength = 5;
     
     /**
-    * Creates boolean value of if the note is currently selected.
+     * Creates pane the SoundObject is on.
+    */
+    public Pane pane;
+    
+    /**
+    * An ArrayList of the SoundObjects contained within the object.
+    */
+    public ArrayList<SoundObject> containedSoundObjects;
+    
+    /**
+    * Sets given values for SoundObject dragging when clicked.
+    */
+    public final int clickToEditLength = 10; // 10 shows better selection, though 5 is the indicated value.
+    public final int minLength = 5;
+    
+    /**
+    * Creates boolean value of if the SoundObject is currently selected.
     */
     public boolean selected = true;
     
@@ -31,18 +43,49 @@ public abstract class SoundObject {
      */
     public boolean draggingLength;
     
+    /**
+    * Creates abstract set of SoundObject selection methods.
+    */
     public abstract void select();
     public abstract void unselect();
     public abstract void toggleSelection();
     public abstract boolean isSelected();
     
+    /**
+    * Creates abstract method to move the SoundObject.
+     * @param x visualRectangle's new x coordinate
+     * @param y visualRectangle's new y coordinate
+    */
     public abstract void move(int x, int y);
-    public abstract void changeLength(int lengthInc);
+    
+    /**
+    * Creates abstract method to change the SoundObject's length.
+    * @param length visualRectangle's new length
+    */    
+    public abstract void changeLength(int length);
+    
+    /**
+    * Creates abstract set of SoundObject altering methods.
+    */
     public abstract void snapInPlace();
     public abstract void delete();
     
+    /**
+    * Gives the object's visualRectangle mouse event handlers.
+    */
     public abstract void setHandlers();
+    
+    /**
+    * Adds the visualRectangle on the pane.
+    * 
+     * @param paneToAddTo pane visualRectangle is on
+    */
     public abstract void addToPane(Pane paneToAddTo);
-        
+    
+    /**
+    * Adds the SoundObject's MidiEvent to the player.
+    * 
+     * @param player given instance of TunePlayer
+    */
     public abstract void addToMidiPlayer(MidiPlayer player);
 }

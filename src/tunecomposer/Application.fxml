@@ -54,12 +54,12 @@
                         </SeparatorMenuItem>
                         <MenuItem 
                             text = "Group" 
-                            onAction = "#handleGrouping"  
+                            onAction = "#handleGroupMenuItemAction"  
                             accelerator = "Shortcut + G" >
                         </MenuItem>
                         <MenuItem 
                             text = "Ungroup" 
-                            onAction = "#handleUngrouping"  
+                            onAction = "#handleUngroupMenuItemAction"  
                             accelerator = "Shortcut + SHIFT + G" >
                         </MenuItem>
                     </items>
@@ -68,12 +68,12 @@
                     <items>
                         <MenuItem 
                             text = "Play" 
-                            onAction = "#handlePlayScaleButtonAction" 
+                            onAction = "#handlePlayMenuItemAction" 
                             accelerator = "Shortcut + P" >
                         </MenuItem>
                         <MenuItem
                             text = "Stop" 
-                            onAction = "#handleStopPlayingButtonAction" 
+                            onAction = "#handleStopMenuItemAction" 
                             accelerator = "Shortcut + S" >
                         </MenuItem>
                     </items>

@@ -18,21 +18,21 @@
             fx:id = "compositionPane">
             <children>
                 <fx:include 
-                    fx:id="noteLinesPane" 
-                    source="NoteLinesPane.fxml"/>
+                    fx:id = "noteLinesPane" 
+                    source = "NoteLinesPane.fxml"/>
                 <fx:include 
-                    fx:id="soundObjectPane" 
-                    source="SoundObjectPane.fxml"
+                    fx:id = "soundObjectPane" 
+                    source = "SoundObjectPane.fxml"
                     onMousePressed = "#handlePanePressed"
                     onMouseDragged = "#handlePaneDragged"
                     onMouseReleased = "#handlePaneReleased"/>
                 <fx:include 
-                    fx:id="redBarPane" 
-                    source="RedBarPane.fxml"
+                    fx:id = "redBarPane" 
+                    source = "RedBarPane.fxml"
                     mouseTransparent = "true"/>   
                 <fx:include 
-                    fx:id="selectionWindowPane" 
-                    source="SelectionWindowPane.fxml"
+                    fx:id = "selectionWindowPane" 
+                    source = "SelectionWindowPane.fxml"
                     mouseTransparent = "true"/>
             </children>
         </StackPane> 

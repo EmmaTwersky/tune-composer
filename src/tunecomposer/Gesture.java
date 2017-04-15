@@ -14,6 +14,12 @@ public final class Gesture extends SoundObject{
     public double bottomX;
     public double bottomY;
     
+    /**
+    * This class creates and edits Gesture objects to display gestures in the 
+    * TuneComposer and to be played in MidiPLayer.
+    * 
+    * @author Emma Twersky
+    */
     Gesture(Pane musicPane){
         visualRectangle = new Rectangle();
         visualRectangle.setMouseTransparent(true);
@@ -32,7 +38,7 @@ public final class Gesture extends SoundObject{
     }
     
     /**
-     * Refreshes the current coordinates of the visualRectangle.
+     * Refreshes the current coordinates of the visualRectangle display.
      */
     private void refreshVisualRectangle(){
         setVisualRectangleCoords();
@@ -46,6 +52,7 @@ public final class Gesture extends SoundObject{
     
     /**
      * Finds and sets the current surrounding coordinates of the Gesture.
+     * Sets the current TopX, TopY, BottomX and BottomY.
      */
     public void setVisualRectangleCoords() {
         topX = 2000;
@@ -72,8 +79,6 @@ public final class Gesture extends SoundObject{
     
     /**
      * Change the selection state of all notes contained within this gesture.
-     * Will not set them all to the same value, only negates each current
-     * state. 
      */
     @Override
     public void toggleSelection(){
