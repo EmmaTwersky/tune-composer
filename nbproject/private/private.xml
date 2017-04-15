@@ -3,14 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/vivancr/NetBeansProjects/project-5-9-synergy/src/tunecomposer/TuneComposer.fxml</file>
-            <file>file:/home/vivancr/NetBeansProjects/project-5-9-synergy/src/tunecomposer/MenuBarController.java</file>
-            <file>file:/home/vivancr/NetBeansProjects/project-5-9-synergy/src/tunecomposer/SoundObject.java</file>
-            <file>file:/home/vivancr/NetBeansProjects/project-5-9-synergy/src/tunecomposer/CompositionPaneController.java</file>
-            <file>file:/home/vivancr/NetBeansProjects/project-5-9-synergy/src/tunecomposer/TuneComposer.java</file>
-            <file>file:/home/vivancr/NetBeansProjects/project-5-9-synergy/src/tunecomposer/Gesture.java</file>
-            <file>file:/home/vivancr/NetBeansProjects/project-5-9-synergy/src/tunecomposer/NoteBar.java</file>
-            <file>file:/home/vivancr/NetBeansProjects/project-5-9-synergy/src/tunecomposer/TunePlayer.java</file>
+            <file>file:/home/lonbern/NetBeansProjects/project-5-9-synergy/project-5-9-synergy/src/tunecomposer/actionclasses/SelectAction.java</file>
+            <file>file:/home/lonbern/NetBeansProjects/project-5-9-synergy/project-5-9-synergy/src/tunecomposer/Gesture.java</file>
+            <file>file:/home/lonbern/NetBeansProjects/project-5-9-synergy/project-5-9-synergy/src/tunecomposer/NoteLinesPaneController.java</file>
+            <file>file:/home/lonbern/NetBeansProjects/project-5-9-synergy/project-5-9-synergy/src/tunecomposer/actionclasses/Action.java</file>
+            <file>file:/home/lonbern/NetBeansProjects/project-5-9-synergy/project-5-9-synergy/src/tunecomposer/MenuBarController.java</file>
+            <file>file:/home/lonbern/NetBeansProjects/project-5-9-synergy/project-5-9-synergy/src/tunecomposer/ActionManager.java</file>
+            <file>file:/home/lonbern/NetBeansProjects/project-5-9-synergy/project-5-9-synergy/src/tunecomposer/actionclasses/AddNote.java</file>
+            <file>file:/home/lonbern/NetBeansProjects/project-5-9-synergy/project-5-9-synergy/src/tunecomposer/SoundObjectPaneController.java</file>
+            <file>file:/home/lonbern/NetBeansProjects/project-5-9-synergy/project-5-9-synergy/src/tunecomposer/CompositionPaneController.java</file>
+            <file>file:/home/lonbern/NetBeansProjects/project-5-9-synergy/project-5-9-synergy/src/tunecomposer/actionclasses/StretchAction.java</file>
+            <file>file:/home/lonbern/NetBeansProjects/project-5-9-synergy/project-5-9-synergy/src/tunecomposer/actionclasses/GroupAction.java</file>
+            <file>file:/home/lonbern/NetBeansProjects/project-5-9-synergy/project-5-9-synergy/src/tunecomposer/NoteBar.java</file>
+            <file>file:/home/lonbern/NetBeansProjects/project-5-9-synergy/project-5-9-synergy/src/tunecomposer/actionclasses/DeleteAction.java</file>
+            <file>file:/home/lonbern/NetBeansProjects/project-5-9-synergy/project-5-9-synergy/src/tunecomposer/actionclasses/MoveAction.java</file>
         </group>
     </open-files>
 </project-private>

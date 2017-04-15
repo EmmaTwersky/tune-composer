@@ -1,10 +1,14 @@
 package tunecomposer;
 
+import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javax.sound.midi.ShortMessage;
+import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.MoveAction;
+import tunecomposer.actionclasses.StretchAction;
 
 /**
  * This class creates and edits NoteBar objects to display notes in the tune 
@@ -201,6 +205,8 @@ public class NoteBar extends SoundObject{
                 this.duration, this.channel, 0);
     }
     
+    MoveAction sObjMove;
+    StretchAction sObjStretch;
     /**
      * Handles note pressed event. 
      * Sets initial pressed values of the mouse and consumes the event.
@@ -219,6 +225,14 @@ public class NoteBar extends SoundObject{
             int editLengthMin = editLengthMax - clickToEditLength;
             if ((editLengthMin <= initialX) && (initialX <= editLengthMax)) {
                 draggingLength = true;
+                sObjStretch = new StretchAction(
+                        SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
+                        initialX);
+            }
+            else{
+                sObjMove = new MoveAction(
+                        SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
+                        initialX, initialY);
             }
                 
             event.consume();
@@ -245,16 +259,12 @@ public class NoteBar extends SoundObject{
             }
             
             if (draggingLength) {
-                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((soundItem) -> {
-                    soundItem.changeLength(x - initialX);
-                });
+                sObjStretch.stretch(x-initialX);
             }
             else {
                 int translateX = (x - initialX);
                 int translateY = (y - initialY);
-                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((soundItem) -> {
-                    soundItem.move(translateX, translateY);
-                });
+                sObjMove.move(translateX,translateY);
             }
             
             initialX = x;
@@ -273,7 +283,6 @@ public class NoteBar extends SoundObject{
     EventHandler<MouseEvent> handleNoteReleased = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
-            draggingLength = false;
                         
             if (event.isStillSincePress()) {
                 if (event.isControlDown()) {
@@ -285,9 +294,25 @@ public class NoteBar extends SoundObject{
                 }
             }
             
+            else if (draggingLength){
+                sObjStretch.execute();
+                ArrayList<Action> actionList = new ArrayList();
+                actionList.add(sObjStretch);
+                actionManager.putInUndoStack(actionList);
+            }
+            
+            else{
+                sObjMove.execute();
+                ArrayList<Action> actionList = new ArrayList();
+                actionList.add(sObjMove);
+                actionManager.putInUndoStack(actionList);
+            }
+            
             for (SoundObject soundItem : SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
                 soundItem.snapInPlace();
             }
+            
+            draggingLength = false;
               
             event.consume();
         }

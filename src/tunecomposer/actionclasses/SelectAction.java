@@ -26,7 +26,7 @@ public class SelectAction extends Action {
     /**
      * Array of SoundObjects to be affected by the action.
      */
-    ArrayList<SoundObject> affectedObjs = new ArrayList<>();
+    ArrayList<SoundObject> affectedObjs;
     
     /**
      * Pane that all SoundObject visuals live within.

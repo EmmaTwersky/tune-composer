@@ -27,14 +27,13 @@ public class UngroupAction extends AbstractGroupAction {
     /**
      * Array of SoundObjects to be affected by the action.
      */
-    ArrayList<SoundObject> affectedObjs = new ArrayList<>();
+    ArrayList<SoundObject> affectedObjs;
     
     /**
      * Pane that all SoundObject visuals live within.
      */
     private final Pane soundObjectPane;
 
-    
     /**
      * @param selList
      *          All selected rectangles must have their top-most gesture be 

@@ -39,7 +39,7 @@ public class CompositionPaneController implements Initializable {
     /**
      * Object that contains the undo and redo stack for the program. 
      */
-    private ActionManager actionManager;
+    public ActionManager actionManager;
     
     /**
      * Initialize FXML and sets SoundObjectPaneController to reference
