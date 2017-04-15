@@ -16,7 +16,7 @@ import tunecomposer.SoundObject;
 public abstract class Action {
 
     /**
-     * Performs the action based on the given paramaters in the constructor.
+     * Performs the action based on the given parameters in the constructor.
      * This action determines whether an action can be undone.
      */
     public abstract void execute(); 

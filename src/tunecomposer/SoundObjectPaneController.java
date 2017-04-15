@@ -5,6 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
+import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.GroupAction;
+import tunecomposer.actionclasses.UngroupAction;
 
 /**
  * FXML Controller class
@@ -33,11 +36,15 @@ public class SoundObjectPaneController {
     
     /**
      * Fills the SELECTED_SOUNDOBJECT_ARRAY with the currently selected notes.
+     * @param pane
      */
     public static void updateSelectedSoundObjectArray(Pane pane){
         SELECTED_SOUNDOBJECT_ARRAY.clear();
         for (Node n: pane.getChildren()) {
             Rectangle r = (Rectangle) n;
+            if (r.getUserData() == null) {
+                System.out.println("r is null. updateSelArray() paneItems:");
+            }
             SoundObject sObj = (SoundObject) (r).getUserData();
             if (sObj.isSelected()) {
                 SELECTED_SOUNDOBJECT_ARRAY.add(sObj);
@@ -61,9 +68,15 @@ public class SoundObjectPaneController {
     }
         
     public void group() {
-        Gesture g = new Gesture();
-        g.visualRectangle.setUserData(g);
-        g.addToPane(soundObjectPane);
+        GroupAction groupAction = new GroupAction(SELECTED_SOUNDOBJECT_ARRAY, 
+                                          soundObjectPane);
+        ArrayList<Action> actionArray = new ArrayList();
+        actionArray.add(groupAction);
+        actionManager.execute(actionArray);
+        actionManager.putInUndoStack(actionArray);
+//        Gesture g = new Gesture();
+//        g.visualRectangle.setUserData(g);
+//        g.addToPane(soundObjectPane);
         
 //        unselectAllSoundObjects();
         
@@ -76,15 +89,23 @@ public class SoundObjectPaneController {
     }
     
     public void ungroup() {
+        ArrayList<Action> actionList = new ArrayList();
         for (SoundObject sObj : SELECTED_SOUNDOBJECT_ARRAY) {
-            if (sObj instanceof Gesture) {
-                ((Gesture) sObj).ungroup(soundObjectPane);
-                sObj.containedSoundObjects.forEach((innerSObj) -> {
-                    innerSObj.select();
-                    innerSObj.visualRectangle.setUserData(innerSObj);
-                });
+            if (sObj instanceof Gesture && sObj.visualRectangle.getUserData() == sObj) {
+                UngroupAction ungroupAction = new UngroupAction(
+                                            (Gesture) sObj, soundObjectPane);
+                actionList.add(ungroupAction);
+                System.out.println("in ungroup(), added gesture to actionList");
+//                ((Gesture) sObj).ungroup(soundObjectPane);
+//                sObj.containedSoundObjects.forEach((innerSObj) -> {
+//                    innerSObj.select();
+//                    innerSObj.visualRectangle.setUserData(innerSObj);
+//                });
             }
         }
+        System.out.println("executing actionList in ungroup:" + actionList);
+        actionManager.execute(actionList);
+        actionManager.putInUndoStack(actionList);
         updateSelectedSoundObjectArray(soundObjectPane);
     }
     

@@ -28,7 +28,6 @@ public class NoteBar extends SoundObject{
     public int pitch;
     public int startTick;
     public int duration;
-    public final int HEIGHT = 10;
     
     
     MoveAction sObjMove;
@@ -43,14 +42,14 @@ public class NoteBar extends SoundObject{
     /**
     * Creates fixed height and set ranges for pitch. 
     */
-    private final int pitchRange = 128;
-    private final int noteHeight = 10;
+    private final int PITCH_RANGE = 128;
+    private final int NOTE_HEIGHT = 10;
     private final int VOLUME = 127;
     
     /**
     * Sets default duration, minimum duration and default click range to edit duration. 
     */
-    private final int defaultLength = 100;
+    private final int DEFAULT_LENGTH = 100;
     
     /**
      * Load InstrumentInfo HashMap to look up instrument key values.
@@ -73,13 +72,13 @@ public class NoteBar extends SoundObject{
         actionManager = _actionManager;
         pane = soundObjectPane;
         
-        pitch = pitchRange - (int) y / noteHeight;
+        pitch = PITCH_RANGE - (int) y / NOTE_HEIGHT;
         startTick = (int) x;
-        duration = defaultLength;
+        duration = DEFAULT_LENGTH;
                 
         int xLocation = (int) x;
-        int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
-        visualRectangle = new Rectangle(xLocation, yLocation, duration, noteHeight);
+        int yLocation = (int) Math.round(y / NOTE_HEIGHT) * NOTE_HEIGHT;
+        visualRectangle = new Rectangle(xLocation, yLocation, duration, NOTE_HEIGHT);
         visualRectangle.setId(name);
 
         setHandlers();
@@ -164,11 +163,11 @@ public class NoteBar extends SoundObject{
         int x = (int) visualRectangle.getX();
         int y = (int) visualRectangle.getY();
         
-        pitch = pitchRange - (int) y / noteHeight;
+        pitch = PITCH_RANGE - (int) y / NOTE_HEIGHT;
         startTick = (int) x;
         
         int xLocation = (int) x;
-        int yLocation = (int) Math.round(y / noteHeight) * noteHeight;
+        int yLocation = (int) Math.round(y / NOTE_HEIGHT) * NOTE_HEIGHT;
         visualRectangle.setX(xLocation);
         visualRectangle.setY(yLocation);
         visualRectangle.getStyleClass().add(name);
