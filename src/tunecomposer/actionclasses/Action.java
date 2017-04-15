@@ -6,7 +6,8 @@
 package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.Pane;
+import tunecomposer.SoundObject;
 
 /**
  *
@@ -14,9 +15,15 @@ import javafx.scene.shape.Rectangle;
  */
 public abstract class Action {
     /**
-     * Array of rectangles to be affected by the action.
+     * Array of soundobjects to be affected by the action.
      */
-    ArrayList<Rectangle> affectedObjs;
+    ArrayList<SoundObject> affectedObjs = new ArrayList<>();
+    
+    /**
+     * Pane that holds gestures.
+     */
+    Pane soundObjectPane;
+    
     /**
      * Whether the action was executed. False if not, true if it has been.
      */

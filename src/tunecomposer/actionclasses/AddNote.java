@@ -6,7 +6,7 @@
 package tunecomposer.actionclasses;
 
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
+import tunecomposer.NoteBar;
 
 /**
  *
@@ -17,7 +17,7 @@ public class AddNote extends Action {
     /**
      * Rectangle reference for the note shown in NoteBarPane.
      */
-    private final Rectangle rectangle;
+    private final NoteBar note;
     
     /**
      * Reference to the NoteBarPane that note should be added to.
@@ -26,22 +26,15 @@ public class AddNote extends Action {
 
     
     /**
-     * Rectangle must already be created and linked to NoteBar before it is
-     * passed to constructor. The caller can then forget the reference 
-     * to the rectangle.
-     * @param rect Rectangle to be displayed in NoteBarPane
+     * Note is constructed with given x and y values. 
+     * @param x the x value for the top left corner of the note's position
+     * @param y the y value for the top left corner of the note's position
      * @param _notePane Reference to the notePane.
-     * @param execute if true, will execute action in constructor
      * 
      */
-    public AddNote(Rectangle rect, Pane _notePane, boolean execute)  {
-        rectangle = rect;
+    public AddNote(double x, double  y, Pane _notePane)  {
+        note = new NoteBar(x, y);
         notePane = _notePane;
-        
-        if (execute = true) {
-            notePane.getChildren().add(rectangle);
-            executed = true;
-        }
     }
     
     
@@ -51,10 +44,7 @@ public class AddNote extends Action {
      */
     @Override
     public void undo() {
-        if (executed != true) {
-            return;
-        }
-        notePane.getChildren().remove(rectangle);
+        note.delete();
     }
 
     /**
@@ -64,8 +54,17 @@ public class AddNote extends Action {
      */
     @Override
     public void execute() {
-        notePane.getChildren().add(rectangle);
-        executed = true;
+        note.addToPane(notePane);
+    }
+
+    
+    /**
+     * Returns the note reference held by this object. Useful function to get 
+     * the reference and add it to the SOUNDOBJECT_ARRAY
+     * @return NoteBar object in this.note field.
+     */
+    public NoteBar getNote() {
+        return note;
     }
     
 }

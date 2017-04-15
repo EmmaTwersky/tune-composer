@@ -6,7 +6,7 @@
 package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
-import javafx.scene.shape.Rectangle;
+import tunecomposer.SoundObject;
 
 /**
  *
@@ -35,24 +35,20 @@ public class SelectAction extends Action {
      *          If select is true, then action will select all given Rectangles.
      *          If false, action will unselect all given Rectangles.
      */
-    public SelectAction(ArrayList<Rectangle> selList, boolean select) {
-        affectedObjs = (ArrayList<Rectangle>) selList.clone();
+    public SelectAction(ArrayList<SoundObject> selList, boolean select) {
+        affectedObjs = (ArrayList<SoundObject>) selList.clone();
         selectObjs = select;
     }
 
     
     @Override
     public void undo() {
-        //gesture siblings already added, so no need to call again.
-        if (executed != true) {
-            return;
-        }
-        for (Rectangle r : affectedObjs) {
+        for (SoundObject obj : affectedObjs) {
             if (selectObjs == true) {
-                unselect(r);
+                obj.unselect();
             }
             else {
-                select(r);
+                obj.select();
             }
         }
     }
@@ -63,29 +59,29 @@ public class SelectAction extends Action {
     @Override
     public void execute() {
         addGestureSiblings();
-        for (Rectangle r : affectedObjs) {
+        for (SoundObject obj : affectedObjs) {
             if (selectObjs == true) {
-                select(r);
+                obj.select();
             }
             else {
-                unselect(r);
+                obj.unselect();
             }
         }
     }
     
-    /**
-     * Sets the styling of the given rectangle as selected.
-     * @param r 
-     */
-    private void select(Rectangle r) {
-
-    }
-    
-    /**
-     * Sets the styling of the given rectangle as selected.
-     * @param r 
-     */
-    private void unselect(Rectangle r) {
-        
-    }
+//    /**
+//     * Sets the styling of the given rectangle as selected.
+//     * @param r 
+//     */
+//    private void select(Rectangle r) {
+//
+//    }
+//    
+//    /**
+//     * Sets the styling of the given rectangle as selected.
+//     * @param r 
+//     */
+//    private void unselect(Rectangle r) {
+//        
+//    }
 }

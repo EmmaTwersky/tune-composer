@@ -1,6 +1,7 @@
 package tunecomposer;
 
 import java.util.ArrayList;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 public abstract class SoundObject {
@@ -41,6 +42,7 @@ public abstract class SoundObject {
     public abstract void delete();
     
     public abstract void setHandlers();
+    public abstract void addToPane(Pane paneToAddTo);
         
     public abstract void addToMidiPlayer(MidiPlayer player);
 }

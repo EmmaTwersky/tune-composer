@@ -91,7 +91,7 @@ public class CompositionPaneController implements Initializable {
         
         selectionWindowPaneController.dragStartX = event.getX();
         selectionWindowPaneController.dragStartY = event.getY();
-        
+
         if (event.isControlDown()) {
             SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((note) -> {
                 SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.add(note);
@@ -147,9 +147,10 @@ public class CompositionPaneController implements Initializable {
             }
             AddNote addAction;
             addAction = new AddNote(event.getX(), event.getY(), soundObjectPane);
+            NoteBar newNote = addAction.getNote();
             actionManager.execute(addAction);
+            SoundObjectPaneController.SOUNDOBJECT_ARRAY.add(newNote);
 //            NoteBar newNote = new NoteBar(event.getX(), event.getY(), soundObjectPane);
-//            SoundObjectPaneController.SOUNDOBJECT_ARRAY.add(newNote);
         }
         
         SoundObjectPaneController.updateSelectedSoundObjectArray();

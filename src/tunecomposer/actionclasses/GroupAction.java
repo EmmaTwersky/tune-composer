@@ -7,7 +7,7 @@ package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
+import tunecomposer.SoundObject;
 
 /**
  *
@@ -19,14 +19,14 @@ public class GroupAction extends AbstractGroupAction {
     
     /**
      * @param selList
-     *          must contain all Rectangles to be affected, can include
+     *          must contain all SoundObjects to be affected, can include
      *          rectangles that already have a parent gesture.
      * @param _gestPane reference to the gesture pane.
      */
-    public GroupAction(ArrayList<Rectangle> selList, Pane _gestPane) {
+    public GroupAction(ArrayList<SoundObject> selList, Pane _gestPane) {
         gesturePane = _gestPane;
         
-        affectedObjs = (ArrayList<Rectangle>) selList.clone();
+        affectedObjs = (ArrayList<SoundObject>) selList.clone();
     }
     
     

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.Gesture;
+import tunecomposer.SoundObject;
 
 /**
  *
@@ -21,7 +22,7 @@ public class UngroupAction extends AbstractGroupAction {
      *          All selected rectangles must have their top-most gesture be 
      * @param _gestPane reference to the gesture pane.
      */
-    public UngroupAction(ArrayList<Rectangle> selList, Pane _gestPane) {
+    public UngroupAction(ArrayList<SoundObject> selList, Pane _gestPane) {
         theGesture = findTopGesture(selList);
 
         
@@ -31,7 +32,7 @@ public class UngroupAction extends AbstractGroupAction {
         gesturePane = _gestPane;
         
         
-        affectedObjs = (ArrayList<Rectangle>) selList.clone();
+        affectedObjs = (ArrayList<SoundObject>) selList.clone();
     }
     
     
@@ -42,7 +43,7 @@ public class UngroupAction extends AbstractGroupAction {
      *    Returns reference to top gesture if satisfied, null if not satisfied.
      * @throws NullPointerException
      */
-    private static Gesture findTopGesture(ArrayList<Rectangle> list) 
+    private static Gesture findTopGesture(ArrayList<SoundObject> list) 
                                                 throws NullPointerException {
         //TODO
         return null;

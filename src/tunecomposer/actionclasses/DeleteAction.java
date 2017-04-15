@@ -7,7 +7,7 @@ package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
+import tunecomposer.SoundObject;
 
 /**
  *
@@ -29,15 +29,15 @@ public class DeleteAction extends Action {
      * called later to perform the action. Passed List of rectangles can be a 
      * combination of gesture boxes and note rectangles.
      * @param selList
-     *          selList must contain all Rectangles to be affected, including 
-     *          NoteBars and GestureBoxes. Action will not look for Rectangles 
+     *          selList must contain all SoundObjects to be affected, including 
+     *          NoteBars and GestureBoxes. Action will not look for SoundObjects 
      *          that should be selected by relation to a selected Gesture.
      * @param _notePane Reference to the notePane.
      * @param _gestPane Reference to the gesturePane.
      */
-    public DeleteAction(ArrayList<Rectangle> selList, Pane _notePane, 
+    public DeleteAction(ArrayList<SoundObject> selList, Pane _notePane, 
                         Pane _gestPane) {
-        affectedObjs = (ArrayList<Rectangle>) selList.clone();
+        affectedObjs = (ArrayList<SoundObject>) selList.clone();
         notePane = _notePane;
         gestPane = _gestPane;
     }
@@ -52,7 +52,7 @@ public class DeleteAction extends Action {
         if (executed != true) {
             return;
         }
-        for (Rectangle r : affectedObjs) {
+        for (SoundObject r : affectedObjs) {
             //TODO
             //need to seperate gesture boxes from notes to add to correct pane
         }
@@ -65,7 +65,7 @@ public class DeleteAction extends Action {
     @Override
     public void execute() { 
         addGestureSiblings();
-        for (Rectangle r : affectedObjs) {
+        for (SoundObject r : affectedObjs) {
             //TODO
             //need to sort rectangles by type to remove from correct pane.
 //            notePane.getChildren().add(rectangle);

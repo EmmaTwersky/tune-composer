@@ -9,7 +9,6 @@ import tunecomposer.actionclasses.Action;
 import java.util.ArrayList;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import tunecomposer.Gesture;
 import tunecomposer.SoundObject;
 
@@ -43,17 +42,17 @@ public class MoveAction extends Action {
     
     /**
      * Sets up object to allow sounds to be moved. selList must contain all
-     * Rectangles to be infected, including NoteBars and GestureBoxes. Action
-     * will not look for Rectangles that should be selected by relation to 
+     * SoundObjects to be infected, including NoteBars and GestureBoxes. Action
+     * will not look for SoundObjects that should be selected by relation to 
      * a selected Gesture.
      * @param selList
-     *          selList must contain all Rectangles to be affected, including 
-     *          NoteBars and GestureBoxes. Action will not look for Rectangles 
+     *          selList must contain all SoundObjects to be affected, including 
+     *          NoteBars and GestureBoxes. Action will not look for SoundObjects 
      *          that should be selected by relation to a selected Gesture.
      * @param _notePane Reference to the notePane.     
      * @param _gesturePane reference to the gesture pane.
      */
-    public MoveAction(ArrayList<Rectangle> selList, 
+    public MoveAction(ArrayList<SoundObject> selList, 
                         Pane _notePane, Pane _gesturePane, int x, int y) {
         notePane = _notePane;
         gesturePane = _gesturePane;
@@ -63,7 +62,7 @@ public class MoveAction extends Action {
         lastX = x;
         lastY = y;
         
-        affectedObjs = (ArrayList<Rectangle>) selList.clone();
+        affectedObjs = (ArrayList<SoundObject>) selList.clone();
     }
     
     

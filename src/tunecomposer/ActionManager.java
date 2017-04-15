@@ -39,6 +39,9 @@ public class ActionManager {
      * redoStack.
      */
     public void undo(){
+        if (undoStack.isEmpty()) {
+            return;
+        }
         Action undoAction;
         undoAction = undoStack.pop();
         undoAction.undo();
@@ -50,6 +53,9 @@ public class ActionManager {
      * onto the undoStack.
      */
     public void redo(){
+        if (redoStack.isEmpty()) {
+            return;
+        }
         Action redoAction;
         redoAction = redoStack.pop();
         redoAction.redo();
