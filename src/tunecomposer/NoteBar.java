@@ -43,16 +43,15 @@ public class NoteBar extends SoundObject{
      * Load InstrumentInfo HashMap to look up instrument key values.
      */
     private final InstrumentInfo instrumentInfo = new InstrumentInfo();
-        
-    /**
-     * Initialize the note bar object and variables, then constructs the display
-     * and adds the note to the pane.
+    
+     /**
+     * Initialize the note bar object and variables, then constructs the 
+     * display and doesn't add it to any pane.
      * 
      * @param x the top left corner x value of the note clicked
      * @param y the top left corner y value of the note clicked
-     * @param soundObjectPane
      */
-    public NoteBar(double x, double y, Pane soundObjectPane){
+    public NoteBar(double x, double y){
         name = InstrumentToolBarController.selectedInstrument;
         instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
@@ -67,12 +66,12 @@ public class NoteBar extends SoundObject{
         visualRectangle.setId(name);
 
         setHandlers();
-                        
-        pane = soundObjectPane;
-        pane.getChildren().add(visualRectangle);
+
         select();
     }
-   
+    
+    
+
     /**
      * Returns if note is selected.
      * 
@@ -130,24 +129,27 @@ public class NoteBar extends SoundObject{
     }
     
     /**
-     * Removes note from pane.
+     * Adds the note to the given pane. 
+     * Sets this.pane equal to given pane.
+     * Does not manage selection. Does not handle if given pane is null. 
+     * 
+     * @param soundObjectPane
      */
     @Override
-    public void delete(){
-        pane.getChildren().remove(visualRectangle);
+    public void addToPane(Pane soundObjectPane) {
+        soundObjectPane.getChildren().add(visualRectangle);
     }
     
     /**
-     * Adds the note to the given pane. Sets this.pane equal to given pane.
-     * Does not manage selection. Does not handle if given pane is null.
-     * @param noteBarPane 
+     * Removes the note from the given pane. 
+     * Sets this.pane equal to given pane.
+     * Does not manage selection. Does not handle if given pane is null. 
+     * @param soundObjectPane
      */
     @Override
-    public void addToPane(Pane noteBarPane) {
-        pane = noteBarPane;
-        pane.getChildren().add(visualRectangle);
+    public void removeFromPane(Pane soundObjectPane){
+        soundObjectPane.getChildren().remove(visualRectangle);
     }
-    
     
     /**
      * Selects note and displays selection box around note.
@@ -218,31 +220,34 @@ public class NoteBar extends SoundObject{
      * 
      * @param event the mouse click event
      */
-    EventHandler<MouseEvent> handleNoteDragged = (MouseEvent event) -> {
-        int x = (int) event.getX();
-        int y = (int) event.getY();
-        
-        if (!selected) {
-            SoundObjectPaneController.unselectAllSoundObjects();
-            select();
+    EventHandler<MouseEvent> handleNoteDragged = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+                        
+            if (!selected) {
+                SoundObjectPaneController.unselectAllSoundObjects(); 
+                select();
+            }
+            
+            if (draggingLength) {
+                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((soundItem) -> {
+                    soundItem.changeLength(x - initialX);
+                });
+            }
+            else {
+                int translateX = (x - initialX);
+                int translateY = (y - initialY);
+                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((soundItem) -> {
+                    soundItem.move(translateX, translateY);
+                });
+            }
+            
+            initialX = x;
+            initialY = y;
+            event.consume();
         }
-        
-        if (draggingLength) {
-            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((soundItem) -> {
-                soundItem.changeLength(x - initialX);
-            });
-        }
-        else {
-            int translateX = (x - initialX);
-            int translateY = (y - initialY);
-            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((soundItem) -> {
-                soundItem.move(translateX, translateY);
-            });
-        }
-        
-        initialX = x;
-        initialY = y;
-        event.consume();
     };
     
     /**
@@ -252,24 +257,27 @@ public class NoteBar extends SoundObject{
      * 
      * @param event the mouse click event
      */
-    EventHandler<MouseEvent> handleNoteReleased = (MouseEvent event) -> {
-        draggingLength = false;
-        
-        if (event.isStillSincePress()) {
-            if (event.isControlDown()) {
-                toggleSelection();
+    EventHandler<MouseEvent> handleNoteReleased = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            draggingLength = false;
+                        
+            if (event.isStillSincePress()) {
+                if (event.isControlDown()) {
+                    toggleSelection();
+                }
+                else {
+                    SoundObjectPaneController.unselectAllSoundObjects();
+                    select();
+                }
             }
-            else {
-                SoundObjectPaneController.unselectAllSoundObjects();
-                select();
+            
+            for (SoundObject soundItem : SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
+                soundItem.snapInPlace();
             }
+              
+            event.consume();
         }
-        
-        for (SoundObject soundItem : SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
-            soundItem.snapInPlace();
-        }
-        
-        event.consume();
     };
 
     @Override

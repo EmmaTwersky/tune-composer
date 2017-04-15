@@ -184,11 +184,11 @@ public final class Gesture extends SoundObject{
      * Delete all items in this gesture and the border surrounding them.
      */
     @Override
-    public void delete(){    
-        containedSoundObjects.forEach((note) -> {
-            note.delete();
+    public void removeFromPane(Pane soundObjectPane){    
+        containedSoundObjects.forEach((sObj) -> {
+            sObj.removeFromPane(soundObjectPane);
         });
-        pane.getChildren().remove(visualRectangle);
+        soundObjectPane.getChildren().remove(visualRectangle);
     }
     
     @Override

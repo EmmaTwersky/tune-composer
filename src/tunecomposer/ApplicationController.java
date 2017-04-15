@@ -17,7 +17,7 @@ public class ApplicationController {
      
     @FXML
     public CompositionPaneController compositionPaneController;
-    
+        
     /**
      * Initialize FXML. 
      * Creates ActionManager to control undo and redo. 
@@ -87,7 +87,7 @@ public class ApplicationController {
     @FXML
     protected void handleDeleteMenuItemAction(ActionEvent event) {
         for (SoundObject sObj: SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
-            sObj.delete();
+            sObj.removeFromPane(compositionPaneController.soundObjectPane);
             SoundObjectPaneController.SOUNDOBJECT_ARRAY.remove(sObj);
         }
         SoundObjectPaneController.updateSelectedSoundObjectArray();

@@ -12,11 +12,6 @@ public abstract class SoundObject {
     public Rectangle visualRectangle;
     
     /**
-     * Creates pane the SoundObject is on.
-    */
-    public Pane pane;
-    
-    /**
     * An ArrayList of the SoundObjects contained within the object.
     */
     public ArrayList<SoundObject> containedSoundObjects;
@@ -68,7 +63,6 @@ public abstract class SoundObject {
     * Creates abstract set of SoundObject altering methods.
     */
     public abstract void snapInPlace();
-    public abstract void delete();
     
     /**
     * Gives the object's visualRectangle mouse event handlers.
@@ -78,9 +72,17 @@ public abstract class SoundObject {
     /**
     * Adds the visualRectangle on the pane.
     * 
-     * @param paneToAddTo pane visualRectangle is on
+    * @param soundObjectPane pane visualRectangle is on
     */
-    public abstract void addToPane(Pane paneToAddTo);
+    public abstract void addToPane(Pane soundObjectPane);
+    
+    /**
+    * Removes the visualRectangle from the pane, also handles deletion.
+    * 
+    * @param soundObjectPane pane visualRectangle is on
+    */
+    public abstract void removeFromPane(Pane soundObjectPane);
+
     
     /**
     * Adds the SoundObject's MidiEvent to the player.

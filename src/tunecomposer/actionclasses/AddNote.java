@@ -44,7 +44,7 @@ public class AddNote extends Action {
      */
     @Override
     public void undo() {
-        note.delete();
+        note.removeFromPane(notePane);
     }
 
     /**
