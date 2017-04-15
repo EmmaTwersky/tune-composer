@@ -33,6 +33,7 @@ public class AddNote extends Action {
     public AddNote(double x, double  y, ActionManager actionManager, Pane _notePane)  {
         note = new NoteBar(x, y, actionManager, _notePane);
         notePane = _notePane;
+        note.visualRectangle.setUserData(note);
     }
     
     /**
@@ -42,7 +43,6 @@ public class AddNote extends Action {
      */
     @Override
     public void execute() {
-        note.visualRectangle.setUserData(note);
         note.addToPane(notePane);
     }
     
