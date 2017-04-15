@@ -22,35 +22,45 @@
                         <MenuItem 
                             text = "Exit" 
                             onAction = "#handleExitMenuItemAction" 
-                            accelerator = "Shortcut+Q" >
+                            accelerator = "Shortcut + Q" >
                         </MenuItem>
                     </items>
                 </Menu>
                 <Menu text = "Edit">
                     <items>
+                        <MenuItem 
+                            text = "Undo" 
+                            onAction = "#handleUndoMenuItemAction"  
+                            accelerator = "Shortcut + Z" >
+                        </MenuItem>
+                        <MenuItem 
+                            text = "Redo" 
+                            onAction = "#handleRedoMenuItemAction"  
+                            accelerator = "Shortcut + Y" >
+                        </MenuItem>
                         <SeparatorMenuItem>
                         </SeparatorMenuItem>
                         <MenuItem 
                             text = "Delete" 
                             onAction = "#handleDeleteMenuItemAction"  
-                            accelerator = "Shortcut+Backspace" >
+                            accelerator = "Shortcut + Backspace" >
                         </MenuItem>
                         <MenuItem 
                             text = "Select All" 
                             onAction = "#handleSelectAllMenuItemAction"  
-                            accelerator = "Shortcut+A" >
+                            accelerator = "Shortcut + A" >
                         </MenuItem>
                         <SeparatorMenuItem>
                         </SeparatorMenuItem>
                         <MenuItem 
                             text = "Group" 
                             onAction = "#handleGrouping"  
-                            accelerator = "Shortcut+G" >
+                            accelerator = "Shortcut + G" >
                         </MenuItem>
                         <MenuItem 
                             text = "Ungroup" 
                             onAction = "#handleUngrouping"  
-                            accelerator = "Shortcut+SHIFT+G" >
+                            accelerator = "Shortcut + SHIFT + G" >
                         </MenuItem>
                     </items>
                 </Menu>
@@ -59,12 +69,12 @@
                         <MenuItem 
                             text = "Play" 
                             onAction = "#handlePlayScaleButtonAction" 
-                            accelerator = "Shortcut+P" >
+                            accelerator = "Shortcut + P" >
                         </MenuItem>
                         <MenuItem
                             text = "Stop" 
                             onAction = "#handleStopPlayingButtonAction" 
-                            accelerator = "Shortcut+S" >
+                            accelerator = "Shortcut + S" >
                         </MenuItem>
                     </items>
                 </Menu>
