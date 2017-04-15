@@ -304,6 +304,7 @@ public class NoteBar extends SoundObject{
             else{
                 sObjMove.execute();
                 ArrayList<Action> actionList = new ArrayList();
+
                 actionList.add(sObjMove);
                 actionManager.putInUndoStack(actionList);
             }
