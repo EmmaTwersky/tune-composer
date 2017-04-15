@@ -29,6 +29,10 @@ public class NoteBar extends SoundObject{
     public int startTick;
     public int duration;
     public final int HEIGHT = 10;
+    
+    
+    MoveAction sObjMove;
+    StretchAction sObjStretch;
 
     /**
      * actionManager instance that holds the undo and redo stacks this note 
@@ -215,9 +219,6 @@ public class NoteBar extends SoundObject{
                 this.duration, this.channel, 0);
     }
     
-    MoveAction sObjMove;
-    StretchAction sObjStretch;
-    
     /**
      * Handles note pressed event. 
      * Sets initial pressed values of the mouse and consumes the event.
@@ -307,6 +308,7 @@ public class NoteBar extends SoundObject{
             }
             
             if (draggingLength){
+                sObjStretch.setFinalX(initialX);
                 sObjStretch.execute();
                 ArrayList<Action> actionList = new ArrayList();
                 actionList.add(sObjStretch);
@@ -314,6 +316,7 @@ public class NoteBar extends SoundObject{
             }
             
             else{
+                sObjMove.setLastCoords(initialX, initialY);
                 sObjMove.execute();
                 ArrayList<Action> actionList = new ArrayList();
 
