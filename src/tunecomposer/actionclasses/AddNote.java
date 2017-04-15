@@ -35,16 +35,6 @@ public class AddNote extends Action {
         notePane = _notePane;
     }
     
-    
-    /**
-     * Removes rectangle from the pane, but holds a reference of it for redo().
-     * Removing the rectangle removes access to the NoteBar object.
-     */
-    @Override
-    public void undo() {
-        note.removeFromPane(notePane);
-    }
-
     /**
      * Adds rectangle to the NoteBarPane. This allows the NoteBar to be played,
      * and shows the note visually on the screen. Also sets this object to 
@@ -55,7 +45,25 @@ public class AddNote extends Action {
         note.visualRectangle.setUserData(note);
         note.addToPane(notePane);
     }
+    
+    /**
+     * Removes rectangle from the pane, but holds a reference of it for redo().
+     * Removing the rectangle removes access to the NoteBar object.
+     */
+    @Override
+    public void undo() {
+        note.removeFromPane(notePane);
+    }
 
+
+    /**
+     * Used to redo this action after it has been undone. Will add the note back
+     * onto the pane.
+     */
+    @Override
+    public void redo() {
+        execute();
+    }
     
     /**
      * Returns the note reference held by this object. Useful function to get 

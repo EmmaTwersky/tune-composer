@@ -84,5 +84,10 @@ public class UngroupAction extends AbstractGroupAction {
     public void undo() {
         // call group from super.
     }
+
+    @Override
+    public void redo() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
             
 }

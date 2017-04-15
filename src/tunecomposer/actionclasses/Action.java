@@ -30,8 +30,6 @@ public abstract class Action {
     /**
      * Calls execute to perform the action again.
      */
-    public void redo() {
-        execute();
-    }
+    public abstract void redo();
 
 }
