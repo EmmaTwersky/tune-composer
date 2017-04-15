@@ -6,6 +6,7 @@
 package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
+import javafx.scene.layout.Pane;
 import tunecomposer.SoundObject;
 
 /**
@@ -21,6 +22,17 @@ public class SelectAction extends Action {
      */
     private final boolean selectObjs;
     
+
+    /**
+     * Array of SoundObjects to be affected by the action.
+     */
+    ArrayList<SoundObject> affectedObjs = new ArrayList<>();
+    
+    /**
+     * Pane that all SoundObject visuals live within.
+     */
+    private final Pane soundObjectPane;
+
     
     
     /**
@@ -31,13 +43,17 @@ public class SelectAction extends Action {
      *          selList must contain all Rectangles to be affected, including 
      *          NoteBars and GestureBoxes. Action will not look for Rectangles 
      *          that should be selected by relation to a selected Gesture.
+     * @param soundObjPane
+     *          Pane that holds all SoundObject visuals. 
      * @param select 
      *          If select is true, then action will select all given Rectangles.
      *          If false, action will unselect all given Rectangles.
      */
-    public SelectAction(ArrayList<SoundObject> selList, boolean select) {
+    public SelectAction(ArrayList<SoundObject> selList, Pane soundObjPane,
+                                                            boolean select) {
         affectedObjs = (ArrayList<SoundObject>) selList.clone();
         selectObjs = select;
+        soundObjectPane = soundObjPane;
     }
 
     
@@ -58,7 +74,6 @@ public class SelectAction extends Action {
      */
     @Override
     public void execute() {
-        addGestureSiblings();
         for (SoundObject obj : affectedObjs) {
             if (selectObjs == true) {
                 obj.select();

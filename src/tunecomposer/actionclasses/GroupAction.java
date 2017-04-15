@@ -7,7 +7,9 @@ package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import tunecomposer.SoundObject;
+import tunecomposer.Gesture;
 
 /**
  *
@@ -15,22 +17,40 @@ import tunecomposer.SoundObject;
  */
 public class GroupAction extends AbstractGroupAction {
     
+
+    /**
+     * The gesture object that was created in this action.
+     */
+    Gesture gesture;
     
+
+    /**
+     * Array of SoundObjects to be affected by the action.
+     */
+    ArrayList<SoundObject> affectedObjs = new ArrayList<>();
+    
+    /**
+     * Pane that all SoundObject visuals live within.
+     */
+    private final Pane soundObjectPane;
+
     
     /**
      * @param selList
-     *          must contain all SoundObjects to be affected, can include
-     *          rectangles that already have a parent gesture.
-     * @param _gestPane reference to the gesture pane.
+     *          must contain all SoundObjects to be affected.
+     * @param _pane reference to the soundObjectPane.
      */
-    public GroupAction(ArrayList<SoundObject> selList, Pane _gestPane) {
-        gesturePane = _gestPane;
+    public GroupAction(ArrayList<SoundObject> selList, Pane _pane) {
+        gesture = new Gesture();
+        
+        soundObjectPane = _pane;
         
         affectedObjs = (ArrayList<SoundObject>) selList.clone();
     }
     
     
     public void execute() {
+        
         //addGestureSiblings()
         //find top, bot, left, right extremes
         //make gestureBox

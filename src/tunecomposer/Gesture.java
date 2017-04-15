@@ -13,11 +13,7 @@ import javafx.scene.shape.Rectangle;
  * @author Emma Twersky
  */
 public final class Gesture extends SoundObject{
-    /**
-     * Creates the pane the Gesture is on. 
-     */
-    public Pane pane;
-    
+
     /**
      * Creates the coordinates of the visualRectangle. 
      */
@@ -30,9 +26,8 @@ public final class Gesture extends SoundObject{
      * Initialize the Gesture object and variables, then constructs the 
      * display.
      * 
-     * @param soundObjectPane
      */
-    Gesture(Pane soundObjectPane){
+    public Gesture(){
         visualRectangle = new Rectangle();
         visualRectangle.setMouseTransparent(true);
         containedSoundObjects = new ArrayList();
@@ -40,11 +35,8 @@ public final class Gesture extends SoundObject{
         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
             containedSoundObjects.add(sObj);
         });
-        setHandlers();
       
         refreshVisualRectangle();
-        pane = soundObjectPane;
-        pane.getChildren().add(visualRectangle);
         
         select();
     }
@@ -199,7 +191,9 @@ public final class Gesture extends SoundObject{
      */
     @Override
     public void addToPane(Pane soundObjectPane) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        setHandlers();
+        refreshVisualRectangle();
+        soundObjectPane.getChildren().add(visualRectangle);
     }
     
     /**
@@ -232,9 +226,10 @@ public final class Gesture extends SoundObject{
      * Prepares to un-group the gesture.
      * Resets the containedSoundObjects to previous event handlers and 
      * removes the visual rectangle.
+     * @param soundObjectPane the value of soundObjectPane
      */
-    public void ungroup(){    
-        pane.getChildren().remove(visualRectangle);
+    public void ungroup(Pane soundObjectPane){    
+        soundObjectPane.getChildren().remove(visualRectangle);
         containedSoundObjects.forEach((sObj) -> {
             sObj.setHandlers();
         });

@@ -48,7 +48,8 @@ public class ActionManager {
     
     /**
      * Puts given ArrayList of actions into the stack. If actionArray is null,
-     * then does nothing.
+     * then does nothing. Clears redoStack to avoid redoing actions when it 
+     * doesn't make sense to.
      * @param actionArray 
      */
     public void putInUndoStack(ArrayList<Action> actionArray) {

@@ -17,20 +17,33 @@ import tunecomposer.SoundObject;
  */
 public class UngroupAction extends AbstractGroupAction {
     
+    
+    /**
+     * The gesture object that was created in this action.
+     */
+    tunecomposer.Gesture theGesture;
+    
+
+    /**
+     * Array of SoundObjects to be affected by the action.
+     */
+    ArrayList<SoundObject> affectedObjs = new ArrayList<>();
+    
+    /**
+     * Pane that all SoundObject visuals live within.
+     */
+    private final Pane soundObjectPane;
+
+    
     /**
      * @param selList
      *          All selected rectangles must have their top-most gesture be 
-     * @param _gestPane reference to the gesture pane.
+     * @param _pane reference to the gesture pane.
      */
-    public UngroupAction(ArrayList<SoundObject> selList, Pane _gestPane) {
+    public UngroupAction(ArrayList<SoundObject> selList, Pane _pane) {
         theGesture = findTopGesture(selList);
-
-        
-        gestureBox = findGestureBox(theGesture);
-
        
-        gesturePane = _gestPane;
-        
+        soundObjectPane = _pane;
         
         affectedObjs = (ArrayList<SoundObject>) selList.clone();
     }

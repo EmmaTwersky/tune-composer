@@ -56,7 +56,8 @@ public class SoundObjectPaneController {
     }
         
     public void group() {
-        Gesture g = new Gesture(soundObjectPane);
+        Gesture g = new Gesture();
+        g.addToPane(soundObjectPane);
         
 //        unselectAllSoundObjects();
         
@@ -71,7 +72,7 @@ public class SoundObjectPaneController {
     public void ungroup() {
         for (SoundObject sObj : SELECTED_SOUNDOBJECT_ARRAY) {
             if (sObj instanceof Gesture) {
-                ((Gesture) sObj).ungroup();
+                ((Gesture) sObj).ungroup(soundObjectPane);
                 sObj.containedSoundObjects.forEach((innerSObj) -> {
 //                    innerSObj.select();
                     SOUNDOBJECT_ARRAY.add(innerSObj);
