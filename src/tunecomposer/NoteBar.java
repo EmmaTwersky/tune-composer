@@ -60,10 +60,11 @@ public class NoteBar extends SoundObject{
      * @param x the top left corner x value of the note clicked
      * @param y the top left corner y value of the note clicked
      */
-    public NoteBar(double x, double y, ActionManager actionManager){
+    public NoteBar(double x, double y, ActionManager _actionManager){
         name = InstrumentToolBarController.selectedInstrument;
         instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
+        actionManager = _actionManager;
         
         pitch = pitchRange - (int) y / noteHeight;
         startTick = (int) x;

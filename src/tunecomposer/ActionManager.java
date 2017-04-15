@@ -66,6 +66,7 @@ public class ActionManager {
      * redoStack.
      */
     public void undo(){
+
         if (undoStack.isEmpty()) {
             return;
         }

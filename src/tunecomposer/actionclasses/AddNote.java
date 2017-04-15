@@ -58,6 +58,7 @@ public class AddNote extends Action {
      */
     @Override
     public void execute() {
+        note.visualRectangle.setUserData(note);
         note.addToPane(notePane);
     }
 

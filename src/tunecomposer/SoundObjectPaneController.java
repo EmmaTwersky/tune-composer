@@ -36,7 +36,6 @@ public class SoundObjectPaneController {
      */
     public void updateSelectedSoundObjectArray(){
         SELECTED_SOUNDOBJECT_ARRAY.clear();
-        
         for (Node n: soundObjectPane.getChildren()) {
             Rectangle r = (Rectangle) n;
             SoundObject sObj = (SoundObject) (r).getUserData();

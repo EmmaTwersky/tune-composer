@@ -160,6 +160,7 @@ public class CompositionPaneController implements Initializable {
             AddNote addAction;
             addAction = new AddNote(event.getX(), event.getY(), soundObjectPane, 
                                     actionManager);
+            
             ArrayList<Action> addActionArray = new ArrayList<>();
             addActionArray.add(addAction);
 //            NoteBar newNote = addAction.getNote();
