@@ -3,6 +3,8 @@ package tunecomposer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
+import javafx.fxml.*;
+import javafx.fxml.Initializable;
 
 /**
  * This controller creates the application and handles the menu item selections.
@@ -28,6 +30,7 @@ public class ApplicationController implements Initializable {
      * @param resources the resources of the utility of the scene
      */
     @FXML
+    @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
         actionManager = new ActionManager();
         try {
@@ -56,6 +59,8 @@ public class ApplicationController implements Initializable {
      */
     @FXML 
     protected void handleUndoMenuItemAction(ActionEvent event) {
+        compositionPaneController.stop();
+        actionManager.undo();
     }
     
     /**
@@ -65,6 +70,8 @@ public class ApplicationController implements Initializable {
      */
     @FXML 
     protected void handleRedoMenuItemAction(ActionEvent event) {
+        compositionPaneController.stop();
+        actionManager.redo();
     }
     
     /**

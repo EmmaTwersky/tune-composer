@@ -23,6 +23,7 @@ public class ActionManager {
     public void execute(Action action) {
         action.execute();
         undoStack.push(action);
+        System.out.println("EXECUTE: undoStack Print: \t" + undoStack.toString());
     }
     
     /**
@@ -36,7 +37,10 @@ public class ActionManager {
         Action undoAction;
         undoAction = undoStack.pop();
         undoAction.undo();
-        undoStack.push(undoAction);
+        redoStack.push(undoAction);
+        
+        System.out.println("UNDO: undoStack Print: \t" + undoStack.toString() );
+
     }
     
     /**
@@ -50,7 +54,7 @@ public class ActionManager {
         Action redoAction;
         redoAction = redoStack.pop();
         redoAction.redo();
-        redoStack.push(redoAction);
+        undoStack.push(redoAction);
     }
     
     
