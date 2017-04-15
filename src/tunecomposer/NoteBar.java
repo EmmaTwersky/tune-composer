@@ -138,6 +138,7 @@ public class NoteBar extends SoundObject{
     @Override
     public void addToPane(Pane soundObjectPane) {
         soundObjectPane.getChildren().add(visualRectangle);
+        select();
     }
     
     /**

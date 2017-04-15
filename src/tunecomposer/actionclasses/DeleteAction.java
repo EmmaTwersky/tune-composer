@@ -15,13 +15,15 @@ import tunecomposer.SoundObject;
  */
 public class DeleteAction extends Action {
 
+    /**
+     * Array of SoundObjects to be affected by the action.
+     */
+    ArrayList<SoundObject> affectedObjs = new ArrayList<>();
     
     /**
-     * References to the NoteBarPane and gesturePane that notes and gestures
-     * should be removed from.
+     * Pane that all SoundObject visuals live within.
      */
-    private Pane notePane;
-    private Pane gestPane;
+    private final Pane soundObjectPane;
 
     
     /**
@@ -32,14 +34,11 @@ public class DeleteAction extends Action {
      *          selList must contain all SoundObjects to be affected, including 
      *          NoteBars and GestureBoxes. Action will not look for SoundObjects 
      *          that should be selected by relation to a selected Gesture.
-     * @param _notePane Reference to the notePane.
-     * @param _gestPane Reference to the gesturePane.
+     * @param _pane Reference to the SoundObject pane where sound visuals live.
      */
-    public DeleteAction(ArrayList<SoundObject> selList, Pane _notePane, 
-                        Pane _gestPane) {
+    public DeleteAction(ArrayList<SoundObject> selList, Pane _pane) {
         affectedObjs = (ArrayList<SoundObject>) selList.clone();
-        notePane = _notePane;
-        gestPane = _gestPane;
+        soundObjectPane = _pane;
     }
     
     
@@ -49,12 +48,8 @@ public class DeleteAction extends Action {
      */
     @Override
     public void undo() {
-        if (executed != true) {
-            return;
-        }
-        for (SoundObject r : affectedObjs) {
-            //TODO
-            //need to seperate gesture boxes from notes to add to correct pane
+        for (SoundObject sObj : affectedObjs) {
+            sObj.addToPane(soundObjectPane);
         }
     }
 
@@ -64,12 +59,8 @@ public class DeleteAction extends Action {
      */
     @Override
     public void execute() { 
-        addGestureSiblings();
-        for (SoundObject r : affectedObjs) {
-            //TODO
-            //need to sort rectangles by type to remove from correct pane.
-//            notePane.getChildren().add(rectangle);
-//            executed = true;
+        for (SoundObject sObj: affectedObjs) {
+            sObj.removeFromPane(soundObjectPane);
         }
     }
     
