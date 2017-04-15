@@ -101,7 +101,7 @@ public final class Gesture extends SoundObject{
         selected = true;
         visualRectangle.getStyleClass().removeAll("unselectedGesture");
         visualRectangle.getStyleClass().add("selectedGesture");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
+//        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
     }
     
     /**
@@ -116,7 +116,7 @@ public final class Gesture extends SoundObject{
         selected = false;
         visualRectangle.getStyleClass().removeAll("selectedGesture");
         visualRectangle.getStyleClass().add("unselectedGesture");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
+//        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
     }
     
     /**
@@ -275,7 +275,7 @@ public final class Gesture extends SoundObject{
         int y = (int) event.getY();
         
         if (!selected) {
-            SoundObjectPaneController.unselectAllSoundObjects();
+//            SoundObjectPaneController.unselectAllSoundObjects();
             select();
         }
         
@@ -313,7 +313,7 @@ public final class Gesture extends SoundObject{
                 toggleSelection();
             }
             else {
-                SoundObjectPaneController.unselectAllSoundObjects();
+//                SoundObjectPaneController.unselectAllSoundObjects();
                 select();
             }
         }

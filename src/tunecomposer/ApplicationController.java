@@ -1,10 +1,10 @@
 package tunecomposer;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
-import javafx.fxml.*;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.shape.Rectangle;
 
 /**
  * This controller creates the application and handles the menu item selections.
@@ -81,10 +81,12 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleSelectAllMenuItemAction(ActionEvent event) {
-        SoundObjectPaneController.SOUNDOBJECT_ARRAY.forEach((sObj) -> {
-            sObj.select();
-        });
-        SoundObjectPaneController.updateSelectedSoundObjectArray();
+        for (Node sObj : compositionPaneController.soundObjectPane.getChildren()) {
+            Rectangle r = (Rectangle) sObj;
+            ((SoundObject) r.getUserData()).select();
+        }
+
+        compositionPaneController.soundObjectPaneController.updateSelectedSoundObjectArray();
     }
 
     /**
@@ -96,9 +98,9 @@ public class ApplicationController implements Initializable {
     protected void handleDeleteMenuItemAction(ActionEvent event) {
         for (SoundObject sObj: SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
             sObj.removeFromPane(compositionPaneController.soundObjectPane);
-            SoundObjectPaneController.SOUNDOBJECT_ARRAY.remove(sObj);
+//            SoundObjectPaneController.SOUNDOBJECT_ARRAY.remove(sObj);
         }
-        SoundObjectPaneController.updateSelectedSoundObjectArray();
+        compositionPaneController.soundObjectPaneController.updateSelectedSoundObjectArray();
     }
     
     /**

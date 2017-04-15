@@ -77,7 +77,7 @@ public class NoteBar extends SoundObject{
         selected = true;
         visualRectangle.getStyleClass().removeAll("unselectedNote");
         visualRectangle.getStyleClass().add("selectedNote");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
+//        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
     }
     
     /**
@@ -88,7 +88,7 @@ public class NoteBar extends SoundObject{
         selected = false;
         visualRectangle.getStyleClass().removeAll("selectedNote");
         visualRectangle.getStyleClass().add("unselectedNote");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
+//        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
     }
     
     /**
@@ -241,7 +241,7 @@ public class NoteBar extends SoundObject{
             int y = (int) event.getY();
                         
             if (!selected) {
-                SoundObjectPaneController.unselectAllSoundObjects(); 
+//                SoundObjectPaneController.unselectAllSoundObjects(); 
                 select();
             }
             
@@ -281,7 +281,7 @@ public class NoteBar extends SoundObject{
                     toggleSelection();
                 }
                 else {
-                    SoundObjectPaneController.unselectAllSoundObjects();
+//                    SoundObjectPaneController.unselectAllSoundObjects();
                     select();
                 }
             }

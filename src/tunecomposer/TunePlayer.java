@@ -1,5 +1,9 @@
 package tunecomposer;
 
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
+
 /**
  * This class stores and controls the notes and creates the MidiPlayer to 
  * manipulate the tune.
@@ -21,30 +25,34 @@ public class TunePlayer {
     
     /**
      * Plays the sequence and begins the RedBar animation.
+     * 
+     * @param soundObjectPane
      */
-    protected void play() {
-        playSequence();
+    protected void play(Pane soundObjectPane) {
+        playSequence(soundObjectPane);
     }
     
     /**
      * Plays the MidiPLayer.
      * Each time playSequence is called the sequence clears, adds all notes 
      * to the player, and starts from the beginning.
+     * 
+     * @param soundObjectPane
      */
-    protected void playSequence() {
+    protected void playSequence(Pane soundObjectPane) {
         player.stop();
         player.clear();
-        addNotesArrayToMidiPlayer();
+        populateMidiPlayer(soundObjectPane);
         player.play();
     }
     
     /**
      * Adds all NoteBar objects in musicNotesArray to MidiPlayer.
      */
-    private void addNotesArrayToMidiPlayer() {
-        for (SoundObject sObj: SoundObjectPaneController.SOUNDOBJECT_ARRAY) {
-            sObj.addToMidiPlayer(player);
-        }
+    private void populateMidiPlayer(Pane soundObjectPane) {
+        soundObjectPane.getChildren().forEach((sObj) -> {
+            ((SoundObject) ((Rectangle) sObj).getUserData()).addToMidiPlayer(player);
+        });
     }
     
     /**
