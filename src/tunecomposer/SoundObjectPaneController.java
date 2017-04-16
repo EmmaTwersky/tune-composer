@@ -44,13 +44,8 @@ public class SoundObjectPaneController {
             Rectangle r = (Rectangle) n;
             SoundObject sObj = (SoundObject) (r).getUserData();
             if (sObj.isSelected()) {
-                if (sObj instanceof Gesture) { //if a parent-less gesture
-                    Gesture topGesture = ((Gesture) sObj).getTopGesture();
-                    if (topGesture == null) {
-                        SELECTED_SOUNDOBJECT_ARRAY.add(sObj);
-                    }
-                } else { //if an ungrouped notebar
-                SELECTED_SOUNDOBJECT_ARRAY.add(sObj);
+                if (sObj.getTopGesture() == null) {
+                    SELECTED_SOUNDOBJECT_ARRAY.add(sObj);
                 }
             }
         }
