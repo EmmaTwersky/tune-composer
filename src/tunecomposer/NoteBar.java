@@ -8,7 +8,9 @@ import javafx.scene.shape.Rectangle;
 import javax.sound.midi.ShortMessage;
 import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.MoveAction;
+import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.StretchAction;
+import tunecomposer.actionclasses.UnselectAction;
 
 /**
  * This class creates and edits NoteBar objects to display notes in the tune 
@@ -29,15 +31,17 @@ public class NoteBar extends SoundObject{
     public int startTick;
     public int duration;
     
-    
     MoveAction sObjMove;
     StretchAction sObjStretch;
+    SelectAction selectAction;
+    UnselectAction unselectAction;
 
     /**
      * actionManager instance that holds the undo and redo stacks this note 
      * lives within. 
      */
     private ActionManager actionManager;
+    ArrayList<Action> actionList;
     
     /**
     * Creates fixed height and set ranges for pitch. 
@@ -218,8 +222,6 @@ public class NoteBar extends SoundObject{
                 this.duration, this.channel, 0);
     }
     
-    
-    
     /**
      * Handles note pressed event. 
      * Sets initial pressed values of the mouse and consumes the event.
@@ -231,18 +233,25 @@ public class NoteBar extends SoundObject{
         @Override
         public void handle(MouseEvent event) {
             CompositionPaneController.tunePlayerObj.stop();
+            actionList = new ArrayList();
             
             initialX = (int) event.getX();
             initialY = (int) event.getY();
+            ArrayList<SoundObject> thisNote = new ArrayList();
+            thisNote.add((SoundObject) visualRectangle.getUserData());
             
             if (!selected) {
                 if(!event.isControlDown()){
                     SoundObjectPaneController.unselectAllSoundObjects(pane);
                 }
-                select();
+                selectAction = new SelectAction(thisNote);
+                selectAction.execute();
+                actionList.add(selectAction);
             }
             else if (event.isControlDown()){
-                unselect();
+                unselectAction = new UnselectAction(thisNote);
+                unselectAction.execute();
+                actionList.add(unselectAction);
             }
             
             int editLengthMax = (int) visualRectangle.getX() + duration;
@@ -303,23 +312,16 @@ public class NoteBar extends SoundObject{
     EventHandler<MouseEvent> handleNoteReleased = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
-                        
-            
             if (draggingLength){
                 sObjStretch.setFinalX(initialX);
                 sObjStretch.execute();
-                ArrayList<Action> actionList = new ArrayList();
                 actionList.add(sObjStretch);
-                actionManager.putInUndoStack(actionList);
             }
             
             else{
                 sObjMove.setLastCoords(initialX, initialY);
                 sObjMove.execute();
-                ArrayList<Action> actionList = new ArrayList();
-
                 actionList.add(sObjMove);
-                actionManager.putInUndoStack(actionList);
             }
             
             for (SoundObject soundItem : SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
@@ -327,7 +329,8 @@ public class NoteBar extends SoundObject{
             }
             
             draggingLength = false;
-              
+            
+            actionManager.putInUndoStack(actionList);
             event.consume();
         }
     };    

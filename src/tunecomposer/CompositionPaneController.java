@@ -144,7 +144,7 @@ public class CompositionPaneController implements Initializable {
             if (!SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.contains(sObj)) {
                 if (selectionWindowPaneController.SELECTION_WINDOW.intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
                     if (!sObj.isSelected()) {
-                        System.out.println(selectObjs.contains(sObj));
+//                        System.out.println(selectObjs.contains(sObj));
                         if (!selectObjs.contains(sObj)) {
                             selectObjs.add(sObj);
                             unselectObjs.remove(sObj);
@@ -204,8 +204,6 @@ public class CompositionPaneController implements Initializable {
             selectObjs.add(addAction.getNote());
         }
         
-//        System.out.println(selectObjs);
-
         selectAction.changeAffectedObjs(selectObjs);
         unselectAction.changeAffectedObjs(unselectObjs);
         compositionPaneMouseActionArray.add(selectAction);
