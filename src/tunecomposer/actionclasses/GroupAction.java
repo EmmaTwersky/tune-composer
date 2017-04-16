@@ -50,7 +50,7 @@ public class GroupAction extends Action{
      */
     @Override
     public void execute() {
-        gesture.addToPane(soundObjectPane);
+        gesture.group(soundObjectPane);
     }
 
     
