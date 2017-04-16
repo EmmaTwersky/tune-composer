@@ -3,16 +3,15 @@
     Author: Emma Twersky
 */
 
-/* Sets colors for each of the eight instrument's text and note bars. */
+/* Sets colors for each of the eight instrument's text and note attributes. */
 #Piano{
     -fx-text-fill: lemonchiffon;
     -fx-fill: lemonchiffon;
-    -fx-text-shadow: 3px 2px darkgrey;
 }
 
 #Harpsichord{
-    -fx-text-fill: thistle;
-    -fx-fill: thistle;
+    -fx-text-fill: azure;
+    -fx-fill: azure; 
 }
 
 #Marimba{
@@ -26,13 +25,13 @@
 }
 
 #Accordion{
-    -fx-text-fill: azure;
-    -fx-fill: azure;  
+    -fx-text-fill: paleturquoise;
+    -fx-fill: paleturquoise; 
 }
 
 #Guitar{
-    -fx-text-fill: honeydew;
-    -fx-fill: honeydew;
+    -fx-text-fill: derive(aquamarine, 50%);;
+    -fx-fill: derive(aquamarine, 50%);;
 }
 
 #Violin{
@@ -41,8 +40,8 @@
 }
 
 #FrenchHorn{
-    -fx-text-fill: mistyrose;
-    -fx-fill: mistyrose;
+    -fx-text-fill: derive(pink, 10%);
+    -fx-fill: derive(pink, 10%);
 }
 
 /* Sets style for the selected and unselected note attributes. */
@@ -60,7 +59,7 @@
     -fx-arc-height: 7px;
 }
 
-
+/* Sets style for the selected and unselected gesture attributes. */
 .selectedGesture{
     -fx-stroke-width: 2px;
     -fx-stroke: Coral;
@@ -79,14 +78,18 @@
     -fx-arc-height: 11px;
 }
 
-/* Sets ID for staff and measure lines. */
-#compositionPane{
-    -fx-background-color: gainsboro;
+/* Sets style for the instrument tool bar. */
+#instrumentToolBar{
+    -fx-background-color: rgba(50, 50, 50, 0.2);
+    -fx-effect: dropshadow( Gaussian , Thistle , 10, 0, 0, 1 );
+    -fx-background-noise: 2;
+    -fx-font-family: 'Trebuchet MS', Helvetica, sans-serif;
+    -fx-font-weight: bold;
 }
 
-#instrumentToolBar{
-    /*-fx-background-color: silver;*/
-    -fx-background-color: linear-gradient(to bottom right, silver, pink);
+/* Sets style for the staff and measure lines. */
+#compositionPane{
+    -fx-background-color: gainsboro;
 }
 
 #staffLine{

@@ -23,7 +23,7 @@
     fx:controller = "tunecomposer.InstrumentToolBarController"
     orientation = "VERTICAL" 
     prefWidth = "150.0"
-    styleClass = "instrumentToolBar" >
+    fx:id = "instrumentToolBar" >
     <items>
       <fx:define>
           <ToggleGroup
