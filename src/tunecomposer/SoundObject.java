@@ -95,6 +95,14 @@ public abstract class SoundObject {
     */
     public abstract void removeFromPane(Pane soundObjectPane);
 
+    /**
+     * Checks if moving the soundObject will push it past the pane's borders.
+     * 
+     * @param x the "proposed" x move increment.
+     * @param y the "proposed" y move increment.
+     * @return onEdge is true if the move is illegal and false if its legal.
+     */
+    public abstract boolean isOnEdge(double x, double y);
     
     /**
     * Adds the SoundObject's MidiEvent to the player.

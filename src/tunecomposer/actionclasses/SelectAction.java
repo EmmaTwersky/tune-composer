@@ -15,7 +15,7 @@ public class SelectAction extends Action {
      * Array of SoundObjects to be affected by the action.
      */
     ArrayList<SoundObject> affectedObjs;
-
+    
     /**
      * Sets up Action to select a SoundObject. 
      * Does not yet change the selection state of notes. 
