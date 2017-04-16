@@ -36,7 +36,7 @@
                         <MenuItem 
                             text = "Redo" 
                             onAction = "#handleRedoMenuItemAction"  
-                            accelerator = "Shortcut + Y" >
+                            accelerator = "Shortcut + SHIFT + Z" >
                         </MenuItem>
                         <SeparatorMenuItem>
                         </SeparatorMenuItem>
