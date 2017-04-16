@@ -132,7 +132,7 @@ public abstract class SoundObject {
      */
     public abstract ArrayList<SoundObject> getAllChildren();
     
-    
+
     /**
      * Sets this.topGesture to the given Gesture object. 
      * Give null if this gesture is no longer a child of another parent.
@@ -152,5 +152,28 @@ public abstract class SoundObject {
         return topGesture;
     }
 
+    
+    /**
+     * Selects the entire gesture that the method is called from.
+     * If SoundObject not in a gesture, then does nothing.
+     */
+    public void selectTopGesture() {
+        Gesture gest = this.getTopGesture();
+        if (gest != null) {
+            gest.select();
+        }        
+    }
+    
+    /**
+     * Unselects the entire gesture that the method is called from.
+     * If SoundObject not in a gesture, then does nothing.
+     */
+    public void unselectTopGesture() {
+        Gesture gest = this.getTopGesture();
+        if (gest != null) {
+            gest.unselect();
+        }        
+    }    
+       
     
 }

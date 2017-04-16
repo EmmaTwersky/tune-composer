@@ -32,14 +32,8 @@ public class SelectAction extends Action {
     @Override
     public void execute() {
         for (SoundObject sObj : affectedObjs) {
-            Gesture gest = sObj.getTopGesture();
-            if (gest != null) {
-                ArrayList<SoundObject> childrenArray = gest.getAllChildren();
-                for (SoundObject s : childrenArray) {
-                    s.select();
-                }
-            }
             sObj.select();
+            sObj.selectTopGesture();
         }
     }
     
@@ -49,18 +43,9 @@ public class SelectAction extends Action {
     @Override
     public void undo() {
         for (SoundObject sObj : affectedObjs) {
-            Gesture gest = sObj.getTopGesture();
-            if (gest != null) {
-                ArrayList<SoundObject> childrenArray = gest.getAllChildren();
-                for (SoundObject s : childrenArray) {
-                    s.unselect();
-                }
-            }
             sObj.unselect();
+            sObj.unselectTopGesture();
         }
-//        for (SoundObject sObj : affectedObjs) {
-//            sObj.unselect();
-//        }
     }
     
     /**
