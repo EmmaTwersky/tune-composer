@@ -1,9 +1,15 @@
 package tunecomposer;
 import java.util.ArrayList;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.MoveAction;
+import tunecomposer.actionclasses.SelectAction;
+import tunecomposer.actionclasses.StretchAction;
+import tunecomposer.actionclasses.UnselectAction;
 
 /**
  * This class creates and edits Gesture objects to display notes in the tune 
@@ -23,9 +29,18 @@ public final class Gesture extends SoundObject{
     public double bottomY;
     
     /**
+     * ActionManager instance that holds the undo and redo stacks.
+     */
+    private ActionManager actionManager;
+    ArrayList<Action> actionList;
+    MoveAction sObjMove;
+    StretchAction sObjStretch;
+    SelectAction selectAction;
+    UnselectAction unselectAction;
+    
+    /**
      * Initialize the Gesture object and variables, then constructs the 
      * display.
-     * 
      */
     public Gesture(){
         visualRectangle = new Rectangle();
@@ -45,14 +60,18 @@ public final class Gesture extends SoundObject{
      * Gesture constructor that sets containedObjects equal to given ArrayList
      * of SoundObjects instead of copying the SELECTED_SOUNDOBJECT_ARRAY
      * @param selList ArrayList of SoundObjects within this group 
+     * @param soundObjectPane 
      */
-    public Gesture(ArrayList<SoundObject>  selList) {
+    public Gesture(ArrayList<SoundObject>  selList, ActionManager _actionManager, Pane soundObjectPane) {
         visualRectangle = new Rectangle();
         visualRectangle.setMouseTransparent(true);
         containedSoundObjects = new ArrayList();
       
         containedSoundObjects = new ArrayList();
         containedSoundObjects = (ArrayList<SoundObject>) selList.clone();
+        
+        actionManager = _actionManager;
+        pane = soundObjectPane;
         
         refreshVisualRectangle();
         
@@ -111,7 +130,7 @@ public final class Gesture extends SoundObject{
         selected = true;
         visualRectangle.getStyleClass().removeAll("unselectedGesture");
         visualRectangle.getStyleClass().add("selectedGesture");
-//        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
+        SoundObjectPaneController.updateSelectedSoundObjectArray(pane); 
     }
     
     /**
@@ -126,7 +145,7 @@ public final class Gesture extends SoundObject{
         selected = false;
         visualRectangle.getStyleClass().removeAll("selectedGesture");
         visualRectangle.getStyleClass().add("unselectedGesture");
-//        SoundObjectPaneController.updateSelectedSoundObjectArray(); 
+        SoundObjectPaneController.updateSelectedSoundObjectArray(pane); 
     }
     
     /**
@@ -264,8 +283,36 @@ public final class Gesture extends SoundObject{
      */
     EventHandler<MouseEvent> handleGesturePressed = (MouseEvent event) -> {
         CompositionPaneController.tunePlayerObj.stop();
-        latestX =  event.getX();
-        latestY =  event.getY();
+        actionList = new ArrayList();
+
+        latestX = event.getX();
+        latestY = event.getY();
+        ArrayList<SoundObject> thisGesture = new ArrayList();
+        thisGesture.add((SoundObject) visualRectangle.getUserData());
+        
+        if (!selected) {
+            if(!event.isControlDown()){
+                ArrayList<SoundObject> allSelected = new ArrayList();
+                for (Node n : pane.getChildren()) {
+                    Rectangle r = (Rectangle) n;
+                    SoundObject sObj = (SoundObject) r.getUserData();
+                    if (sObj.isSelected()) {
+                        allSelected.add(sObj);
+                    }
+                }
+                unselectAction = new UnselectAction(allSelected);
+                unselectAction.execute();
+                actionList.add(unselectAction);
+            }
+            selectAction = new SelectAction(thisGesture);
+            selectAction.execute();
+            actionList.add(selectAction);
+        }
+        else if (event.isControlDown()){
+            unselectAction = new UnselectAction(thisGesture);
+            unselectAction.execute();
+            actionList.add(unselectAction);
+        }
         
         containedSoundObjects.forEach((sObj) -> {
             double editLengthMax =  (sObj.visualRectangle.getX() + sObj.visualRectangle.getWidth());
@@ -274,6 +321,17 @@ public final class Gesture extends SoundObject{
                 draggingLength = true;
             }
         });
+        
+        if (draggingLength) {
+            sObjStretch = new StretchAction(
+                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
+                (int) latestX);
+        } 
+        else {
+            sObjMove = new MoveAction(
+                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
+                latestX, latestY);
+        }
         
         event.consume();
     };
@@ -289,28 +347,31 @@ public final class Gesture extends SoundObject{
     EventHandler<MouseEvent> handleGestureDragged = (MouseEvent event) -> {
         double x = event.getX();
         double y = event.getY();
-        
-        if (!selected) {
-//            SoundObjectPaneController.unselectAllSoundObjects();
-            select();
-        }
-        
+
         if (draggingLength) {
-            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
-                sObj.changeLength((int)(x - latestX));
-            });
+            sObjStretch.stretch((int)(x - latestX));
         }
         else {
             double translateX = (x - latestX);
             double translateY = (y - latestY);
-            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
-                sObj.move(translateX, translateY);
-            });
+            sObjMove.move(translateX, translateY);
         }
+        
+//        if (draggingLength) {
+//            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
+//                sObj.changeLength((int)(x - latestX));
+//            });
+//        }
+//        else {
+//            double translateX = (x - latestX);
+//            double translateY = (y - latestY);
+//            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
+//                sObj.move(translateX, translateY);
+//            });
+//        }
         
         latestX = x;
         latestY = y;
-        
         event.consume();
     };
     
@@ -321,22 +382,23 @@ public final class Gesture extends SoundObject{
      * 
      * @param event the mouse click event
      */
-    EventHandler<MouseEvent> handleGestureReleased = (MouseEvent event) -> {
-        draggingLength = false;
-        
-        if (event.isStillSincePress()) {
-            if (event.isControlDown()) {
-                toggleSelection();
+    EventHandler<MouseEvent> handleGestureReleased = (MouseEvent event) -> {        
+        if (!event.isStillSincePress()) {
+            if (draggingLength){
+                sObjStretch.setFinalX((int)latestX);
+                actionList.add(sObjStretch);
             }
             else {
-//                SoundObjectPaneController.unselectAllSoundObjects();
-                select();
+                sObjMove.setLastCoords(latestX, latestY);
+                actionList.add(sObjMove);
             }
+            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
+                sObj.snapInPlace();
+            });
+            draggingLength = false;
         }
-        
-        SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
-            sObj.snapInPlace();
-        });
+
+        actionManager.putInUndoStack(actionList);
         
         event.consume();
     };

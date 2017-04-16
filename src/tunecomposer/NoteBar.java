@@ -31,18 +31,16 @@ public class NoteBar extends SoundObject{
     public int pitch;
     public int startTick;
     public int duration;
-    
+
+    /**
+     * ActionManager instance that holds the undo and redo stacks.
+     */
+    private ActionManager actionManager;
+    ArrayList<Action> actionList;
     MoveAction sObjMove;
     StretchAction sObjStretch;
     SelectAction selectAction;
     UnselectAction unselectAction;
-
-    /**
-     * actionManager instance that holds the undo and redo stacks this note 
-     * lives within. 
-     */
-    private ActionManager actionManager;
-    ArrayList<Action> actionList;
     
     /**
     * Creates fixed height and set ranges for pitch. 
@@ -273,7 +271,7 @@ public class NoteBar extends SoundObject{
                         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                         (int)latestX);
             }
-            else{
+            else {
                 sObjMove = new MoveAction(
                         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                         latestX, latestY);
@@ -337,7 +335,6 @@ public class NoteBar extends SoundObject{
                 draggingLength = false;
             }
              
-//            System.out.println(actionList);
             actionManager.putInUndoStack(actionList);
             event.consume();
         }

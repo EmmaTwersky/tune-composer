@@ -7,6 +7,7 @@ package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
 import javafx.scene.layout.Pane;
+import tunecomposer.ActionManager;
 import tunecomposer.SoundObject;
 import tunecomposer.Gesture;
 
@@ -33,12 +34,12 @@ public class GroupAction extends Action{
      * to group given items.
      * @param selList
      *          must contain all SoundObjects to be affected.
+     * @param _actionManager
      * @param _pane reference to the soundObjectPane.
      */
-    public GroupAction(ArrayList<SoundObject> selList, Pane _pane) {     
+    public GroupAction(ArrayList<SoundObject> selList, ActionManager _actionManager, Pane _pane) {             
         soundObjectPane = _pane;
-        
-        gesture = new Gesture(selList);
+        gesture = new Gesture(selList, _actionManager, soundObjectPane);
         gesture.visualRectangle.setUserData(gesture);
     }
     
