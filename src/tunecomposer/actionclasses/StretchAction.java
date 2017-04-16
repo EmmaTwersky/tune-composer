@@ -16,8 +16,7 @@ public class StretchAction extends Action{
     
     /**
      * Last known x coord to determine stretch distance in stretch(...) function.
-     * Updated after every stretch() call. 
-     * Initially set by the construction of this.
+     * Set after the mouse is released by setFinalX().
      */
     int finalLength;
     
@@ -26,7 +25,9 @@ public class StretchAction extends Action{
      */
     int initialLength;
     
-    boolean executed;
+    /**
+     * Listed of sound objects that were selected when the action began.
+     */
     ArrayList<SoundObject> affectedObjs;
 
     
@@ -51,7 +52,7 @@ public class StretchAction extends Action{
      * is not where the items should be moved to. Instead, it is the position
      * of the mouse. The increment will be deduced from past and present mouse
      * positions.
-     * @param lengthInc x coord of mouse.
+     * @param lengthInc stretch increment.
      */
     public void stretch(int lengthInc){
         affectedObjs.forEach((sObj) -> {
@@ -59,18 +60,24 @@ public class StretchAction extends Action{
         });
     }
     
+    /**
+     * Sets finalLength to the last x location of the mouse.
+     * Used by undo to determine the total change in length.
+     * @param x the final x location of the mouse.
+     */
     public void setFinalX(int x){
         finalLength = x;
     }
     
     /**
-     * Sets executed to true to set this as a completed action. After calling,
-     * undo and redo will be possible. Called by redo, and 
-     * can also be used as redo.
+     * Changes the length of of the all affected sound objects.
+     * execute is the opposite of undo is called by redo.
      */
     @Override
     public void execute() {
-        executed = true;
+        affectedObjs.forEach((sObj) -> {
+            sObj.changeLength(finalLength-initialLength);
+        });
     }
 
     /**
@@ -84,11 +91,13 @@ public class StretchAction extends Action{
         });
     }
     
+    /**
+     * Sets all rectangles and gestureBoxes to the length they were before 
+     * the StretchAction was undone. calls execute.
+    */
     @Override
     public void redo(){
-        affectedObjs.forEach((sObj) -> {
-            sObj.changeLength(finalLength-initialLength);
-        });
+        execute();
     }
     
     

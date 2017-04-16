@@ -28,7 +28,6 @@ public class NoteBar extends SoundObject{
     public int pitch;
     public int startTick;
     public int duration;
-    public final int HEIGHT = 10;
     
     
     MoveAction sObjMove;
@@ -135,9 +134,9 @@ public class NoteBar extends SoundObject{
      * @param y the increment to change current y value by
      */
     @Override
-    public void move(int x, int y){ 
-        int translateX = x + (int) visualRectangle.getX();
-        int translateY = y + (int) visualRectangle.getY();
+    public void move(double x, double y){ 
+        double translateX = x + visualRectangle.getX();
+        double translateY = y + visualRectangle.getY();
         visualRectangle.setX(translateX);
         visualRectangle.setY(translateY);
     }
@@ -231,8 +230,8 @@ public class NoteBar extends SoundObject{
         public void handle(MouseEvent event) {
             CompositionPaneController.tunePlayerObj.stop();
             
-            initialX = (int) event.getX();
-            initialY = (int) event.getY();
+            latestX = event.getX();
+            latestY = event.getY();
             
             if (!selected) {
                 if(!event.isControlDown()){
@@ -244,18 +243,18 @@ public class NoteBar extends SoundObject{
                 unselect();
             }
             
-            int editLengthMax = (int) visualRectangle.getX() + duration;
-            int editLengthMin = editLengthMax - clickToEditLength;
-            if ((editLengthMin <= initialX) && (initialX <= editLengthMax)) {
+            double editLengthMax = visualRectangle.getX() + duration;
+            double editLengthMin = editLengthMax - clickToEditLength;
+            if ((editLengthMin <= latestX) && (latestX <= editLengthMax)) {
                 draggingLength = true;
                 sObjStretch = new StretchAction(
                         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
-                        initialX);
+                        (int)latestX);
             }
             else{
                 sObjMove = new MoveAction(
                         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
-                        initialX, initialY);
+                        latestX, latestY);
             }
                 
             event.consume();
@@ -273,21 +272,21 @@ public class NoteBar extends SoundObject{
     EventHandler<MouseEvent> handleNoteDragged = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
-            int x = (int) event.getX();
-            int y = (int) event.getY();
+            double x = event.getX();
+            double y = event.getY();
                         
             
             if (draggingLength) {
-                sObjStretch.stretch(x - initialX);
+                sObjStretch.stretch((int)(x - latestX));
             }
             else {
-                int translateX = (x - initialX);
-                int translateY = (y - initialY);
+                double translateX = (x - latestX);
+                double translateY = (y - latestY);
                 sObjMove.move(translateX, translateY);
             }
             
-            initialX = x;
-            initialY = y;
+            latestX = x;
+            latestY = y;
             event.consume();
         }
     };
@@ -305,16 +304,14 @@ public class NoteBar extends SoundObject{
                         
             
             if (draggingLength){
-                sObjStretch.setFinalX(initialX);
-                sObjStretch.execute();
+                sObjStretch.setFinalX((int)latestX);
                 ArrayList<Action> actionList = new ArrayList();
                 actionList.add(sObjStretch);
                 actionManager.putInUndoStack(actionList);
             }
             
             else{
-                sObjMove.setLastCoords(initialX, initialY);
-                sObjMove.execute();
+                sObjMove.setLastCoords(latestX, latestY);
                 ArrayList<Action> actionList = new ArrayList();
 
                 actionList.add(sObjMove);
