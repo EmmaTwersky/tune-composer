@@ -86,6 +86,8 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleSelectAllMenuItemAction(ActionEvent event) {
+        compositionPaneController.stop();
+        actionManager.redo();
         SelectAction selectAction;
         ArrayList<SoundObject> allObjs = new ArrayList();
                         
@@ -113,7 +115,8 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleDeleteMenuItemAction(ActionEvent event) {
-        
+        compositionPaneController.stop();
+        actionManager.redo();
         DeleteAction deleter;
         deleter = new DeleteAction(SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                                   compositionPaneController.soundObjectPane);
@@ -135,7 +138,9 @@ public class ApplicationController implements Initializable {
      * @param event the button click event
      */
     @FXML
-    protected void handleGroupMenuItemAction(ActionEvent event) {        
+    protected void handleGroupMenuItemAction(ActionEvent event) {  
+        compositionPaneController.stop();
+        actionManager.redo();
         compositionPaneController.group();
         SoundObjectPaneController.updateSelectedSoundObjectArray(compositionPaneController.soundObjectPane);
 
@@ -148,6 +153,8 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleUngroupMenuItemAction(ActionEvent event) {
+        compositionPaneController.stop();
+        actionManager.redo();
         compositionPaneController.ungroup();
         SoundObjectPaneController.updateSelectedSoundObjectArray(compositionPaneController.soundObjectPane);
     }

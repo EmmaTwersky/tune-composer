@@ -59,7 +59,7 @@ public final class Gesture extends SoundObject{
     
     /**
      * Gesture constructor that sets containedObjects equal to given ArrayList
-     * of SoundObjects instead of copying the SELECTED_SOUNDOBJECT_ARRAY
+ of SoundObjects instead of copying the SELECTED_SOUNDOBJECT_ARRAY
      * @param selList ArrayList of SoundObjects within this group 
      * @param soundObjectPane 
      */

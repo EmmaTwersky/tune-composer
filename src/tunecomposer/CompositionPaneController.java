@@ -13,10 +13,7 @@ import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.UnselectAction;
 
 /**
- * This controller creates the composition pane which contains the TunePlayer 
- * for the composition of the current SoundObjects and handles mouse events on the pane.
- *
- * @author Emma Twersky
+ * Controller for coordinating all the controllers in the composition StackPane.
  */
 public class CompositionPaneController implements Initializable { 
     /**
@@ -25,17 +22,26 @@ public class CompositionPaneController implements Initializable {
     public static TunePlayer tunePlayerObj;
     
     /**
-     * Create the pane which the note events take place on.      
+     * The pane which holds all the SoundObject visuals.      
      */
     @FXML
     public Pane soundObjectPane;
     
+    /**
+     * Controller for pane that holds all SoundObject visuals.
+     */
     @FXML
     public SoundObjectPaneController soundObjectPaneController;
     
+    /**
+     * Controller for pane that holds the selection window rectangle.
+     */
     @FXML
     public SelectionWindowPaneController selectionWindowPaneController;
     
+    /**
+     * Controller for pane that holds the RedBar play animation.
+     */
     @FXML
     public RedBarPaneController redBarPaneController;
     
@@ -44,14 +50,38 @@ public class CompositionPaneController implements Initializable {
      */
     public ActionManager actionManager;
     
-    public static int PANEXMIN = 0;
-    public static int PANEYMIN = 0;
-    public static int PANEXMAX = 2000;
-    public static int PANEYMAX = 1280;
     
     /**
-     * Initialize FXML and sets SoundObjectPaneController to reference
-     * the same ActionManager object.
+     * Dimensions of the Composition StackPane
+     */
+    public static final int PANEXMAX = 2000;
+    public static final int PANEYMAX = 1280;
+    
+    /**
+     * Selection Actions used in tandem to record which notes' states have been
+     * changed during the current click.
+     * Used in mouse handlers.
+     */
+    SelectAction selectAction;
+    UnselectAction unselectAction;
+    
+    /**
+     * All the selection actions that have been created during the current click.
+     * Used in mouse handlers.
+     */
+    ArrayList<SoundObject> selectObjs;
+    ArrayList<SoundObject> unselectObjs; 
+    
+    /**
+     * Keeps track of the SoundObjects that were selected before the mouse was pressed.
+     * Used to restore selection state correctly when undo-ing.
+     */
+    ArrayList<SoundObject> wasSelected;
+    
+    
+    /**
+     * Creates TunePlayer and ActionManger objects, then sets 
+     * SoundObjectPaneController to reference the same ActionManager object.
      * 
      * @param location the source of the scene
      * @param resources the resources of the utility of the scene
@@ -88,17 +118,50 @@ public class CompositionPaneController implements Initializable {
     }
     
     /**
-     * Ungroups the currently selected SoundObjects on the CompositionPane.
+     * Ungroups the top gesture of any selected Gestures on the CompositionPane.
      */
     public void ungroup() {
         soundObjectPaneController.ungroup();
     }
     
-    SelectAction selectAction;
-    UnselectAction unselectAction;
-    ArrayList<SoundObject> selectObjs;
-    ArrayList<SoundObject> unselectObjs;    
-    ArrayList<SoundObject> wasSelected;
+    /**
+     * Creates new instances of actions and arrays used in the click handlers.
+     */
+    private void resetClickHandlerFields() {
+        selectObjs = new ArrayList();
+        unselectObjs = new ArrayList();
+        selectAction = new SelectAction(selectObjs);
+        unselectAction = new UnselectAction(unselectObjs);
+        wasSelected = new ArrayList();
+    }    
+    
+    /**
+     * If given rectangle intersects with SELECTION_WINDOW, move it from 
+     * unselectedObj to selectedObj. If not, then do the opposite.
+     * @param rect Rectangle to check for intersection with SELECTION_WINDOW
+     * @param sObj 
+     */
+    private void updateSelectedObjArrays(Rectangle rect) {
+            SoundObject sObj = (SoundObject) rect.getUserData();
+            if (selectionWindowPaneController.SELECTION_WINDOW.intersects(
+                    rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight())){
+            if (!sObj.isSelected()) {
+                if (!selectObjs.contains(sObj)) {
+                    selectObjs.add(sObj);
+                    unselectObjs.remove(sObj);
+                }
+            }
+        }
+        else {
+            //move selected SoundObjects to unselectedObj from selectedObj
+            if (sObj.isSelected()) {
+                if (!unselectObjs.contains(sObj)) {
+                    unselectObjs.add(sObj);
+                    selectObjs.remove(sObj);
+                }
+            }
+        }
+    }
     
     /**
      * Handles mouse press on the SoundObjectPane.
@@ -110,31 +173,36 @@ public class CompositionPaneController implements Initializable {
      */
     @FXML
     protected void handlePanePressed(MouseEvent event) {
-        selectObjs = new ArrayList();
-        unselectObjs = new ArrayList();
-        selectAction = new SelectAction(selectObjs);
-        unselectAction = new UnselectAction(unselectObjs);
-        wasSelected = new ArrayList();
+        resetClickHandlerFields();
         
         tunePlayerObj.stop();
         redBarPaneController.stopAnimation();
         
-        selectionWindowPaneController.topX = event.getX();
-        selectionWindowPaneController.topY = event.getY();
-        selectionWindowPaneController.dragStartX = event.getX();
-        selectionWindowPaneController.dragStartY = event.getY();
+        selectionWindowPaneController.resetWindowCoords(event.getX(), event.getY());
         
         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
             if (event.isControlDown()) {
                 SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.add(sObj);
             }
             wasSelected.add(sObj);
-            Gesture topGest = sObj.getTopGesture();
+            //add encapsulating gesture
+            Gesture topGest = sObj.getTopGesture(); 
             if (topGest != null) {
-                wasSelected.addAll(topGest.getAllChildren());
+                wasSelected.add(topGest);
             }
         });
     };
+
+    /**
+     * Overwrites selectedObjs and unselectedObjs into their respective actions
+     * and executes both actions.
+     */
+    private void updateDragActions() {
+        selectAction.changeAffectedObjs(selectObjs);
+        unselectAction.changeAffectedObjs(unselectObjs);
+        unselectAction.execute();
+        selectAction.execute();
+    }
     
     /**
      * Handles mouse dragged on the SoundObjectPane. 
@@ -153,29 +221,11 @@ public class CompositionPaneController implements Initializable {
             Rectangle r = (Rectangle) n;
             SoundObject sObj = (SoundObject) r.getUserData();
             if (!SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.contains(sObj)) {
-                if (selectionWindowPaneController.SELECTION_WINDOW.intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
-                    if (!sObj.isSelected()) {
-                        if (!selectObjs.contains(sObj)) {
-                            selectObjs.add(sObj);
-                            unselectObjs.remove(sObj);
-                        }                   
-                    }
-                }
-                else {
-                    if (sObj.isSelected()) {
-                        if (!unselectObjs.contains(sObj)) {
-                            unselectObjs.add(sObj);
-                            selectObjs.remove(sObj);
-                        }                   
-                    }
-                }
+                updateSelectedObjArrays(r);
             }
         }
         
-        selectAction.changeAffectedObjs(selectObjs); 
-        unselectAction.changeAffectedObjs(unselectObjs); 
-        unselectAction.execute();
-        selectAction.execute();
+        updateDragActions();
         SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane);
     };
     
@@ -214,14 +264,17 @@ public class CompositionPaneController implements Initializable {
             selectObjs.add(addAction.getNote());
         }
         
+        //if was already selected, don't put into action 
         for (SoundObject sObj : wasSelected) {
             selectObjs.remove(sObj);
         }
-        selectAction.changeAffectedObjs(selectObjs);
         
+        selectAction.changeAffectedObjs(selectObjs);
         unselectAction.changeAffectedObjs(unselectObjs);
+        
         compositionPaneMouseActionArray.add(unselectAction);
         compositionPaneMouseActionArray.add(selectAction);
+        
         actionManager.execute(compositionPaneMouseActionArray);
         actionManager.putInUndoStack(compositionPaneMouseActionArray);
         

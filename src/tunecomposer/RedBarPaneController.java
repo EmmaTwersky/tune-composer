@@ -54,6 +54,7 @@ public class RedBarPaneController implements Initializable {
     /**
      * Moves the line across the screen at the speed set by movementSpeed, 
      * disappears at end of last note displayed.
+     * @param soundObjectPane pane where all SoundObject visuals live.
      */
     public void playAnimation(Pane soundObjectPane) {
         timeline.stop();

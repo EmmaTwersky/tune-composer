@@ -160,8 +160,8 @@ public class NoteBar extends SoundObject{
         double x = visualRectangle.getX()+xInc;
         double y = visualRectangle.getY()+yInc;
         
-        int minX = CompositionPaneController.PANEXMIN;
-        int minY = CompositionPaneController.PANEYMIN;
+        int minX = 0;
+        int minY = 0;
         int maxX = CompositionPaneController.PANEXMAX;
         int maxY = CompositionPaneController.PANEYMAX;
         

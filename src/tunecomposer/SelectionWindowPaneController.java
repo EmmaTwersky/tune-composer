@@ -28,8 +28,8 @@ public class SelectionWindowPaneController implements Initializable {
     /**
      * The SELECTION_WINDOW rectangle's x and y coordinates.
      */
-    public double topX;
-    public double topY;
+    private double topX;
+    private double topY;
     
     /**
      * Size of the SELECTION_WINDOW rectangle.
@@ -41,8 +41,8 @@ public class SelectionWindowPaneController implements Initializable {
      * Coordinates where the mouse was first clicked. Used for scaling 
      * SELECTION_WINDOW's size.
      */
-    public double dragStartX;
-    public double dragStartY;
+    private double dragStartX;
+    private double dragStartY;
     
     @FXML
     @Override
@@ -86,8 +86,8 @@ public class SelectionWindowPaneController implements Initializable {
     
     /**
      * Set topX and topY to given values.
-     * @param x double type. Give coordinates not increments.
-     * @param y double type. Give coordinates not increments
+     * @param x double type, and give coordinates not increments
+     * @param y double type, and give coordinates not increments
      */
     public void setTopCoords(double x, double y) {
         topX = x;
@@ -95,10 +95,25 @@ public class SelectionWindowPaneController implements Initializable {
     }
     
     /**
-     * 
+     * Set initial click coordinates to anchor a corner ofSELECTION_WINDOW. 
+     * @param x double type, and give coordinates not increments
+     * @param y double type, and give coordinates not increments
      */
-    public void resetWindow() {
-        topX = 2000;
-        topY = 1280;
+    public void setDragStartCoords(double x, double y) {
+        dragStartX = x;
+        dragStartY = y;
+    }
+    
+    /**
+     * Resets dragStartX and topX, which prepares SELECTION_WINDOW for new dragging.
+     * @param x
+     * @param y 
+     */
+    public void resetWindowCoords(double x, double y) {
+        dragStartX = x;
+        topX = x;
+        
+        dragStartY = y;
+        topY = y;
     }
 }
