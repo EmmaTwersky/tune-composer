@@ -209,6 +209,19 @@ public class NoteBar extends SoundObject{
     }
     
     /**
+     * Method for recursively grabbing all children of a SoundObject. 
+     * Returns an ArrayList containing only this note.
+     * @return an ArrayList containing only this note.
+     */
+    @Override
+    public ArrayList<SoundObject> getAllChildren() {
+        ArrayList<SoundObject> array = new ArrayList();
+        array.add(this);
+        return array;
+    }
+    
+    
+    /**
      * 
      * @param press
      * @param drag

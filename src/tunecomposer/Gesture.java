@@ -266,6 +266,23 @@ public final class Gesture extends SoundObject{
         //TODO need a method to reset handlers of children to what they would be without this group
     }
     
+    
+    /**
+     * Method for recursively grabbing all children of this Gesture. 
+     * Returns an ArrayList of all children below this object not including self.
+     * @return list of all, as in every level below, the current Gesture.
+     *          returns empty ArrayList if no children.
+     */
+    @Override
+    public ArrayList<SoundObject> getAllChildren() {
+        ArrayList<SoundObject> allChildren = new ArrayList();
+        for (SoundObject sObj : containedSoundObjects) {
+            allChildren.addAll(sObj.getAllChildren());
+        }
+        return allChildren;
+    }
+
+    
     /**
      * Adds the gesture to the MidiPlayer. 
      * 
