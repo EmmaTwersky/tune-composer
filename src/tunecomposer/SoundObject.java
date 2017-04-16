@@ -11,6 +11,14 @@ public abstract class SoundObject {
     */
     public Rectangle visualRectangle;
     
+    
+    /**
+     * Reference the top-most gesture that this SoundObject belongs to.
+     * If null, then this is the top, otherwise this is nested in a gesture 
+     * belonging to referenced at some depth.
+     */
+    protected Gesture topGesture = null;
+    
     /**
     * An ArrayList of the SoundObjects contained within the object.
     */
@@ -93,4 +101,25 @@ public abstract class SoundObject {
      * @param player given instance of TunePlayer
     */
     public abstract void addToMidiPlayer(MidiPlayer player);
+    
+    
+    /**
+     * Sets this.topGesture to the given Gesture object. 
+     * Give null if this gesture is no longer a child of another parent.
+     * Update topGesture when the old topGesture is grouped.
+     * @param topGest The top-most Gesture that this gesture is a child of.
+     */
+    public void setTopGesture(Gesture topGest) {
+        topGesture = topGest;
+    }
+    
+    /**
+     * Gives the topGesture to this object. 
+     * Reference the most senior Gesture object that this is within.
+     * @return the top gesture that this object is in.
+     */
+    public Gesture getTopGesture() {
+        return topGesture;
+    }
+    
 }
