@@ -100,8 +100,8 @@ public class SoundObjectPaneController {
     
     
     /**
-     * Set the actionManager to the instance that contains the undo and 
-     * redo stacks. If given manager is null, then throws NullPointerException.
+     * Set the GroupAction to the instance that contains the undo and 
+ redo stacks. If given manager is null, then throws NullPointerException.
      * @param manager
      * @throws NullPointerException
      */

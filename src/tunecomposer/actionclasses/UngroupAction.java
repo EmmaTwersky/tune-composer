@@ -1,47 +1,33 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer.actionclasses;
 
 import javafx.scene.layout.Pane;
 import tunecomposer.Gesture;
 
 /**
- *
- * @author lazarcl
+ * An action which stores ungrouping SoundObjects in the application.
  */
 public class UngroupAction extends Action {
     
-    
     /**
-     * The gesture object that was created in this action.
+     * Gesture reference to be ungrouped.
      */
-    Gesture gesture;
-
-    
-    /**
-     * Pane that all SoundObject visuals live within.
-     */
-    private final Pane soundObjectPane;
+    final Gesture gesture;
 
     /**
-     * Sets fields to perform all methods in this instance. Must call execute()
-     * to actually ungroup the given gesture.
-     * @param givenGest
-     *          Gesture to execute Ungroup on
-     * @param _pane reference to the soundObjectPane.
+     * Constructs an action event to un-group a Gesture.
+     * Sets gesture and soundObjectPane.
+     * 
+     * @param givenGest the gesture to be ungrouped
+     * @param soundObjectPane the SoundObjectPane these selectedObjs are on
      */
-    public UngroupAction(Gesture givenGest, Pane _pane) {
-        soundObjectPane = _pane;
-                
+    public UngroupAction(Gesture givenGest, Pane soundObjectPane) {
+        this.soundObjectPane = soundObjectPane;
         gesture = givenGest;
     }
     
     /**
-     * Ungroups the selected nodes. Reset contained item's handlers to their 
-     * previous state and remove gestueBox from soundObjectPane.
+     * Ungroups the gesture.
+     * Resets the user data of the gesture's containedObjects
      */
     @Override
     public void execute() {
@@ -53,8 +39,7 @@ public class UngroupAction extends Action {
     }
 
     /**
-     * Groups all the items associated by setting their handlers to this.gesture,
-     * and adding gestureBox to soundObjectPane.
+     * Groups the gesture.
      */
     @Override
     public void undo() {
@@ -62,12 +47,10 @@ public class UngroupAction extends Action {
     }
 
     /**
-     * Regroups the gesture to the state it was initially in when passed to 
-     * this UngroupAction instance.
+     * Regroups the gesture.
      */
     @Override
     public void redo() {
         execute();
     }
-            
 }

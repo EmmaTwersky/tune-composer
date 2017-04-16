@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
@@ -12,50 +7,44 @@ import tunecomposer.SoundObject;
 import tunecomposer.Gesture;
 
 /**
- *
- * @author lazarcl
+ * An action which stores grouping SoundObjects in the application.
  */
 public class GroupAction extends Action{
     
-
     /**
-     * The gesture object that was created in this action.
+     * Gesture reference for the new Gesture created.
      */
-    Gesture gesture;
-
-    /**
-     * Pane that all SoundObject visuals live within.
-     */
-    private final Pane soundObjectPane;
-
+    final Gesture gesture;
     
     /**
-     * Sets fields to perform all methods in this instance. Must call execute()
-     * to group given items.
-     * @param selList
-     *          must contain all SoundObjects to be affected.
-     * @param _actionManager
-     * @param _pane reference to the soundObjectPane.
+     * Constructs an action event to create a Gesture.
+     * Creates a new Gesture with the given selectedObjs.
+     * Sets gesture and soundObjectPane and creates userData for the visualRectangle.
+     * 
+     * @param selectedObjs all SoundObjects to be affected
+     * @param actionManager actionManager this event is within
+     * @param soundObjectPane the SoundObjectPane these selectedObjs are on
      */
-    public GroupAction(ArrayList<SoundObject> selList, ActionManager _actionManager, Pane _pane) {             
-        soundObjectPane = _pane;
-        gesture = new Gesture(selList, _actionManager, soundObjectPane);
+    public GroupAction(ArrayList<SoundObject> selectedObjs, 
+            ActionManager actionManager, Pane soundObjectPane) {  
+        
+        this.affectedObjs = (ArrayList<SoundObject>) selectedObjs.clone();
+        gesture = new Gesture(affectedObjs, actionManager, soundObjectPane);
+        
+        this.soundObjectPane = soundObjectPane;
         gesture.visualRectangle.setUserData(gesture);
     }
     
-    
     /**
-     * Groups all the given items by setting their handlers to this.gesture,
-     * and adding gestureBox to soundObjectPane.
+     * Groups the gesture.
      */
     @Override
     public void execute() {
         gesture.group(soundObjectPane);
     }
 
-    
     /**
-     * Ungroups the gesture. This keeps a reference of the gesture for redo.
+     * Ungroups the gesture.
      */
     @Override
     public void undo() {
@@ -66,11 +55,8 @@ public class GroupAction extends Action{
         });
     }
     
-    
     /**
-     * Regroup the gesture to the same Gesture instance that the group was
-     * first set to. All handlers are set to this gesture, and gesture box is
-     * put into soundObjectPane with correct sizing.
+     * Re-executes action.
      */
     @Override
     public void redo() {

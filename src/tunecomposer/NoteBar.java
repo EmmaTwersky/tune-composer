@@ -10,7 +10,7 @@ import javax.sound.midi.ShortMessage;
 import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.MoveAction;
 import tunecomposer.actionclasses.SelectAction;
-import tunecomposer.actionclasses.StretchAction;
+import tunecomposer.actionclasses.LengthChangeAction;
 import tunecomposer.actionclasses.UnselectAction;
 
 /**
@@ -38,7 +38,7 @@ public class NoteBar extends SoundObject{
     private ActionManager actionManager;
     ArrayList<Action> actionList;
     MoveAction sObjMove;
-    StretchAction sObjStretch;
+    LengthChangeAction sObjStretch;
     SelectAction selectAction;
     UnselectAction unselectAction;
     
@@ -322,7 +322,7 @@ public class NoteBar extends SoundObject{
             double editLengthMin = editLengthMax - clickToEditLength;
             if ((editLengthMin <= latestX) && (latestX <= editLengthMax)) {
                 draggingLength = true;
-                sObjStretch = new StretchAction(
+                sObjStretch = new LengthChangeAction(
                         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                         (int)latestX);
             }

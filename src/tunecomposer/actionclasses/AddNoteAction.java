@@ -5,60 +5,51 @@ import tunecomposer.NoteBar;
 import tunecomposer.ActionManager;
 
 /**
- * This class creates the action to add a note for the Action Manager stack.
- * 
- * @author Cooper Lazar
+ * An action which stores adding a note in the application.
  */
 public class AddNoteAction extends Action {
 
     /**
-     * Rectangle reference for the note shown in NoteBarPane.
+     * NoteBar reference for the new NoteBar created.
      */
     private final NoteBar note;
-    
-    /**
-     * Reference to the NoteBarPane that note should be added to.
-     */
-    private final Pane notePane;
 
-    
     /**
-     * Note is constructed with given x and y values. 
-     * @param x the x value for the top left corner of the note's position
-     * @param y the y value for the top left corner of the note's position
-     * @param _notePane Reference to the notePane.
-     * @param actionManager
+     * Constructs an action event to add a note.
+     * Creates a new NoteBar with the given x and y values.
+     * Sets note and soundObjectPane and creates userData for the visualRectangle.
      * 
+     * @param x the x value for the top left corner of the note position
+     * @param y the y value for the top left corner of the note position
+     * @param actionManager the actionManager this note is a part of
+     * @param soundObjectPane the SoundObjectPane this note is on
      */
-    public AddNoteAction(double x, double  y, ActionManager actionManager, Pane _notePane)  {
-        note = new NoteBar(x, y, actionManager, _notePane);
-        notePane = _notePane;
+    public AddNoteAction(double x, double y, ActionManager actionManager, Pane soundObjectPane) {
+        this.soundObjectPane = soundObjectPane;
+        
+        note = new NoteBar(x, y, actionManager, this.soundObjectPane);
         note.visualRectangle.setUserData(note);
     }
     
     /**
-     * Adds rectangle to the NoteBarPane. This allows the NoteBar to be played,
-     * and shows the note visually on the screen. Also sets this object to 
-     * executed so that it can later be undone.
+     * Adds the note to the soundObjectPane. 
+     * This allows the NoteBar to be played and show visually on the screen.
      */
     @Override
     public void execute() {
-        note.addToPane(notePane);
+        note.addToPane(soundObjectPane);
     }
     
     /**
-     * Removes rectangle from the pane, but holds a reference of it for redo().
-     * Removing the rectangle removes access to the NoteBar object.
+     * Removes note from the soundObjectPane.
      */
     @Override
     public void undo() {
-        note.removeFromPane(notePane);
+        note.removeFromPane(soundObjectPane);
     }
 
-
     /**
-     * Used to redo this action after it has been undone. Will add the note back
-     * onto the pane.
+     * Re-executes action.
      */
     @Override
     public void redo() {
@@ -66,9 +57,8 @@ public class AddNoteAction extends Action {
     }
     
     /**
-     * Returns the note reference held by this object. Useful function to get 
-     * the reference and add it to the SOUNDOBJECT_ARRAY
-     * @return NoteBar object in this.note field.
+     * Returns the note reference held by this action object. 
+     * @return NoteBar object in this.note field
      */
     public NoteBar getNote() {
         return note;
