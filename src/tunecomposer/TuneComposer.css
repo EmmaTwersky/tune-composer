@@ -7,6 +7,7 @@
 #Piano{
     -fx-text-fill: lemonchiffon;
     -fx-fill: lemonchiffon;
+    -fx-text-shadow: 3px 2px darkgrey;
 }
 
 #Harpsichord{
@@ -84,7 +85,8 @@
 }
 
 #instrumentToolBar{
-    -fx-background-color: darkgrey;
+    /*-fx-background-color: silver;*/
+    -fx-background-color: linear-gradient(to bottom right, silver, pink);
 }
 
 #staffLine{
