@@ -63,6 +63,7 @@ public class ApplicationController implements Initializable {
     protected void handleUndoMenuItemAction(ActionEvent event) {
         compositionPaneController.stop();
         actionManager.undo();
+        SoundObjectPaneController.updateSelectedSoundObjectArray(compositionPaneController.soundObjectPane);
     }
     
     /**
@@ -74,6 +75,7 @@ public class ApplicationController implements Initializable {
     protected void handleRedoMenuItemAction(ActionEvent event) {
         compositionPaneController.stop();
         actionManager.redo();
+        SoundObjectPaneController.updateSelectedSoundObjectArray(compositionPaneController.soundObjectPane);
     }
     
     /**
@@ -124,6 +126,8 @@ public class ApplicationController implements Initializable {
     @FXML
     protected void handleGroupMenuItemAction(ActionEvent event) {        
         compositionPaneController.group();
+        SoundObjectPaneController.updateSelectedSoundObjectArray(compositionPaneController.soundObjectPane);
+
     }
     
     /**
@@ -134,6 +138,7 @@ public class ApplicationController implements Initializable {
     @FXML
     protected void handleUngroupMenuItemAction(ActionEvent event) {
         compositionPaneController.ungroup();
+        SoundObjectPaneController.updateSelectedSoundObjectArray(compositionPaneController.soundObjectPane);
     }
     
     

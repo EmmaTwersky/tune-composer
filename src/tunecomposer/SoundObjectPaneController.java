@@ -42,12 +42,16 @@ public class SoundObjectPaneController {
         SELECTED_SOUNDOBJECT_ARRAY.clear();
         for (Node n: pane.getChildren()) {
             Rectangle r = (Rectangle) n;
-            if (r.getUserData() == null) {
-                System.out.println("r is null. updateSelArray() paneItems:");
-            }
             SoundObject sObj = (SoundObject) (r).getUserData();
             if (sObj.isSelected()) {
+                if (sObj instanceof Gesture) { //if a parent-less gesture
+                    Gesture topGesture = ((Gesture) sObj).getTopGesture();
+                    if (topGesture == null) {
+                        SELECTED_SOUNDOBJECT_ARRAY.add(sObj);
+                    }
+                } else { //if an ungrouped notebar
                 SELECTED_SOUNDOBJECT_ARRAY.add(sObj);
+                }
             }
         }
     }
@@ -74,16 +78,6 @@ public class SoundObjectPaneController {
         actionArray.add(groupAction);
         actionManager.execute(actionArray);
         actionManager.putInUndoStack(actionArray);
-//        Gesture g = new Gesture();
-//        g.visualRectangle.setUserData(g);
-//        g.addToPane(soundObjectPane);
-        
-//        unselectAllSoundObjects();
-        
-//        g.containedSoundObjects.forEach((sObj) -> {
-//            SOUNDOBJECT_ARRAY.remove(sObj);
-//        });
-//        SOUNDOBJECT_ARRAY.add(g);
         
         updateSelectedSoundObjectArray(soundObjectPane);
     }

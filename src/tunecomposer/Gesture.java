@@ -21,6 +21,7 @@ public final class Gesture extends SoundObject{
     public double topY;
     public double bottomX;
     public double bottomY;
+
     
     /**
      * Initialize the Gesture object and variables, then constructs the 
@@ -213,6 +214,11 @@ public final class Gesture extends SoundObject{
         setHandlers();
         refreshVisualRectangle();
         soundObjectPane.getChildren().add(visualRectangle);
+        for (SoundObject sObj : containedSoundObjects) {
+            if (sObj instanceof Gesture) {
+                ((Gesture) sObj).setTopGesture(this);
+            }
+        }
     }
     
     /**
@@ -253,8 +259,12 @@ public final class Gesture extends SoundObject{
         soundObjectPane.getChildren().remove(visualRectangle);
         containedSoundObjects.forEach((sObj) -> {
             sObj.setHandlers();
+            if (sObj instanceof Gesture) {
+                ((Gesture) sObj).setTopGesture(null);
+            }
         });
     }
+    
     
     /**
      * Handles note pressed event. 
