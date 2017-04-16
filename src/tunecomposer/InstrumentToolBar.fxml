@@ -22,8 +22,8 @@
     xmlns:fx = "http://javafx.com/fxml/1" 
     fx:controller = "tunecomposer.InstrumentToolBarController"
     orientation = "VERTICAL" 
-    prefWidth = "150.0" 
-    >
+    prefWidth = "150.0"
+    styleClass = "instrumentToolBar" >
     <items>
       <fx:define>
           <ToggleGroup
