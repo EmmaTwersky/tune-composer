@@ -234,8 +234,8 @@ public final class Gesture extends SoundObject{
         refreshVisualRectangle();
         soundObjectPane.getChildren().add(visualRectangle);
         for (SoundObject sObj : containedSoundObjects) {
-            if (sObj instanceof Gesture) {
-                ((Gesture) sObj).setTopGesture(this);
+            if (sObj.getTopGesture() == null) {
+                sObj.setTopGesture(this);
             }
         }
     }
@@ -278,8 +278,8 @@ public final class Gesture extends SoundObject{
         soundObjectPane.getChildren().remove(visualRectangle);
         containedSoundObjects.forEach((sObj) -> {
             sObj.setHandlers();
-            if (sObj instanceof Gesture) {
-                ((Gesture) sObj).setTopGesture(null);
+            if (sObj.getTopGesture() == this) {
+                sObj.setTopGesture(null);
             }
         });
     }
