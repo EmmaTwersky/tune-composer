@@ -112,6 +112,8 @@ public class CompositionPaneController implements Initializable {
         tunePlayerObj.stop();
         redBarPaneController.stopAnimation();
         
+        selectionWindowPaneController.topX = event.getX();
+        selectionWindowPaneController.topY = event.getY();
         selectionWindowPaneController.dragStartX = event.getX();
         selectionWindowPaneController.dragStartY = event.getY();
         
