@@ -312,24 +312,23 @@ public class NoteBar extends SoundObject{
     EventHandler<MouseEvent> handleNoteReleased = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
-            if (draggingLength){
-                sObjStretch.execute();
-                sObjStretch.setFinalX((int)latestX);
-                actionList.add(sObjStretch);
+            if (!event.isStillSincePress()) {
+                if (draggingLength){
+                    sObjStretch.execute();
+                    sObjStretch.setFinalX((int)latestX);
+                    actionList.add(sObjStretch);
+                }
+                else {
+                    sObjMove.execute();
+                    sObjMove.setLastCoords(latestX, latestY);
+                    actionList.add(sObjMove);
+                }
+                for (SoundObject soundItem : SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
+                    soundItem.snapInPlace();
+                }
+                draggingLength = false;
             }
-            
-            else{
-                sObjMove.execute();
-                sObjMove.setLastCoords(latestX, latestY);
-                actionList.add(sObjMove);
-            }
-            
-            for (SoundObject soundItem : SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
-                soundItem.snapInPlace();
-            }
-            
-            draggingLength = false;
-            
+             
             actionManager.putInUndoStack(actionList);
             event.consume();
         }
