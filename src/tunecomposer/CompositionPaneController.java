@@ -93,6 +93,7 @@ public class CompositionPaneController implements Initializable {
     UnselectAction unselectAction;
     ArrayList<SoundObject> selectObjs;
     ArrayList<SoundObject> unselectObjs;    
+    ArrayList<SoundObject> wasSelected;
     
     /**
      * Handles mouse press on the SoundObjectPane.
@@ -108,6 +109,7 @@ public class CompositionPaneController implements Initializable {
         unselectObjs = new ArrayList();
         selectAction = new SelectAction(selectObjs);
         unselectAction = new UnselectAction(unselectObjs);
+        wasSelected = new ArrayList();
         
         tunePlayerObj.stop();
         redBarPaneController.stopAnimation();
@@ -117,11 +119,12 @@ public class CompositionPaneController implements Initializable {
         selectionWindowPaneController.dragStartX = event.getX();
         selectionWindowPaneController.dragStartY = event.getY();
         
-        if (event.isControlDown()) {
-            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
+        SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
+            if (event.isControlDown()) {
                 SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.add(sObj);
-            });
-        }
+            }
+            wasSelected.add(sObj);
+        });
     };
     
     /**
@@ -132,10 +135,7 @@ public class CompositionPaneController implements Initializable {
      * @param event the mouse click event
      */
     @FXML
-    protected void handlePaneDragged(MouseEvent event) { 
-//        selectObjs.clear();
-//        unselectObjs.clear();
-        
+    protected void handlePaneDragged(MouseEvent event) {        
         selectionWindowPaneController.SELECTION_WINDOW.setVisible(true);
         
         selectionWindowPaneController.translateWindow(event.getX(), event.getY());
@@ -146,7 +146,6 @@ public class CompositionPaneController implements Initializable {
             if (!SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.contains(sObj)) {
                 if (selectionWindowPaneController.SELECTION_WINDOW.intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
                     if (!sObj.isSelected()) {
-//                        System.out.println(selectObjs.contains(sObj));
                         if (!selectObjs.contains(sObj)) {
                             selectObjs.add(sObj);
                             unselectObjs.remove(sObj);
@@ -206,10 +205,14 @@ public class CompositionPaneController implements Initializable {
             selectObjs.add(addAction.getNote());
         }
         
+        for (SoundObject sObj : wasSelected) {
+            selectObjs.remove(sObj);
+        }
         selectAction.changeAffectedObjs(selectObjs);
+        
         unselectAction.changeAffectedObjs(unselectObjs);
-        compositionPaneMouseActionArray.add(selectAction);
         compositionPaneMouseActionArray.add(unselectAction);
+        compositionPaneMouseActionArray.add(selectAction);
         actionManager.execute(compositionPaneMouseActionArray);
         actionManager.putInUndoStack(compositionPaneMouseActionArray);
         
@@ -232,9 +235,7 @@ public class CompositionPaneController implements Initializable {
         try {
             soundObjectPaneController.setActionManager(actionManager);
         } catch (NullPointerException ex) {
-            System.out.println("In CompPaneController.setActionManager(), "
-                    + "passed null to "
-                    + "soundObjectPaneController.setActionManager(manager)");
+            System.out.println("Action Manager null");
             System.exit(1);
         }
     }
