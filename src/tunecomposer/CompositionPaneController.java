@@ -8,7 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.Action;
-import tunecomposer.actionclasses.AddNote;
+import tunecomposer.actionclasses.AddNoteAction;
 import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.UnselectAction;
 
@@ -197,8 +197,8 @@ public class CompositionPaneController implements Initializable {
                 unselectObjs.clear();
             }
             
-            AddNote addAction;
-            addAction = new AddNote(event.getX(), event.getY(), actionManager, soundObjectPane);
+            AddNoteAction addAction;
+            addAction = new AddNoteAction(event.getX(), event.getY(), actionManager, soundObjectPane);
             
             compositionPaneMouseActionArray.add(addAction);
             selectObjs.add(addAction.getNote());
