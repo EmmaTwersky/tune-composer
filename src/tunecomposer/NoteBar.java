@@ -159,8 +159,15 @@ public class NoteBar extends SoundObject{
         
         double x = visualRectangle.getX()+xInc;
         double y = visualRectangle.getY()+yInc;
-        if ((x < 0 || x+duration > 2000) ||
-            (y < 0 || y+HEIGHT > 1280)){
+        
+        int minX = CompositionPaneController.PANEXMIN;
+        int minY = CompositionPaneController.PANEYMIN;
+        int maxX = CompositionPaneController.PANEXMAX;
+        int maxY = CompositionPaneController.PANEYMAX;
+        
+        
+        if ((x < minX || x+duration > maxX) ||
+            (y < minY || y+HEIGHT > maxY)){
             onEdge = true;
         }
         return onEdge;

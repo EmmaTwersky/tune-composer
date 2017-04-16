@@ -44,6 +44,11 @@ public class CompositionPaneController implements Initializable {
      */
     public ActionManager actionManager;
     
+    public static int PANEXMIN = 0;
+    public static int PANEYMIN = 0;
+    public static int PANEXMAX = 2000;
+    public static int PANEYMAX = 1280;
+    
     /**
      * Initialize FXML and sets SoundObjectPaneController to reference
      * the same ActionManager object.
