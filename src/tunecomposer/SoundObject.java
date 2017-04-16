@@ -124,6 +124,15 @@ public abstract class SoundObject {
      */
     public abstract void setHandlers(EventHandler press, EventHandler drag, EventHandler release);
     
+    
+    /**
+     * Method for recursively grabbing all children of a SoundObject. 
+     * Returns an ArrayList of all children below the object not including self.
+     * @return list of all, as in every level below, the current SoundObject.
+     */
+    public abstract ArrayList<SoundObject> getAllChildren();
+    
+    
     /**
      * Sets this.topGesture to the given Gesture object. 
      * Give null if this gesture is no longer a child of another parent.
