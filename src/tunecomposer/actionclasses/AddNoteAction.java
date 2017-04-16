@@ -9,7 +9,7 @@ import tunecomposer.ActionManager;
  * 
  * @author Cooper Lazar
  */
-public class AddNote extends Action {
+public class AddNoteAction extends Action {
 
     /**
      * Rectangle reference for the note shown in NoteBarPane.
@@ -30,7 +30,7 @@ public class AddNote extends Action {
      * @param actionManager
      * 
      */
-    public AddNote(double x, double  y, ActionManager actionManager, Pane _notePane)  {
+    public AddNoteAction(double x, double  y, ActionManager actionManager, Pane _notePane)  {
         note = new NoteBar(x, y, actionManager, _notePane);
         notePane = _notePane;
         note.visualRectangle.setUserData(note);
