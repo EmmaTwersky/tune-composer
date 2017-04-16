@@ -314,12 +314,10 @@ public class NoteBar extends SoundObject{
         public void handle(MouseEvent event) {
             if (!event.isStillSincePress()) {
                 if (draggingLength){
-                    sObjStretch.execute();
                     sObjStretch.setFinalX((int)latestX);
                     actionList.add(sObjStretch);
                 }
                 else {
-                    sObjMove.execute();
                     sObjMove.setLastCoords(latestX, latestY);
                     actionList.add(sObjMove);
                 }
