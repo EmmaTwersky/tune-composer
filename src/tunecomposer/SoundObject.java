@@ -1,6 +1,7 @@
 package tunecomposer;
 
 import java.util.ArrayList;
+import javafx.event.EventHandler;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
@@ -102,6 +103,18 @@ public abstract class SoundObject {
     */
     public abstract void addToMidiPlayer(MidiPlayer player);
     
+    /**
+     * Sets the mouse handlers of the called object to the given parameters.
+     * For SoundObjects that contain items, should also set all items handlers 
+     * to given.
+     * @param press 
+     *          Handler of the object that mouse press events will consume 
+     * @param drag
+     *          Handler of the object that mouse drag events will consume 
+     * @param release 
+     *          Handler of the object that mouse release events will consume 
+     */
+    public abstract void setHandlers(EventHandler press, EventHandler drag, EventHandler release);
     
     /**
      * Sets this.topGesture to the given Gesture object. 
@@ -121,5 +134,6 @@ public abstract class SoundObject {
     public Gesture getTopGesture() {
         return topGesture;
     }
+
     
 }

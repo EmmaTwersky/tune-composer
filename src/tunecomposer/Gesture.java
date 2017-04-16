@@ -221,30 +221,33 @@ public final class Gesture extends SoundObject{
         });
     }
     
+    
+    /**
+     * Sets the mouse handlers of the called object to the given parameters.
+     * Makes all child SoundObject's handlers the given. Useful to make all
+     * SoundObjects in a group use the topGesture's EventHandlers.
+     * @param press 
+     *          Handler of the object that mouse press events will consume 
+     * @param drag
+     *          Handler of the object that mouse drag events will consume 
+     * @param release 
+     *          Handler of the object that mouse release events will consume 
+     */
+    @Override
+    public void setHandlers(EventHandler press, EventHandler drag, EventHandler release) {
+        this.visualRectangle.setOnMousePressed(press);
+        this.visualRectangle.setOnMouseDragged(drag);
+        this.visualRectangle.setOnMouseReleased(release);
+        for (SoundObject sObj : containedSoundObjects) {
+            sObj.setHandlers(press, drag, release);
+        }
+    }
 
     @Override
     public void addToPane(Pane soundObjectPane) {
         soundObjectPane.getChildren().add(visualRectangle);
         for (SoundObject sObj : containedSoundObjects) {
             sObj.addToPane(soundObjectPane);
-        }
-    }
-   
-    /**
-     * Adds the gestureBox to the given pane and sets all containedItems' 
-     * handlers to this Gesture's. 
-     * Does not change selection state. Does not handle if given pane is null. 
-     * Does not handle exceptions if Object can not be removed from given pane.
-     * @param soundObjectPane the pane to add the gestureBox to
-     */
-    public void group(Pane soundObjectPane) {
-        setHandlers();
-        refreshVisualRectangle();
-        soundObjectPane.getChildren().add(visualRectangle);
-        for (SoundObject sObj : containedSoundObjects) {
-            if (sObj.getTopGesture() == null) {
-                sObj.setTopGesture(this);
-            }
         }
     }
     
@@ -274,6 +277,25 @@ public final class Gesture extends SoundObject{
             sObj.addToMidiPlayer(player);
         });
     }
+
+    /**
+     * Adds the gestureBox to the given pane and sets all containedItems' 
+     * handlers to this Gesture's. 
+     * Does not change selection state. Does not handle if given pane is null. 
+     * Does not handle exceptions if Object can not be removed from given pane.
+     * @param soundObjectPane the pane to add the gestureBox to
+     */
+    public void group(Pane soundObjectPane) {
+        setHandlers();
+        refreshVisualRectangle();
+        soundObjectPane.getChildren().add(visualRectangle);
+        for (SoundObject sObj : containedSoundObjects) {
+            if (sObj.getTopGesture() == null) {
+                sObj.setTopGesture(this);
+            }
+        }
+    }
+    
     
     /**
      * Un-groups the gesture by setting all contained item handlers to correct

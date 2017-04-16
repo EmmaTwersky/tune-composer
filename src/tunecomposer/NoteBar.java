@@ -209,6 +209,19 @@ public class NoteBar extends SoundObject{
     }
     
     /**
+     * 
+     * @param press
+     * @param drag
+     * @param release 
+     */
+    @Override
+    public void setHandlers(EventHandler press, EventHandler drag, EventHandler release) {
+        this.visualRectangle.setOnMousePressed(press);
+        this.visualRectangle.setOnMouseDragged(drag);
+        this.visualRectangle.setOnMouseReleased(release);
+    }
+    
+    /**
      * Adds the note to the MidiPlayer. 
      * 
      * @param player given TunePlayer object
