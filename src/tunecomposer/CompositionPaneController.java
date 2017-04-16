@@ -9,6 +9,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.AddNote;
+import tunecomposer.actionclasses.SelectAction;
+import tunecomposer.actionclasses.UnselectAction;
 
 /**
  * This controller creates the composition pane which contains the TunePlayer 
@@ -87,6 +89,11 @@ public class CompositionPaneController implements Initializable {
         soundObjectPaneController.ungroup();
     }
     
+    SelectAction selectAction;
+    UnselectAction unselectAction;
+    ArrayList<SoundObject> selectObjs;
+    ArrayList<SoundObject> unselectObjs;    
+    
     /**
      * Handles mouse press on the SoundObjectPane.
      * Stops current MidiPlayer, gets initial value of mouse, and initializes 
@@ -97,15 +104,20 @@ public class CompositionPaneController implements Initializable {
      */
     @FXML
     protected void handlePanePressed(MouseEvent event) {
+        selectObjs = new ArrayList();
+        unselectObjs = new ArrayList();
+        selectAction = new SelectAction(selectObjs);
+        unselectAction = new UnselectAction(unselectObjs);
+        
         tunePlayerObj.stop();
         redBarPaneController.stopAnimation();
         
         selectionWindowPaneController.dragStartX = event.getX();
         selectionWindowPaneController.dragStartY = event.getY();
-
+        
         if (event.isControlDown()) {
-            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((note) -> {
-                SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.add(note);
+            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
+                SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.add(sObj);
             });
         }
     };
@@ -118,25 +130,43 @@ public class CompositionPaneController implements Initializable {
      * @param event the mouse click event
      */
     @FXML
-    protected void handlePaneDragged(MouseEvent event) {        
+    protected void handlePaneDragged(MouseEvent event) { 
+//        selectObjs.clear();
+//        unselectObjs.clear();
+        
         selectionWindowPaneController.SELECTION_WINDOW.setVisible(true);
         
         selectionWindowPaneController.translateWindow(event.getX(), event.getY());
         
         for (Node n: soundObjectPane.getChildren()) {
             Rectangle r = (Rectangle) n;
-            SoundObject sObj = (SoundObject) (r).getUserData();
+            SoundObject sObj = (SoundObject) r.getUserData();
             if (!SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.contains(sObj)) {
                 if (selectionWindowPaneController.SELECTION_WINDOW.intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight())){
-                    sObj.select();
+                    if (!sObj.isSelected()) {
+                        System.out.println(selectObjs.contains(sObj));
+                        if (!selectObjs.contains(sObj)) {
+                            selectObjs.add(sObj);
+                            unselectObjs.remove(sObj);
+                        }                   
+                    }
                 }
                 else {
-                    sObj.unselect();
+                    if (sObj.isSelected()) {
+                        if (!unselectObjs.contains(sObj)) {
+                            unselectObjs.add(sObj);
+                            selectObjs.remove(sObj);
+                        }                   
+                    }
                 }
             }
         }
-                
-        soundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane);
+          
+        selectAction.changeAffectedObjs(selectObjs); 
+        unselectAction.changeAffectedObjs(unselectObjs); 
+        selectAction.execute();
+        unselectAction.execute();
+        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane);
     };
     
     /**
@@ -149,23 +179,39 @@ public class CompositionPaneController implements Initializable {
      */
     @FXML
     protected void handlePaneReleased(MouseEvent event) {
+        ArrayList<Action> compositionPaneMouseActionArray = new ArrayList<>();
         selectionWindowPaneController.SELECTION_WINDOW.setVisible(false);
         SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.clear();
         
         if (event.isStillSincePress()) {
             if (!event.isControlDown()) {
-                SoundObjectPaneController.unselectAllSoundObjects(soundObjectPane); 
+                for (Node n : soundObjectPane.getChildren()) {
+                    Rectangle r = (Rectangle) n;
+                    SoundObject s = (SoundObject) r.getUserData();
+                    if (s.isSelected()) {
+                        unselectObjs.add(s);
+                    }
+                }
+            }
+            else {
+                unselectObjs.clear();
             }
             
             AddNote addAction;
             addAction = new AddNote(event.getX(), event.getY(), actionManager, soundObjectPane);
             
-            ArrayList<Action> addActionArray = new ArrayList<>();
-            addActionArray.add(addAction);
-            
-            actionManager.execute(addActionArray);
-            actionManager.putInUndoStack(addActionArray);
+            compositionPaneMouseActionArray.add(addAction);
+            selectObjs.add(addAction.getNote());
         }
+        
+//        System.out.println(selectObjs);
+
+        selectAction.changeAffectedObjs(selectObjs);
+        unselectAction.changeAffectedObjs(unselectObjs);
+        compositionPaneMouseActionArray.add(selectAction);
+        compositionPaneMouseActionArray.add(unselectAction);
+        actionManager.execute(compositionPaneMouseActionArray);
+        actionManager.putInUndoStack(compositionPaneMouseActionArray);
         
         SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane);
     };

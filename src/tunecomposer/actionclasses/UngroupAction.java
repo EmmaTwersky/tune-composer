@@ -5,29 +5,21 @@
  */
 package tunecomposer.actionclasses;
 
-import java.util.ArrayList;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import tunecomposer.Gesture;
-import tunecomposer.SoundObject;
 
 /**
  *
  * @author lazarcl
  */
-public class UngroupAction extends AbstractGroupAction {
+public class UngroupAction extends Action {
     
     
     /**
      * The gesture object that was created in this action.
      */
-    tunecomposer.Gesture theGesture;
-    
+    Gesture gesture;
 
-    /**
-     * Array of SoundObjects to be affected by the action.
-     */
-    ArrayList<SoundObject> affectedObjs;
     
     /**
      * Pane that all SoundObject visuals live within.
@@ -35,59 +27,47 @@ public class UngroupAction extends AbstractGroupAction {
     private final Pane soundObjectPane;
 
     /**
-     * @param selList
-     *          All selected rectangles must have their top-most gesture be 
-     * @param _pane reference to the gesture pane.
+     * Sets fields to perform all methods in this instance. Must call execute()
+     * to actually ungroup the given gesture.
+     * @param givenGest
+     *          Gesture to execute Ungroup on
+     * @param _pane reference to the soundObjectPane.
      */
-    public UngroupAction(ArrayList<SoundObject> selList, Pane _pane) {
-        theGesture = findTopGesture(selList);
-       
+    public UngroupAction(Gesture givenGest, Pane _pane) {
         soundObjectPane = _pane;
-        
-        affectedObjs = (ArrayList<SoundObject>) selList.clone();
-    }
-    
-    
-    /**
-     * Confirms that all rectangles in given array are related by at least one
-     * Gesture. If parameter null then throws exception.
-     * @return 
-     *    Returns reference to top gesture if satisfied, null if not satisfied.
-     * @throws NullPointerException
-     */
-    private static Gesture findTopGesture(ArrayList<SoundObject> list) 
-                                                throws NullPointerException {
-        //TODO
-        return null;
+                
+        gesture = givenGest;
     }
     
     /**
-     * Finds the gestureBox that is related to the given gesture.
-     * @param gesturePane
-     * @return the gestureBox in the gesture pane that the gesture belongs to
-     *      returns null if not found.
+     * Ungroups the selected nodes. Reset contained item's handlers to their 
+     * previous state and remove gestueBox from soundObjectPane.
      */
-    private static Rectangle findGestureBox(Gesture gesture) {
-        //TODO
-        return null;
-    }
-    
-    /**
-     * Ungroups the selected nodes
-     */
+    @Override
     public void execute() {
-        //TODO
-        // call ungroup() from super
+        gesture.ungroup(soundObjectPane);
+        gesture.containedSoundObjects.forEach((innerSObj) -> {
+            innerSObj.select();
+            innerSObj.visualRectangle.setUserData(innerSObj);
+        });
     }
 
-            
+    /**
+     * Groups all the items associated by setting their handlers to this.gesture,
+     * and adding gestureBox to soundObjectPane.
+     */
+    @Override
     public void undo() {
-        // call group from super.
+        gesture.addToPane(soundObjectPane);
     }
 
+    /**
+     * Regroups the gesture to the state it was initially in when passed to 
+     * this UngroupAction instance.
+     */
     @Override
     public void redo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        execute();
     }
             
 }

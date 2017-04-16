@@ -7,7 +7,6 @@ package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import tunecomposer.SoundObject;
 import tunecomposer.Gesture;
 
@@ -15,20 +14,14 @@ import tunecomposer.Gesture;
  *
  * @author lazarcl
  */
-public class GroupAction extends AbstractGroupAction {
+public class GroupAction extends Action{
     
 
     /**
      * The gesture object that was created in this action.
      */
     Gesture gesture;
-    
 
-    /**
-     * Array of SoundObjects to be affected by the action.
-     */
-    ArrayList<SoundObject> affectedObjs;
-    
     /**
      * Pane that all SoundObject visuals live within.
      */
@@ -36,36 +29,50 @@ public class GroupAction extends AbstractGroupAction {
 
     
     /**
+     * Sets fields to perform all methods in this instance. Must call execute()
+     * to group given items.
      * @param selList
      *          must contain all SoundObjects to be affected.
      * @param _pane reference to the soundObjectPane.
      */
-    public GroupAction(ArrayList<SoundObject> selList, Pane _pane) {
-        gesture = new Gesture(selList);
-        
+    public GroupAction(ArrayList<SoundObject> selList, Pane _pane) {     
         soundObjectPane = _pane;
         
-        affectedObjs = (ArrayList<SoundObject>) selList.clone();
+        gesture = new Gesture(selList);
+        gesture.visualRectangle.setUserData(gesture);
     }
     
     
+    /**
+     * Groups all the given items by setting their handlers to this.gesture,
+     * and adding gestureBox to soundObjectPane.
+     */
     @Override
     public void execute() {
         gesture.addToPane(soundObjectPane);
-        //addGestureSiblings()
-        //find top, bot, left, right extremes
-        //make gestureBox
-        //set gestureBox userData to newGesture
-        //add gesture box to gesturePane
-        //call group() from super.
     }
 
-            
+    
+    /**
+     * Ungroups the gesture. This keeps a reference of the gesture for redo.
+     */
+    @Override
     public void undo() {
-        // call ungroup from super.
+        gesture.ungroup(soundObjectPane);
+        gesture.containedSoundObjects.forEach((innerSObj) -> {
+            innerSObj.select();
+            innerSObj.visualRectangle.setUserData(innerSObj);
+        });
     }
     
+    
+    /**
+     * Regroup the gesture to the same Gesture instance that the group was
+     * first set to. All handlers are set to this gesture, and gesture box is
+     * put into soundObjectPane with correct sizing.
+     */
+    @Override
     public void redo() {
-        
+        execute();
     }
 }

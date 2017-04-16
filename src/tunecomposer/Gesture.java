@@ -202,10 +202,11 @@ public final class Gesture extends SoundObject{
     }
     
     /**
-     * Adds the note to the given pane. 
-     * Does not manage selection. Does not handle if given pane is null. 
-     * 
-     * @param soundObjectPane
+     * Adds the gestureBox to the given pane and sets all containedItems' 
+     * handlers to this Gesture's. 
+     * Does not change selection state. Does not handle if given pane is null. 
+     * Does not handle exceptions if Object can not be removed from given pane.
+     * @param soundObjectPane the pane to add the gestureBox to
      */
     @Override
     public void addToPane(Pane soundObjectPane) {
@@ -215,10 +216,10 @@ public final class Gesture extends SoundObject{
     }
     
     /**
-     * Removes the gesture from the given pane. 
-     * Does not manage selection. Does not handle if given pane is null. 
-     * 
-     * @param soundObjectPane
+     * Removes the gestureBox and all contained SoundObjects from given pane. 
+     * Does not change selection state. Does not handle if given pane is null.
+     * Does not handle exceptions if Object can not be removed from given pane.
+     * @param soundObjectPane the pane to remove the gestureBox from
      */
     @Override
     public void removeFromPane(Pane soundObjectPane){    
@@ -242,9 +243,10 @@ public final class Gesture extends SoundObject{
     }
     
     /**
-     * Prepares to un-group the gesture.
+     * Un-groups the gesture by setting all contained item handlers to correct
+     * objects, and removing the gestureBox rectangle from the given pane.
      * Resets the containedSoundObjects to previous event handlers and 
-     * removes the visual rectangle.
+     * removes the visual rectangle. Does not handle being given the wrong pane.
      * @param soundObjectPane the value of soundObjectPane
      */
     public void ungroup(Pane soundObjectPane){    
