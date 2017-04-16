@@ -2,6 +2,7 @@ package tunecomposer;
 
 import java.util.ArrayList;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -242,7 +243,17 @@ public class NoteBar extends SoundObject{
             
             if (!selected) {
                 if(!event.isControlDown()){
-                    SoundObjectPaneController.unselectAllSoundObjects(pane);
+                    ArrayList<SoundObject> allSelected = new ArrayList();
+                    for (Node n : pane.getChildren()) {
+                        Rectangle r = (Rectangle) n;
+                        SoundObject sObj = (SoundObject) r.getUserData();
+                        if (sObj.isSelected()) {
+                            allSelected.add(sObj);
+                        }
+                    }
+                    unselectAction = new UnselectAction(allSelected);
+                    unselectAction.execute();
+                    actionList.add(unselectAction);
                 }
                 selectAction = new SelectAction(thisNote);
                 selectAction.execute();
@@ -285,7 +296,6 @@ public class NoteBar extends SoundObject{
         public void handle(MouseEvent event) {
             double x = event.getX();
             double y = event.getY();
-                        
             
             if (draggingLength) {
                 sObjStretch.stretch((int)(x - latestX));
@@ -327,6 +337,7 @@ public class NoteBar extends SoundObject{
                 draggingLength = false;
             }
              
+//            System.out.println(actionList);
             actionManager.putInUndoStack(actionList);
             event.consume();
         }
