@@ -87,6 +87,9 @@ public class MoveAction extends Action {
         }
     }
     
+    public boolean isMoveFailed(){
+        return lockMove;
+    }
     
     /**
      * Sets all rectangles and gestureBoxes to where they were before 

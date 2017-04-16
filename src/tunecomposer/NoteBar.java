@@ -341,8 +341,16 @@ public class NoteBar extends SoundObject{
             double x = event.getX();
             double y = event.getY();
             
+            //FIX MAGIC NUMBERS
+            if (x<0){x=0;}
+            if (y<0){y=0;}
+            if (x>2000){x=200;}
+            if (y>1280){y=1280;}
+            
             if (draggingLength) {
                 sObjStretch.stretch((int)(x - latestX));
+                latestX = x;
+                latestY = y;
             }
             else {
                 double translateX = (x - latestX);
@@ -350,8 +358,11 @@ public class NoteBar extends SoundObject{
                 sObjMove.move(translateX, translateY);
             }
             
-            latestX = x;
-            latestY = y;
+            if (!sObjMove.isMoveFailed()){
+                latestX = x;
+                latestY = y;
+            }
+            
             event.consume();
         }
     };
