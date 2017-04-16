@@ -286,10 +286,11 @@ public final class Gesture extends SoundObject{
      * @param soundObjectPane the pane to add the gestureBox to
      */
     public void group(Pane soundObjectPane) {
-        setHandlers();
+//        setHandlers();
         refreshVisualRectangle();
         soundObjectPane.getChildren().add(visualRectangle);
         for (SoundObject sObj : containedSoundObjects) {
+            sObj.setHandlers(handleGesturePressed, handleGestureDragged, handleGestureReleased);
             if (sObj.getTopGesture() == null) {
                 sObj.setTopGesture(this);
             }
