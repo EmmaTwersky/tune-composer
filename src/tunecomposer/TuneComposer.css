@@ -48,15 +48,15 @@
 .selectedNote{
     -fx-stroke-width: 3px; 
     -fx-stroke: Coral; 
-    -fx-arc-width: 9px;
-    -fx-arc-height: 9px;
+    -fx-arc-width: 7px;
+    -fx-arc-height: 7px;
 }
 
 .unselectedNote{
     -fx-stroke-width: 2px; 
     -fx-stroke: DimGrey; 
-    -fx-arc-width: 9px;
-    -fx-arc-height: 9px;
+    -fx-arc-width: 7px;
+    -fx-arc-height: 7px;
 }
 
 
