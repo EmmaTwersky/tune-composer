@@ -13,24 +13,21 @@ public class AddNoteAction extends Action {
      * NoteBar reference for the new NoteBar created.
      */
     private final NoteBar note;
-    
-    /**
-     * Pane reference to the pane that note is on.
-     */
-    private final Pane soundObjectPane;
 
     /**
      * Constructs an action event to add a note.
      * Creates a new NoteBar with the given x and y values.
      * Sets note and soundObjectPane and creates userData for the visualRectangle.
+     * 
      * @param x the x value for the top left corner of the note position
      * @param y the y value for the top left corner of the note position
      * @param actionManager the actionManager this note is a part of
      * @param soundObjectPane the SoundObjectPane this note is on
      */
     public AddNoteAction(double x, double y, ActionManager actionManager, Pane soundObjectPane) {
-        note = new NoteBar(x, y, actionManager, soundObjectPane);
         this.soundObjectPane = soundObjectPane;
+        
+        note = new NoteBar(x, y, actionManager, this.soundObjectPane);
         note.visualRectangle.setUserData(note);
     }
     
@@ -52,7 +49,7 @@ public class AddNoteAction extends Action {
     }
 
     /**
-     * Re-adds the note to the soundObjectPane. 
+     * Re-executes action.
      */
     @Override
     public void redo() {

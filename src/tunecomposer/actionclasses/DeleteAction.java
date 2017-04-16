@@ -8,17 +8,7 @@ import tunecomposer.SoundObject;
  * An action which stores deleting SoundObjects in the application.
  */
 public class DeleteAction extends Action {
-
-    /**
-     * Array of SoundObjects affected by the action.
-     */
-    ArrayList<SoundObject> affectedObjs = new ArrayList<>();
     
-    /**
-     * Pane reference to the pane that all affectedObjs are on.
-     */
-    private final Pane soundObjectPane;
-
     /**
      * Constructs an action event to delete SoundObjects.
      * Sets affectObjs and soundObjectPane.
@@ -51,7 +41,7 @@ public class DeleteAction extends Action {
     }
 
     /**
-    * Re-removes all affectedObjs from the soundObjectPane. 
+     * Re-executes action.
      */
     @Override
     public void redo() {

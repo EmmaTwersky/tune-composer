@@ -1,33 +1,25 @@
 package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
-import tunecomposer.Gesture;
 import tunecomposer.SoundObject;
 
 /**
- * This class creates the UnselectAction for the ActionManager.
- * 
- * @author EmmaTwersky
+ * An action which stores unselecting SoundObjects in the application.
  */
 public class UnselectAction extends Action {
     
     /**
-     * Array of SoundObjects to be affected by the action.
-     */
-    ArrayList<SoundObject> affectedObjs;
-    
-    /**
-     * Sets up Action to unselect a SoundObject. 
-     * Does not yet change the selection state of notes. 
+     * Constructs an action event to unselect SoundObjects.
+     * Clones the selectedObjs to be affectedObjs.
      * 
-     * @param selList selList must contain all SoundObjects to be affected
+     * @param selectedObjs all SoundObjects to be affected
      */
-    public UnselectAction(ArrayList<SoundObject> selList) {
-        affectedObjs = (ArrayList<SoundObject>) selList.clone();
+    public UnselectAction(ArrayList<SoundObject> selectedObjs) {
+        affectedObjs = (ArrayList<SoundObject>) selectedObjs.clone();
     }
         
     /**
-     * Unselects all of the rectangles contained within affectedObjs.
+     * Unselects all affectedObjs.
      */
     @Override
     public void execute() {
@@ -38,7 +30,7 @@ public class UnselectAction extends Action {
     }
     
     /**
-     * Undoes unselection on the affected notes.
+     * Selects all affectedObjs.
      */
     @Override
     public void undo() {
@@ -49,14 +41,20 @@ public class UnselectAction extends Action {
     }
     
     /**
-     * Redoes the unselection on the affected notes.
+     * Re-executes the action.
      */
     @Override
     public void redo() {
         execute();
     }
     
-    public void changeAffectedObjs(ArrayList<SoundObject> selList) {
-        affectedObjs = selList;
+    /**
+     * Updates the array of affectedObjs.
+     * Used in dragging events on the composition pane.
+     * 
+     * @param selectedObjs all SoundObjects to be affected
+     */
+    public void changeAffectedObjs(ArrayList<SoundObject> selectedObjs) {
+        this.affectedObjs = (ArrayList<SoundObject>) selectedObjs.clone();
     }
 }

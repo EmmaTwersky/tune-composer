@@ -14,31 +14,29 @@ public class GroupAction extends Action{
     /**
      * Gesture reference for the new Gesture created.
      */
-    Gesture gesture;
-
-    /**
-     * Pane reference to the pane that Gesture is on.
-     */
-    private final Pane soundObjectPane;
-
+    final Gesture gesture;
     
     /**
      * Constructs an action event to create a Gesture.
      * Creates a new Gesture with the given selectedObjs.
      * Sets gesture and soundObjectPane and creates userData for the visualRectangle.
-     * @param selectedObjs selList all SoundObjects to be affected
+     * 
+     * @param selectedObjs all SoundObjects to be affected
      * @param actionManager actionManager this event is within
      * @param soundObjectPane the SoundObjectPane these selectedObjs are on
      */
     public GroupAction(ArrayList<SoundObject> selectedObjs, 
-            ActionManager actionManager, Pane soundObjectPane) {             
-        gesture = new Gesture(selectedObjs, actionManager, soundObjectPane);
+            ActionManager actionManager, Pane soundObjectPane) {  
+        
+        this.affectedObjs = (ArrayList<SoundObject>) selectedObjs.clone();
+        gesture = new Gesture(affectedObjs, actionManager, soundObjectPane);
+        
         this.soundObjectPane = soundObjectPane;
         gesture.visualRectangle.setUserData(gesture);
     }
     
     /**
-     * Groups the given gesture.
+     * Groups the gesture.
      */
     @Override
     public void execute() {
@@ -58,7 +56,7 @@ public class GroupAction extends Action{
     }
     
     /**
-     * Regroup the gesture.
+     * Re-executes action.
      */
     @Override
     public void redo() {

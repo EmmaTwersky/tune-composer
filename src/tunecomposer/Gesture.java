@@ -8,7 +8,7 @@ import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.MoveAction;
 import tunecomposer.actionclasses.SelectAction;
-import tunecomposer.actionclasses.StretchAction;
+import tunecomposer.actionclasses.LengthChangeAction;
 import tunecomposer.actionclasses.UnselectAction;
 
 /**
@@ -35,7 +35,7 @@ public final class Gesture extends SoundObject{
     private ActionManager actionManager;
     ArrayList<Action> actionList;
     MoveAction sObjMove;
-    StretchAction sObjStretch;
+    LengthChangeAction sObjStretch;
     SelectAction selectAction;
     UnselectAction unselectAction;
     
@@ -47,7 +47,8 @@ public final class Gesture extends SoundObject{
         visualRectangle = new Rectangle();
         visualRectangle.setMouseTransparent(true);
         containedSoundObjects = new ArrayList();
-        
+//        containedSoundObjects = (ArrayList<SoundObject>) SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.clone();
+
         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
             containedSoundObjects.add(sObj);
         });
@@ -398,7 +399,7 @@ public final class Gesture extends SoundObject{
         });
         
         if (draggingLength) {
-            sObjStretch = new StretchAction(
+            sObjStretch = new LengthChangeAction(
                 SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                 (int) latestX);
         } 
