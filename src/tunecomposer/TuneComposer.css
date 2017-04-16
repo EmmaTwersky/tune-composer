@@ -5,60 +5,60 @@
 
 /* Sets colors for each of the eight instrument's text and note bars. */
 #Piano{
-    -fx-text-fill: FireBrick;
-    -fx-fill: FireBrick;
+    -fx-text-fill: lemonchiffon;
+    -fx-fill: lemonchiffon;
 }
 
 #Harpsichord{
-    -fx-text-fill: Tomato;
-    -fx-fill: Tomato;
+    -fx-text-fill: thistle;
+    -fx-fill: thistle;
 }
 
 #Marimba{
-    -fx-text-fill: Goldenrod;
-    -fx-fill: Goldenrod;
+    -fx-text-fill: lavenderblush;
+    -fx-fill: lavenderblush;
 }
 
 #Organ{
-    -fx-text-fill: MediumAquamarine;
-    -fx-fill: MediumAquamarine; 
+    -fx-text-fill: lavender;
+    -fx-fill: lavender; 
 }
 
 #Accordion{
-    -fx-text-fill: SeaGreen;
-    -fx-fill: SeaGreen;  
+    -fx-text-fill: azure;
+    -fx-fill: azure;  
 }
 
 #Guitar{
-    -fx-text-fill: CornflowerBlue;
-    -fx-fill: CornflowerBlue;
+    -fx-text-fill: honeydew;
+    -fx-fill: honeydew;
 }
 
 #Violin{
-    -fx-text-fill: Violet;
-    -fx-fill: Violet;
+    -fx-text-fill: peachpuff;
+    -fx-fill: peachpuff;
 }
 
 #FrenchHorn{
-    -fx-text-fill: MediumVioletRed;
-    -fx-fill: MediumVioletRed;
+    -fx-text-fill: mistyrose;
+    -fx-fill: mistyrose;
 }
 
 /* Sets style for the selected and unselected note attributes. */
 .selectedNote{
     -fx-stroke-width: 3px; 
-    -fx-stroke: Aqua; 
+    -fx-stroke: Coral; 
 }
 
 .unselectedNote{
     -fx-stroke-width: 2px; 
-    -fx-stroke: LightGrey; 
+    -fx-stroke: DimGrey; 
 }
 
 
 .selectedGesture{
     -fx-stroke-width: 2px;
-    -fx-stroke: Aqua;
+    -fx-stroke: Coral;
     -fx-fill: Transparent;
     -fx-stroke-dash-array: 1 5 4 2;
 }
@@ -71,8 +71,16 @@
 }
 
 /* Sets ID for staff and measure lines. */
+#compositionPane{
+    -fx-background-color: gainsboro;
+}
+
+#instrumentToolBar{
+    -fx-background-color: darkgrey;
+}
+
 #staffLine{
-    -fx-stroke: Grey;
+    -fx-stroke: DarkGrey;
 }
 
 #measureLine{
@@ -88,5 +96,5 @@
 #SELECTION_WINDOW{
     -fx-fill: None;
     -fx-stroke-width: 3px; 
-    -fx-stroke: Aqua; 
+    -fx-stroke: Coral; 
 }
