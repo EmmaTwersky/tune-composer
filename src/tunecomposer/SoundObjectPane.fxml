@@ -8,8 +8,8 @@
 <?import javafx.scene.layout.*?>
 
 <Pane 
-    fx:controller="tunecomposer.SoundObjectPaneController"
     fx:id = "soundObjectPane" 
+    fx:controller="tunecomposer.SoundObjectPaneController"
     stylesheets="@TuneComposer.css"
     xmlns:fx="http://javafx.com/fxml/1"> 
 </Pane>
