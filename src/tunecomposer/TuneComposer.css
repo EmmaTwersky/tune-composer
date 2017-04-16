@@ -48,11 +48,15 @@
 .selectedNote{
     -fx-stroke-width: 3px; 
     -fx-stroke: Coral; 
+    -fx-arc-width: 9px;
+    -fx-arc-height: 9px;
 }
 
 .unselectedNote{
     -fx-stroke-width: 2px; 
     -fx-stroke: DimGrey; 
+    -fx-arc-width: 9px;
+    -fx-arc-height: 9px;
 }
 
 
@@ -60,14 +64,18 @@
     -fx-stroke-width: 2px;
     -fx-stroke: Coral;
     -fx-fill: Transparent;
-    -fx-stroke-dash-array: 1 5 4 2;
+    -fx-stroke-dash-array: 5 8;
+    -fx-arc-width: 11px;
+    -fx-arc-height: 11px;
 }
 
 .unselectedGesture{
     -fx-stroke-width: 2px;
     -fx-stroke: DarkGrey;
     -fx-fill: Transparent;
-    -fx-stroke-dash-array: 1 5 4 2;
+    -fx-stroke-dash-array: 5 8;
+    -fx-arc-width: 11px;
+    -fx-arc-height: 11px;
 }
 
 /* Sets ID for staff and measure lines. */
@@ -97,4 +105,6 @@
     -fx-fill: None;
     -fx-stroke-width: 3px; 
     -fx-stroke: Coral; 
+    -fx-arc-width: 11px;
+    -fx-arc-height: 11px;
 }
