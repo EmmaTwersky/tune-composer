@@ -289,8 +289,6 @@ public class NoteBar extends SoundObject{
                         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                         latestX, latestY);
             }
-                
-            event.consume();
         }
     };
     
