@@ -23,7 +23,7 @@
     prefWidth = "150.0"
     orientation = "VERTICAL" 
     xmlns = "http://javafx.com/javafx/8" 
-    xmlns:fx = "http://javafx.com/fxml/1" >
+    xmlns:fx = "http://javafx.com/fxml/1"
     fx:id = "instrumentToolBar" >
     <items>
       <fx:define>
