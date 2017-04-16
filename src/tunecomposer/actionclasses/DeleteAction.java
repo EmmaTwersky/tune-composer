@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
@@ -10,63 +5,56 @@ import javafx.scene.layout.Pane;
 import tunecomposer.SoundObject;
 
 /**
- *
- * @author lazarcl
+ * An action which stores deleting SoundObjects in the application.
  */
 public class DeleteAction extends Action {
 
     /**
-     * Array of SoundObjects to be affected by the action.
+     * Array of SoundObjects affected by the action.
      */
     ArrayList<SoundObject> affectedObjs = new ArrayList<>();
     
     /**
-     * Pane that all SoundObject visuals live within.
+     * Pane reference to the pane that all affectedObjs are on.
      */
     private final Pane soundObjectPane;
 
-    
     /**
-     * Sets up object for delete. Action will not be executed, execute() must be
-     * called later to perform the action. Passed List of rectangles can be a 
-     * combination of gesture boxes and note rectangles.
-     * @param selList
-     *          selList must contain all SoundObjects to be affected, including 
-     *          NoteBars and GestureBoxes. Action will not look for SoundObjects 
-     *          that should be selected by relation to a selected Gesture.
-     * @param _pane Reference to the SoundObject pane where sound visuals live.
+     * Constructs an action event to delete SoundObjects.
+     * Sets affectObjs and soundObjectPane.
+     * @param selectedObjs selList all SoundObjects to be affected
+     * @param soundObjectPane the SoundObjectPane these selectedObjs are on
      */
-    public DeleteAction(ArrayList<SoundObject> selList, Pane _pane) {
-        affectedObjs = (ArrayList<SoundObject>) selList.clone();
-        soundObjectPane = _pane;
+    public DeleteAction(ArrayList<SoundObject> selectedObjs, Pane soundObjectPane) {
+        affectedObjs = (ArrayList<SoundObject>) selectedObjs.clone();
+        this.soundObjectPane = soundObjectPane;
     }
     
     /**
-     * Removes all rectangles from their respective notePane or gestPane. Sets
-     * execute to true so undo() can be performed. 
+     * Removes all affectedObjs from the soundObjectPane.
      */
     @Override
     public void execute() { 
-        for (SoundObject sObj: affectedObjs) {
+        affectedObjs.forEach((sObj) -> {
             sObj.removeFromPane(soundObjectPane);
-        }
+        });
     }
     
     /**
-     * Adds all rectangles back to their original panes. Holds a reference of 
-     * all rectangles for redo(). Cannot be 
+     * Adds all affectedObjs to the soundObjectPane.
      */
     @Override
     public void undo() {
-        for (SoundObject sObj : affectedObjs) {
+        affectedObjs.forEach((sObj) -> {
             sObj.addToPane(soundObjectPane);
-        }
+        });
     }
 
-    
+    /**
+    * Re-removes all affectedObjs from the soundObjectPane. 
+     */
     @Override
     public void redo() {
         execute();
     }
-    
 }
