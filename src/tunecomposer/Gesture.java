@@ -350,8 +350,6 @@ public final class Gesture extends SoundObject{
                 SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                 latestX, latestY);
         }
-        
-        event.consume();
     };
     
     /**
