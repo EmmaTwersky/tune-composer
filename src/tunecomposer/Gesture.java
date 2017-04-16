@@ -157,7 +157,7 @@ public final class Gesture extends SoundObject{
      * @param y number of vertical pixels to shift notes
      */
     @Override
-    public void move(int x, int y){
+    public void move(double x, double y){
         containedSoundObjects.forEach((note) -> {
             note.move(x, y);
         });
@@ -264,13 +264,13 @@ public final class Gesture extends SoundObject{
      */
     EventHandler<MouseEvent> handleGesturePressed = (MouseEvent event) -> {
         CompositionPaneController.tunePlayerObj.stop();
-        initialX = (int) event.getX();
-        initialY = (int) event.getY();
+        latestX =  event.getX();
+        latestY =  event.getY();
         
         containedSoundObjects.forEach((sObj) -> {
-            int editLengthMax = (int) (sObj.visualRectangle.getX() + sObj.visualRectangle.getWidth());
-            int editLengthMin = editLengthMax - clickToEditLength;
-            if ((editLengthMin <= initialX) && (initialX <= editLengthMax)) {
+            double editLengthMax =  (sObj.visualRectangle.getX() + sObj.visualRectangle.getWidth());
+            double editLengthMin = editLengthMax - clickToEditLength;
+            if ((editLengthMin <= latestX) && (latestX <= editLengthMax)) {
                 draggingLength = true;
             }
         });
@@ -287,8 +287,8 @@ public final class Gesture extends SoundObject{
      * @param event the mouse click event
      */
     EventHandler<MouseEvent> handleGestureDragged = (MouseEvent event) -> {
-        int x = (int) event.getX();
-        int y = (int) event.getY();
+        double x = event.getX();
+        double y = event.getY();
         
         if (!selected) {
 //            SoundObjectPaneController.unselectAllSoundObjects();
@@ -297,19 +297,19 @@ public final class Gesture extends SoundObject{
         
         if (draggingLength) {
             SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
-                sObj.changeLength(x - initialX);
+                sObj.changeLength((int)(x - latestX));
             });
         }
         else {
-            int translateX = (x - initialX);
-            int translateY = (y - initialY);
+            double translateX = (x - latestX);
+            double translateY = (y - latestY);
             SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
                 sObj.move(translateX, translateY);
             });
         }
         
-        initialX = x;
-        initialY = y;
+        latestX = x;
+        latestY = y;
         
         event.consume();
     };

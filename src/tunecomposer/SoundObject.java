@@ -17,6 +17,8 @@ public abstract class SoundObject {
     public ArrayList<SoundObject> containedSoundObjects;
     public Pane pane;
     
+    public final int HEIGHT = 10;
+    
     /**
     * Sets given values for SoundObject dragging when clicked.
     */
@@ -31,8 +33,8 @@ public abstract class SoundObject {
     /**
      * Creates instances for the initial pressed values of the mouse for events.
      */
-    public int initialX;
-    public int initialY;
+    public double latestX;
+    public double latestY;
 
     /**
      * Creates boolean to ensure dragging to change duration is a separate instance.
@@ -52,7 +54,7 @@ public abstract class SoundObject {
      * @param x visualRectangle's new x coordinate
      * @param y visualRectangle's new y coordinate
     */
-    public abstract void move(int x, int y);
+    public abstract void move(double x, double y);
     
     /**
     * Creates abstract method to change the SoundObject's length.

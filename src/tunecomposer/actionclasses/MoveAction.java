@@ -6,6 +6,7 @@
 package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
+import tunecomposer.NoteBar;
 import tunecomposer.SoundObject;
 
 /**
@@ -15,21 +16,24 @@ import tunecomposer.SoundObject;
 public class MoveAction extends Action {
 
     /**
-     * Last known mouse coords to determine move distance in move(...) function.
-     * Updated after every move() call. 
-     * Initially set by the construction of this.
+     * The final mouse coordinates of the movement.
+     * Set after the mouse is released.
+     * 
      */
-    private int lastX;
-    private int lastY;
+    private double lastX;
+    private double lastY;
     
     /**
      * Mouse position when first pressed. Used to undo.
      */
-    private int startX;
-    private int startY;
+    private final double startX;
+    private final double startY;
     
+    /**
+     * Listed of sound objects that were selected when the action began.
+     */
     ArrayList<SoundObject> affectedObjs;
-    boolean executed;
+    
 
     /**
      * Sets up object to allow sounds to be moved. selList must contain all
@@ -43,12 +47,10 @@ public class MoveAction extends Action {
      * @param x initial x location of mouse click.     
      * @param y initial y location of mouse click.
      */
-    public MoveAction(ArrayList<SoundObject> selList, int x, int y) {
+    public MoveAction(ArrayList<SoundObject> selList, double x, double y) {
         
         startX = x;
         startY = y;
-        lastX = x;
-        lastY = y;
         
         affectedObjs = (ArrayList<SoundObject>) selList.clone();
     }
@@ -62,7 +64,7 @@ public class MoveAction extends Action {
      * @param mouseX x coord of mouse
      * @param mouseY y coord of mouse
      */
-    public void move(int mouseX, int mouseY) {
+    public void move(double mouseX, double mouseY) {
         
         affectedObjs.forEach((sObj) -> {
             sObj.move(mouseX, mouseY);
@@ -77,34 +79,42 @@ public class MoveAction extends Action {
     @Override
     public void undo() {
         affectedObjs.forEach((sObj)->{
-            sObj.move(startX-lastX, startY-lastY);
+            sObj.move(startX-lastX, startY-lastY+sObj.HEIGHT);
             sObj.snapInPlace();
         });
     }
     
-    public void setLastCoords(int x, int y){
+    
+    /**
+     * Sets lastX and lastY to the latest drag location.
+     * This allows "undo" to calculate the total move distance.
+     * @param x
+     * @param y
+    */
+    public void setLastCoords(double x, double y){
         lastX = x;
         lastY = y;
     }
 
     /**
-     * Sets executed to true to set this as a completed action. After calling,
-     * undo and redo will be possible. Called by redo, and 
-     * can also be used as redo.
+     * Moves and sets into place all sound objects.
+     * execute is the opposite of undo is called by redo.
      */
     @Override
     public void execute() {
-        
-        executed = true;
-        
-    }
-    
-    @Override
-    public void redo() {
         affectedObjs.forEach((sObj)->{
             sObj.move(lastX-startX, lastY-startY);
             sObj.snapInPlace();
         });
+    }
+    
+        /**
+     * Sets all rectangles and gestureBoxes to where they were before 
+     * the MoveAction was undone. calls execute.
+    */
+    @Override
+    public void redo() {
+        execute();
     }
     
 }
