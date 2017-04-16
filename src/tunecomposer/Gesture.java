@@ -413,18 +413,6 @@ public final class Gesture extends SoundObject{
             sObjMove.move(translateX, translateY);
         }
         
-//        if (draggingLength) {
-//            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
-//                sObj.changeLength((int)(x - latestX));
-//            });
-//        }
-//        else {
-//            double translateX = (x - latestX);
-//            double translateY = (y - latestY);
-//            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
-//                sObj.move(translateX, translateY);
-//            });
-//        }
         
         latestX = x;
         latestY = y;

@@ -124,6 +124,10 @@ public class CompositionPaneController implements Initializable {
                 SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.add(sObj);
             }
             wasSelected.add(sObj);
+            Gesture topGest = sObj.getTopGesture();
+            if (topGest != null) {
+                wasSelected.addAll(topGest.getAllChildren());
+            }
         });
     };
     
@@ -162,11 +166,11 @@ public class CompositionPaneController implements Initializable {
                 }
             }
         }
-          
+        
         selectAction.changeAffectedObjs(selectObjs); 
         unselectAction.changeAffectedObjs(unselectObjs); 
-        selectAction.execute();
         unselectAction.execute();
+        selectAction.execute();
         SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane);
     };
     
