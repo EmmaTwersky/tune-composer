@@ -6,7 +6,6 @@
 package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
-import tunecomposer.NoteBar;
 import tunecomposer.SoundObject;
 
 /**
@@ -23,6 +22,12 @@ public class MoveAction extends Action {
     private double lastX;
     private double lastY;
     
+    /**
+     * The boolean is true if the move threatens to place sound object(s)
+     * past the pane's borders.
+     * Used in move.
+     */
+    private boolean lockMove;
     /**
      * Mouse position when first pressed. Used to undo.
      */
@@ -66,9 +71,20 @@ public class MoveAction extends Action {
      */
     public void move(double mouseX, double mouseY) {
         
+        lockMove = false;
+        
         affectedObjs.forEach((sObj) -> {
-            sObj.move(mouseX, mouseY);
+            if (sObj.isOnEdge(mouseX,mouseY)){
+                lockMove = true;
+            
+            }
         });
+        
+        if (!lockMove){
+            affectedObjs.forEach((sObj) -> {
+                sObj.move(mouseX, mouseY);
+            });
+        }
     }
     
     

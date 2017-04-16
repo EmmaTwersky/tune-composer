@@ -185,6 +185,23 @@ public final class Gesture extends SoundObject{
     }
     
     /**
+     * Checks if moving gesture will push it past the pane's borders.
+     * 
+     * @param x the "proposed" x move increment.
+     * @param y the "proposed" y move increment.
+     * @return onEdge is true if the move is illegal and false if its legal.
+     */
+    @Override
+    public boolean isOnEdge(double x, double y){
+        for (SoundObject item:containedSoundObjects) {
+            if (item.isOnEdge(x, y)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
      * Resizes all notes of gesture by given increment. 
      * Also updates the size of all gestureBoxes.
      * 
