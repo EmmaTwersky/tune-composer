@@ -17,113 +17,122 @@
 <?import javafx.scene.layout.Pane?>
 
 <ToolBar 
-    stylesheets = "@TuneComposer.css" 
-    xmlns = "http://javafx.com/javafx/8" 
-    xmlns:fx = "http://javafx.com/fxml/1" 
     fx:controller = "tunecomposer.InstrumentToolBarController"
-    orientation = "VERTICAL" 
+    styleClass = "instrumentToolBar"
+    stylesheets = "@TuneComposer.css" 
     prefWidth = "150.0"
+    orientation = "VERTICAL" 
+    xmlns = "http://javafx.com/javafx/8" 
+    xmlns:fx = "http://javafx.com/fxml/1" >
     fx:id = "instrumentToolBar" >
     <items>
       <fx:define>
           <ToggleGroup
-                fx:id = "instrumentSelection"/>
+            fx:id = "instrumentSelection"/>
       </fx:define>
       <RadioButton 
             fx:id = "Piano" 
-            onAction = "#handleInstrumentMenuAction" 
-            mnemonicParsing = "false" 
-            styleClass = "Piano" 
-            text = "Piano"
             toggleGroup = "$instrumentSelection"
-            userData = "0"
-            selected = "true">
-            <padding>
-               <Insets top = "20" left = "15"/>
+            onAction = "#handleInstrumentMenuAction" 
+            text = "Piano"
+            styleClass = "Piano" 
+            selected = "true"
+            userData = "0">
+          <padding>
+               <Insets 
+                   top = "20" 
+                   left = "15"/>
             </padding>
       </RadioButton>
       <RadioButton 
             fx:id = "Harpsichord" 
+            toggleGroup = "$instrumentSelection"
             onAction = "#handleInstrumentMenuAction"  
-            mnemonicParsing = "false" 
             styleClass = "Harpsichord" 
             text = "Harpsichord"
-            toggleGroup = "$instrumentSelection"
-            userData = "7">
+            userData = "7" >
             <padding>
-                <Insets top = "30" left = "15"/>
+                <Insets 
+                    top = "30" 
+                    left = "15"/>
             </padding>
       </RadioButton>
       <RadioButton 
             fx:id = "Marimba" 
-            onAction = "#handleInstrumentMenuAction" 
-            mnemonicParsing = "false" 
-            styleClass = "Marimba" 
-            text = "Marimba"
             toggleGroup = "$instrumentSelection"
-            userData = "13">
+            onAction = "#handleInstrumentMenuAction" 
+            text = "Marimba"
+            styleClass = "Marimba" 
+            userData = "13" >
             <padding>
-               <Insets top = "30" left = "15"/>
+               <Insets 
+                   top = "30" 
+                   left = "15"/>
             </padding>
       </RadioButton>
       <RadioButton 
             fx:id = "Organ" 
-            onAction = "#handleInstrumentMenuAction" 
-            mnemonicParsing = "false" 
-            styleClass = "Organ" 
-            text = "Organ"
             toggleGroup = "$instrumentSelection"
-            userData = "17">
+            onAction = "#handleInstrumentMenuAction" 
+            text = "Organ"
+            styleClass = "Organ" 
+            userData = "17" >
             <padding>
-               <Insets top = "30" left = "15"/>
+               <Insets 
+                   top = "30" 
+                   left = "15"/>
             </padding>
       </RadioButton>
       <RadioButton 
             fx:id = "Accordion" 
             onAction = "#handleInstrumentMenuAction"  
-            mnemonicParsing = "false" 
-            styleClass = "Accordion" 
             text = "Accordion"
+            styleClass = "Accordion" 
             toggleGroup = "$instrumentSelection"
-            userData = "22">
+            userData = "22" >
             <padding>
-               <Insets top = "30" left = "15"/>
+               <Insets 
+                   top = "30" 
+                   left = "15"/>
             </padding>
       </RadioButton>
       <RadioButton 
             fx:id = "Guitar" 
-            onAction = "#handleInstrumentMenuAction" 
-            mnemonicParsing = "false" 
-            styleClass = "Guitar" 
-            text = "Guitar"
             toggleGroup = "$instrumentSelection"
-            userData = "25">
+            onAction = "#handleInstrumentMenuAction" 
+            text = "Guitar"
+            styleClass = "Guitar" 
+            userData = "25" >
             <padding>
-               <Insets top = "30" left = "15"/>
+               <Insets 
+                   top = "30" 
+                   left = "15"/>
             </padding>
       </RadioButton>
       <RadioButton 
             fx:id = "Violin" 
-            onAction = "#handleInstrumentMenuAction" 
-            mnemonicParsing = "false" 
-            styleClass = "Violin" 
-            text = "Violin"
             toggleGroup = "$instrumentSelection"
-            userData = "41">
+            onAction = "#handleInstrumentMenuAction" 
+            text = "Violin"
+            styleClass = "Violin" 
+            userData = "41" >
             <padding>
-               <Insets top = "30" left = "15"/>
+               <Insets 
+                   top = "30" 
+                   left = "15"/>
             </padding>
       </RadioButton>
       <RadioButton 
             fx:id = "FrenchHorn" 
-            onAction = "#handleInstrumentMenuAction"  
-            mnemonicParsing = "false" 
-            styleClass = "FrenchHorn" 
-            text = "French Horn"
             toggleGroup = "$instrumentSelection"
-            userData = "61">
+            onAction = "#handleInstrumentMenuAction"  
+            text = "French Horn"
+            styleClass = "FrenchHorn" 
+            userData = "61" >
             <padding>
-               <Insets top = "30" left = "15"/>
+               <Insets 
+                   top = "30" 
+                   left = "15"/>
             </padding>
       </RadioButton>
     </items>

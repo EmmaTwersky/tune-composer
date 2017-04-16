@@ -95,6 +95,14 @@ public abstract class SoundObject {
     */
     public abstract void removeFromPane(Pane soundObjectPane);
 
+    /**
+     * Checks if moving the soundObject will push it past the pane's borders.
+     * 
+     * @param x the "proposed" x move increment.
+     * @param y the "proposed" y move increment.
+     * @return onEdge is true if the move is illegal and false if its legal.
+     */
+    public abstract boolean isOnEdge(double x, double y);
     
     /**
     * Adds the SoundObject's MidiEvent to the player.
@@ -116,6 +124,15 @@ public abstract class SoundObject {
      */
     public abstract void setHandlers(EventHandler press, EventHandler drag, EventHandler release);
     
+    
+    /**
+     * Method for recursively grabbing all children of a SoundObject. 
+     * Returns an ArrayList of all children below the object not including self.
+     * @return list of all, as in every level below, the current SoundObject.
+     */
+    public abstract ArrayList<SoundObject> getAllChildren();
+    
+
     /**
      * Sets this.topGesture to the given Gesture object. 
      * Give null if this gesture is no longer a child of another parent.
@@ -135,5 +152,28 @@ public abstract class SoundObject {
         return topGesture;
     }
 
+    
+    /**
+     * Selects the entire gesture that the method is called from.
+     * If SoundObject not in a gesture, then does nothing.
+     */
+    public void selectTopGesture() {
+        Gesture gest = this.getTopGesture();
+        if (gest != null) {
+            gest.select();
+        }        
+    }
+    
+    /**
+     * Unselects the entire gesture that the method is called from.
+     * If SoundObject not in a gesture, then does nothing.
+     */
+    public void unselectTopGesture() {
+        Gesture gest = this.getTopGesture();
+        if (gest != null) {
+            gest.unselect();
+        }        
+    }    
+       
     
 }

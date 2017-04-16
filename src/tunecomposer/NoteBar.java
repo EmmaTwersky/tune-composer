@@ -137,11 +137,40 @@ public class NoteBar extends SoundObject{
      * @param y the increment to change current y value by
      */
     @Override
-    public void move(double x, double y){ 
-        double translateX = x + visualRectangle.getX();
-        double translateY = y + visualRectangle.getY();
-        visualRectangle.setX(translateX);
-        visualRectangle.setY(translateY);
+    public void move(double x, double y){
+        double newXLoc = x + visualRectangle.getX();
+        double newYLoc = y + visualRectangle.getY();
+        
+        visualRectangle.setX(newXLoc);
+        visualRectangle.setY(newYLoc);
+    }
+    
+    /**
+     * Checks if moving note will push it past the pane's borders.
+     * 
+     * @param xInc the "proposed" x move increment.
+     * @param yInc the "proposed" y move increment.
+     * @return onEdge is true if the move is illegal and false if its legal.
+     */
+    @Override
+    public boolean isOnEdge(double xInc, double yInc){
+        
+        boolean onEdge = false;
+        
+        double x = visualRectangle.getX()+xInc;
+        double y = visualRectangle.getY()+yInc;
+        
+        int minX = CompositionPaneController.PANEXMIN;
+        int minY = CompositionPaneController.PANEYMIN;
+        int maxX = CompositionPaneController.PANEXMAX;
+        int maxY = CompositionPaneController.PANEYMAX;
+        
+        
+        if ((x < minX || x+duration > maxX) ||
+            (y < minY || y+HEIGHT > maxY)){
+            onEdge = true;
+        }
+        return onEdge;
     }
     
     /**
@@ -207,6 +236,19 @@ public class NoteBar extends SoundObject{
     public void removeFromPane(Pane soundObjectPane){
         soundObjectPane.getChildren().remove(visualRectangle);
     }
+    
+    /**
+     * Method for recursively grabbing all children of a SoundObject. 
+     * Returns an ArrayList containing only this note.
+     * @return an ArrayList containing only this note.
+     */
+    @Override
+    public ArrayList<SoundObject> getAllChildren() {
+        ArrayList<SoundObject> array = new ArrayList();
+        array.add(this);
+        return array;
+    }
+    
     
     /**
      * 
@@ -306,8 +348,16 @@ public class NoteBar extends SoundObject{
             double x = event.getX();
             double y = event.getY();
             
+            //FIX MAGIC NUMBERS
+            if (x<0){x=0;}
+            if (y<0){y=0;}
+            if (x>2000){x=200;}
+            if (y>1280){y=1280;}
+            
             if (draggingLength) {
                 sObjStretch.stretch((int)(x - latestX));
+                latestX = x;
+                latestY = y;
             }
             else {
                 double translateX = (x - latestX);
@@ -315,8 +365,11 @@ public class NoteBar extends SoundObject{
                 sObjMove.move(translateX, translateY);
             }
             
-            latestX = x;
-            latestY = y;
+            if (!sObjMove.isMoveFailed()){
+                latestX = x;
+                latestY = y;
+            }
+            
             event.consume();
         }
     };
@@ -345,8 +398,9 @@ public class NoteBar extends SoundObject{
                 }
                 draggingLength = false;
             }
-             
-            actionManager.putInUndoStack(actionList);
+            if (!actionList.isEmpty()) {
+                actionManager.putInUndoStack(actionList);
+            }
             event.consume();
         }
     };    

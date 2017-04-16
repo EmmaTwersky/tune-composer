@@ -44,6 +44,11 @@ public class CompositionPaneController implements Initializable {
      */
     public ActionManager actionManager;
     
+    public static int PANEXMIN = 0;
+    public static int PANEYMIN = 0;
+    public static int PANEXMAX = 2000;
+    public static int PANEYMAX = 1280;
+    
     /**
      * Initialize FXML and sets SoundObjectPaneController to reference
      * the same ActionManager object.
@@ -124,6 +129,10 @@ public class CompositionPaneController implements Initializable {
                 SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.add(sObj);
             }
             wasSelected.add(sObj);
+            Gesture topGest = sObj.getTopGesture();
+            if (topGest != null) {
+                wasSelected.addAll(topGest.getAllChildren());
+            }
         });
     };
     
@@ -162,11 +171,11 @@ public class CompositionPaneController implements Initializable {
                 }
             }
         }
-          
+        
         selectAction.changeAffectedObjs(selectObjs); 
         unselectAction.changeAffectedObjs(unselectObjs); 
-        selectAction.execute();
         unselectAction.execute();
+        selectAction.execute();
         SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane);
     };
     

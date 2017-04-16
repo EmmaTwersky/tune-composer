@@ -185,6 +185,23 @@ public final class Gesture extends SoundObject{
     }
     
     /**
+     * Checks if moving gesture will push it past the pane's borders.
+     * 
+     * @param x the "proposed" x move increment.
+     * @param y the "proposed" y move increment.
+     * @return onEdge is true if the move is illegal and false if its legal.
+     */
+    @Override
+    public boolean isOnEdge(double x, double y){
+        for (SoundObject item:containedSoundObjects) {
+            if (item.isOnEdge(x, y)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
      * Resizes all notes of gesture by given increment. 
      * Also updates the size of all gestureBoxes.
      * 
@@ -265,6 +282,23 @@ public final class Gesture extends SoundObject{
         soundObjectPane.getChildren().remove(visualRectangle);
         //TODO need a method to reset handlers of children to what they would be without this group
     }
+    
+    
+    /**
+     * Method for recursively grabbing all children of this Gesture. 
+     * Returns an ArrayList of all children below this object not including self.
+     * @return list of all, as in every level below, the current Gesture.
+     *          returns empty ArrayList if no children.
+     */
+    @Override
+    public ArrayList<SoundObject> getAllChildren() {
+        ArrayList<SoundObject> allChildren = new ArrayList();
+        for (SoundObject sObj : containedSoundObjects) {
+            allChildren.addAll(sObj.getAllChildren());
+        }
+        return allChildren;
+    }
+
     
     /**
      * Adds the gesture to the MidiPlayer. 
@@ -396,18 +430,6 @@ public final class Gesture extends SoundObject{
             sObjMove.move(translateX, translateY);
         }
         
-//        if (draggingLength) {
-//            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
-//                sObj.changeLength((int)(x - latestX));
-//            });
-//        }
-//        else {
-//            double translateX = (x - latestX);
-//            double translateY = (y - latestY);
-//            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
-//                sObj.move(translateX, translateY);
-//            });
-//        }
         
         latestX = x;
         latestY = y;

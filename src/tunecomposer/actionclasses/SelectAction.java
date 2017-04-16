@@ -1,6 +1,7 @@
 package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
+import tunecomposer.Gesture;
 import tunecomposer.SoundObject;
 
 /**
@@ -14,7 +15,7 @@ public class SelectAction extends Action {
      * Array of SoundObjects to be affected by the action.
      */
     ArrayList<SoundObject> affectedObjs;
-
+    
     /**
      * Sets up Action to select a SoundObject. 
      * Does not yet change the selection state of notes. 
@@ -32,6 +33,7 @@ public class SelectAction extends Action {
     public void execute() {
         for (SoundObject sObj : affectedObjs) {
             sObj.select();
+            sObj.selectTopGesture();
         }
     }
     
@@ -42,6 +44,7 @@ public class SelectAction extends Action {
     public void undo() {
         for (SoundObject sObj : affectedObjs) {
             sObj.unselect();
+            sObj.unselectTopGesture();
         }
     }
     
