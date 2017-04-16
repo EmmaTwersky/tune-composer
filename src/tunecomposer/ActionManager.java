@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Stack;
 import tunecomposer.actionclasses.Action;
 
+/**
+ * Manages the undo and redo stacks that all "undo-able" actions are pushed to.
+ * @author lazarcl
+ */
 public class ActionManager {
     
     Stack<ArrayList<Action>> undoStack;
