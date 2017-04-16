@@ -221,6 +221,15 @@ public final class Gesture extends SoundObject{
         });
     }
     
+
+    @Override
+    public void addToPane(Pane soundObjectPane) {
+        soundObjectPane.getChildren().add(visualRectangle);
+        for (SoundObject sObj : containedSoundObjects) {
+            sObj.addToPane(soundObjectPane);
+        }
+    }
+   
     /**
      * Adds the gestureBox to the given pane and sets all containedItems' 
      * handlers to this Gesture's. 
@@ -228,8 +237,7 @@ public final class Gesture extends SoundObject{
      * Does not handle exceptions if Object can not be removed from given pane.
      * @param soundObjectPane the pane to add the gestureBox to
      */
-    @Override
-    public void addToPane(Pane soundObjectPane) {
+    public void group(Pane soundObjectPane) {
         setHandlers();
         refreshVisualRectangle();
         soundObjectPane.getChildren().add(visualRectangle);

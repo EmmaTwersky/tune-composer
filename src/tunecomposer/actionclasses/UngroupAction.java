@@ -58,7 +58,7 @@ public class UngroupAction extends Action {
      */
     @Override
     public void undo() {
-        gesture.addToPane(soundObjectPane);
+        gesture.group(soundObjectPane);
     }
 
     /**
