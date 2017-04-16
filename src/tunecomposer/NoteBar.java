@@ -2,6 +2,7 @@ package tunecomposer;
 
 import java.util.ArrayList;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -30,18 +31,16 @@ public class NoteBar extends SoundObject{
     public int pitch;
     public int startTick;
     public int duration;
-    
+
+    /**
+     * ActionManager instance that holds the undo and redo stacks.
+     */
+    private ActionManager actionManager;
+    ArrayList<Action> actionList;
     MoveAction sObjMove;
     StretchAction sObjStretch;
     SelectAction selectAction;
     UnselectAction unselectAction;
-
-    /**
-     * actionManager instance that holds the undo and redo stacks this note 
-     * lives within. 
-     */
-    private ActionManager actionManager;
-    ArrayList<Action> actionList;
     
     /**
     * Creates fixed height and set ranges for pitch. 
@@ -242,7 +241,17 @@ public class NoteBar extends SoundObject{
             
             if (!selected) {
                 if(!event.isControlDown()){
-                    SoundObjectPaneController.unselectAllSoundObjects(pane);
+                    ArrayList<SoundObject> allSelected = new ArrayList();
+                    for (Node n : pane.getChildren()) {
+                        Rectangle r = (Rectangle) n;
+                        SoundObject sObj = (SoundObject) r.getUserData();
+                        if (sObj.isSelected()) {
+                            allSelected.add(sObj);
+                        }
+                    }
+                    unselectAction = new UnselectAction(allSelected);
+                    unselectAction.execute();
+                    actionList.add(unselectAction);
                 }
                 selectAction = new SelectAction(thisNote);
                 selectAction.execute();
@@ -262,7 +271,7 @@ public class NoteBar extends SoundObject{
                         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                         (int)latestX);
             }
-            else{
+            else {
                 sObjMove = new MoveAction(
                         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                         latestX, latestY);
@@ -285,7 +294,6 @@ public class NoteBar extends SoundObject{
         public void handle(MouseEvent event) {
             double x = event.getX();
             double y = event.getY();
-                        
             
             if (draggingLength) {
                 sObjStretch.stretch((int)(x - latestX));

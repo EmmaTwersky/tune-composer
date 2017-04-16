@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.DeleteAction;
 import tunecomposer.actionclasses.SelectAction;
 
 /**
@@ -112,9 +113,19 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleDeleteMenuItemAction(ActionEvent event) {
-        for (SoundObject sObj: SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
-            sObj.removeFromPane(compositionPaneController.soundObjectPane);
-        }
+        
+        DeleteAction deleter;
+        deleter = new DeleteAction(SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
+                                  compositionPaneController.soundObjectPane);
+        
+        deleter.execute();
+        ArrayList<Action> deleteActionList = new ArrayList();
+        deleteActionList.add(deleter);
+        actionManager.putInUndoStack(deleteActionList);
+        
+//        for (SoundObject sObj: SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
+//            sObj.removeFromPane(compositionPaneController.soundObjectPane);
+//        }
         SoundObjectPaneController.updateSelectedSoundObjectArray(compositionPaneController.soundObjectPane);
     }
     

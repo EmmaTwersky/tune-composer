@@ -66,7 +66,7 @@ public class DeleteAction extends Action {
     
     @Override
     public void redo() {
-        
+        execute();
     }
     
 }

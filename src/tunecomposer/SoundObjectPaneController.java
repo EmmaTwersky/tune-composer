@@ -73,7 +73,7 @@ public class SoundObjectPaneController {
         
     public void group() {
         GroupAction groupAction = new GroupAction(SELECTED_SOUNDOBJECT_ARRAY, 
-                                          soundObjectPane);
+                actionManager, soundObjectPane);
         ArrayList<Action> actionArray = new ArrayList();
         actionArray.add(groupAction);
         actionManager.execute(actionArray);
