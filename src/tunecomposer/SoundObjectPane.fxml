@@ -9,7 +9,7 @@
 
 <Pane 
     fx:id = "soundObjectPane" 
-    fx:controller="tunecomposer.SoundObjectPaneController"
-    stylesheets="@TuneComposer.css"
-    xmlns:fx="http://javafx.com/fxml/1"> 
+    fx:controller = "tunecomposer.SoundObjectPaneController"
+    stylesheets = "@TuneComposer.css"
+    xmlns:fx = "http://javafx.com/fxml/1" > 
 </Pane>

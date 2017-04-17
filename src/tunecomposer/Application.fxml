@@ -7,17 +7,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane 
+<BorderPane
     prefHeight = "600.0" 
     prefWidth = "900.0" 
+    fx:controller = "tunecomposer.ApplicationController"
     stylesheets = "@TuneComposer.css" 
-    xmlns = "http://javafx.com/javafx/8.0.111" 
-    xmlns:fx = "http://javafx.com/fxml/1"
-    fx:controller = "tunecomposer.ApplicationController">
+    xmlns:fx = "http://javafx.com/fxml/1" >
     <top>
         <MenuBar>
             <menus>
-                <Menu text = "File">
+                <Menu text = "File" >
                     <items>
                         <MenuItem 
                             text = "Exit" 

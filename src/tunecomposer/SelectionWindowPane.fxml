@@ -8,17 +8,17 @@
 <?import javafx.scene.shape.*?>
 
 <Pane 
-    fx:id="selectionWindowPane" 
-    fx:controller="tunecomposer.SelectionWindowPaneController"
-    stylesheets="@TuneComposer.css"
-    prefHeight="1280.0" 
-    prefWidth="2000.0" 
-    xmlns:fx="http://javafx.com/fxml/1">
+    fx:id = "selectionWindowPane" 
+    prefHeight = "1280.0" 
+    prefWidth = "2000.0" 
+    fx:controller = "tunecomposer.SelectionWindowPaneController"
+    stylesheets = "@TuneComposer.css" 
+    xmlns:fx = "http://javafx.com/fxml/1" >
     <Rectangle 
         fx:id = "SELECTION_WINDOW" 
         x = "0" 
         y = "0" 
         width = "0" 
-        height = "0"> 
+        height = "0" > 
     </Rectangle>
 </Pane>
