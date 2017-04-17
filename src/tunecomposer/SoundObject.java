@@ -175,5 +175,19 @@ public abstract class SoundObject {
         }        
     }    
        
-    
+    /**
+     * Returns ArrayList of all SoundObjects that share a gesture with caller.
+     * If no related SoundObjects, then returns empty ArrayList.
+     * @return ArrayList of all related SoundObjects
+     */
+    public ArrayList<SoundObject> getAllRelated() {
+        ArrayList<SoundObject> relatedList = new ArrayList();
+        Gesture topGest = (Gesture) this.getTopGesture();
+        
+        if (topGest == null) {
+            return relatedList;
+        }
+        
+        return topGest.getAllChildren();
+    }
 }

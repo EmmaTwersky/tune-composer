@@ -289,9 +289,9 @@ public class CompositionPaneController implements Initializable {
         //if was initially selected, don't keep in selectAction 
         for (SoundObject sObj : wasSelected) {
             selectObjs.remove(sObj);
-        }
+        } 
         
-        selectAction.changeAffectedObjs(selectObjs);
+       selectAction.changeAffectedObjs(selectObjs);
         unselectAction.changeAffectedObjs(unselectObjs);
         
         //if no visual change, then don't keep action
