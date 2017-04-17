@@ -10,9 +10,9 @@ import tunecomposer.actionclasses.GroupAction;
 import tunecomposer.actionclasses.UngroupAction;
 
 /**
- * FXML Controller class
+ * This is a controller class for the Pane that holds the sound objects such as
+ * NoteBars and Gestures.
  *
- * @author EmmaTwersky
  */
 public class SoundObjectPaneController {
 
@@ -25,7 +25,7 @@ public class SoundObjectPaneController {
     private ActionManager actionManager;
     
     /**
-     * Create array of NoteBar objects and selected NoteBar objects.      
+     * Create array of selected NoteBar objects.      
      */
     public static ArrayList<SoundObject> SELECTED_SOUNDOBJECT_ARRAY = new ArrayList();
          
@@ -51,6 +51,7 @@ public class SoundObjectPaneController {
         }
     }
     
+    
     /**
      * Empties the SELECTED_SOUNDOBJECT_ARRAY and un-selects all notes.
      * @param pane
@@ -65,7 +66,11 @@ public class SoundObjectPaneController {
         }
         SELECTED_SOUNDOBJECT_ARRAY.clear();
     }
-        
+    
+    
+    /**
+     * Groups the selected notes or gestures.
+     */
     public void group() {
         GroupAction groupAction = new GroupAction(SELECTED_SOUNDOBJECT_ARRAY, 
                 actionManager, soundObjectPane);
@@ -77,6 +82,10 @@ public class SoundObjectPaneController {
         updateSelectedSoundObjectArray(soundObjectPane);
     }
     
+    
+    /**
+     * Ungroups the selected group.
+     */
     public void ungroup() {
         ArrayList<Action> actionList = new ArrayList();
         for (SoundObject sObj : SELECTED_SOUNDOBJECT_ARRAY) {
@@ -84,15 +93,8 @@ public class SoundObjectPaneController {
                 UngroupAction ungroupAction = new UngroupAction(
                                             (Gesture) sObj, soundObjectPane);
                 actionList.add(ungroupAction);
-                System.out.println("in ungroup(), added gesture to actionList");
-//                ((Gesture) sObj).ungroup(soundObjectPane);
-//                sObj.containedSoundObjects.forEach((innerSObj) -> {
-//                    innerSObj.select();
-//                    innerSObj.visualRectangle.setUserData(innerSObj);
-//                });
             }
         }
-        System.out.println("executing actionList in ungroup:" + actionList);
         actionManager.execute(actionList);
         actionManager.putInUndoStack(actionList);
         updateSelectedSoundObjectArray(soundObjectPane);
@@ -101,7 +103,7 @@ public class SoundObjectPaneController {
     
     /**
      * Set the GroupAction to the instance that contains the undo and 
- redo stacks. If given manager is null, then throws NullPointerException.
+     * redo stacks. If given manager is null, then throws NullPointerException.
      * @param manager
      * @throws NullPointerException
      */

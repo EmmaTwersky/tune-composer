@@ -4,7 +4,7 @@ import javafx.scene.layout.Pane;
 import tunecomposer.Gesture;
 
 /**
- * An action which stores ungrouping SoundObjects in the application.
+ * An action which ungroups given gesture.
  */
 public class UngroupAction extends Action {
     
@@ -14,8 +14,7 @@ public class UngroupAction extends Action {
     final Gesture gesture;
 
     /**
-     * Constructs an action event to un-group a Gesture.
-     * Sets gesture and soundObjectPane.
+     * Prepares object to ungroup gesture, but does not perform the action.
      * 
      * @param givenGest the gesture to be ungrouped
      * @param soundObjectPane the SoundObjectPane these selectedObjs are on
@@ -39,7 +38,7 @@ public class UngroupAction extends Action {
     }
 
     /**
-     * Groups the gesture.
+     * Groups the gesture, and updates userData of children.
      */
     @Override
     public void undo() {
@@ -47,7 +46,7 @@ public class UngroupAction extends Action {
     }
 
     /**
-     * Regroups the gesture.
+     * Ungroups the gesture. 
      */
     @Override
     public void redo() {
