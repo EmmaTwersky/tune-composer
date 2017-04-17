@@ -3,6 +3,76 @@
     Author: Emma Twersky
 */
 
+/* Sets style for the staff and measure lines. */
+#compositionPane{
+    -fx-background-color: gainsboro;
+}
+
+#staffLine{
+    -fx-stroke: DarkGrey;
+}
+
+#measureLine{
+    -fx-stroke: LightGrey;
+}
+
+/* Sets style for the instrument tool bar. */
+#instrumentToolBar{
+    -fx-background-color: rgba(50, 50, 50, 0.2);
+    -fx-effect: dropshadow( Gaussian , Thistle , 10, 0, 0, 1 );
+    -fx-background-noise: 2;
+    -fx-font-family: 'Trebuchet MS', Helvetica, sans-serif;
+    -fx-font-weight: bold;
+}
+
+/* Sets style for the selected and unselected note attributes. */
+.selectedNote{
+    -fx-stroke: Coral; 
+    -fx-stroke-width: 3px; 
+    -fx-arc-width: 7px;
+    -fx-arc-height: 7px;
+}
+
+.unselectedNote{
+    -fx-stroke: DimGrey; 
+    -fx-stroke-width: 2px; 
+    -fx-arc-width: 7px;
+    -fx-arc-height: 7px;
+}
+
+/* Sets style for the selected and unselected gesture attributes. */
+.selectedGesture{
+    -fx-fill: Transparent;
+    -fx-stroke: Coral;
+    -fx-stroke-width: 2px;
+    -fx-stroke-dash-array: 5 8;
+    -fx-arc-width: 11px;
+    -fx-arc-height: 11px;
+}
+
+.unselectedGesture{
+    -fx-fill: Transparent;
+    -fx-stroke: DarkGrey;
+    -fx-stroke-width: 2px;
+    -fx-stroke-dash-array: 5 8;
+    -fx-arc-width: 11px;
+    -fx-arc-height: 11px;
+}
+
+/* Sets style for the red bar. */
+#RED_BAR{
+    -fx-fill: Red;
+}
+
+/* Sets selection window style. */
+#SELECTION_WINDOW{
+    -fx-stroke: Coral; 
+    -fx-fill: None;
+    -fx-stroke-width: 3px; 
+    -fx-arc-width: 11px;
+    -fx-arc-height: 11px;
+}
+
 /* Sets colors for each of the eight instrument's text and note attributes. */
 #Piano{
     -fx-text-fill: lemonchiffon;
@@ -44,72 +114,3 @@
     -fx-fill: derive(pink, 10%);
 }
 
-/* Sets style for the selected and unselected note attributes. */
-.selectedNote{
-    -fx-stroke-width: 3px; 
-    -fx-stroke: Coral; 
-    -fx-arc-width: 7px;
-    -fx-arc-height: 7px;
-}
-
-.unselectedNote{
-    -fx-stroke-width: 2px; 
-    -fx-stroke: DimGrey; 
-    -fx-arc-width: 7px;
-    -fx-arc-height: 7px;
-}
-
-/* Sets style for the selected and unselected gesture attributes. */
-.selectedGesture{
-    -fx-stroke-width: 2px;
-    -fx-stroke: Coral;
-    -fx-fill: Transparent;
-    -fx-stroke-dash-array: 5 8;
-    -fx-arc-width: 11px;
-    -fx-arc-height: 11px;
-}
-
-.unselectedGesture{
-    -fx-stroke-width: 2px;
-    -fx-stroke: DarkGrey;
-    -fx-fill: Transparent;
-    -fx-stroke-dash-array: 5 8;
-    -fx-arc-width: 11px;
-    -fx-arc-height: 11px;
-}
-
-/* Sets style for the instrument tool bar. */
-#instrumentToolBar{
-    -fx-background-color: rgba(50, 50, 50, 0.2);
-    -fx-effect: dropshadow( Gaussian , Thistle , 10, 0, 0, 1 );
-    -fx-background-noise: 2;
-    -fx-font-family: 'Trebuchet MS', Helvetica, sans-serif;
-    -fx-font-weight: bold;
-}
-
-/* Sets style for the staff and measure lines. */
-#compositionPane{
-    -fx-background-color: gainsboro;
-}
-
-#staffLine{
-    -fx-stroke: DarkGrey;
-}
-
-#measureLine{
-    -fx-stroke: LightGrey;
-}
-
-/* Sets style for the red bar. */
-#RED_BAR{
-    -fx-fill: Red;
-}
-
-/* Sets selection window style. */
-#SELECTION_WINDOW{
-    -fx-fill: None;
-    -fx-stroke-width: 3px; 
-    -fx-stroke: Coral; 
-    -fx-arc-width: 11px;
-    -fx-arc-height: 11px;
-}
