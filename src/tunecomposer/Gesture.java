@@ -33,21 +33,15 @@ public final class Gesture extends SoundObject{
      * ActionManager instance that holds the undo and redo stacks.
      */
     private ActionManager actionManager;
-    ArrayList<Action> actionList;
-    MoveAction sObjMove;
-    LengthChangeAction sObjStretch;
-    SelectAction selectAction;
-    UnselectAction unselectAction;
     
     /**
-     * Initialize the Gesture object and variables, then constructs the 
+     * Initializes the Gesture object and variables, then constructs the 
      * display.
      */
     public Gesture(){
         visualRectangle = new Rectangle();
         visualRectangle.setMouseTransparent(true);
         containedSoundObjects = new ArrayList();
-//        containedSoundObjects = (ArrayList<SoundObject>) SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.clone();
 
         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
             containedSoundObjects.add(sObj);
@@ -60,11 +54,13 @@ public final class Gesture extends SoundObject{
     
     /**
      * Gesture constructor that sets containedObjects equal to given ArrayList
- of SoundObjects instead of copying the SELECTED_SOUNDOBJECT_ARRAY
+        of SoundObjects instead of copying the SELECTED_SOUNDOBJECT_ARRAY
      * @param selList ArrayList of SoundObjects within this group 
+     * @param _actionManager 
      * @param soundObjectPane 
      */
-    public Gesture(ArrayList<SoundObject>  selList, ActionManager _actionManager, Pane soundObjectPane) {
+    public Gesture(ArrayList<SoundObject>  selList, ActionManager _actionManager,
+            Pane soundObjectPane) {
         visualRectangle = new Rectangle();
         visualRectangle.setMouseTransparent(true);
         containedSoundObjects = new ArrayList();

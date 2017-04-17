@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.LengthChangeAction;
+import tunecomposer.actionclasses.MoveAction;
+import tunecomposer.actionclasses.SelectAction;
+import tunecomposer.actionclasses.UnselectAction;
 
 public abstract class SoundObject {
     
@@ -49,6 +54,19 @@ public abstract class SoundObject {
      * Creates boolean to ensure dragging to change duration is a separate instance.
      */
     public boolean draggingLength;
+    
+    /**
+     * List of actions to be pushed onto undo stack. Used for compound actions.
+     */
+    ArrayList<Action> actionList;
+    MoveAction sObjMove;
+    
+    /**
+     * Instances of potential actions that could be execute/pushed onto undo stack.
+     */
+    LengthChangeAction sObjStretch;
+    SelectAction selectAction;
+    UnselectAction unselectAction;
     
     /**
     * Creates abstract set of SoundObject selection methods.

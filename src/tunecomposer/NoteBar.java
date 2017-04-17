@@ -36,18 +36,6 @@ public class NoteBar extends SoundObject{
      */
     private ActionManager actionManager;
     
-    /**
-     * List of actions to be pushed onto undo stack. Used for compound actions.
-     */
-    ArrayList<Action> actionList;
-    MoveAction sObjMove;
-    
-    /**
-     * Instances of potential actions that could be execute/pushed onto undo stack.
-     */
-    LengthChangeAction sObjStretch;
-    SelectAction selectAction;
-    UnselectAction unselectAction;
     
     /**
     * Creates fixed height and set ranges for pitch. 
