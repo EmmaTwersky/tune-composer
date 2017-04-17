@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import tunecomposer.SoundObject;
 
 /**
- * An action which stores changing SoundObject's length in the application.
+ * An action which can be repeatedly called to change all given SoundObject's length.
  */
 public class LengthChangeAction extends Action{
     
     /**
-     * Mouse x position when first pressed. Used to undo.
+     * Mouse x position when first pressed. Used to undo and find increment.
      */
     int initialX;
     
@@ -32,7 +32,7 @@ public class LengthChangeAction extends Action{
     }
     
     /**
-     * Changes the length of affectedObjs.
+     * Changes the length of all SoundObjects in affectedObjs.
      */
     @Override
     public void execute() {

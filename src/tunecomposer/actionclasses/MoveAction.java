@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import tunecomposer.SoundObject;
 
 /**
- * An action which stores moving SoundObjects in the application.
+ * An action which can be called repeatedly to move an Array of SoundObjects.
  */
 public class MoveAction extends Action {
     
@@ -76,7 +76,8 @@ public class MoveAction extends Action {
     /**
      * Moves all affectedObjs. 
      * The increment of the move is calculated as the difference between mouse
-     * positions, then implemented to each selectObj in the array.
+     * positions, then implemented to each selectObj in the array. Call
+     * this method to move affectedObjs without creating a new action; dragging.
      * 
      * @param mouseX x location of mouse click
      * @param mouseY y location of mouse click
@@ -98,7 +99,8 @@ public class MoveAction extends Action {
     }
     
     /**
-     * Tests in the move is failed.
+     * Returns if the move is failed.
+     * Reason for fail could be trying to move notes outside of the pane's borders.
      * 
      * @return Boolean if move is locked
      */

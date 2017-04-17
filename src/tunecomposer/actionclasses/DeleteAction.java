@@ -1,3 +1,4 @@
+
 package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
@@ -5,7 +6,7 @@ import javafx.scene.layout.Pane;
 import tunecomposer.SoundObject;
 
 /**
- * An action which stores deleting SoundObjects in the application.
+ * An action which deletes given SoundObjects from their pane.
  */
 public class DeleteAction extends Action {
     
@@ -41,7 +42,8 @@ public class DeleteAction extends Action {
     }
 
     /**
-     * Re-executes action.
+     * Re-executes action. 
+     * Removes all notes in affectedObjs from soundObjectPane.
      */
     @Override
     public void redo() {
