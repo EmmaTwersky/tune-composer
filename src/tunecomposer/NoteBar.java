@@ -7,7 +7,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javax.sound.midi.ShortMessage;
-import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.MoveAction;
 import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.LengthChangeAction;
@@ -17,9 +16,8 @@ import tunecomposer.actionclasses.UnselectAction;
  * This class creates and edits NoteBar objects to display notes in the tune 
  * and be played in MidiPLayer.
  * @extends SoundObject
- * 
  */
-public class NoteBar extends SoundObject{
+public class NoteBar extends SoundObject {
     /**
      * Create variables for the note name, instrument number, channel number,
      * pitch, starting value, and duration. 
@@ -35,7 +33,6 @@ public class NoteBar extends SoundObject{
      * ActionManager instance that holds the undo and redo stacks.
      */
     private ActionManager actionManager;
-    
     
     /**
     * Creates fixed height and set ranges for pitch. 
@@ -190,7 +187,6 @@ public class NoteBar extends SoundObject{
      */
     @Override
     public void snapInPlace() {
-        
         //Get raw values of rectangle location.
         int xRaw = (int) visualRectangle.getX();
         int yRaw = (int) visualRectangle.getY();
@@ -225,7 +221,7 @@ public class NoteBar extends SoundObject{
      * Does not manage selection. Does not handle if given pane is null. 
      * Precondition: the note is not on the pane and the pane is not null.
      * 
-     * @param soundObjectPane
+     * @param soundObjectPane pane the note is on
      */
     @Override
     public void addToPane(Pane soundObjectPane) {
@@ -237,7 +233,7 @@ public class NoteBar extends SoundObject{
      * Does not manage selection. Does not handle if given pane is null.
      * Precondition: the note is on the pane and the pane is not null.
      * 
-     * @param soundObjectPane
+     * @param soundObjectPane pane the note is on
      */
     @Override
     public void removeFromPane(Pane soundObjectPane){
@@ -362,7 +358,7 @@ public class NoteBar extends SoundObject{
     
     /**
      * Helper method for prepareSelectionAction.
-     * retrieves all other sound objects that are selected
+     * Retrieves all other sound objects that are selected
      * (excluding the current note).
      * 
      * @return allSelected is an ArrayList of those selected sound objects.
@@ -383,7 +379,6 @@ public class NoteBar extends SoundObject{
      * Creates a Move or Stretch Action depending on the placement of the
      * initial click.
      * Helper method to the handleNotePressed event handler.
-     *
      */
     private void prepareMoveOrStretchAction(){
         double editLengthMax = visualRectangle.getX() + duration;
