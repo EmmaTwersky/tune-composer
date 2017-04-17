@@ -55,6 +55,17 @@ public class NoteBar extends SoundObject{
     private final int DEFAULT_LENGTH = 100;
     
     /**
+     * Height of the NoteBar rectangles.
+     */
+    public static final int HEIGHT = 10;
+    
+    /**
+     * Minimum length that a NoteBar rectangle can become. 
+     * Consequently, also limits the minimum duration of the note.
+     */
+    public final int minLength = 5;
+    
+    /**
      * Load InstrumentInfo HashMap to look up instrument key values.
      */
     private final InstrumentInfo instrumentInfo = new InstrumentInfo();
@@ -73,7 +84,7 @@ public class NoteBar extends SoundObject{
         instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
         actionManager = _actionManager;
-        pane = soundObjectPane;
+        this.soundObjectPane = soundObjectPane;
         
         pitch = PITCH_RANGE - (int) y / NOTE_HEIGHT;
         startTick = (int) x;
@@ -97,7 +108,7 @@ public class NoteBar extends SoundObject{
         selected = true;
         visualRectangle.getStyleClass().removeAll("unselectedNote");
         visualRectangle.getStyleClass().add("selectedNote");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(pane); 
+        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane); 
     }
     
     /**
@@ -108,7 +119,7 @@ public class NoteBar extends SoundObject{
         selected = false;
         visualRectangle.getStyleClass().removeAll("selectedNote");
         visualRectangle.getStyleClass().add("unselectedNote");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(pane); 
+        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane); 
     }
     
     /**
@@ -297,7 +308,7 @@ public class NoteBar extends SoundObject{
             if (!selected) {
                 if(!event.isControlDown()){
                     ArrayList<SoundObject> allSelected = new ArrayList();
-                    for (Node n : pane.getChildren()) {
+                    for (Node n : soundObjectPane.getChildren()) {
                         Rectangle r = (Rectangle) n;
                         SoundObject sObj = (SoundObject) r.getUserData();
                         if (sObj.isSelected()) {

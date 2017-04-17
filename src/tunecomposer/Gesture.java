@@ -28,7 +28,11 @@ public final class Gesture extends SoundObject{
     public double bottomX;
     public double bottomY;
 
-    
+    /**
+    * An ArrayList of the SoundObjects contained within the Gesture.
+    */
+    public ArrayList<SoundObject> containedSoundObjects;
+
     /**
      * ActionManager instance that holds the undo and redo stacks.
      */
@@ -73,7 +77,7 @@ public final class Gesture extends SoundObject{
         containedSoundObjects = (ArrayList<SoundObject>) selList.clone();
         
         actionManager = _actionManager;
-        pane = soundObjectPane;
+        this.soundObjectPane = soundObjectPane;
         
         refreshVisualRectangle();
         
@@ -132,7 +136,7 @@ public final class Gesture extends SoundObject{
         selected = true;
         visualRectangle.getStyleClass().removeAll("unselectedGesture");
         visualRectangle.getStyleClass().add("selectedGesture");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(pane); 
+        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane); 
     }
     
     /**
@@ -147,7 +151,7 @@ public final class Gesture extends SoundObject{
         selected = false;
         visualRectangle.getStyleClass().removeAll("selectedGesture");
         visualRectangle.getStyleClass().add("unselectedGesture");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(pane); 
+        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane); 
     }
     
     /**
@@ -369,7 +373,7 @@ public final class Gesture extends SoundObject{
         if (!selected) {
             if(!event.isControlDown()){
                 ArrayList<SoundObject> allSelected = new ArrayList();
-                for (Node n : pane.getChildren()) {
+                for (Node n : soundObjectPane.getChildren()) {
                     Rectangle r = (Rectangle) n;
                     SoundObject sObj = (SoundObject) r.getUserData();
                     if (sObj.isSelected()) {

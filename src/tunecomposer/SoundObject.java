@@ -8,7 +8,7 @@ import javafx.scene.shape.Rectangle;
 public abstract class SoundObject {
     
     /**
-    * A rectangle to display on the screen.
+    * A rectangle to display on the screen to represent the object visually.
     */
     public Rectangle visualRectangle;
     
@@ -16,46 +16,64 @@ public abstract class SoundObject {
     /**
      * Reference the top-most gesture that this SoundObject belongs to.
      * If null, then this is the top, otherwise this is nested in a gesture 
-     * belonging to referenced at some depth.
+     * belonging to the referenced at some depth.
      */
     protected Gesture topGesture = null;
     
     /**
-    * An ArrayList of the SoundObjects contained within the object.
-    */
-    public ArrayList<SoundObject> containedSoundObjects;
-    public Pane pane;
-    
-    public final int HEIGHT = 10;
+     * Pane that holds all the soundObject rectangles.
+     */
+    public Pane soundObjectPane;
     
     /**
     * Sets given values for SoundObject dragging when clicked.
     */
-    public final int clickToEditLength = 10; // 10 shows better selection, though 5 is the indicated value.
-    public final int minLength = 5;
+    // 10 shows better selection, though 5 is the indicated value.
+    public final int clickToEditLength = 10; 
     
     /**
-    * Creates boolean value of if the SoundObject is currently selected.
+    * Boolean value representing the SoundObjects selection state.
+    * If true, then object is selected, if false, then unselected.
     */
     public boolean selected = true;
     
     /**
-     * Creates instances for the initial pressed values of the mouse for events.
+     * Most recently polled mouse coordinates.
+     * Useful during mouse handlers to keep track of incremental changes in mouse
+     * location.
      */
     public double latestX;
     public double latestY;
 
     /**
-     * Creates boolean to ensure dragging to change duration is a separate instance.
+     * Boolean representing whether the object's length is currently being changed.
+     * If true, then the end of the object was grabbed, if false, then it is not
+     * grabbed in current mouse press.
      */
     public boolean draggingLength;
     
     /**
-    * Creates abstract set of SoundObject selection methods.
+    * Sets objects state to select and reflects selection by changing rectangle
+    * styling.
     */
     public abstract void select();
+    
+    /**
+    * Sets objects state to unselect and reflects unselection by changing 
+    * rectangle styling.
+     */
     public abstract void unselect();
+    
+    /**
+    * Toggles objects state to opposite of what it currently is and reflects 
+    * change by changing rectangle styling.
+     */
     public abstract void toggleSelection();
+    
+    /**
+     * Returns true if this object is selected. False if unselected.
+     * @return true if selected, false if not
+     */
     public abstract boolean isSelected();
     
     /**
