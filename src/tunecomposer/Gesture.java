@@ -16,7 +16,6 @@ import tunecomposer.actionclasses.UnselectAction;
  * and be played in MidiPLayer.
  * @extends SoundObject
  * 
- * @author Emma Twersky
  */
 public final class Gesture extends SoundObject{
 
