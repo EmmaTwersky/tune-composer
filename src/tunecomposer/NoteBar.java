@@ -18,7 +18,6 @@ import tunecomposer.actionclasses.UnselectAction;
  * and be played in MidiPLayer.
  * @extends SoundObject
  * 
- * @author Emma Twersky
  */
 public class NoteBar extends SoundObject{
     /**
@@ -36,8 +35,16 @@ public class NoteBar extends SoundObject{
      * ActionManager instance that holds the undo and redo stacks.
      */
     private ActionManager actionManager;
+    
+    /**
+     * List of actions to be pushed onto undo stack. Used for compound actions.
+     */
     ArrayList<Action> actionList;
     MoveAction sObjMove;
+    
+    /**
+     * Instances of potential actions that could be execute/pushed onto undo stack.
+     */
     LengthChangeAction sObjStretch;
     SelectAction selectAction;
     UnselectAction unselectAction;
@@ -69,6 +76,7 @@ public class NoteBar extends SoundObject{
      * @param soundObjectPane
      */
     public NoteBar(double x, double y, ActionManager _actionManager, Pane soundObjectPane){
+        
         name = InstrumentToolBarController.selectedInstrument;
         instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
@@ -132,7 +140,7 @@ public class NoteBar extends SoundObject{
 
     /**
      * Moves note freely on pane.
-     * 
+
      * @param x the increment to change current x value by
      * @param y the increment to change current y value by
      */
@@ -165,7 +173,6 @@ public class NoteBar extends SoundObject{
         int maxX = CompositionPaneController.PANEXMAX;
         int maxY = CompositionPaneController.PANEYMAX;
         
-        
         if ((x < minX || x+duration > maxX) ||
             (y < minY || y+HEIGHT > maxY)){
             onEdge = true;
@@ -174,9 +181,9 @@ public class NoteBar extends SoundObject{
     }
     
     /**
-     * Changes note duration.
+     * Changes note duration and visualRectangle's length accordingly
      * 
-     * @param lengthChange the amount to increment the duration
+     * @param lengthChange the amount to increment the duration and length.
      */
     @Override
     public void changeLength(int lengthChange){ 
@@ -189,24 +196,34 @@ public class NoteBar extends SoundObject{
 
     /**
      * Fixes note to sit in-between staff lines.
+     * 
+     * Precondition: the note has just been moved.
+     * Postcondition: the notes location is fixed to sit in between staff lines.
      */
     @Override
     public void snapInPlace() {
-        int x = (int) visualRectangle.getX();
-        int y = (int) visualRectangle.getY();
         
-        pitch = PITCH_RANGE - (int) y / NOTE_HEIGHT;
-        startTick = (int) x;
+        //Get raw values of rectangle location.
+        int xRaw = (int) visualRectangle.getX();
+        int yRaw = (int) visualRectangle.getY();
         
-        int xLocation = (int) x;
-        int yLocation = (int) Math.round(y / NOTE_HEIGHT) * NOTE_HEIGHT;
-        visualRectangle.setX(xLocation);
-        visualRectangle.setY(yLocation);
+        pitch = PITCH_RANGE - (int) yRaw / NOTE_HEIGHT;
+        startTick = (int) xRaw;
+        
+        //Fix raw values.
+        int xFixed = (int) xRaw;
+        int yFixed = (int) Math.round(yRaw / NOTE_HEIGHT) * NOTE_HEIGHT;
+        
+        //Reset rectangle to fixed values.
+        visualRectangle.setX(xFixed);
+        visualRectangle.setY(yFixed);
         visualRectangle.getStyleClass().add(name);
     }
     
     /**
-     * Sets the visualRectangle's mouse event handlers. 
+     * Sets the visualRectangle's mouse event handlers.
+     * 
+     * Precondition: the note does not belong to a gesture.
      */
     @Override
     public final void setHandlers() {
@@ -218,6 +235,7 @@ public class NoteBar extends SoundObject{
     /**
      * Adds the note to the given pane. 
      * Does not manage selection. Does not handle if given pane is null. 
+     * Precondition: the note is not on the pane and the pane is not null.
      * 
      * @param soundObjectPane
      */
@@ -228,7 +246,8 @@ public class NoteBar extends SoundObject{
     
     /**
      * Removes the note from the given pane. 
-     * Does not manage selection. Does not handle if given pane is null. 
+     * Does not manage selection. Does not handle if given pane is null.
+     * Precondition: the note is on the pane and the pane is not null.
      * 
      * @param soundObjectPane
      */
@@ -239,7 +258,7 @@ public class NoteBar extends SoundObject{
     
     /**
      * Method for recursively grabbing all children of a SoundObject. 
-     * Returns an ArrayList containing only this note.
+     * 
      * @return an ArrayList containing only this note.
      */
     @Override
@@ -247,20 +266,6 @@ public class NoteBar extends SoundObject{
         ArrayList<SoundObject> array = new ArrayList();
         array.add(this);
         return array;
-    }
-    
-    
-    /**
-     * 
-     * @param press
-     * @param drag
-     * @param release 
-     */
-    @Override
-    public void setHandlers(EventHandler press, EventHandler drag, EventHandler release) {
-        this.visualRectangle.setOnMousePressed(press);
-        this.visualRectangle.setOnMouseDragged(drag);
-        this.visualRectangle.setOnMouseReleased(release);
     }
     
     /**
@@ -278,8 +283,9 @@ public class NoteBar extends SoundObject{
     
     /**
      * Handles note pressed event. 
-     * Sets initial pressed values of the mouse and consumes the event.
-     * Also checks if dragging the note to change length.
+     * Prepares the proper Selection,Unselection, Move, and Stretch Actions
+     * depending on the placement of the click, if control is down, and which
+     * note(s) were already selected.
      * 
      * @param event the mouse click event
      */
@@ -287,58 +293,22 @@ public class NoteBar extends SoundObject{
         @Override
         public void handle(MouseEvent event) {
             CompositionPaneController.tunePlayerObj.stop();
-            actionList = new ArrayList();
             
             latestX = event.getX();
             latestY = event.getY();
-            ArrayList<SoundObject> thisNote = new ArrayList();
-            thisNote.add((SoundObject) visualRectangle.getUserData());
             
-            if (!selected) {
-                if(!event.isControlDown()){
-                    ArrayList<SoundObject> allSelected = new ArrayList();
-                    for (Node n : pane.getChildren()) {
-                        Rectangle r = (Rectangle) n;
-                        SoundObject sObj = (SoundObject) r.getUserData();
-                        if (sObj.isSelected()) {
-                            allSelected.add(sObj);
-                        }
-                    }
-                    unselectAction = new UnselectAction(allSelected);
-                    unselectAction.execute();
-                    actionList.add(unselectAction);
-                }
-                selectAction = new SelectAction(thisNote);
-                selectAction.execute();
-                actionList.add(selectAction);
-            }
-            else if (event.isControlDown()){
-                unselectAction = new UnselectAction(thisNote);
-                unselectAction.execute();
-                actionList.add(unselectAction);
-            }
+            actionList = new ArrayList();
             
-            double editLengthMax = visualRectangle.getX() + duration;
-            double editLengthMin = editLengthMax - clickToEditLength;
-            if ((editLengthMin <= latestX) && (latestX <= editLengthMax)) {
-                draggingLength = true;
-                sObjStretch = new LengthChangeAction(
-                        SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
-                        (int)latestX);
-            }
-            else {
-                sObjMove = new MoveAction(
-                        SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
-                        latestX, latestY);
-            }
+            prepareSelectionAction(event.isControlDown());
+            
+            prepareMoveOrStretchAction();
         }
     };
     
     /**
      * Handles note dragged event.
-     * Selects and drags to move the note or drags to change duration, 
-     * based on note click location conventions. Translates note and consumes 
-     * event. Also updates note lists.
+     * Continuously updates the execution of Move/Stretch Actions using their
+     * move/stretch methods.
      * 
      * @param event the mouse click event
      */
@@ -347,12 +317,6 @@ public class NoteBar extends SoundObject{
         public void handle(MouseEvent event) {
             double x = event.getX();
             double y = event.getY();
-            
-            //FIX MAGIC NUMBERS
-            if (x<0){x=0;}
-            if (y<0){y=0;}
-            if (x>2000){x=200;}
-            if (y>1280){y=1280;}
             
             if (draggingLength) {
                 sObjStretch.stretch((int)(x - latestX));
@@ -365,7 +329,11 @@ public class NoteBar extends SoundObject{
                 sObjMove.move(translateX, translateY);
             }
             
-            if (!sObjMove.isMoveFailed()){
+            if (draggingLength){
+                latestX = x;
+                latestY = y;
+            }
+            else if (!sObjMove.isMoveFailed()){
                 latestX = x;
                 latestY = y;
             }
@@ -376,8 +344,8 @@ public class NoteBar extends SoundObject{
     
     /**
      * Handles mouse released.
-     * Snaps note into place on lines, handles click note selections
-     * based on the control button and consumes event.
+     * Prepares states of stretch and move for potential undoing (using the
+     * setFinalX and setLastCoords methods.  Pushes all actions onto undo stack.
      * 
      * @param event the mouse click event
      */
@@ -402,5 +370,75 @@ public class NoteBar extends SoundObject{
             actionManager.putInUndoStack(actionList);
             event.consume();
         }
-    };    
+    };
+    
+    /**
+     * Helper method for prepareSelectionAction.
+     * retrieves all other sound objects that are selected
+     * (excluding the current note).
+     * 
+     * @return allSelected is an ArrayList of those selected sound objects.
+     */
+    private ArrayList<SoundObject> getOtherSelectedItems(){
+        ArrayList<SoundObject> allSelected = new ArrayList();
+            for (Node n : pane.getChildren()) {
+                Rectangle r = (Rectangle) n;
+                SoundObject sObj = (SoundObject) r.getUserData();
+                if (sObj.isSelected()) {
+                    allSelected.add(sObj);
+                }
+            }
+        return allSelected;
+    }
+    
+    /**
+     * Creates a Move or Stretch Action depending on the placement of the
+     * initial click.
+     * Helper method to the handleNotePressed event handler.
+     *
+     */
+    private void prepareMoveOrStretchAction(){
+        double editLengthMax = visualRectangle.getX() + duration;
+        double editLengthMin = editLengthMax - clickToEditLength;
+        if ((editLengthMin <= latestX) && (latestX <= editLengthMax)) {
+            draggingLength = true;
+            sObjStretch = new LengthChangeAction(
+                    SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
+                    (int)latestX);
+        }
+        else {
+            sObjMove = new MoveAction(
+            SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
+                    latestX, latestY);
+        }
+    }
+    
+    /**
+     * Creates a Selection and Unselection Action and adds it the actionList
+     * which will later be pushed onto the undo stack.
+     * Helper method to the handleNotePressed event handler.
+     *
+     * @param isCtrlDown boolean -> reads "Is Control Down?"
+     */
+    private void prepareSelectionAction(boolean isCtrlDown){
+        ArrayList<SoundObject> thisNote = new ArrayList();
+        thisNote.add((SoundObject) visualRectangle.getUserData());
+        if (!selected) {
+                if(!isCtrlDown){
+                    ArrayList<SoundObject> allSelected;
+                    allSelected = getOtherSelectedItems();
+                    unselectAction = new UnselectAction(allSelected);
+                    unselectAction.execute();
+                    actionList.add(unselectAction);
+                }
+                selectAction = new SelectAction(thisNote);
+                selectAction.execute();
+                actionList.add(selectAction);
+            }
+            else if (isCtrlDown){
+                unselectAction = new UnselectAction(thisNote);
+                unselectAction.execute();
+                actionList.add(unselectAction);
+            }
+    }
 }

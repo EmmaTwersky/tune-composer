@@ -60,19 +60,19 @@ public abstract class SoundObject {
     
     /**
     * Creates abstract method to move the SoundObject.
-     * @param x visualRectangle's new x coordinate
-     * @param y visualRectangle's new y coordinate
+     * @param xInc increment to shift visualRectangle's x coordinate
+     * @param yInc increment to shift visualRectangle's y coordinate
     */
-    public abstract void move(double x, double y);
+    public abstract void move(double xInc, double yInc);
     
     /**
     * Creates abstract method to change the SoundObject's length.
-    * @param length visualRectangle's new length
+    * @param length amount to increment Sound Object's length.
     */    
     public abstract void changeLength(int length);
     
     /**
-    * Creates abstract set of SoundObject altering methods.
+    * Creates abstract set of SoundObject visual rectangle altering methods.
     */
     public abstract void snapInPlace();
     
@@ -110,19 +110,6 @@ public abstract class SoundObject {
      * @param player given instance of TunePlayer
     */
     public abstract void addToMidiPlayer(MidiPlayer player);
-    
-    /**
-     * Sets the mouse handlers of the called object to the given parameters.
-     * For SoundObjects that contain items, should also set all items handlers 
-     * to given.
-     * @param press 
-     *          Handler of the object that mouse press events will consume 
-     * @param drag
-     *          Handler of the object that mouse drag events will consume 
-     * @param release 
-     *          Handler of the object that mouse release events will consume 
-     */
-    public abstract void setHandlers(EventHandler press, EventHandler drag, EventHandler release);
     
     
     /**

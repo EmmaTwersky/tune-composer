@@ -232,7 +232,10 @@ public final class Gesture extends SoundObject{
      */
     @Override
     public void setHandlers() {
-        this.containedSoundObjects.forEach((sObj) -> {
+        visualRectangle.setOnMousePressed(handleGesturePressed);
+        visualRectangle.setOnMouseDragged(handleGestureDragged);
+        visualRectangle.setOnMouseReleased(handleGestureReleased);
+        containedSoundObjects.forEach((sObj) -> {
             sObj.visualRectangle.setOnMousePressed(handleGesturePressed);
             sObj.visualRectangle.setOnMouseDragged(handleGestureDragged);
             sObj.visualRectangle.setOnMouseReleased(handleGestureReleased);
@@ -240,26 +243,6 @@ public final class Gesture extends SoundObject{
     }
     
     
-    /**
-     * Sets the mouse handlers of the called object to the given parameters.
-     * Makes all child SoundObject's handlers the given. Useful to make all
-     * SoundObjects in a group use the topGesture's EventHandlers.
-     * @param press 
-     *          Handler of the object that mouse press events will consume 
-     * @param drag
-     *          Handler of the object that mouse drag events will consume 
-     * @param release 
-     *          Handler of the object that mouse release events will consume 
-     */
-    @Override
-    public void setHandlers(EventHandler press, EventHandler drag, EventHandler release) {
-        this.visualRectangle.setOnMousePressed(press);
-        this.visualRectangle.setOnMouseDragged(drag);
-        this.visualRectangle.setOnMouseReleased(release);
-        for (SoundObject sObj : containedSoundObjects) {
-            sObj.setHandlers(press, drag, release);
-        }
-    }
 
     @Override
     public void addToPane(Pane soundObjectPane) {
@@ -325,7 +308,7 @@ public final class Gesture extends SoundObject{
         refreshVisualRectangle();
         soundObjectPane.getChildren().add(visualRectangle);
         for (SoundObject sObj : containedSoundObjects) {
-            sObj.setHandlers(handleGesturePressed, handleGestureDragged, handleGestureReleased);
+            sObj.setHandlers();
             if (sObj.getTopGesture() == null) {
                 sObj.setTopGesture(this);
             }
