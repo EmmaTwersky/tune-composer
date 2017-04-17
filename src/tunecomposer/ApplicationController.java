@@ -87,7 +87,7 @@ public class ApplicationController implements Initializable {
     @FXML
     protected void handleSelectAllMenuItemAction(ActionEvent event) {
         compositionPaneController.stop();
-        actionManager.redo();
+//        actionManager.redo();
         SelectAction selectAction;
         ArrayList<SoundObject> allObjs = new ArrayList();
                         
@@ -99,11 +99,11 @@ public class ApplicationController implements Initializable {
             }
         }
         
-        selectAction = new SelectAction(allObjs);
-        ArrayList<Action> selectActionArray = new ArrayList<>();
-        selectActionArray.add(selectAction);
-        actionManager.execute(selectActionArray);
-        actionManager.putInUndoStack(selectActionArray);
+        if (!allObjs.isEmpty()) {
+            selectAction = new SelectAction(allObjs);
+            actionManager.execute(selectAction);
+            actionManager.putInUndoStack(selectAction);
+        }
         
         SoundObjectPaneController.updateSelectedSoundObjectArray(compositionPaneController.soundObjectPane);
     }
@@ -116,15 +116,15 @@ public class ApplicationController implements Initializable {
     @FXML
     protected void handleDeleteMenuItemAction(ActionEvent event) {
         compositionPaneController.stop();
-        actionManager.redo();
+//        actionManager.redo();
+        if (!SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
         DeleteAction deleter;
         deleter = new DeleteAction(SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                                   compositionPaneController.soundObjectPane);
         
         deleter.execute();
-        ArrayList<Action> deleteActionList = new ArrayList();
-        deleteActionList.add(deleter);
-        actionManager.putInUndoStack(deleteActionList);
+        actionManager.putInUndoStack(deleter);
+        }
         
 //        for (SoundObject sObj: SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
 //            sObj.removeFromPane(compositionPaneController.soundObjectPane);

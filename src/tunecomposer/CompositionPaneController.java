@@ -272,8 +272,13 @@ public class CompositionPaneController implements Initializable {
         selectAction.changeAffectedObjs(selectObjs);
         unselectAction.changeAffectedObjs(unselectObjs);
         
-        compositionPaneMouseActionArray.add(unselectAction);
+        if (!unselectAction.affectedObjs.isEmpty()) {
+            compositionPaneMouseActionArray.add(unselectAction);
+        }
+        
+        if (!selectAction.affectedObjs.isEmpty()) {
         compositionPaneMouseActionArray.add(selectAction);
+        }
         
         actionManager.execute(compositionPaneMouseActionArray);
         actionManager.putInUndoStack(compositionPaneMouseActionArray);

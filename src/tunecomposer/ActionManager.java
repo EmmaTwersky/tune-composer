@@ -50,6 +50,19 @@ public class ActionManager {
     }
     
     
+    public void putInUndoStack(Action action) {
+        if (action == null) {
+            System.out.println("given actionList in ActionManager.putInUndoStack(ArrayList<Action>) is null");
+            Thread.dumpStack();
+        }
+        
+        ArrayList<Action> actionArray = new ArrayList();
+        actionArray.add(action);
+        
+        redoStack.clear();
+        undoStack.push(actionArray);
+    }
+    
     /**
      * Puts given ArrayList of actions into the stack. If actionArray is null,
      * then does nothing. Clears redoStack to avoid redoing actions when it 
@@ -61,6 +74,11 @@ public class ActionManager {
             System.out.println("given actionList in ActionManager.putInUndoStack(ArrayList<Action>) is null");
             Thread.dumpStack();
         }
+        
+        if (actionArray.isEmpty()) {
+            return;
+        }
+        
         redoStack.clear();
         undoStack.push(actionArray);
     }

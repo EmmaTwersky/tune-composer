@@ -460,9 +460,7 @@ public final class Gesture extends SoundObject{
             draggingLength = false;
         }
 
-        if (!actionList.isEmpty()) {
-            actionManager.putInUndoStack(actionList);
-        }        
+        actionManager.putInUndoStack(actionList);
         event.consume();
     };
 }
