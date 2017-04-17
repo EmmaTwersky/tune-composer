@@ -1,29 +1,22 @@
-## Note:
-> When starting this project, our two main goals were to refactor the project to use the model-view-controller concept and to implement the functional requirements of the grouped gestures. We did not realize that the refactoring would be such an extensive process so we decided to return to the original functioning project and implement the Gesture class. Becuase we still believe that the refactoring is important and that the work we did on the MVC_Refactoring branch is important, we would like to submit both the less-elegant functioning solution (unrefactored_add_gesture branch) and the elegant non-functioning solution (MVC_Refactoring).
-
 ## Overview of design:
-> Our working solution separates classes and controllers although it is not as elegant as we aspire to make this project.
-Our MVC_Refactoring solution makes use of the model-view-controller idea. Each class contains the basic information needed to
-create the instance (model). Each of those classes has a controller that handles all the modifications and MouseEvents for that
-class (controller). Then each of those classes has its own FXML file that handles the visual representation of the members of
-the class (view). We believe that this design will allow us to easily add and change classes and functions in the future. We
-also made an abstract class SoundObject so that we could have NoteBar and Gesture extend from since they share a lot of
-features.
+> Our design is primarily based on the Single Responsibility Principle when it comes to the classes. Each class has the responsibility of handling a different object or being a controller to an object. For example, Gesture and NoteBar, inherit from our abstract SoundObject class so that each class handles a gesture or a notebar instead of having a class that handles both (such as a concrete SoundObject class). We also used inheritance to make our code elegant. In addition to the SoundObject inheritance relation, we created a package that holds all of our different action classes that all inherit from an abstract Action class. These action classes are how we implemented the undo and redo functions for our program, where each one handles a single type of undo-able action. We also implemented the undo/redo function to follow the Open/Closed Principle. This function is open for extension and closed for modification becasue, if we create more undo-able actions we can easily create another action class for it by implementing it with the abstract Action class.
+
+We also seperated our classes with Controllers in order to follow the guideline that states that "different kinds of responsibilities should be seperated among different objects" (Skrien 141). This allows a class like NoteBar to handle only its properties and not the properties/modifications that are given to it through the composition pane such as interactions with other note bars. Our implementation of Actions also takes this guideline into account. Each action class has as different responsibility and are seperated into different classes that share the Action abstract class. Some examples are AddNoteAction, GroupAction, MoveAction and SelectAction.
+
+We take into account the Law of Demeter in our design. In our SoundObject class, we created a method, getAllRelated() that gets all of the children from the top gesture of the SoundObject instead of calling something like "this.getTopGesture().getAllChildren()." We also see this with our method unselectTopGesture() that replaces "this.getTopGesture().unselect()."
+
+Our methods are cohesive and follow the guideline of doing one thing and doing it well. We also follow the guideline that states that :methods which return a value should not modify any existing object's state" (Skrien 89). We also use naming conventions for methods and fields that are consistent and intention-revealing.
 
 ## Elegance:
-> We believe that once we complete the MVC_Refactoring solution, it will be very elegant because of the reasons explained
-above. Making this disctinction between model and view makes our solution elegant since it makes it more modular and we can
-easily add features in the future.
+> Our solution is elegant becasue we actively thought about the principles and guidelines we have been learning about while writing our program so that it would be as elegant as possible. We applied the SOLID principles in the places mentioned in the seciton above. 
+
+Another aspect that makes our program elegant is the ActionManager that we implemented. Since we implemented all the actions with the abstract Action class, we were able to make a ActionManager that contains Stacks of the undo-able actions and stores them instead of holding complete states of the composition pane which would involve holding information about many different types of objects.
 
 ## Inelegance:
-> Our working solution is somewhat inelegant because it does not use the model-view-controller idea. We were unable to
-implement a funcitoning program that was refactored to this point due to lack of time but we believe that we will be able to
-finish this refactoring for the next project and make it very elegant.
+> Some aspects that make our solution inelegant are that MouseEvents handle too much, there is a lot of coupling of classes, and NoteBar has too much responsibility. The MouseEvent handlers have too much responsibility and a small change in the program could require us to make significant changes to these handlers. The way we have written the handlers would make these changes difficult to implement. The coupling of classes is caused by a significant reliance between classes. For example, classes that have controllers are coupled with their controllers in a way that would make it difficult to make large modifications without going through both the class and its controller class and making all the necessary modifications. We did not have time to fix these sources of inelegance because of our initial attempts to make a major refactoring to the previous project.
 
 ## Time Spent:
-> As a team, we spend about 70 hours on this project.
+> As a team we spent about 90 hours. We estimated that we would have about 140 story points for this project where 5 points was our base for a moderately simple implementation. We completed all but about 40 of these points since these 40 points were intended for a large refactoring that we decided to abandon. Our velocity then was about 1.2 storypoints/hour. The ratio of points/person-hour is 1.2:1.
 
 ## Team:
-> Our team worked really well on this project. We communicated really well on meeting times and pair-programmed really well
-and efficiently too. We also had snacks during our sessions; one day we ordered a pizza and another day we had
-Bugles. The snacks kept us motivated and reduced stress.
+> Our team has continued to work really well with each other. We have a group message where we communicate about meeting times and update each other on individual efforts to fix bugs or make changes. We also communicated well on discussing our design ad how we wanted to go about completing this project. Towards the begining of this project, we had to make a big decision to either continue with an extensive refactoring or work with what we had and refactor that at the end and we were able to come to a decision without much dificulties. We also organized our final meeting and release to make sure we were hitting all the points in the project. We had a cycle where everyone would review an assigned set of classes and once one person had reviewed them, another person would review them again. We will continue to communicate well and use this strategy of double checking our classes. 
