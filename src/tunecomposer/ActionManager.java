@@ -5,16 +5,19 @@ import java.util.Stack;
 import tunecomposer.actionclasses.Action;
 
 /**
- * Manages the undo and redo stacks that all "undo-able" actions are pushed to.
- * @author lazarcl
+ * Object that manages the action stacks that all "mutable" actions are held in.
  */
 public class ActionManager {
     
+    /**
+     * References to the stacks which hold actions to manage.
+     */
     Stack<ArrayList<Action>> undoStack;
     Stack<ArrayList<Action>> redoStack;
     
     /**
-     * Constructs the undo and redo stacks. They take any type Action object.
+     * Constructs the undo and redo stacks. 
+     * They take any type Action object.
      */
     public ActionManager(){
         undoStack = new Stack<>();
@@ -22,27 +25,25 @@ public class ActionManager {
     }
     
     /**
-     * Perform the given action. Then push this item into the undoStack.
+     * Perform the given action. 
+     * 
      * @param action Action type object to be performed in program. 
      */
-    public void execute(Action action) {
+    public void execute(Action action) throws IllegalArgumentException{
         if (action == null) {
-            System.out.println("given actionList in ActionManager.execute(Action) is null");
-            Thread.dumpStack();
+            throw new IllegalArgumentException();
         }
         action.execute();
     }
     
-    
     /**
-     * Executes all given actions in the provided ArrayList of Actions. Does the
-     * same thing as this.execute(..) on every item. Does nothing if given null.
+     * Executes all given actions in the provided ArrayList of Actions.
+     * 
      * @param actionList 
      */
-    public void execute(ArrayList<Action> actionList) {
+    public void execute(ArrayList<Action> actionList) throws IllegalArgumentException{
         if (actionList == null) {
-            System.out.println("given actionList in ActionManager.execute(ArrayList<Action>) is null");
-            Thread.dumpStack();
+            throw new IllegalArgumentException();
         }
         for (Action a : actionList) {
             this.execute(a);

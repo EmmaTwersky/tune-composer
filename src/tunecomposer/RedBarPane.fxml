@@ -9,17 +9,18 @@
 <?import javafx.scene.shape.*?>
 
 <Pane 
-    fx:id="redBarPane" 
-    prefHeight="1280.0" 
-    prefWidth="2000.0" 
-    fx:controller="tunecomposer.RedBarPaneController" 
-    stylesheets="@TuneComposer.css" 
-    xmlns:fx="http://javafx.com/fxml/1" > 
+    xmlns:fx = "http://javafx.com/fxml/1" 
+    xmlns = "http://javafx.com/javafx/8" 
+    fx:id = "redBarPane" 
+    prefHeight = "1280.0" 
+    prefWidth = "2000.0" 
+    fx:controller = "tunecomposer.RedBarPaneController" 
+    stylesheets = "@TuneComposer.css" > 
     <Rectangle 
         fx:id = "RED_BAR" 
         x = "0" 
         y = "0" 
         width = "1" 
-        height = "1280"> 
+        height = "1280" > 
     </Rectangle>
 </Pane>
