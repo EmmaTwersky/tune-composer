@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.LengthChangeAction;
+import tunecomposer.actionclasses.MoveAction;
+import tunecomposer.actionclasses.SelectAction;
+import tunecomposer.actionclasses.UnselectAction;
 
 public abstract class SoundObject {
     
@@ -24,6 +29,11 @@ public abstract class SoundObject {
      * Pane that holds all the soundObject rectangles.
      */
     public Pane soundObjectPane;
+    
+    /**
+     * Height of the NoteBar rectangles.
+     */
+    public static final int HEIGHT = 10;
     
     /**
     * Sets given values for SoundObject dragging when clicked.
@@ -53,8 +63,20 @@ public abstract class SoundObject {
     public boolean draggingLength;
     
     /**
-    * Sets objects state to select and reflects selection by changing rectangle
-    * styling.
+     * List of actions to be pushed onto undo stack. Used for compound actions.
+     */
+    ArrayList<Action> actionList;
+    MoveAction sObjMove;
+    
+    /**
+     * Instances of potential actions that could be execute/pushed onto undo stack.
+     */
+    LengthChangeAction sObjStretch;
+    SelectAction selectAction;
+    UnselectAction unselectAction;
+    
+    /**
+    * Creates abstract set of SoundObject selection methods.
     */
     public abstract void select();
     
@@ -78,19 +100,19 @@ public abstract class SoundObject {
     
     /**
     * Creates abstract method to move the SoundObject.
-     * @param x visualRectangle's new x coordinate
-     * @param y visualRectangle's new y coordinate
+     * @param xInc increment to shift visualRectangle's x coordinate
+     * @param yInc increment to shift visualRectangle's y coordinate
     */
-    public abstract void move(double x, double y);
+    public abstract void move(double xInc, double yInc);
     
     /**
     * Creates abstract method to change the SoundObject's length.
-    * @param length visualRectangle's new length
+    * @param length amount to increment Sound Object's length.
     */    
     public abstract void changeLength(int length);
     
     /**
-    * Creates abstract set of SoundObject altering methods.
+    * Creates abstract set of SoundObject visual rectangle altering methods.
     */
     public abstract void snapInPlace();
     
@@ -128,19 +150,6 @@ public abstract class SoundObject {
      * @param player given instance of TunePlayer
     */
     public abstract void addToMidiPlayer(MidiPlayer player);
-    
-    /**
-     * Sets the mouse handlers of the called object to the given parameters.
-     * For SoundObjects that contain items, should also set all items handlers 
-     * to given.
-     * @param press 
-     *          Handler of the object that mouse press events will consume 
-     * @param drag
-     *          Handler of the object that mouse drag events will consume 
-     * @param release 
-     *          Handler of the object that mouse release events will consume 
-     */
-    public abstract void setHandlers(EventHandler press, EventHandler drag, EventHandler release);
     
     
     /**

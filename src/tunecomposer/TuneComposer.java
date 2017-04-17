@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * This class creates and launches the Tune Compose window and application.
+ * This class creates and launches the Tune Composer window and application.
  */
 public class TuneComposer extends Application {
 

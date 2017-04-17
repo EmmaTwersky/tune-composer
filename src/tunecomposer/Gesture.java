@@ -37,21 +37,15 @@ public final class Gesture extends SoundObject{
      * ActionManager instance that holds the undo and redo stacks.
      */
     private ActionManager actionManager;
-    ArrayList<Action> actionList;
-    MoveAction sObjMove;
-    LengthChangeAction sObjStretch;
-    SelectAction selectAction;
-    UnselectAction unselectAction;
     
     /**
-     * Initialize the Gesture object and variables, then constructs the 
+     * Initializes the Gesture object and variables, then constructs the 
      * display.
      */
     public Gesture(){
         visualRectangle = new Rectangle();
         visualRectangle.setMouseTransparent(true);
         containedSoundObjects = new ArrayList();
-//        containedSoundObjects = (ArrayList<SoundObject>) SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.clone();
 
         SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
             containedSoundObjects.add(sObj);
@@ -64,11 +58,13 @@ public final class Gesture extends SoundObject{
     
     /**
      * Gesture constructor that sets containedObjects equal to given ArrayList
- of SoundObjects instead of copying the SELECTED_SOUNDOBJECT_ARRAY
+        of SoundObjects instead of copying the SELECTED_SOUNDOBJECT_ARRAY
      * @param selList ArrayList of SoundObjects within this group 
+     * @param _actionManager 
      * @param soundObjectPane 
      */
-    public Gesture(ArrayList<SoundObject>  selList, ActionManager _actionManager, Pane soundObjectPane) {
+    public Gesture(ArrayList<SoundObject>  selList, ActionManager _actionManager,
+            Pane soundObjectPane) {
         visualRectangle = new Rectangle();
         visualRectangle.setMouseTransparent(true);
         containedSoundObjects = new ArrayList();
@@ -236,7 +232,10 @@ public final class Gesture extends SoundObject{
      */
     @Override
     public void setHandlers() {
-        this.containedSoundObjects.forEach((sObj) -> {
+        visualRectangle.setOnMousePressed(handleGesturePressed);
+        visualRectangle.setOnMouseDragged(handleGestureDragged);
+        visualRectangle.setOnMouseReleased(handleGestureReleased);
+        containedSoundObjects.forEach((sObj) -> {
             sObj.visualRectangle.setOnMousePressed(handleGesturePressed);
             sObj.visualRectangle.setOnMouseDragged(handleGestureDragged);
             sObj.visualRectangle.setOnMouseReleased(handleGestureReleased);
@@ -244,26 +243,6 @@ public final class Gesture extends SoundObject{
     }
     
     
-    /**
-     * Sets the mouse handlers of the called object to the given parameters.
-     * Makes all child SoundObject's handlers the given. Useful to make all
-     * SoundObjects in a group use the topGesture's EventHandlers.
-     * @param press 
-     *          Handler of the object that mouse press events will consume 
-     * @param drag
-     *          Handler of the object that mouse drag events will consume 
-     * @param release 
-     *          Handler of the object that mouse release events will consume 
-     */
-    @Override
-    public void setHandlers(EventHandler press, EventHandler drag, EventHandler release) {
-        this.visualRectangle.setOnMousePressed(press);
-        this.visualRectangle.setOnMouseDragged(drag);
-        this.visualRectangle.setOnMouseReleased(release);
-        for (SoundObject sObj : containedSoundObjects) {
-            sObj.setHandlers(press, drag, release);
-        }
-    }
 
     @Override
     public void addToPane(Pane soundObjectPane) {
@@ -329,7 +308,7 @@ public final class Gesture extends SoundObject{
         refreshVisualRectangle();
         soundObjectPane.getChildren().add(visualRectangle);
         for (SoundObject sObj : containedSoundObjects) {
-            sObj.setHandlers(handleGesturePressed, handleGestureDragged, handleGestureReleased);
+            sObj.setHandlers();
             if (sObj.getTopGesture() == null) {
                 sObj.setTopGesture(this);
             }
