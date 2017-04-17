@@ -136,6 +136,17 @@ public class CompositionPaneController implements Initializable {
     }    
     
     /**
+     * Overwrites selectedObjs and unselectedObjs into their respective actions
+     * and executes both actions.
+     */
+    private void updateDragActions() {
+        selectAction.changeAffectedObjs(selectObjs);
+        unselectAction.changeAffectedObjs(unselectObjs);
+        unselectAction.execute();
+        selectAction.execute();
+    }
+    
+    /**
      * If given rectangle intersects with SELECTION_WINDOW, move it from 
      * unselectedObj to selectedObj. If not, then do the opposite.
      * @param rect Rectangle to check for intersection with SELECTION_WINDOW
@@ -162,7 +173,46 @@ public class CompositionPaneController implements Initializable {
             }
         }
     }
-    
+
+    /**
+     * Handles the logic if the pane was clicked in place. 
+     * Cannot pass null as parameter. This method may change arrayOfMouseActions, 
+     * unselectedObjs, or unselectedObjs.
+     * be changed after call.
+     * @param event the MouseEvent to grab event info from
+     * @param arrayOfMouseActions 
+     *          Action array of all actions to push onto the undoStack
+     * @throws IllegalArgumentException if null was passed
+     */
+    private void paneClickedInPlace(MouseEvent event, ArrayList<Action> arrayOfMouseActions) 
+                                      throws IllegalArgumentException {
+        if (event == null) {
+            throw new IllegalArgumentException();
+        }
+        if (arrayOfMouseActions == null) {
+            throw new IllegalArgumentException();
+        }
+        
+        if (!event.isControlDown()) {
+            for (Node n : soundObjectPane.getChildren()) {
+                Rectangle r = (Rectangle) n;
+                SoundObject s = (SoundObject) r.getUserData();
+                if (s.isSelected()) {
+                    unselectObjs.add(s);
+                }
+            }
+        }
+        else {
+            unselectObjs.clear();
+        }
+        
+        AddNoteAction addAction;
+        addAction = new AddNoteAction(event.getX(), event.getY(), actionManager, soundObjectPane);
+        
+        arrayOfMouseActions.add(addAction);
+        selectObjs.add(addAction.getNote());
+    }    
+
     /**
      * Handles mouse press on the SoundObjectPane.
      * Stops current MidiPlayer, gets initial value of mouse, and initializes 
@@ -193,17 +243,6 @@ public class CompositionPaneController implements Initializable {
         });
     };
 
-    /**
-     * Overwrites selectedObjs and unselectedObjs into their respective actions
-     * and executes both actions.
-     */
-    private void updateDragActions() {
-        selectAction.changeAffectedObjs(selectObjs);
-        unselectAction.changeAffectedObjs(unselectObjs);
-        unselectAction.execute();
-        selectAction.execute();
-    }
-    
     /**
      * Handles mouse dragged on the SoundObjectPane. 
      * Drags selection window, highlights notes intersecting the window and 
@@ -239,32 +278,15 @@ public class CompositionPaneController implements Initializable {
      */
     @FXML
     protected void handlePaneReleased(MouseEvent event) {
-        ArrayList<Action> compositionPaneMouseActionArray = new ArrayList<>();
+        ArrayList<Action> arrayOfMouseActions = new ArrayList<>();
         selectionWindowPaneController.SELECTION_WINDOW.setVisible(false);
         SoundObjectPaneController.TEMP_SELECTED_SOUNDOBJ_ARRAY.clear();
         
         if (event.isStillSincePress()) {
-            if (!event.isControlDown()) {
-                for (Node n : soundObjectPane.getChildren()) {
-                    Rectangle r = (Rectangle) n;
-                    SoundObject s = (SoundObject) r.getUserData();
-                    if (s.isSelected()) {
-                        unselectObjs.add(s);
-                    }
-                }
-            }
-            else {
-                unselectObjs.clear();
-            }
-            
-            AddNoteAction addAction;
-            addAction = new AddNoteAction(event.getX(), event.getY(), actionManager, soundObjectPane);
-            
-            compositionPaneMouseActionArray.add(addAction);
-            selectObjs.add(addAction.getNote());
+            paneClickedInPlace(event, arrayOfMouseActions);
         }
         
-        //if was already selected, don't put into action 
+        //if was initially selected, don't keep in selectAction 
         for (SoundObject sObj : wasSelected) {
             selectObjs.remove(sObj);
         }
@@ -272,21 +294,22 @@ public class CompositionPaneController implements Initializable {
         selectAction.changeAffectedObjs(selectObjs);
         unselectAction.changeAffectedObjs(unselectObjs);
         
+        //if no visual change, then don't keep action
         if (!unselectAction.affectedObjs.isEmpty()) {
-            compositionPaneMouseActionArray.add(unselectAction);
+            arrayOfMouseActions.add(unselectAction);
         }
         
         if (!selectAction.affectedObjs.isEmpty()) {
-        compositionPaneMouseActionArray.add(selectAction);
+        arrayOfMouseActions.add(selectAction);
         }
         
-        actionManager.execute(compositionPaneMouseActionArray);
-        actionManager.putInUndoStack(compositionPaneMouseActionArray);
+        actionManager.execute(arrayOfMouseActions);
+        actionManager.putInUndoStack(arrayOfMouseActions);
         
         SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane);
     };
-    
-    
+
+        
     /**
      * Set the actionManager to the Application's passed in ActionManager instance.
      * If given manager is null, then throws NullPointerException.
