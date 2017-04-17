@@ -56,8 +56,8 @@ public final class Gesture extends SoundObject{
      * Gesture constructor that sets containedObjects equal to given ArrayList
         of SoundObjects instead of copying the SELECTED_SOUNDOBJECT_ARRAY
      * @param selList ArrayList of SoundObjects within this group 
-     * @param _actionManager 
-     * @param soundObjectPane 
+     * @param _actionManager assigns reference to actionManager field
+     * @param soundObjectPane assigns reference to pane field.
      */
     public Gesture(ArrayList<SoundObject>  selList, ActionManager _actionManager,
             Pane soundObjectPane) {
@@ -170,13 +170,13 @@ public final class Gesture extends SoundObject{
      * Shifts all elements of gesture by given increment. 
      * This move includes all SoundObjects.
      * 
-     * @param x number of horizontal pixels to shift notes
-     * @param y number of vertical pixels to shift notes
+     * @param xInc number of horizontal pixels to shift notes
+     * @param yInc number of vertical pixels to shift notes
      */
     @Override
-    public void move(double x, double y){
+    public void move(double xInc, double yInc){
         containedSoundObjects.forEach((note) -> {
-            note.move(x, y);
+            note.move(xInc, yInc);
         });
         refreshVisualRectangle();
     }
@@ -202,18 +202,21 @@ public final class Gesture extends SoundObject{
      * Resizes all notes of gesture by given increment. 
      * Also updates the size of all gestureBoxes.
      * 
-     * @param l number of pixels to change note duration by
+     * @param deltaLength number of pixels to change note duration by
      */
     @Override
-    public void changeLength(int l){
+    public void changeLength(int deltaLength){
         containedSoundObjects.forEach((note) -> {
-            note.changeLength(l);
+            note.changeLength(deltaLength);
         });
         refreshVisualRectangle();
     }
     
     /**
      * Recursively snap all items in gesture to closest note.
+     * Precondition: the gesture has just been moved.
+     * Postcondition: the location of the notes in the gesture is 
+     * fixed so they sit in between staff lines.
      */
     @Override
     public void snapInPlace() {
@@ -224,7 +227,8 @@ public final class Gesture extends SoundObject{
     }
     
     /**
-     * Sets the visualRectangle's mouse event handlers. 
+     * Sets the visualRectangle's mouse event handlers and all contained notes
+     * to the gesture event handlers found at the bottom of the class. 
      */
     @Override
     public void setHandlers() {
@@ -239,7 +243,13 @@ public final class Gesture extends SoundObject{
     }
     
     
-
+    /**
+     * Adds the gesture to the given pane. 
+     * Does not manage selection. Does not handle if given pane is null. 
+     * Precondition: the gesture is not on the pane and the pane is not null.
+     * 
+     * @param soundObjectPane given to pane to add to.
+     */
     @Override
     public void addToPane(Pane soundObjectPane) {
         soundObjectPane.getChildren().add(visualRectangle);
@@ -252,6 +262,7 @@ public final class Gesture extends SoundObject{
      * Removes the gestureBox and all contained SoundObjects from given pane. 
      * Does not change selection state. Does not handle if given pane is null.
      * Does not handle exceptions if Object can not be removed from given pane.
+     * Precondition: the gesture is not on the pane.
      * @param soundObjectPane the pane to remove the gestureBox from
      */
     @Override
@@ -342,6 +353,9 @@ public final class Gesture extends SoundObject{
 
         latestX = event.getX();
         latestY = event.getY();
+        
+        
+        
         ArrayList<SoundObject> thisGesture = new ArrayList();
         thisGesture.add((SoundObject) visualRectangle.getUserData());
         
