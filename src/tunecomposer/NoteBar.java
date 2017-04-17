@@ -162,8 +162,8 @@ public class NoteBar extends SoundObject{
         
         int minX = 0;
         int minY = 0;
-        int maxX = CompositionPaneController.PANEXMAX;
-        int maxY = CompositionPaneController.PANEYMAX;
+        int maxX = CompositionPaneController.PANE_X_MAX;
+        int maxY = CompositionPaneController.PANE_Y_MAX;
         
         
         if ((x < minX || x+duration > maxX) ||

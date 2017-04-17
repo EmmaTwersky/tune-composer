@@ -6,10 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.control.ToggleGroup;
 
 /**
- * This controller class implements and holds the current instrument selection.
+ * Controllers and holds the current instrument selection.
  * The default is set to a Piano.
- *
- * @author Emma Twersky
  */
 public class InstrumentToolBarController {
     /**

@@ -1,12 +1,9 @@
-// Change to enum type
 package tunecomposer;
 
 import java.util.HashMap;
 
 /**
- * This class creates and stores HashMaps to access MidiPlayer value constants.
- * 
- * @author Emma Twersky
+ * Creates and stores HashMaps to access MidiPlayer value constants.
  */
 public class InstrumentInfo {
     /**

@@ -1,7 +1,5 @@
-// Refactor handler into another method.
 package tunecomposer;
 
-import java.util.ArrayList;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -15,17 +13,19 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 /**
- * This class creates and animates the red bar which shows the moment at which
+ * Controls and animates the red bar which visualizes the moment at which
  * the MidiPlayer is playing.
- * 
- * @author Emma Twersky
  */
 public class RedBarPaneController implements Initializable {
+    
     /**
-     * Creates time line for animation and Rectangle red bar object.
+     * Creates timeline for animation and RED_BAR object.
      */
     private Timeline timeline;
     
+    /**
+     * Holds the visual representation of the Red Bar.
+     */
     @FXML
     private Rectangle RED_BAR;
     
@@ -40,9 +40,10 @@ public class RedBarPaneController implements Initializable {
     private int compositionEnd = 0;
     
     /**
-     * Creates RedBar object on given pane. 
-     * Sets line to have redBarWidth and height of screenHeight,
-     * begins at top left corner of pane (0,0).
+     * Creates RED_BAR object on given pane and initializes timeline.
+     * 
+     * @param location the source of the scene
+     * @param resources the resources of the utility of the scene
      */
     @FXML
     @Override
@@ -54,6 +55,7 @@ public class RedBarPaneController implements Initializable {
     /**
      * Moves the line across the screen at the speed set by movementSpeed, 
      * disappears at end of last note displayed.
+     * 
      * @param soundObjectPane pane where all SoundObject visuals live.
      */
     public void playAnimation(Pane soundObjectPane) {
@@ -79,7 +81,7 @@ public class RedBarPaneController implements Initializable {
     }    
     
     /**
-     * Stop the redBar animation and make it disappear.
+     * Stop the Red_Bar animation and make it disappear.
      */
     public void stopAnimation() {
         timeline.stop();
@@ -88,9 +90,9 @@ public class RedBarPaneController implements Initializable {
     }
     
     /**
-     * Returns the X value of the right side of the final note in noteList.
+     * Returns the X value of the right side of the final note on the pane.
      * 
-     * @param noteList the list of notes being played
+     * @param soundObjectPane the pane of the SoundObjects
      */
     private void findEndCoordinate(Pane soundObjectPane) {
         compositionEnd = 0;

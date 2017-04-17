@@ -8,8 +8,7 @@ import javax.sound.midi.*;
  * @author Dale Skrien
  * @since September 6, 2016 
  */
-public class MidiPlayer
-{
+public class MidiPlayer {
     private static final int NUM_TRACKS = 8;
 
     /** The sequencer that stores Midi events and plays them when requested. */
