@@ -9,7 +9,7 @@
 
 <Pane 
     fx:id = "noteLinesPane" 
-    fx:controller = "tunecomposer.NoteLinesPaneController"
     stylesheets = "@TuneComposer.css"
+    fx:controller = "tunecomposer.NoteLinesPaneController" 
     xmlns:fx = "http://javafx.com/fxml/1" > 
 </Pane>
