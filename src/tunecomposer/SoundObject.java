@@ -2,6 +2,7 @@ package tunecomposer;
 
 import java.util.ArrayList;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.Action;
@@ -13,7 +14,7 @@ import tunecomposer.actionclasses.UnselectAction;
 public abstract class SoundObject {
     
     /**
-    * A rectangle to display on the screen.
+    * A rectangle to display on the screen to represent the object visually.
     */
     public Rectangle visualRectangle;
     
@@ -21,37 +22,44 @@ public abstract class SoundObject {
     /**
      * Reference the top-most gesture that this SoundObject belongs to.
      * If null, then this is the top, otherwise this is nested in a gesture 
-     * belonging to referenced at some depth.
+     * belonging to the referenced at some depth.
      */
     protected Gesture topGesture = null;
     
     /**
-    * An ArrayList of the SoundObjects contained within the object.
-    */
-    public ArrayList<SoundObject> containedSoundObjects;
-    public Pane pane;
+     * Pane that holds all the soundObject rectangles.
+     */
+    public Pane soundObjectPane;
     
-    public final int HEIGHT = 10;
+    /**
+     * Height of the NoteBar rectangles.
+     */
+    public static final int HEIGHT = 10;
     
     /**
     * Sets given values for SoundObject dragging when clicked.
     */
-    public final int clickToEditLength = 10; // 10 shows better selection, though 5 is the indicated value.
-    public final int minLength = 5;
+    // 10 shows better selection, though 5 is the indicated value.
+    public final int clickToEditLength = 10; 
     
     /**
-    * Creates boolean value of if the SoundObject is currently selected.
+    * Boolean value representing the SoundObjects selection state.
+    * If true, then object is selected, if false, then unselected.
     */
     public boolean selected = true;
     
     /**
-     * Creates instances for the initial pressed values of the mouse for events.
+     * Most recently polled mouse coordinates.
+     * Useful during mouse handlers to keep track of incremental changes in mouse
+     * location.
      */
     public double latestX;
     public double latestY;
 
     /**
-     * Creates boolean to ensure dragging to change duration is a separate instance.
+     * Boolean representing whether the object's length is currently being changed.
+     * If true, then the end of the object was grabbed, if false, then it is not
+     * grabbed in current mouse press.
      */
     public boolean draggingLength;
     
@@ -72,42 +80,64 @@ public abstract class SoundObject {
     * Creates abstract set of SoundObject selection methods.
     */
     public abstract void select();
+    
+    /**
+    * Sets objects state to unselect and reflects unselection by changing 
+    * rectangle styling.
+     */
     public abstract void unselect();
+    
+    /**
+    * Toggles objects state to opposite of what it currently is and reflects 
+    * change by changing rectangle styling.
+     */
     public abstract void toggleSelection();
+    
+    /**
+     * Returns true if this object is selected. False if unselected.
+     * @return true if selected, false if not
+     */
     public abstract boolean isSelected();
     
     /**
-    * Creates abstract method to move the SoundObject.
+    *  Move the SoundObject by given increments.
      * @param xInc increment to shift visualRectangle's x coordinate
      * @param yInc increment to shift visualRectangle's y coordinate
     */
     public abstract void move(double xInc, double yInc);
     
     /**
-    * Creates abstract method to change the SoundObject's length.
+    *  Change the SoundObject's length by given increment.
     * @param length amount to increment Sound Object's length.
     */    
     public abstract void changeLength(int length);
     
     /**
-    * Creates abstract set of SoundObject visual rectangle altering methods.
+    * Snap object to y-coordinate of nearest note.
     */
     public abstract void snapInPlace();
     
     /**
-    * Gives the object's visualRectangle mouse event handlers.
+    * Set the mouse event handlers of the this object.
     */
     public abstract void setHandlers();
     
+        /**
+     * Creates a Move or Stretch Action depending on the placement of the
+     * initial click.
+     * Helper method to the handleNotePressed event handler.
+     */
+    abstract void prepareMoveOrStretchAction();
+    
     /**
-    * Adds the visualRectangle on the pane.
+    * Adds the SoundObject's visual representation to the pane.
     * 
     * @param soundObjectPane pane visualRectangle is on
     */
     public abstract void addToPane(Pane soundObjectPane);
     
     /**
-    * Removes the visualRectangle from the pane, also handles deletion.
+    * Removes SoundObject's visual representation from the pane.
     * 
     * @param soundObjectPane pane visualRectangle is on
     */
@@ -121,6 +151,9 @@ public abstract class SoundObject {
      * @return onEdge is true if the move is illegal and false if its legal.
      */
     public abstract boolean isOnEdge(double x, double y);
+    
+    
+    public abstract void setHandlers(EventHandler press, EventHandler drag, EventHandler release);
     
     /**
     * Adds the SoundObject's MidiEvent to the player.
@@ -194,5 +227,54 @@ public abstract class SoundObject {
         }
         
         return topGest.getAllChildren();
+    }
+    
+    /**
+     * Helper method for prepareSelectionAction.
+     * Retrieves all other sound objects that are selected
+     * (excluding the current note).
+     * 
+     * @return allSelected is an ArrayList of those selected sound objects.
+     */
+    private ArrayList<SoundObject> getOtherSelectedItems(){
+        ArrayList<SoundObject> allSelected = new ArrayList();
+            for (Node n : soundObjectPane.getChildren()) {
+                Rectangle r = (Rectangle) n;
+                SoundObject sObj = (SoundObject) r.getUserData();
+                if (sObj.isSelected()) {
+                    allSelected.add(sObj);
+                }
+            }
+        return allSelected;
+    }
+    
+    
+    /**
+     * Creates a Selection and Unselection Action and adds it the actionList
+     * which will later be pushed onto the undo stack.
+     * Helper method to the handleNotePressed and handleGesturePressed event handlers.
+     *
+     * @param isCtrlDown boolean -> reads "Is Control Down?"
+     */
+    void prepareSelectionAction(boolean isCtrlDown){
+        ArrayList<SoundObject> thisSoundObject = new ArrayList();
+        thisSoundObject.add((SoundObject) visualRectangle.getUserData());
+        if (!selected) {
+                if(!isCtrlDown){
+                    ArrayList<SoundObject> allSelected;
+                    allSelected = getOtherSelectedItems();
+                    unselectAction = new UnselectAction(allSelected);
+                    unselectAction.execute();
+                    actionList.add(unselectAction);
+                }
+                selectAction = new SelectAction(thisSoundObject);
+                selectAction.execute();
+                actionList.add(selectAction);
+            }
+            else if (isCtrlDown){
+                unselectAction = new UnselectAction(thisSoundObject);
+                unselectAction.execute();
+                actionList.add(unselectAction);
+            }
     }
 }

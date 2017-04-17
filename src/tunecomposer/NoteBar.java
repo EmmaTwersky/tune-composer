@@ -47,6 +47,12 @@ public class NoteBar extends SoundObject {
     private final int DEFAULT_LENGTH = 100;
     
     /**
+     * Minimum length that a NoteBar rectangle can become. 
+     * Consequently, also limits the minimum duration of the note.
+     */
+    public final int minLength = 5;
+    
+    /**
      * Load InstrumentInfo HashMap to look up instrument key values.
      */
     private final InstrumentInfo instrumentInfo = new InstrumentInfo();
@@ -66,7 +72,7 @@ public class NoteBar extends SoundObject {
         instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
         actionManager = _actionManager;
-        pane = soundObjectPane;
+        this.soundObjectPane = soundObjectPane;
         
         pitch = PITCH_RANGE - (int) y / NOTE_HEIGHT;
         startTick = (int) x;
@@ -90,7 +96,7 @@ public class NoteBar extends SoundObject {
         selected = true;
         visualRectangle.getStyleClass().removeAll("unselectedNote");
         visualRectangle.getStyleClass().add("selectedNote");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(pane); 
+        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane); 
     }
     
     /**
@@ -101,7 +107,7 @@ public class NoteBar extends SoundObject {
         selected = false;
         visualRectangle.getStyleClass().removeAll("selectedNote");
         visualRectangle.getStyleClass().add("unselectedNote");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(pane); 
+        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane); 
     }
     
     /**
@@ -217,6 +223,24 @@ public class NoteBar extends SoundObject {
     }
     
     /**
+     * Sets the mouse handlers of the called object to the given parameters.
+     * Makes all child SoundObject's handlers the given. Useful to make all
+     * SoundObjects in a group use the topGesture's EventHandlers.
+     * @param press 
+     *          Handler of the object that mouse press events will consume 
+     * @param drag
+     *          Handler of the object that mouse drag events will consume 
+     * @param release 
+     *          Handler of the object that mouse release events will consume 
+     */
+    @Override
+    public void setHandlers(EventHandler press, EventHandler drag, EventHandler release) {
+        this.visualRectangle.setOnMousePressed(press);
+        this.visualRectangle.setOnMouseDragged(drag);
+        this.visualRectangle.setOnMouseReleased(release);
+    }
+    
+    /**
      * Adds the note to the given pane. 
      * Does not manage selection. Does not handle if given pane is null. 
      * Precondition: the note is not on the pane and the pane is not null.
@@ -281,6 +305,7 @@ public class NoteBar extends SoundObject {
             latestX = event.getX();
             latestY = event.getY();
             
+
             actionList = new ArrayList();
             
             prepareSelectionAction(event.isControlDown());
@@ -356,31 +381,14 @@ public class NoteBar extends SoundObject {
         }
     };
     
-    /**
-     * Helper method for prepareSelectionAction.
-     * Retrieves all other sound objects that are selected
-     * (excluding the current note).
-     * 
-     * @return allSelected is an ArrayList of those selected sound objects.
-     */
-    private ArrayList<SoundObject> getOtherSelectedItems(){
-        ArrayList<SoundObject> allSelected = new ArrayList();
-            for (Node n : pane.getChildren()) {
-                Rectangle r = (Rectangle) n;
-                SoundObject sObj = (SoundObject) r.getUserData();
-                if (sObj.isSelected()) {
-                    allSelected.add(sObj);
-                }
-            }
-        return allSelected;
-    }
     
     /**
      * Creates a Move or Stretch Action depending on the placement of the
      * initial click.
      * Helper method to the handleNotePressed event handler.
      */
-    private void prepareMoveOrStretchAction(){
+    @Override
+    void prepareMoveOrStretchAction(){
         double editLengthMax = visualRectangle.getX() + duration;
         double editLengthMin = editLengthMax - clickToEditLength;
         if ((editLengthMin <= latestX) && (latestX <= editLengthMax)) {
@@ -396,32 +404,4 @@ public class NoteBar extends SoundObject {
         }
     }
     
-    /**
-     * Creates a Selection and Unselection Action and adds it the actionList
-     * which will later be pushed onto the undo stack.
-     * Helper method to the handleNotePressed event handler.
-     *
-     * @param isCtrlDown boolean -> reads "Is Control Down?"
-     */
-    private void prepareSelectionAction(boolean isCtrlDown){
-        ArrayList<SoundObject> thisNote = new ArrayList();
-        thisNote.add((SoundObject) visualRectangle.getUserData());
-        if (!selected) {
-                if(!isCtrlDown){
-                    ArrayList<SoundObject> allSelected;
-                    allSelected = getOtherSelectedItems();
-                    unselectAction = new UnselectAction(allSelected);
-                    unselectAction.execute();
-                    actionList.add(unselectAction);
-                }
-                selectAction = new SelectAction(thisNote);
-                selectAction.execute();
-                actionList.add(selectAction);
-            }
-            else if (isCtrlDown){
-                unselectAction = new UnselectAction(thisNote);
-                unselectAction.execute();
-                actionList.add(unselectAction);
-            }
-    }
 }
