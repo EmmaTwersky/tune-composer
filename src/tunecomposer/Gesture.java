@@ -239,11 +239,27 @@ public final class Gesture extends SoundObject{
         visualRectangle.setOnMousePressed(handleGesturePressed);
         visualRectangle.setOnMouseDragged(handleGestureDragged);
         visualRectangle.setOnMouseReleased(handleGestureReleased);
-        containedSoundObjects.forEach((sObj) -> {
-            sObj.visualRectangle.setOnMousePressed(handleGesturePressed);
-            sObj.visualRectangle.setOnMouseDragged(handleGestureDragged);
-            sObj.visualRectangle.setOnMouseReleased(handleGestureReleased);
-        });
+    }
+    
+    /**
+     * Sets the mouse handlers of the called object to the given parameters.
+     * Makes all child SoundObject's handlers the given. Useful to make all
+     * SoundObjects in a group use the topGesture's EventHandlers.
+     * @param press 
+     *          Handler of the object that mouse press events will consume 
+     * @param drag
+     *          Handler of the object that mouse drag events will consume 
+     * @param release 
+     *          Handler of the object that mouse release events will consume 
+     */
+    @Override
+    public void setHandlers(EventHandler press, EventHandler drag, EventHandler release) {
+        this.visualRectangle.setOnMousePressed(press);
+        this.visualRectangle.setOnMouseDragged(drag);
+        this.visualRectangle.setOnMouseReleased(release);
+        for (SoundObject sObj : containedSoundObjects) {
+            sObj.setHandlers(press, drag, release);
+        }
     }
     
     
@@ -315,11 +331,10 @@ public final class Gesture extends SoundObject{
      * @param soundObjectPane the pane to add the gestureBox to
      */
     public void group(Pane soundObjectPane) {
-//        setHandlers();
         refreshVisualRectangle();
         soundObjectPane.getChildren().add(visualRectangle);
         for (SoundObject sObj : containedSoundObjects) {
-            sObj.setHandlers();
+            sObj.setHandlers(handleGesturePressed, handleGestureDragged, handleGestureReleased);
             if (sObj.getTopGesture() == null) {
                 sObj.setTopGesture(this);
             }
@@ -346,71 +361,31 @@ public final class Gesture extends SoundObject{
     
     
     /**
-     * Handles note pressed event. 
-     * Sets initial pressed values of the mouse and consumes the event.
+     * Handles gesture pressed event. 
+     * Prepares the proper Selection,Unselection, Move, and Stretch Actions
+     * depending on the placement of the click, if control is down, and which
+     * note(s) were already selected.
      * 
      * @param event the mouse click event
      */
     EventHandler<MouseEvent> handleGesturePressed = (MouseEvent event) -> {
         CompositionPaneController.tunePlayerObj.stop();
-        actionList = new ArrayList();
-
+            
         latestX = event.getX();
         latestY = event.getY();
+            
+        actionList = new ArrayList();
+            
+        prepareSelectionAction(event.isControlDown());
+            
+        prepareMoveOrStretchAction();
         
-        
-        
-        ArrayList<SoundObject> thisGesture = new ArrayList();
-        thisGesture.add((SoundObject) visualRectangle.getUserData());
-        
-        if (!selected) {
-            if(!event.isControlDown()){
-                ArrayList<SoundObject> allSelected = new ArrayList();
-                for (Node n : soundObjectPane.getChildren()) {
-                    Rectangle r = (Rectangle) n;
-                    SoundObject sObj = (SoundObject) r.getUserData();
-                    if (sObj.isSelected()) {
-                        allSelected.add(sObj);
-                    }
-                }
-                unselectAction = new UnselectAction(allSelected);
-                unselectAction.execute();
-                actionList.add(unselectAction);
-            }
-            selectAction = new SelectAction(thisGesture);
-            selectAction.execute();
-            actionList.add(selectAction);
-        }
-        else if (event.isControlDown()){
-            unselectAction = new UnselectAction(thisGesture);
-            unselectAction.execute();
-            actionList.add(unselectAction);
-        }
-        
-        containedSoundObjects.forEach((sObj) -> {
-            double editLengthMax =  (sObj.visualRectangle.getX() + sObj.visualRectangle.getWidth());
-            double editLengthMin = editLengthMax - clickToEditLength;
-            if ((editLengthMin <= latestX) && (latestX <= editLengthMax)) {
-                draggingLength = true;
-            }
-        });
-        
-        if (draggingLength) {
-            sObjStretch = new LengthChangeAction(
-                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
-                (int) latestX);
-        } 
-        else {
-            sObjMove = new MoveAction(
-                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
-                latestX, latestY);
-        }
     };
     
     /**
-     * Handles note dragged event.
-     * Selects and drags to move the note or drags to change duration, 
-     * based on note click location conventions. Translates note and consumes 
+     * Handles gesture dragged event.
+     * Selects and drags to move the gesture or drags to change duration, 
+     * based on note click location conventions. Translates gesture and consumes 
      * event. Also updates note lists.
      * 
      * @param event the mouse click event
@@ -460,4 +435,32 @@ public final class Gesture extends SoundObject{
         actionManager.putInUndoStack(actionList);
         event.consume();
     };
+    
+    
+    /**
+     * Creates a Move or Stretch Action depending on the placement of the
+     * initial click.
+     * Helper method to the handleGesturePressed event handler.
+     */
+    @Override
+    void prepareMoveOrStretchAction(){
+        containedSoundObjects.forEach((sObj) -> {
+            double editLengthMax =  (sObj.visualRectangle.getX() + sObj.visualRectangle.getWidth());
+            double editLengthMin = editLengthMax - clickToEditLength;
+            if ((editLengthMin <= latestX) && (latestX <= editLengthMax)) {
+                draggingLength = true;
+            }
+        });
+        
+        if (draggingLength) {
+            sObjStretch = new LengthChangeAction(
+                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
+                (int) latestX);
+        } 
+        else {
+            sObjMove = new MoveAction(
+                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
+                latestX, latestY);
+        }
+    }
 }

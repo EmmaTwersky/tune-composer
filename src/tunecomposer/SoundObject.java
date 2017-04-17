@@ -2,6 +2,7 @@ package tunecomposer;
 
 import java.util.ArrayList;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.Action;
@@ -121,6 +122,13 @@ public abstract class SoundObject {
     */
     public abstract void setHandlers();
     
+        /**
+     * Creates a Move or Stretch Action depending on the placement of the
+     * initial click.
+     * Helper method to the handleNotePressed event handler.
+     */
+    abstract void prepareMoveOrStretchAction();
+    
     /**
     * Adds the visualRectangle on the pane.
     * 
@@ -143,6 +151,9 @@ public abstract class SoundObject {
      * @return onEdge is true if the move is illegal and false if its legal.
      */
     public abstract boolean isOnEdge(double x, double y);
+    
+    
+    public abstract void setHandlers(EventHandler press, EventHandler drag, EventHandler release);
     
     /**
     * Adds the SoundObject's MidiEvent to the player.
@@ -216,5 +227,54 @@ public abstract class SoundObject {
         }
         
         return topGest.getAllChildren();
+    }
+    
+    /**
+     * Helper method for prepareSelectionAction.
+     * Retrieves all other sound objects that are selected
+     * (excluding the current note).
+     * 
+     * @return allSelected is an ArrayList of those selected sound objects.
+     */
+    private ArrayList<SoundObject> getOtherSelectedItems(){
+        ArrayList<SoundObject> allSelected = new ArrayList();
+            for (Node n : soundObjectPane.getChildren()) {
+                Rectangle r = (Rectangle) n;
+                SoundObject sObj = (SoundObject) r.getUserData();
+                if (sObj.isSelected()) {
+                    allSelected.add(sObj);
+                }
+            }
+        return allSelected;
+    }
+    
+    
+    /**
+     * Creates a Selection and Unselection Action and adds it the actionList
+     * which will later be pushed onto the undo stack.
+     * Helper method to the handleNotePressed and handleGesturePressed event handlers.
+     *
+     * @param isCtrlDown boolean -> reads "Is Control Down?"
+     */
+    void prepareSelectionAction(boolean isCtrlDown){
+        ArrayList<SoundObject> thisSoundObject = new ArrayList();
+        thisSoundObject.add((SoundObject) visualRectangle.getUserData());
+        if (!selected) {
+                if(!isCtrlDown){
+                    ArrayList<SoundObject> allSelected;
+                    allSelected = getOtherSelectedItems();
+                    unselectAction = new UnselectAction(allSelected);
+                    unselectAction.execute();
+                    actionList.add(unselectAction);
+                }
+                selectAction = new SelectAction(thisSoundObject);
+                selectAction.execute();
+                actionList.add(selectAction);
+            }
+            else if (isCtrlDown){
+                unselectAction = new UnselectAction(thisSoundObject);
+                unselectAction.execute();
+                actionList.add(unselectAction);
+            }
     }
 }
