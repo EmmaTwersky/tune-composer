@@ -51,55 +51,53 @@ public class SoundObjectPaneController {
         }
     }
     
-    
-    /**
-     * Empties the SELECTED_SOUNDOBJECT_ARRAY and un-selects all notes.
-     * @param pane
-     */
-    public static void unselectAllSoundObjects(Pane pane){
-        for (Node n: pane.getChildren()) {
-            Rectangle r = (Rectangle) n;
-            SoundObject sObj = (SoundObject) (r).getUserData();
-            if (sObj.isSelected()) {
-                sObj.unselect();
-            }
-        }
-        SELECTED_SOUNDOBJECT_ARRAY.clear();
-    }
-    
+//    /**
+//     * Empties the SELECTED_SOUNDOBJECT_ARRAY and un-selects all notes.
+//     * @param pane
+//     */
+//    public static void unselectAllSoundObjects(Pane pane){
+//        for (Node n: pane.getChildren()) {
+//            Rectangle r = (Rectangle) n;
+//            SoundObject sObj = (SoundObject) (r).getUserData();
+//            if (sObj.isSelected()) {
+//                sObj.unselect();
+//            }
+//        }
+//        SELECTED_SOUNDOBJECT_ARRAY.clear();
+//    }
     
     /**
      * Groups the selected notes or gestures.
      */
     public void group() {
         GroupAction groupAction = new GroupAction(SELECTED_SOUNDOBJECT_ARRAY, 
-                actionManager, soundObjectPane);
-        ArrayList<Action> actionArray = new ArrayList();
-        actionArray.add(groupAction);
-        actionManager.execute(actionArray);
-        actionManager.putInUndoStack(actionArray);
+        actionManager, soundObjectPane);
+        actionManager.execute(groupAction);
+        actionManager.putInUndoStack(groupAction);
         
         updateSelectedSoundObjectArray(soundObjectPane);
     }
-    
     
     /**
      * Ungroups the selected group.
      */
     public void ungroup() {
-        ArrayList<Action> actionList = new ArrayList();
         for (SoundObject sObj : SELECTED_SOUNDOBJECT_ARRAY) {
-            if (sObj instanceof Gesture && sObj.visualRectangle.getUserData() == sObj) {
+            if ((sObj instanceof Gesture) && (sObj.visualRectangle.getUserData() == sObj)) {
                 UngroupAction ungroupAction = new UngroupAction(
                                             (Gesture) sObj, soundObjectPane);
-                actionList.add(ungroupAction);
+                actionManager.undoStack.forEach((actionList) -> {
+                    for (Action action : actionList) {
+                        if (!action.affectedObjs.equals(SELECTED_SOUNDOBJECT_ARRAY)) {
+                            actionManager.execute(ungroupAction);
+                            actionManager.putInUndoStack(ungroupAction);
+                        }
+                    }
+                });
             }
         }
-        actionManager.execute(actionList);
-        actionManager.putInUndoStack(actionList);
         updateSelectedSoundObjectArray(soundObjectPane);
     }
-    
     
     /**
      * Set the GroupAction to the instance that contains the undo and 

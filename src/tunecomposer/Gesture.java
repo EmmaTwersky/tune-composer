@@ -6,6 +6,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.GroupAction;
 import tunecomposer.actionclasses.MoveAction;
 import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.LengthChangeAction;
@@ -238,6 +239,9 @@ public final class Gesture extends SoundObject{
         });
     }
     
+    public void isEqual(GroupAction groupAction) {
+        
+    }
     
 
     @Override
