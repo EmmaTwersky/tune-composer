@@ -5,8 +5,7 @@ import java.util.Stack;
 import tunecomposer.actionclasses.Action;
 
 /**
- * Manages the undo and redo stacks that all "undo-able" actions are pushed to.
- * @author lazarcl
+ * Manages the undo and redo stacks that all "undo-able" actions are pushed onto.
  */
 public class ActionManager {
     
@@ -14,48 +13,42 @@ public class ActionManager {
     Stack<ArrayList<Action>> redoStack;
     
     /**
-     * Constructs the undo and redo stacks. They take any type Action object.
+     * Constructs the undo and redo stacks. These stacks can contain any
+     * object of type Action.
      */
     public ActionManager(){
         undoStack = new Stack<>();
         redoStack = new Stack<>();
     }
     
+    
     /**
      * Perform the given action. Then push this item into the undoStack.
-     * @param action Action type object to be performed in program. 
+     * @param action Action type object to be performed in program
      */
     public void execute(Action action) {
-        if (action == null) {
-            System.out.println("given actionList in ActionManager.execute(Action) is null");
-            Thread.dumpStack();
-        }
         action.execute();
     }
     
-    
+   
     /**
      * Executes all given actions in the provided ArrayList of Actions. Does the
      * same thing as this.execute(..) on every item. Does nothing if given null.
      * @param actionList 
      */
     public void execute(ArrayList<Action> actionList) {
-        if (actionList == null) {
-            System.out.println("given actionList in ActionManager.execute(ArrayList<Action>) is null");
-            Thread.dumpStack();
-        }
         for (Action a : actionList) {
             this.execute(a);
         }
     }
     
-    
+    /**
+     * Puts given Action onto the stack. If actionArray is null,
+     * then does nothing. Clears redoStack to avoid redoing actions when it 
+     * doesn't make sense to.
+     * @param action
+     */
     public void putInUndoStack(Action action) {
-        if (action == null) {
-            System.out.println("given actionList in ActionManager.putInUndoStack(ArrayList<Action>) is null");
-            Thread.dumpStack();
-        }
-        
         ArrayList<Action> actionArray = new ArrayList();
         actionArray.add(action);
         
@@ -63,18 +56,14 @@ public class ActionManager {
         undoStack.push(actionArray);
     }
     
+    
     /**
-     * Puts given ArrayList of actions into the stack. If actionArray is null,
+     * Puts given ArrayList of actions onto the stack. If actionArray is null,
      * then does nothing. Clears redoStack to avoid redoing actions when it 
      * doesn't make sense to.
      * @param actionArray 
      */
     public void putInUndoStack(ArrayList<Action> actionArray) {
-        if (actionArray == null) {
-            System.out.println("given actionList in ActionManager.putInUndoStack(ArrayList<Action>) is null");
-            Thread.dumpStack();
-        }
-        
         if (actionArray.isEmpty()) {
             return;
         }
@@ -82,6 +71,7 @@ public class ActionManager {
         redoStack.clear();
         undoStack.push(actionArray);
     }
+    
     
     /**
      * Pop top item on undoStack. Undo the action, then push it onto the
@@ -94,12 +84,14 @@ public class ActionManager {
         }
         ArrayList<Action> undoActions;
         undoActions = undoStack.pop();
+        
         for (Action a : undoActions) {
             a.undo();
         }
         redoStack.push(undoActions);
         
     }
+    
     
     /**
      * Pop top item from redoStack. Redo the action's effects, and push it back
@@ -111,6 +103,7 @@ public class ActionManager {
         }
         ArrayList<Action> redoActions;
         redoActions = redoStack.pop();
+        
         for (Action a : redoActions) {
             a.redo();   
         }
@@ -121,7 +114,7 @@ public class ActionManager {
     /**
      * Check if undo stack is empty. Returns false if it contains Actions, true
      * if it is empty.
-     * @return boolean: true==empty, false==not empty
+     * @return boolean
      */
     public boolean isUndoStackEmpty() {
         if (undoStack.isEmpty()) {
@@ -130,10 +123,11 @@ public class ActionManager {
         return false;
     }
     
-        /**
+    
+    /**
      * Check if redo stack is empty. Returns false if it contains Actions, true
      * if it is empty.
-     * @return boolean: true==empty, false==not empty
+     * @return boolean
      */
     public boolean isRedoStackEmpty() {
         if (redoStack.isEmpty()) {
