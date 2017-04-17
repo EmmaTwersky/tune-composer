@@ -7,7 +7,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javax.sound.midi.ShortMessage;
-import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.MoveAction;
 import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.LengthChangeAction;
@@ -17,9 +16,8 @@ import tunecomposer.actionclasses.UnselectAction;
  * This class creates and edits NoteBar objects to display notes in the tune 
  * and be played in MidiPLayer.
  * @extends SoundObject
- * 
  */
-public class NoteBar extends SoundObject{
+public class NoteBar extends SoundObject {
     /**
      * Create variables for the note name, instrument number, channel number,
      * pitch, starting value, and duration. 
@@ -36,7 +34,6 @@ public class NoteBar extends SoundObject{
      */
     private ActionManager actionManager;
     
-    
     /**
     * Creates fixed height and set ranges for pitch. 
     */
@@ -48,6 +45,12 @@ public class NoteBar extends SoundObject{
     * Sets default duration, minimum duration and default click range to edit duration. 
     */
     private final int DEFAULT_LENGTH = 100;
+    
+    /**
+     * Minimum length that a NoteBar rectangle can become. 
+     * Consequently, also limits the minimum duration of the note.
+     */
+    public final int minLength = 5;
     
     /**
      * Load InstrumentInfo HashMap to look up instrument key values.
@@ -69,7 +72,7 @@ public class NoteBar extends SoundObject{
         instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
         actionManager = _actionManager;
-        pane = soundObjectPane;
+        this.soundObjectPane = soundObjectPane;
         
         pitch = PITCH_RANGE - (int) y / NOTE_HEIGHT;
         startTick = (int) x;
@@ -93,7 +96,7 @@ public class NoteBar extends SoundObject{
         selected = true;
         visualRectangle.getStyleClass().removeAll("unselectedNote");
         visualRectangle.getStyleClass().add("selectedNote");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(pane); 
+        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane); 
     }
     
     /**
@@ -104,7 +107,7 @@ public class NoteBar extends SoundObject{
         selected = false;
         visualRectangle.getStyleClass().removeAll("selectedNote");
         visualRectangle.getStyleClass().add("unselectedNote");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(pane); 
+        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane); 
     }
     
     /**
@@ -190,7 +193,6 @@ public class NoteBar extends SoundObject{
      */
     @Override
     public void snapInPlace() {
-        
         //Get raw values of rectangle location.
         int xRaw = (int) visualRectangle.getX();
         int yRaw = (int) visualRectangle.getY();
@@ -225,7 +227,7 @@ public class NoteBar extends SoundObject{
      * Does not manage selection. Does not handle if given pane is null. 
      * Precondition: the note is not on the pane and the pane is not null.
      * 
-     * @param soundObjectPane
+     * @param soundObjectPane pane the note is on
      */
     @Override
     public void addToPane(Pane soundObjectPane) {
@@ -237,7 +239,7 @@ public class NoteBar extends SoundObject{
      * Does not manage selection. Does not handle if given pane is null.
      * Precondition: the note is on the pane and the pane is not null.
      * 
-     * @param soundObjectPane
+     * @param soundObjectPane pane the note is on
      */
     @Override
     public void removeFromPane(Pane soundObjectPane){
@@ -285,6 +287,7 @@ public class NoteBar extends SoundObject{
             latestX = event.getX();
             latestY = event.getY();
             
+
             actionList = new ArrayList();
             
             prepareSelectionAction(event.isControlDown());
@@ -362,14 +365,14 @@ public class NoteBar extends SoundObject{
     
     /**
      * Helper method for prepareSelectionAction.
-     * retrieves all other sound objects that are selected
+     * Retrieves all other sound objects that are selected
      * (excluding the current note).
      * 
      * @return allSelected is an ArrayList of those selected sound objects.
      */
     private ArrayList<SoundObject> getOtherSelectedItems(){
         ArrayList<SoundObject> allSelected = new ArrayList();
-            for (Node n : pane.getChildren()) {
+            for (Node n : soundObjectPane.getChildren()) {
                 Rectangle r = (Rectangle) n;
                 SoundObject sObj = (SoundObject) r.getUserData();
                 if (sObj.isSelected()) {
@@ -383,7 +386,6 @@ public class NoteBar extends SoundObject{
      * Creates a Move or Stretch Action depending on the placement of the
      * initial click.
      * Helper method to the handleNotePressed event handler.
-     *
      */
     private void prepareMoveOrStretchAction(){
         double editLengthMax = visualRectangle.getX() + duration;

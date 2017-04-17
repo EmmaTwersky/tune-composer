@@ -19,7 +19,7 @@ public class ActionManager {
      * Constructs the undo and redo stacks. 
      * These stacks can contain any object of type Action.
      */
-    public ActionManager(){
+    public ActionManager() {
         undoStack = new Stack<>();
         redoStack = new Stack<>();
     }
@@ -29,7 +29,7 @@ public class ActionManager {
      * 
      * @param action Action type object to be performed in program
      */
-    public void execute(Action action) throws IllegalArgumentException{
+    public void execute(Action action) throws IllegalArgumentException {
         action.execute();
     }
     
@@ -38,16 +38,17 @@ public class ActionManager {
      * 
      * @param actionList ArrayList of Action type objects to be performed in program
      */
-    public void execute(ArrayList<Action> actionList) throws IllegalArgumentException{
+    public void execute(ArrayList<Action> actionList)
+            throws IllegalArgumentException {
         for (Action a : actionList) {
             this.execute(a);
         }
     }
     
     /**
-     * Puts given Action onto the stack. If actionArray is null,
-     * then does nothing. Clears redoStack to avoid redoing actions when it 
-     * doesn't make sense to.
+     * Puts given Action onto the stack. 
+     * If actionArray is null, then does nothing. 
+     * Clears redoStack to avoid redoing actions when it doesn't make sense to.
      * 
      * @param action action to put onto the stack
      */
@@ -60,9 +61,9 @@ public class ActionManager {
     }
     
     /**
-     * Puts given ArrayList of actions onto the stack. If actionArray is null,
-     * then does nothing. Clears redoStack to avoid redoing actions when it 
-     * doesn't make sense to.
+     * Puts given ArrayList of actions onto the stack. 
+     * If actionArray is null, then does nothing. 
+     * Clears redoStack to avoid redoing actions when it doesn't make sense to.
      * 
      * @param actionArray Actions to put onto the stack
      */
@@ -75,12 +76,11 @@ public class ActionManager {
         undoStack.push(actionArray);
     }
     
-    
     /**
      * Pop top item on undoStack. 
      * Undo the action, then push it onto the redoStack.
      */
-    public void undo(){
+    public void undo() {
 
         if (undoStack.isEmpty()) {
             return;
@@ -98,7 +98,7 @@ public class ActionManager {
      * Pop top item from redoStack. 
      * Redo the action's effects, and push it back onto the undoStack.
      */
-    public void redo(){
+    public void redo() {
         if (redoStack.isEmpty()) {
             return;
         }
