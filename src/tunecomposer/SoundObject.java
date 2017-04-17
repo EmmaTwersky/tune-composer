@@ -99,37 +99,37 @@ public abstract class SoundObject {
     public abstract boolean isSelected();
     
     /**
-    * Creates abstract method to move the SoundObject.
+    *  Move the SoundObject by given increments.
      * @param xInc increment to shift visualRectangle's x coordinate
      * @param yInc increment to shift visualRectangle's y coordinate
     */
     public abstract void move(double xInc, double yInc);
     
     /**
-    * Creates abstract method to change the SoundObject's length.
+    *  Change the SoundObject's length by given increment.
     * @param length amount to increment Sound Object's length.
     */    
     public abstract void changeLength(int length);
     
     /**
-    * Creates abstract set of SoundObject visual rectangle altering methods.
+    * Snap object to y-coordinate of nearest note.
     */
     public abstract void snapInPlace();
     
     /**
-    * Gives the object's visualRectangle mouse event handlers.
+    * Set the mouse event handlers of the this object.
     */
     public abstract void setHandlers();
     
     /**
-    * Adds the visualRectangle on the pane.
+    * Adds the SoundObject's visual representation to the pane.
     * 
     * @param soundObjectPane pane visualRectangle is on
     */
     public abstract void addToPane(Pane soundObjectPane);
     
     /**
-    * Removes the visualRectangle from the pane, also handles deletion.
+    * Removes SoundObject's visual representation from the pane.
     * 
     * @param soundObjectPane pane visualRectangle is on
     */
