@@ -22,10 +22,16 @@
             </test-roots>
         </data>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>gesture's</word>
             <word>Redoes</word>
+            <word>Regroups</word>
+            <word>timeline</word>
             <word>Ungroup</word>
+            <word>ungrouped</word>
+            <word>ungrouping</word>
             <word>Ungroups</word>
             <word>unselect</word>
+            <word>unselecting</word>
             <word>unselection</word>
             <word>Unselects</word>
         </spellchecker-wordlist>

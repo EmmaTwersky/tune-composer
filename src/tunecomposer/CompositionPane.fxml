@@ -6,34 +6,34 @@
 <?import javafx.scene.layout.*?>
 
 <ScrollPane 
-    fx:controller = "tunecomposer.CompositionPaneController" 
-    styleClass = "compositionPane" 
-    stylesheets = "@TuneComposer.css" 
+    xmlns:fx = "http://javafx.com/fxml/1" 
+    xmlns = "http://javafx.com/javafx/8" 
     prefHeight = "1280.0" 
     prefWidth = "2000.0" 
-    xmlns = "http://javafx.com/javafx/8" 
-    xmlns:fx = "http://javafx.com/fxml/1" >
+    fx:controller = "tunecomposer.CompositionPaneController" 
+    stylesheets = "@TuneComposer.css" >
     <content>
         <StackPane
-            fx:id = "compositionPane" >
+            fx:id = "compositionPane" 
+            styleClass = "compositionPane" >
             <children>
                 <fx:include 
                     fx:id = "noteLinesPane" 
-                    source = "NoteLinesPane.fxml"/>
+                    source = "NoteLinesPane.fxml" />
                 <fx:include 
                     fx:id = "soundObjectPane" 
                     source = "SoundObjectPane.fxml"
                     onMousePressed = "#handlePanePressed"
                     onMouseDragged = "#handlePaneDragged"
-                    onMouseReleased = "#handlePaneReleased"/>
+                    onMouseReleased = "#handlePaneReleased" />
                 <fx:include 
                     fx:id = "redBarPane" 
                     source = "RedBarPane.fxml"
-                    mouseTransparent = "true"/>   
+                    mouseTransparent = "true" />   
                 <fx:include 
                     fx:id = "selectionWindowPane" 
                     source = "SelectionWindowPane.fxml"
-                    mouseTransparent = "true"/>
+                    mouseTransparent = "true" />
             </children>
         </StackPane> 
     </content>

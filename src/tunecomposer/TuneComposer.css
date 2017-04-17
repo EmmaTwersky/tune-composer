@@ -3,9 +3,9 @@
     Author: Emma Twersky
 */
 
-/* Sets style for the staff and measure lines. */
+/* Sets style for the compositionPane, and staff and measure lines. */
 #compositionPane{
-    -fx-background-color: gainsboro;
+    -fx-background-color: Gainsboro;
 }
 
 #staffLine{
@@ -16,16 +16,16 @@
     -fx-stroke: LightGrey;
 }
 
-/* Sets style for the instrument tool bar. */
+/* Sets style for the instrument tool bar background and text. 
+Uses opacity features and drop shadow effects. */
 #instrumentToolBar{
-    -fx-background-color: rgba(50, 50, 50, 0.2);
-    -fx-effect: dropshadow( Gaussian , Thistle , 10, 0, 0, 1 );
-    -fx-background-noise: 2;
-    -fx-font-family: 'Trebuchet MS', Helvetica, sans-serif;
-    -fx-font-weight: bold;
+    -fx-background-color: RGBA(50, 50, 50, 0.2); 
+    -fx-effect: DropShadow(Gaussian , Thistle , 10, 0, 0, 1 );
+    -fx-font-family: 'Trebuchet MS', Helvetica, Sans-Serif;
+    -fx-font-weight: Bold;
 }
 
-/* Sets style for the selected and unselected note attributes. */
+/* Sets style for the selected and unselected note bar attributes. */
 .selectedNote{
     -fx-stroke: Coral; 
     -fx-stroke-width: 3px; 
@@ -75,42 +75,41 @@
 
 /* Sets colors for each of the eight instrument's text and note attributes. */
 #Piano{
-    -fx-text-fill: lemonchiffon;
-    -fx-fill: lemonchiffon;
+    -fx-text-fill: LemonChiffon;
+    -fx-fill: LemonChiffon;
 }
 
 #Harpsichord{
-    -fx-text-fill: azure;
-    -fx-fill: azure; 
+    -fx-text-fill: Azure;
+    -fx-fill: Azure; 
 }
 
 #Marimba{
-    -fx-text-fill: lavenderblush;
-    -fx-fill: lavenderblush;
+    -fx-text-fill: LavenderBlush;
+    -fx-fill: LavenderBlush;
 }
 
 #Organ{
-    -fx-text-fill: lavender;
-    -fx-fill: lavender; 
+    -fx-text-fill: Lavender;
+    -fx-fill: Lavender; 
 }
 
 #Accordion{
-    -fx-text-fill: paleturquoise;
-    -fx-fill: paleturquoise; 
+    -fx-text-fill: PaleTurquoise;
+    -fx-fill: PaleTurquoise; 
 }
 
 #Guitar{
-    -fx-text-fill: derive(aquamarine, 50%);;
-    -fx-fill: derive(aquamarine, 50%);;
+    -fx-text-fill: Derive(Aquamarine, 50%);
+    -fx-fill: Derive(Aquamarine, 50%);
 }
 
 #Violin{
-    -fx-text-fill: peachpuff;
-    -fx-fill: peachpuff;
+    -fx-text-fill: PeachPuff;
+    -fx-fill: PeachPuff;
 }
 
 #FrenchHorn{
-    -fx-text-fill: derive(pink, 10%);
-    -fx-fill: derive(pink, 10%);
+    -fx-text-fill: Derive(Pink, 10%);
+    -fx-fill: Derive(Pink, 10%);
 }
-

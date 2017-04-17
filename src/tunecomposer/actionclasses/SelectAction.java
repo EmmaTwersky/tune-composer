@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import tunecomposer.SoundObject;
 
 /**
- * An action which stores selecting SoundObjects in the application.
+ * An action which selects a given array of SoundObjects.
  */
 public class SelectAction extends Action {
     
     /**
-     * Constructs an action event to select SoundObjects.
-     * Clones the selectedObjs to be affectedObjs.
+     * Sets up Action by setting affectedObjs to given SoundObjects.
      * 
      * @param selectedObjs all SoundObjects to be affected
      */
@@ -50,7 +49,8 @@ public class SelectAction extends Action {
     
     /**
      * Updates the array of affectedObjs.
-     * Used in dragging events on the composition pane.
+     * Used in dragging events on the composition pane. Useful for changing
+     * SoundObjects to affect without creating another SelectAction object.
      * 
      * @param selectedObjs all SoundObjects to be affected
      */

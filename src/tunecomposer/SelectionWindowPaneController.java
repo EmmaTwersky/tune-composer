@@ -6,9 +6,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 /**
- * Controller for pane that holds the selection window rectangle. 
- * Controls the scaling of the rectangle through passed coordinates.
- * @author lazarcl
+ * Controls the selection window rectangle. 
  */
 public class SelectionWindowPaneController implements Initializable {
     
@@ -38,12 +36,18 @@ public class SelectionWindowPaneController implements Initializable {
     public double height;
     
     /** 
-     * Coordinates where the mouse was first clicked. Used for scaling 
-     * SELECTION_WINDOW's size.
+     * Coordinates where the mouse was first clicked. 
+     * Used for scaling SELECTION_WINDOW's size.
      */
     private double dragStartX;
     private double dragStartY;
     
+    /**
+     * Sets original SELECTION_WINDOW to not show.
+     * 
+     * @param location the source of the scene
+     * @param resources the resources of the utility of the scene
+     */
     @FXML
     @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {

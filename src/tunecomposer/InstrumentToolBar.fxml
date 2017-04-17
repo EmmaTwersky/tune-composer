@@ -12,23 +12,21 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
-<!-- Remove repeated code in the padding? -->
-
 <?import javafx.scene.layout.Pane?>
 
 <ToolBar 
-    fx:controller = "tunecomposer.InstrumentToolBarController"
-    styleClass = "instrumentToolBar"
-    stylesheets = "@TuneComposer.css" 
+    xmlns = "http://javafx.com/javafx/8" 
+    xmlns:fx = "http://javafx.com/fxml/1" 
+    fx:id = "instrumentToolBar"
     prefWidth = "150.0"
     orientation = "VERTICAL" 
-    xmlns = "http://javafx.com/javafx/8" 
-    xmlns:fx = "http://javafx.com/fxml/1"
-    fx:id = "instrumentToolBar" >
+    fx:controller = "tunecomposer.InstrumentToolBarController" 
+    stylesheets = "@TuneComposer.css" 
+    styleClass = "instrumentToolBar" >
     <items>
-      <fx:define>
-          <ToggleGroup
-            fx:id = "instrumentSelection"/>
+        <fx:define>
+            <ToggleGroup
+                fx:id = "instrumentSelection" />
       </fx:define>
       <RadioButton 
             fx:id = "Piano" 
@@ -37,24 +35,24 @@
             text = "Piano"
             styleClass = "Piano" 
             selected = "true"
-            userData = "0">
-          <padding>
+            userData = "0" >
+            <padding>
                <Insets 
                    top = "20" 
-                   left = "15"/>
+                   left = "15" />
             </padding>
       </RadioButton>
       <RadioButton 
             fx:id = "Harpsichord" 
             toggleGroup = "$instrumentSelection"
-            onAction = "#handleInstrumentMenuAction"  
-            styleClass = "Harpsichord" 
+            onAction = "#handleInstrumentMenuAction" 
             text = "Harpsichord"
+            styleClass = "Harpsichord" 
             userData = "7" >
             <padding>
                 <Insets 
                     top = "30" 
-                    left = "15"/>
+                    left = "15" />
             </padding>
       </RadioButton>
       <RadioButton 
@@ -67,7 +65,7 @@
             <padding>
                <Insets 
                    top = "30" 
-                   left = "15"/>
+                   left = "15" />
             </padding>
       </RadioButton>
       <RadioButton 
@@ -80,20 +78,20 @@
             <padding>
                <Insets 
                    top = "30" 
-                   left = "15"/>
+                   left = "15" />
             </padding>
       </RadioButton>
       <RadioButton 
             fx:id = "Accordion" 
+            toggleGroup = "$instrumentSelection"
             onAction = "#handleInstrumentMenuAction"  
             text = "Accordion"
             styleClass = "Accordion" 
-            toggleGroup = "$instrumentSelection"
             userData = "22" >
             <padding>
                <Insets 
                    top = "30" 
-                   left = "15"/>
+                   left = "15" />
             </padding>
       </RadioButton>
       <RadioButton 
@@ -106,7 +104,7 @@
             <padding>
                <Insets 
                    top = "30" 
-                   left = "15"/>
+                   left = "15" />
             </padding>
       </RadioButton>
       <RadioButton 
@@ -119,7 +117,7 @@
             <padding>
                <Insets 
                    top = "30" 
-                   left = "15"/>
+                   left = "15" />
             </padding>
       </RadioButton>
       <RadioButton 
@@ -132,11 +130,8 @@
             <padding>
                <Insets 
                    top = "30" 
-                   left = "15"/>
+                   left = "15" />
             </padding>
       </RadioButton>
     </items>
-    <BorderPane.margin>
-       <Insets />
-    </BorderPane.margin>
 </ToolBar>

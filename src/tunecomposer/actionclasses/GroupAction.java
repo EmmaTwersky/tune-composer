@@ -7,17 +7,17 @@ import tunecomposer.SoundObject;
 import tunecomposer.Gesture;
 
 /**
- * An action which stores grouping SoundObjects in the application.
+ * An action which groups the given SoundObjects.
  */
 public class GroupAction extends Action{
     
     /**
      * Gesture reference for the new Gesture created.
      */
-    final Gesture gesture;
+    private final Gesture gesture;
     
     /**
-     * Constructs an action event to create a Gesture.
+     * Sets up this action to group given SoundObjects, but doesn't execute action.
      * Creates a new Gesture with the given selectedObjs.
      * Sets gesture and soundObjectPane and creates userData for the visualRectangle.
      * 

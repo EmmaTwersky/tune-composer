@@ -5,12 +5,12 @@ import tunecomposer.NoteBar;
 import tunecomposer.ActionManager;
 
 /**
- * An action which stores adding a note in the application.
+ * An action which adds a new note to the soundObjectPane.
  */
 public class AddNoteAction extends Action {
 
     /**
-     * NoteBar reference for the new NoteBar created.
+     * NoteBar reference to the new NoteBar created.
      */
     private final NoteBar note;
 

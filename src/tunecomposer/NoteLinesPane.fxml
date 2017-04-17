@@ -8,8 +8,9 @@
 <?import javafx.scene.layout.*?>
 
 <Pane 
+    xmlns:fx = "http://javafx.com/fxml/1" 
+    xmlns = "http://javafx.com/javafx/8" 
     fx:id = "noteLinesPane" 
-    fx:controller = "tunecomposer.NoteLinesPaneController"
     stylesheets = "@TuneComposer.css"
-    xmlns:fx = "http://javafx.com/fxml/1" > 
+    fx:controller = "tunecomposer.NoteLinesPaneController" > 
 </Pane>

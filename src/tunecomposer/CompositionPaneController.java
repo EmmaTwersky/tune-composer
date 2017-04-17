@@ -16,6 +16,13 @@ import tunecomposer.actionclasses.UnselectAction;
  * Controller for coordinating all the controllers in the composition StackPane.
  */
 public class CompositionPaneController implements Initializable { 
+    
+    /**
+     * Dimensions of the Composition StackPane.
+     */
+    public static final int PANE_X_MAX = 2000;
+    public static final int PANE_Y_MAX = 1280;
+    
     /**
      * Create the tune player to compose and play notes on the composition pane.
      */
@@ -50,34 +57,26 @@ public class CompositionPaneController implements Initializable {
      */
     public ActionManager actionManager;
     
-    
     /**
-     * Dimensions of the Composition StackPane
-     */
-    public static final int PANEXMAX = 2000;
-    public static final int PANEYMAX = 1280;
-    
-    /**
-     * Selection Actions used in tandem to record which notes' states have been
+     * Selection Actions used in tandem to record which notes states have been
      * changed during the current click.
      * Used in mouse handlers.
      */
-    SelectAction selectAction;
-    UnselectAction unselectAction;
+    private SelectAction selectAction;
+    private UnselectAction unselectAction;
     
     /**
      * All the selection actions that have been created during the current click.
      * Used in mouse handlers.
      */
-    ArrayList<SoundObject> selectObjs;
-    ArrayList<SoundObject> unselectObjs; 
+    private ArrayList<SoundObject> selectObjs;
+    private ArrayList<SoundObject> unselectObjs; 
     
     /**
      * Keeps track of the SoundObjects that were selected before the mouse was pressed.
-     * Used to restore selection state correctly when undo-ing.
+     * Used to restore selection state correctly when undoing.
      */
-    ArrayList<SoundObject> wasSelected;
-    
+    private ArrayList<SoundObject> wasSelected;
     
     /**
      * Creates TunePlayer and ActionManger objects, then sets 
@@ -122,18 +121,7 @@ public class CompositionPaneController implements Initializable {
      */
     public void ungroup() {
         soundObjectPaneController.ungroup();
-    }
-    
-    /**
-     * Creates new instances of actions and arrays used in the click handlers.
-     */
-    private void resetClickHandlerFields() {
-        selectObjs = new ArrayList();
-        unselectObjs = new ArrayList();
-        selectAction = new SelectAction(selectObjs);
-        unselectAction = new UnselectAction(unselectObjs);
-        wasSelected = new ArrayList();
-    }    
+    }   
     
     /**
      * Overwrites selectedObjs and unselectedObjs into their respective actions
@@ -148,7 +136,9 @@ public class CompositionPaneController implements Initializable {
     
     /**
      * If given rectangle intersects with SELECTION_WINDOW, move it from 
-     * unselectedObj to selectedObj. If not, then do the opposite.
+     * unselectedObj to selectedObj. 
+     * If not, then do the opposite.
+     * 
      * @param rect Rectangle to check for intersection with SELECTION_WINDOW
      * @param sObj 
      */
@@ -242,6 +232,17 @@ public class CompositionPaneController implements Initializable {
             }
         });
     };
+    
+    /**
+     * Creates new instances of actions and arrays used in the click handlers.
+     */
+    private void resetClickHandlerFields() {
+        selectObjs = new ArrayList();
+        unselectObjs = new ArrayList();
+        selectAction = new SelectAction(selectObjs);
+        unselectAction = new UnselectAction(unselectObjs);
+        wasSelected = new ArrayList();
+    } 
 
     /**
      * Handles mouse dragged on the SoundObjectPane. 

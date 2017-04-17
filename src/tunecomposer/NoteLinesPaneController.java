@@ -5,7 +5,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 
+/**
+ * Controls the note lines and features of the noteLinesPane.
+ */
 public class NoteLinesPaneController implements Initializable {
+    
     /** 
      * Set note height to 10 pixels and note length to 100 pixels. 
      */
@@ -13,8 +17,8 @@ public class NoteLinesPaneController implements Initializable {
     private static final int INITIAL_NOTE_LENGTH = 100;
     
     /**
-     * Set pitch range from 1 to 127 and bar range, the number of measures on 
-     * the screen, to 20.
+     * Set pitch range from 1 to 127 and bar range, 
+     * the number of measures on the screen, to 20.
      */
     private static final int PITCH_RANGE = 128;
     private static final int BAR_RANGE = 20; 
