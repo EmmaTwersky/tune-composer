@@ -12,18 +12,17 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
-<!-- Remove repeated code in the padding? -->
-
 <?import javafx.scene.layout.Pane?>
 
 <ToolBar 
+    xmlns = "http://javafx.com/javafx/8" 
+    xmlns:fx = "http://javafx.com/fxml/1" 
     fx:id = "instrumentToolBar"
     prefWidth = "150.0"
     orientation = "VERTICAL" 
     fx:controller = "tunecomposer.InstrumentToolBarController" 
     stylesheets = "@TuneComposer.css" 
-    styleClass = "instrumentToolBar" 
-    xmlns:fx = "http://javafx.com/fxml/1" >
+    styleClass = "instrumentToolBar" >
     <items>
         <fx:define>
             <ToggleGroup

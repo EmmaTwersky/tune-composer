@@ -9,34 +9,36 @@ import tunecomposer.actionclasses.Action;
  */
 public class ActionManager {
     
+    /**
+     * References to the stacks which hold actions to manage.
+     */
     Stack<ArrayList<Action>> undoStack;
     Stack<ArrayList<Action>> redoStack;
     
     /**
-     * Constructs the undo and redo stacks. These stacks can contain any
-     * object of type Action.
+     * Constructs the undo and redo stacks. 
+     * These stacks can contain any object of type Action.
      */
     public ActionManager(){
         undoStack = new Stack<>();
         redoStack = new Stack<>();
     }
     
-    
     /**
-     * Perform the given action. Then push this item into the undoStack.
+     * Perform the given action. 
+     * 
      * @param action Action type object to be performed in program
      */
-    public void execute(Action action) {
+    public void execute(Action action) throws IllegalArgumentException{
         action.execute();
     }
     
-   
     /**
-     * Executes all given actions in the provided ArrayList of Actions. Does the
-     * same thing as this.execute(..) on every item. Does nothing if given null.
-     * @param actionList 
+     * Executes all given actions in the provided ArrayList of Actions.
+     * 
+     * @param actionList ArrayList of Action type objects to be performed in program
      */
-    public void execute(ArrayList<Action> actionList) {
+    public void execute(ArrayList<Action> actionList) throws IllegalArgumentException{
         for (Action a : actionList) {
             this.execute(a);
         }
@@ -46,7 +48,8 @@ public class ActionManager {
      * Puts given Action onto the stack. If actionArray is null,
      * then does nothing. Clears redoStack to avoid redoing actions when it 
      * doesn't make sense to.
-     * @param action
+     * 
+     * @param action action to put onto the stack
      */
     public void putInUndoStack(Action action) {
         ArrayList<Action> actionArray = new ArrayList();
@@ -56,12 +59,12 @@ public class ActionManager {
         undoStack.push(actionArray);
     }
     
-    
     /**
      * Puts given ArrayList of actions onto the stack. If actionArray is null,
      * then does nothing. Clears redoStack to avoid redoing actions when it 
      * doesn't make sense to.
-     * @param actionArray 
+     * 
+     * @param actionArray Actions to put onto the stack
      */
     public void putInUndoStack(ArrayList<Action> actionArray) {
         if (actionArray.isEmpty()) {
@@ -74,8 +77,8 @@ public class ActionManager {
     
     
     /**
-     * Pop top item on undoStack. Undo the action, then push it onto the
-     * redoStack.
+     * Pop top item on undoStack. 
+     * Undo the action, then push it onto the redoStack.
      */
     public void undo(){
 
@@ -89,13 +92,11 @@ public class ActionManager {
             a.undo();
         }
         redoStack.push(undoActions);
-        
     }
     
-    
     /**
-     * Pop top item from redoStack. Redo the action's effects, and push it back
-     * onto the undoStack.
+     * Pop top item from redoStack. 
+     * Redo the action's effects, and push it back onto the undoStack.
      */
     public void redo(){
         if (redoStack.isEmpty()) {
@@ -110,11 +111,11 @@ public class ActionManager {
         undoStack.push(redoActions);
     }
     
-    
     /**
-     * Check if undo stack is empty. Returns false if it contains Actions, true
-     * if it is empty.
-     * @return boolean
+     * Check if undo stack is empty. 
+     * Returns false if it contains Actions, true if it is empty.
+     * 
+     * @return boolean if undoStack is empty
      */
     public boolean isUndoStackEmpty() {
         if (undoStack.isEmpty()) {
@@ -123,11 +124,11 @@ public class ActionManager {
         return false;
     }
     
-    
     /**
-     * Check if redo stack is empty. Returns false if it contains Actions, true
-     * if it is empty.
-     * @return boolean
+     * Check if redo stack is empty. 
+     * Returns false if it contains Actions, true if it is empty.
+     * 
+     * @return boolean if redoStack is empty
      */
     public boolean isRedoStackEmpty() {
         if (redoStack.isEmpty()) {
