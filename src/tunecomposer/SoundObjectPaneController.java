@@ -6,7 +6,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.DeleteAction;
 import tunecomposer.actionclasses.GroupAction;
+import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.UngroupAction;
 
 /**
@@ -51,20 +53,43 @@ public class SoundObjectPaneController {
         }
     }
     
-//    /**
-//     * Empties the SELECTED_SOUNDOBJECT_ARRAY and un-selects all notes.
-//     * @param pane
-//     */
-//    public static void unselectAllSoundObjects(Pane pane){
-//        for (Node n: pane.getChildren()) {
-//            Rectangle r = (Rectangle) n;
-//            SoundObject sObj = (SoundObject) (r).getUserData();
-//            if (sObj.isSelected()) {
-//                sObj.unselect();
-//            }
-//        }
-//        SELECTED_SOUNDOBJECT_ARRAY.clear();
-//    }
+    public void cut() {
+    }
+    
+    public void copy() {
+    }
+    
+    public void paste() {
+    }
+
+    public void selectAll() {
+        SelectAction selectAction;
+        ArrayList<SoundObject> allObjs = new ArrayList();
+                        
+        for (Node sObj : soundObjectPane.getChildren()) {
+            Rectangle r = (Rectangle) sObj;
+            SoundObject s = (SoundObject) r.getUserData();
+            if (!s.isSelected()) {
+                allObjs.add(s);
+            }
+        }
+        
+        if (!allObjs.isEmpty()) {
+            selectAction = new SelectAction(allObjs);
+            actionManager.execute(selectAction);
+            actionManager.putInUndoStack(selectAction);
+        }
+    }
+    
+    public void delete() {
+        if (!SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
+        DeleteAction deleter;
+        deleter = new DeleteAction(SELECTED_SOUNDOBJECT_ARRAY, soundObjectPane);
+        
+        deleter.execute();
+        actionManager.putInUndoStack(deleter);
+        }
+    }
     
     /**
      * Groups the selected notes or gestures.

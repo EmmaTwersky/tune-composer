@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.DeleteAction;
 import tunecomposer.actionclasses.SelectAction;
+//import java.util.Observable;
 
 /**
  * Controls the application and handles the menu item selections.
@@ -18,6 +19,7 @@ public class ApplicationController implements Initializable {
      * Object that contains the undo and redo stack for the program. 
      */
     private ActionManager actionManager;
+//    private Observer actionManagerObserver;
      
     /**
      * Reference to the compositionPaneController. 
@@ -37,6 +39,7 @@ public class ApplicationController implements Initializable {
     @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
         actionManager = new ActionManager();
+//        actionManager.addObserver(this);
         compositionPaneController.setActionManager(actionManager);
     }   
         
@@ -79,6 +82,48 @@ public class ApplicationController implements Initializable {
     }
     
     /**
+     * Handles the Undo menu item selection.
+     * 
+     * @param event the menu selection event
+     */
+    @FXML 
+    protected void handleCutMenuItemAction(ActionEvent event) {
+        compositionPaneController.stop();
+        
+        compositionPaneController.cut();
+        SoundObjectPaneController.updateSelectedSoundObjectArray(
+                compositionPaneController.soundObjectPane);
+    }
+
+    /**
+     * Handles the Undo menu item selection.
+     * 
+     * @param event the menu selection event
+     */
+    @FXML 
+    protected void handleCopyMenuItemAction(ActionEvent event) {
+        compositionPaneController.stop();
+        
+        compositionPaneController.copy();
+        SoundObjectPaneController.updateSelectedSoundObjectArray(
+                compositionPaneController.soundObjectPane);
+    }
+
+    /**
+     * Handles the Undo menu item selection.
+     * 
+     * @param event the menu selection event
+     */
+    @FXML 
+    protected void handlePasteMenuItemAction(ActionEvent event) {
+        compositionPaneController.stop();
+        
+        compositionPaneController.paste();
+        SoundObjectPaneController.updateSelectedSoundObjectArray(
+                compositionPaneController.soundObjectPane);
+    }
+    
+    /**
      * Handles the Select All menu item selection. 
      * Selects all SoundObjects.
      * 
@@ -88,23 +133,7 @@ public class ApplicationController implements Initializable {
     protected void handleSelectAllMenuItemAction(ActionEvent event) {
         compositionPaneController.stop();
         
-        SelectAction selectAction;
-        ArrayList<SoundObject> allObjs = new ArrayList();
-                        
-        for (Node sObj : compositionPaneController.soundObjectPane.getChildren()) {
-            Rectangle r = (Rectangle) sObj;
-            SoundObject s = (SoundObject) r.getUserData();
-            if (!s.isSelected()) {
-                allObjs.add(s);
-            }
-        }
-        
-        if (!allObjs.isEmpty()) {
-            selectAction = new SelectAction(allObjs);
-            actionManager.execute(selectAction);
-            actionManager.putInUndoStack(selectAction);
-        }
-        
+        compositionPaneController.selectAll();
         SoundObjectPaneController.updateSelectedSoundObjectArray(
                 compositionPaneController.soundObjectPane);
     }
@@ -118,15 +147,7 @@ public class ApplicationController implements Initializable {
     protected void handleDeleteMenuItemAction(ActionEvent event) {
         compositionPaneController.stop();
 
-        if (!SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
-        DeleteAction deleter;
-        deleter = new DeleteAction(SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
-                                  compositionPaneController.soundObjectPane);
-        
-        deleter.execute();
-        actionManager.putInUndoStack(deleter);
-        }
-        
+        compositionPaneController.delete();
         SoundObjectPaneController.updateSelectedSoundObjectArray(
                 compositionPaneController.soundObjectPane);
     }
@@ -168,6 +189,7 @@ public class ApplicationController implements Initializable {
     @FXML 
     protected void handlePlayMenuItemAction(ActionEvent event) {
         compositionPaneController.play();
+//        stopMenuItem.setDisable(false);
     }
     
     /**

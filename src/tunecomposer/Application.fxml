@@ -41,6 +41,23 @@
                         <SeparatorMenuItem>
                         </SeparatorMenuItem>
                         <MenuItem 
+                            text = "Cut" 
+                            onAction = "#handleCutMenuItemAction"  
+                            accelerator = "Shortcut + X" >
+                        </MenuItem>
+                        <MenuItem 
+                            text = "Copy" 
+                            onAction = "#handleCopyMenuItemAction"  
+                            accelerator = "Shortcut + C" >
+                        </MenuItem>
+                        <MenuItem 
+                            text = "Paste" 
+                            onAction = "#handlePasteMenuItemAction"  
+                            accelerator = "Shortcut + V" >
+                        </MenuItem>
+                        <SeparatorMenuItem>
+                        </SeparatorMenuItem>
+                        <MenuItem 
                             text = "Delete" 
                             onAction = "#handleDeleteMenuItemAction"  
                             accelerator = "Shortcut + Backspace" >

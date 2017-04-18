@@ -109,10 +109,36 @@ public class CompositionPaneController implements Initializable {
         redBarPaneController.stopAnimation();
     }
     
+    public void cut() {
+        stop();
+        soundObjectPaneController.cut();
+    }
+    
+    public void copy() {
+        stop();
+        soundObjectPaneController.copy();
+    }
+    
+    public void paste() {
+        stop();
+        soundObjectPaneController.paste();
+    }
+    
+    public void selectAll() {
+        stop();
+        soundObjectPaneController.selectAll();        
+    }
+    
+    public void delete() {
+        stop();
+        soundObjectPaneController.delete();
+    }
+    
     /**
      * Groups the currently selected SoundObjects on the CompositionPane.
      */
-    public void group() {        
+    public void group() {  
+        stop();
         soundObjectPaneController.group();
     }
     
@@ -120,6 +146,7 @@ public class CompositionPaneController implements Initializable {
      * Ungroups the top gesture of any selected Gestures on the CompositionPane.
      */
     public void ungroup() {
+        stop();
         soundObjectPaneController.ungroup();
     }   
     

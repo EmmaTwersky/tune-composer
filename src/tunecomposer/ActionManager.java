@@ -3,11 +3,12 @@ package tunecomposer;
 import java.util.ArrayList;
 import java.util.Stack;
 import tunecomposer.actionclasses.Action;
+import java.util.Observable;
 
 /**
  * Manages the undo and redo stacks that all "undo-able" actions are pushed onto.
  */
-public class ActionManager {
+public class ActionManager extends Observable {
     
     /**
      * References to the stacks which hold actions to manage.
