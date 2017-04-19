@@ -97,6 +97,7 @@ public class SoundObjectPaneController {
 //            actionManager.execute(pasteAction);
 //            actionManager.putInUndoStack(pasteAction);
         }
+
         updateSelectedSoundObjectArray();
     }
 
