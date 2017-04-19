@@ -2,15 +2,12 @@ package tunecomposer;
 
 import java.util.ArrayList;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javax.sound.midi.ShortMessage;
 import tunecomposer.actionclasses.MoveAction;
-import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.LengthChangeAction;
-import tunecomposer.actionclasses.UnselectAction;
 
 /**
  * This class creates and edits NoteBar objects to display notes in the tune 
@@ -96,7 +93,7 @@ public class NoteBar extends SoundObject {
         selected = true;
         visualRectangle.getStyleClass().removeAll("unselectedNote");
         visualRectangle.getStyleClass().add("selectedNote");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane); 
+        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane); 
     }
     
     /**
@@ -107,7 +104,7 @@ public class NoteBar extends SoundObject {
         selected = false;
         visualRectangle.getStyleClass().removeAll("selectedNote");
         visualRectangle.getStyleClass().add("unselectedNote");
-        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane); 
+        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane); 
     }
     
     /**

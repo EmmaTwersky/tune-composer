@@ -38,9 +38,21 @@ public class SoundObjectPaneController {
     
     /**
      * Fills the SELECTED_SOUNDOBJECT_ARRAY with the currently selected notes.
-     * @param pane
      */
-    public static void updateSelectedSoundObjectArray(Pane pane){
+    public void updateSelectedSoundObjectArray(){
+        SELECTED_SOUNDOBJECT_ARRAY.clear();
+        for (Node n: soundObjectPane.getChildren()) {
+            Rectangle r = (Rectangle) n;
+            SoundObject sObj = (SoundObject) (r).getUserData();
+            if (sObj.isSelected()) {
+                if (sObj.getTopGesture() == null) {
+                    SELECTED_SOUNDOBJECT_ARRAY.add(sObj);
+                }
+            }
+        }
+    }
+    
+    public static void staticUpdateSelectedArray(Pane pane){
         SELECTED_SOUNDOBJECT_ARRAY.clear();
         for (Node n: pane.getChildren()) {
             Rectangle r = (Rectangle) n;
@@ -54,12 +66,15 @@ public class SoundObjectPaneController {
     }
     
     public void cut() {
+        updateSelectedSoundObjectArray();
     }
     
     public void copy() {
+        updateSelectedSoundObjectArray();
     }
     
     public void paste() {
+        updateSelectedSoundObjectArray();
     }
 
     public void selectAll() {
@@ -79,6 +94,8 @@ public class SoundObjectPaneController {
             actionManager.execute(selectAction);
             actionManager.putInUndoStack(selectAction);
         }
+        
+        updateSelectedSoundObjectArray();
     }
     
     public void delete() {
@@ -89,6 +106,7 @@ public class SoundObjectPaneController {
         deleter.execute();
         actionManager.putInUndoStack(deleter);
         }
+        updateSelectedSoundObjectArray();
     }
     
     /**
@@ -100,7 +118,7 @@ public class SoundObjectPaneController {
         actionManager.execute(groupAction);
         actionManager.putInUndoStack(groupAction);
         
-        updateSelectedSoundObjectArray(soundObjectPane);
+        updateSelectedSoundObjectArray();
     }
     
     /**
@@ -121,7 +139,7 @@ public class SoundObjectPaneController {
                 });
             }
         }
-        updateSelectedSoundObjectArray(soundObjectPane);
+        updateSelectedSoundObjectArray();
     }
     
     /**

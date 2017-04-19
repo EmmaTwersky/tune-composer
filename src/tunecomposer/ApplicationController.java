@@ -1,13 +1,8 @@
 package tunecomposer;
 
-import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.shape.Rectangle;
-import tunecomposer.actionclasses.DeleteAction;
-import tunecomposer.actionclasses.SelectAction;
 //import java.util.Observable;
 
 /**
@@ -62,9 +57,7 @@ public class ApplicationController implements Initializable {
     protected void handleUndoMenuItemAction(ActionEvent event) {
         compositionPaneController.stop();
         
-        actionManager.undo();
-        SoundObjectPaneController.updateSelectedSoundObjectArray(
-                compositionPaneController.soundObjectPane);
+        actionManager.undo();        
     }
     
     /**
@@ -77,8 +70,6 @@ public class ApplicationController implements Initializable {
         compositionPaneController.stop();
         
         actionManager.redo();
-        SoundObjectPaneController.updateSelectedSoundObjectArray(
-                compositionPaneController.soundObjectPane);
     }
     
     /**
@@ -91,8 +82,6 @@ public class ApplicationController implements Initializable {
         compositionPaneController.stop();
         
         compositionPaneController.cut();
-        SoundObjectPaneController.updateSelectedSoundObjectArray(
-                compositionPaneController.soundObjectPane);
     }
 
     /**
@@ -105,8 +94,6 @@ public class ApplicationController implements Initializable {
         compositionPaneController.stop();
         
         compositionPaneController.copy();
-        SoundObjectPaneController.updateSelectedSoundObjectArray(
-                compositionPaneController.soundObjectPane);
     }
 
     /**
@@ -119,8 +106,6 @@ public class ApplicationController implements Initializable {
         compositionPaneController.stop();
         
         compositionPaneController.paste();
-        SoundObjectPaneController.updateSelectedSoundObjectArray(
-                compositionPaneController.soundObjectPane);
     }
     
     /**
@@ -134,8 +119,6 @@ public class ApplicationController implements Initializable {
         compositionPaneController.stop();
         
         compositionPaneController.selectAll();
-        SoundObjectPaneController.updateSelectedSoundObjectArray(
-                compositionPaneController.soundObjectPane);
     }
 
     /**
@@ -148,8 +131,6 @@ public class ApplicationController implements Initializable {
         compositionPaneController.stop();
 
         compositionPaneController.delete();
-        SoundObjectPaneController.updateSelectedSoundObjectArray(
-                compositionPaneController.soundObjectPane);
     }
     
     /**
@@ -162,9 +143,6 @@ public class ApplicationController implements Initializable {
         compositionPaneController.stop();
         
         compositionPaneController.group();
-        SoundObjectPaneController.updateSelectedSoundObjectArray(
-                compositionPaneController.soundObjectPane);
-
     }
     
     /**
@@ -177,8 +155,6 @@ public class ApplicationController implements Initializable {
         compositionPaneController.stop();
 
         compositionPaneController.ungroup();
-        SoundObjectPaneController.updateSelectedSoundObjectArray(
-                compositionPaneController.soundObjectPane);
     }
     
     /**

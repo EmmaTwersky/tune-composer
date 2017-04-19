@@ -149,7 +149,7 @@ public class CompositionPaneController implements Initializable {
         stop();
         soundObjectPaneController.ungroup();
     }   
-    
+       
     /**
      * Overwrites selectedObjs and unselectedObjs into their respective actions
      * and executes both actions.
@@ -170,9 +170,9 @@ public class CompositionPaneController implements Initializable {
      * @param sObj 
      */
     private void updateSelectedObjArrays(Rectangle rect) {
-            SoundObject sObj = (SoundObject) rect.getUserData();
-            if (selectionWindowPaneController.SELECTION_WINDOW.intersects(
-                    rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight())){
+        SoundObject sObj = (SoundObject) rect.getUserData();
+        if (selectionWindowPaneController.SELECTION_WINDOW.intersects(
+                rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight())){
             if (!sObj.isSelected()) {
                 if (!selectObjs.contains(sObj)) {
                     selectObjs.add(sObj);
@@ -293,7 +293,7 @@ public class CompositionPaneController implements Initializable {
         }
         
         updateDragActions();
-        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane);
+        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
     };
     
     /**
@@ -334,7 +334,7 @@ public class CompositionPaneController implements Initializable {
         actionManager.execute(arrayOfMouseActions);
         actionManager.putInUndoStack(arrayOfMouseActions);
         
-        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane);
+        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
     };
 
         
