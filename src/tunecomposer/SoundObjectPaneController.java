@@ -38,9 +38,21 @@ public class SoundObjectPaneController {
     
     /**
      * Fills the SELECTED_SOUNDOBJECT_ARRAY with the currently selected notes.
-     * @param pane
      */
-    public static void updateSelectedSoundObjectArray(Pane pane){
+    public void updateSelectedSoundObjectArray(){
+        SELECTED_SOUNDOBJECT_ARRAY.clear();
+        for (Node n: soundObjectPane.getChildren()) {
+            Rectangle r = (Rectangle) n;
+            SoundObject sObj = (SoundObject) (r).getUserData();
+            if (sObj.isSelected()) {
+                if (sObj.getTopGesture() == null) {
+                    SELECTED_SOUNDOBJECT_ARRAY.add(sObj);
+                }
+            }
+        }
+    }
+    
+    public static void staticUpdateSelectedArray(Pane pane){
         SELECTED_SOUNDOBJECT_ARRAY.clear();
         for (Node n: pane.getChildren()) {
             Rectangle r = (Rectangle) n;
@@ -54,41 +66,62 @@ public class SoundObjectPaneController {
     }
     
     public void cut() {
+        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
+//            CutAction cutAction;
+//                        
+//            cutAction = new CutAction(SELECTED_SOUNDOBJECT_ARRAY);
+//            actionManager.execute(cutAction);
+//            actionManager.putInUndoStack(cutAction);
+        }
+        
+        updateSelectedSoundObjectArray();
     }
     
     public void copy() {
+        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
+//            CopyAction copyAction;
+//                        
+//            copyAction = new CopyAction(SELECTED_SOUNDOBJECT_ARRAY);
+//            actionManager.execute(copyAction);
+//            actionManager.putInUndoStack(copyAction);
+        }
+        
+        updateSelectedSoundObjectArray();
     }
     
     public void paste() {
+        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
+//            PasteAction pasteAction;
+//                        
+//            pasteAction = new PasteAction();
+//            actionManager.execute(pasteAction);
+//            actionManager.putInUndoStack(pasteAction);
+        }
+        updateSelectedSoundObjectArray();
     }
 
     public void selectAll() {
-        SelectAction selectAction;
-        ArrayList<SoundObject> allObjs = new ArrayList();
-                        
-        for (Node sObj : soundObjectPane.getChildren()) {
-            Rectangle r = (Rectangle) sObj;
-            SoundObject s = (SoundObject) r.getUserData();
-            if (!s.isSelected()) {
-                allObjs.add(s);
-            }
-        }
-        
-        if (!allObjs.isEmpty()) {
-            selectAction = new SelectAction(allObjs);
+        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
+            SelectAction selectAction;
+
+            selectAction = new SelectAction(SELECTED_SOUNDOBJECT_ARRAY);
             actionManager.execute(selectAction);
             actionManager.putInUndoStack(selectAction);
         }
+        
+        updateSelectedSoundObjectArray();
     }
     
     public void delete() {
-        if (!SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
-        DeleteAction deleter;
-        deleter = new DeleteAction(SELECTED_SOUNDOBJECT_ARRAY, soundObjectPane);
-        
-        deleter.execute();
-        actionManager.putInUndoStack(deleter);
+        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
+            DeleteAction deleteAction;
+            deleteAction = new DeleteAction(SELECTED_SOUNDOBJECT_ARRAY, soundObjectPane);
+
+            deleteAction.execute();
+            actionManager.putInUndoStack(deleteAction);
         }
+        
+        updateSelectedSoundObjectArray();
     }
     
     /**
@@ -100,7 +133,7 @@ public class SoundObjectPaneController {
         actionManager.execute(groupAction);
         actionManager.putInUndoStack(groupAction);
         
-        updateSelectedSoundObjectArray(soundObjectPane);
+        updateSelectedSoundObjectArray();
     }
     
     /**
@@ -121,7 +154,8 @@ public class SoundObjectPaneController {
                 });
             }
         }
-        updateSelectedSoundObjectArray(soundObjectPane);
+        
+        updateSelectedSoundObjectArray();
     }
     
     /**
@@ -130,8 +164,7 @@ public class SoundObjectPaneController {
      * @param manager
      * @throws NullPointerException
      */
-    public void setActionManager(ActionManager manager) 
-                                     throws NullPointerException{
+    public void setActionManager(ActionManager manager) throws NullPointerException{
         if (manager == null) {
             throw new NullPointerException();
         }
