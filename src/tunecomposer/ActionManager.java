@@ -54,11 +54,13 @@ public class ActionManager extends Observable {
      * @param action action to put onto the stack
      */
     public void putInUndoStack(Action action) {
+        setChanged();
         ArrayList<Action> actionArray = new ArrayList();
         actionArray.add(action);
         
         redoStack.clear();
         undoStack.push(actionArray);
+        notifyObservers();
     }
     
     /**
@@ -69,12 +71,14 @@ public class ActionManager extends Observable {
      * @param actionArray Actions to put onto the stack
      */
     public void putInUndoStack(ArrayList<Action> actionArray) {
+        setChanged();
         if (actionArray.isEmpty()) {
             return;
         }
         
         redoStack.clear();
         undoStack.push(actionArray);
+        notifyObservers();
     }
     
     /**
@@ -82,7 +86,9 @@ public class ActionManager extends Observable {
      * Undo the action, then push it onto the redoStack.
      */
     public void undo() {
-
+        
+        setChanged();
+        
         if (undoStack.isEmpty()) {
             return;
         }
@@ -93,6 +99,7 @@ public class ActionManager extends Observable {
             a.undo();
         }
         redoStack.push(undoActions);
+        notifyObservers();
     }
     
     /**
@@ -100,6 +107,9 @@ public class ActionManager extends Observable {
      * Redo the action's effects, and push it back onto the undoStack.
      */
     public void redo() {
+        
+        setChanged();
+        
         if (redoStack.isEmpty()) {
             return;
         }
@@ -110,6 +120,7 @@ public class ActionManager extends Observable {
             a.redo();   
         }
         undoStack.push(redoActions);
+        notifyObservers();
     }
     
     /**
