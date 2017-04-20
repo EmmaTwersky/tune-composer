@@ -1,6 +1,7 @@
 package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
+import javafx.scene.input.Clipboard;
 import javafx.scene.layout.Pane;
 import tunecomposer.SoundObject;
 
@@ -20,7 +21,7 @@ public abstract class Action {
      * Pane reference to the pane that affectedObjs are on.
      */
     public Pane soundObjectPane;
-    
+        
     /**
      * Performs the action based on the current state of the Action's fields.
      */

@@ -90,13 +90,11 @@ public class SoundObjectPaneController {
     }
     
     public void paste() {
-        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
 //            PasteAction pasteAction;
 //                        
 //            pasteAction = new PasteAction();
 //            actionManager.execute(pasteAction);
 //            actionManager.putInUndoStack(pasteAction);
-        }
 
         updateSelectedSoundObjectArray();
     }
