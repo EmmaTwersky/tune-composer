@@ -1,7 +1,6 @@
 package tunecomposer.actionclasses;
 
 import javafx.scene.input.Clipboard;
-import javafx.scene.input.DataFormat;
 import javafx.scene.layout.Pane;
 
 /**
@@ -17,10 +16,9 @@ public class PasteAction extends Action {
         this.soundObjectPane = soundObjectPane;
         Clipboard clipboard;
         clipboard = Clipboard.getSystemClipboard();
-        
-        clipboard.getContent(DataFormat.HTML);
-        
+                
         String sObjs = clipboard.getString();
+        System.out.println(sObjs);
 //        TODO: TURN STRING INTO OBJECTS
 //          compare to most recent in undo stack (mayb happens in sound objectpane controller)
 //        set affectedObjs to clipboard's string
@@ -31,9 +29,9 @@ public class PasteAction extends Action {
      */
     @Override
     public void execute() {        
-        affectedObjs.forEach((sObj) -> {
-            sObj.addToPane(soundObjectPane);
-        });
+//        affectedObjs.forEach((sObj) -> {
+//            sObj.addToPane(soundObjectPane);
+//        });
     }
     
     /**
@@ -41,9 +39,9 @@ public class PasteAction extends Action {
      */
     @Override
     public void undo() {
-        affectedObjs.forEach((sObj) -> {
-            sObj.removeFromPane(soundObjectPane);
-        });
+//        affectedObjs.forEach((sObj) -> {
+//            sObj.removeFromPane(soundObjectPane);
+//        });
     }
 
     /**
@@ -51,6 +49,6 @@ public class PasteAction extends Action {
      */
     @Override
     public void redo() {
-        execute();
+//        execute();
     }
 }

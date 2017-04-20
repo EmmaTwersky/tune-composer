@@ -28,12 +28,12 @@ public class CopyAction extends Action {
         for (SoundObject sObj : affectedObjs) {
             sObjsString = sObjsString + sObj.objectToXML();
         }
+        System.out.println(sObjsString);
         
         Clipboard clipboard;
         clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
         content.putString(sObjsString);
-//        content.putHtml("<b>Some</b> text");
         clipboard.setContent(content);
     }
     
