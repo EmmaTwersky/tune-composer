@@ -128,7 +128,7 @@ public final class Gesture extends SoundObject{
         selected = true;
         visualRectangle.getStyleClass().removeAll("unselectedGesture");
         visualRectangle.getStyleClass().add("selectedGesture");
-//        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane); 
+        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane); 
     }
     
     /**
@@ -143,7 +143,7 @@ public final class Gesture extends SoundObject{
         selected = false;
         visualRectangle.getStyleClass().removeAll("selectedGesture");
         visualRectangle.getStyleClass().add("unselectedGesture");
-//        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane); 
+        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane); 
     }
     
     /**
@@ -232,9 +232,13 @@ public final class Gesture extends SoundObject{
      */
     @Override
     public void setHandlers() {
-        visualRectangle.setOnMousePressed(handleGesturePressed);
-        visualRectangle.setOnMouseDragged(handleGestureDragged);
-        visualRectangle.setOnMouseReleased(handleGestureReleased);
+        this.visualRectangle.setOnMousePressed(handleGesturePressed);
+        this.visualRectangle.setOnMouseDragged(handleGestureDragged);
+        this.visualRectangle.setOnMouseReleased(handleGestureReleased);
+        for (SoundObject sObj : containedSoundObjects) {
+            sObj.setHandlers(handleGesturePressed, handleGestureDragged, 
+                    handleGestureReleased);
+        }
     }
     
     /**
@@ -379,7 +383,6 @@ public final class Gesture extends SoundObject{
             
         prepareMoveOrStretchAction();
         
-//        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
     };
     
     /**
@@ -405,9 +408,6 @@ public final class Gesture extends SoundObject{
         
         latestX = x;
         latestY = y;
-        
-//        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
-
         event.consume();
     };
     
@@ -435,7 +435,6 @@ public final class Gesture extends SoundObject{
         }
 
         actionManager.putInUndoStack(actionList);
-//        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
         event.consume();
     };
     
