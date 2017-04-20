@@ -465,4 +465,20 @@ public final class Gesture extends SoundObject{
                 latestX, latestY);
         }
     }
+    
+    @Override
+    public String objectToXML(){
+        String result = "";
+	String startTag = "<gesture>";
+        String endTag = " </gesture>";
+        result = result + startTag;
+        
+        for (SoundObject soundobject: containedSoundObjects) {
+            result = result + " " + soundobject.objectToXML();
+        }
+        
+        result = result + endTag;
+	System.out.println(result);
+        return result;
+    }
 }
