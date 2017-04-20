@@ -78,7 +78,42 @@ public class NoteBar extends SoundObject {
         int xLocation = (int) x;
         int yLocation = (int) Math.round(y / NOTE_HEIGHT) * NOTE_HEIGHT;
         visualRectangle = new Rectangle(xLocation, yLocation, duration, NOTE_HEIGHT);
-        visualRectangle.setId(name);
+        visualRectangle.setId(name); 
+
+        setHandlers();
+
+        select();
+    }
+    
+    /**
+     * Useful to create a NoteBar from XML. Given x, y, and length must be 
+     * positive coordinates. 
+     * @param x the top left corner x value of the note clicked
+     * @param y the top left corner y value of the note clicked
+     * @param length length the note 
+     * @param instrument must be a valid MIDI instrument number.
+     * @param am must be the actionManager being used for undo/redo.
+     * @param soundObjPane must be pane all SoundObjects are put in
+     */
+    public NoteBar(int x, int y, int length, int instrument, 
+                                          ActionManager am, Pane soundObjPane) {
+        pitch = PITCH_RANGE - (int) y / NOTE_HEIGHT;
+        startTick = x;
+        duration = DEFAULT_LENGTH;
+        
+        this.instrument = instrument;
+        //TODO : find channel
+        actionManager = am;
+        soundObjectPane = soundObjPane;
+        
+        int xLocation = x;
+        int yLocation = (int) Math.round((double) y / NOTE_HEIGHT) * NOTE_HEIGHT;
+        visualRectangle = new Rectangle(xLocation, yLocation, duration, NOTE_HEIGHT);
+//        visualRectangle.setId(name); //TODO: is 'setId' needed?
+        //TODO: remove this name or refactor to pass name
+        name = "Piano";
+        channel = instrumentInfo.getInstrumentChannel(name);
+
 
         setHandlers();
 

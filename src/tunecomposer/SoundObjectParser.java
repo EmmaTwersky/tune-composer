@@ -5,8 +5,9 @@
  */
 package tunecomposer;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import java.util.ArrayList;
+import java.lang.Integer;
+import javafx.scene.layout.Pane;
 
 /**
  * Class to convert soundObjects between string and object representations.
@@ -14,17 +15,104 @@ import java.util.ArrayList;
  */
 public class SoundObjectParser {
     
+    /**
+     * Initially, the string to be parsed to SoundObjects. 
+     * Will be reassigned as reader steps through, trimming the beginning so 
+     * the beginning of the string is always the next section to read.
+     * Tags cannot be inside tags: <tag<tag>>
+     */
+    private String iterateStr;
+    
+    /**
+     * All the keywords for the different fields in a NoteBar object's string
+     * representation.
+     */
+    private ArrayList<String> noteBarKeywords = new ArrayList();
+    
+    /**
+     * Pane all sound Objects are placed in. Used in SoundObject constructors.
+     */
+    private final Pane soundObjPane;
+    
+    /**
+     * ActionManager used for all undo/redos in the program.
+     * Used for SoundObject constructors
+     */
+    private final ActionManager actionManager;
+    
+    /**
+     * Instantiates the string field that will be stepped through as the class
+     * reads the given XML string.
+     * @param stringToParse string in XML format to convert into an object
+     * @param soundObjPane must be pane all SoundObjects are put in
+     * @param am must be the actionManager being used for undo/redo.
+     */
+    public SoundObjectParser(String stringToParse, Pane soundObjPane, ActionManager am) {
+        this.soundObjPane = soundObjPane;
+        this.actionManager = am;
+        
+        iterateStr = stringToParse.toLowerCase();
+        
+        noteBarKeywords.add("x");
+        noteBarKeywords.add("y");
+        noteBarKeywords.add("width");
+        noteBarKeywords.add("instrument");
+    }
+    
+    
+    /**
+     * Instantiates the string field that will be stepped through as the class
+     * reads the given XML string. USED FOR TESTING.
+     * @param stringToParse string in XML format to convert into an object
+     */
+    public SoundObjectParser(String stringToParse) {
+        actionManager = null;
+        soundObjPane = null;
+        
+        iterateStr = stringToParse.toLowerCase();
+        
+        noteBarKeywords.add("x");
+        noteBarKeywords.add("y");
+        noteBarKeywords.add("width");
+        noteBarKeywords.add("instrument");
+    }
     
     /**
      * Convert given string of SoundObject representations into an ArrayList of
      * fully instantiated SundObjects. Input string must have open and close
      * tags for all objects. See example at end of file.
-     * @param inString 
-     *          String in XML format that is error free. 
      * @return ArrayList of SoundObjects created from a given, valid, string
      */
-    public ArrayList<SoundObject> stringToObjects(String inString) {
+    public ArrayList<SoundObject> stringToObjects() {
         ArrayList<SoundObject> foundSoundObjs = new ArrayList();
+        
+        String tag;
+        while (true) {
+            tag = getNextTag();
+            moveThroughNextTag();
+            if (tag.equals("<notebar>")) {
+                ArrayList<Integer> noteData = getNoteData();
+                NoteBar note = makeNote(noteData);
+            }
+            else if (tag.equals("<gesture>")) {
+                //TODO
+            }
+            else if (tag.equals("</gesture>")) {
+                //TODO
+                //put all foundSoundOBjs in one gesture
+                //return only that gesture in the array
+            }
+            else if (tag.equals("NO TAG")) {
+                //TODO
+                //how do you be sure that you're not in a gesture in this call?
+                //could be in one or not
+            }
+            else {
+                //ERROR
+                //TAG not recognized
+                return foundSoundObjs;
+            }
+        }
         //TODO
 //        while
 //        tag = getNextTag(str)
@@ -43,41 +131,97 @@ public class SoundObjectParser {
 //           no tag found, are we at end of string?
 //           yes: return foundSoundObjs
 //           no: error
-                    
-                    
-                    
-        return null;
     }
     
+    /**
+     * Get the index for the beginning of the next tag in
+     * iterateStr.
+     * @param start Integer reference to alter to start of next tag's index
+     * @return true if tag found, false if no tag found
+     * @throws InvalidXMLTagException if empty tag, or no end to tag
+     */
+    private int getNextTagStartIndex() throws InvalidXMLTagException {
+        int tagStart = iterateStr.indexOf("<");
+        
+        if ( iterateStr.isEmpty() ) {
+            return -1;
+        }
+        
+        //check if tag contains nothing
+        String nextChar = iterateStr.substring(tagStart+1, tagStart+2);
+        if ( nextChar.equals('>') ) {
+            String error = "empty tag found: " + iterateStr;
+            throw new InvalidXMLTagException(error);
+        }
+        
+        // check if a stray less-than symbol is before the greater-than symbol.
+        int closeTag = iterateStr.indexOf(">");
+        if (tagStart > closeTag) {
+            String error = "stray close tag found: " + iterateStr;
+            throw new InvalidXMLTagException(error);
+        }
+        // no tagStart, but has a close tag
+        if (tagStart == -1 && closeTag > -1) {
+            String error = "no start to tag, but there is a close: " + iterateStr;
+            throw new InvalidXMLTagException(error);
+        }
+        return tagStart;
+    }
+    
+    /**
+     * Get the end index of provided tag's start index in iterateStr.
+     * Provide the tag to find the end index of by giving the start index.
+     * @param tagStart index the tag starts at
+     * @return the index of the less-than symbol that closes the tag
+     * @throws InvalidXMLTagException if no end found to tag
+     */
+    private int getEndIndexOfTag(int tagStart) throws InvalidXMLTagException {
+        int tagEnd = iterateStr.indexOf(">", tagStart);
+        if ( tagEnd == -1 ) {
+            String error = "No end tag found: \n" + iterateStr;
+            throw new InvalidXMLTagException(error);
+        }
+        return tagEnd;
+    }
     
     /**
      * Returns next open or close tag in given string. 
      * Tag type is not checked to be valid except for a greater-than, less-than,
      * and at least one character inside. Any character before the greater-than 
      * will be ignored. Returns "NO TAG" if no tag is found in given string.
-     * @param inString string with no characters before a XML tag.
      * @throws InvalidXMLTagException
      *          If no closing for a tag found or tags are empty
+     * @return "NO TAG" if no tag is found, else the next tag in iterateStr
      */
-    private String getNextTag(String inString) 
-            throws InvalidXMLTagException{
-        String tag = "";
-        int tagStart = inString.indexOf("<");
-        int tagEnd = inString.indexOf(">", tagStart);
+    public String getNextTag() throws InvalidXMLTagException{
+        int tagStart = getNextTagStartIndex();
         if ( tagStart == -1 ) {
+            System.out.println("NO TAG");
             return "NO TAG";
         }
-        if ( tagEnd == -1 ) {
-            String error = "No end tag found: \n" + inString;
-            throw new InvalidXMLTagException(error);
+        int tagEnd = getEndIndexOfTag(tagStart);
+        //if tagEnd is end of iterateStr, return tagStart to end
+        if ( tagEnd == iterateStr.length() - 1 ) {
+            System.out.println(iterateStr.substring(tagStart));
+            return iterateStr.substring(tagStart);
         }
-        if ( tagStart == (tagEnd-1) ) {
-            String error = "empty tag found: " + inString;
-            throw new InvalidXMLTagException(error);
+        else {
+            System.out.println(iterateStr.substring(tagStart, tagEnd+1));
+            return iterateStr.substring(tagStart, tagEnd+1);
         }
-        tag = inString.substring(tagStart, tagEnd+1);
-        System.out.println(tag);
-        return tag;
+    }
+    
+    /**
+     * Trims off the beginning of iterateStr until the end of the next tag. If
+     * No more tags, then does nothing. The next tag must not be empty.
+     */
+    public void moveThroughNextTag() {
+        int tagStart = getNextTagStartIndex();
+        if ( tagStart == -1 ) {
+            return;
+        }
+        int tagEnd = getEndIndexOfTag(tagStart);
+        iterateStr = iterateStr.substring(tagEnd + 1);
     }
     
     /**
@@ -85,17 +229,74 @@ public class SoundObjectParser {
      * spaces between variable name, the colon, and the value. Spaces should
      * separate each datapoint. Will begin reading at start of given str, and
      * returns when reaching end tag. Exception if finds anything unexpected.
-     * @param str string beginning directly after the found notebar tag
      * @return 
      *       ArrayList with values of note's x and y coordinate, length, and
-     *       instrument number in that order
+     *       instrument number in order added to noteBarKeywords in constructor.
      */
-    private ArrayList<Integer> getNoteData(String str) {
-        ArrayList<Integer> data = new ArrayList();
-        //TODO
+    public ArrayList<Integer> getNoteData() {    
+        String endTag = getNextTag();
+        if (!endTag.equals("</notebar>")) {
+            String error = "'</notebar>' expected and not found: \n" + iterateStr;
+            throw new InvalidXMLTagException(error);
+        }
+        int tagStart = getNextTagStartIndex();
         
+        ArrayList<Integer> noteValues = new ArrayList();
+        String dataString = iterateStr.substring(0, tagStart);
         
-        return data;
+        //find all required values for NoteBars
+        for (String field : noteBarKeywords) {
+            Integer value = getDataFieldValue(field, dataString);
+            noteValues.add(value);
+        }
+        System.out.println(noteValues);
+        return noteValues;
+    }
+    
+    /**
+     * Get the value of a field from a given string. 
+     * After given field, find the sequence of values in given string, and 
+     * return as int. No spaces, if field-name not in given string, then throws
+     * exception. Field name must be followed directly by a colon, and then by
+     * the value. Value must be a sequence of number-characters with no letters
+     * or symbols.
+     * @param fieldName field name of which to return value of
+     * @param str string extract value from
+     * @return value extracted from the string as an int
+     * @throws IndexOutOfBoundsException if fieldName not in str
+     */
+    private int getDataFieldValue(String fieldName, String str) 
+                                throws IndexOutOfBoundsException {
+        if (!str.contains(fieldName)) {
+            String error = "data string does not contain fieldName: '" 
+                                        + fieldName + "' str: '" + str;
+            throw new IndexOutOfBoundsException(error);
+        }
+        //get index before and after value
+        int valIndex = str.indexOf(fieldName) + fieldName.length();
+        int endValIndex = str.indexOf(" ", valIndex);
+        //grab value and return as int
+        String valString = str.substring(valIndex+1, endValIndex);
+        int valInt = 0;
+        try {
+            valInt = Integer.parseInt(valString);
+        } catch (NumberFormatException ex) {
+            System.out.println("bad data field value, "
+                    + "(fieldName, str): (" + fieldName + ", " + str + ")");
+            Thread.dumpStack();
+        }
+        return valInt;
+    }
+
+    private NoteBar makeNote(ArrayList<Integer> noteData) {
+        int x = noteData.get(0);
+        int y = noteData.get(1);
+        int width = noteData.get(2);
+        int instrument = noteData.get(3);
+        
+        NoteBar note = new NoteBar(x, y, width, instrument, actionManager, soundObjPane);
+        
+        return note;
     }
     
     /**
