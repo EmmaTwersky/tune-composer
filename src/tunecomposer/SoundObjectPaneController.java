@@ -114,21 +114,25 @@ public class SoundObjectPaneController {
         selectAction = new SelectAction(allSObjs);
         
         actionManager.execute(selectAction);
-        actionManager.putInUndoStack(selectAction);
-        
         updateSelectedSoundObjectArray();
+        
+        actionManager.putInUndoStack(selectAction);
     }
     
     public void delete() {
+        
+        ArrayList<Action> deletions = new ArrayList();
+        
         if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
             DeleteAction deleteAction;
             deleteAction = new DeleteAction(SELECTED_SOUNDOBJECT_ARRAY, soundObjectPane);
 
             deleteAction.execute();
-            actionManager.putInUndoStack(deleteAction);
+            deletions.add(deleteAction);
         }
         
         updateSelectedSoundObjectArray();
+        actionManager.putInUndoStack(deletions);
     }
     
     /**
@@ -138,9 +142,8 @@ public class SoundObjectPaneController {
         GroupAction groupAction = new GroupAction(SELECTED_SOUNDOBJECT_ARRAY, 
         actionManager, soundObjectPane);
         actionManager.execute(groupAction);
-        actionManager.putInUndoStack(groupAction);
-        
         updateSelectedSoundObjectArray();
+        actionManager.putInUndoStack(groupAction);
     }
     
     /**
@@ -166,8 +169,8 @@ public class SoundObjectPaneController {
         }
         
         actionManager.execute(actions);
-        actionManager.putInUndoStack(actions);
         updateSelectedSoundObjectArray();
+        actionManager.putInUndoStack(actions);
     }
     
     /**

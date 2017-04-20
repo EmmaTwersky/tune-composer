@@ -406,8 +406,14 @@ public final class Gesture extends SoundObject{
             sObjMove.move(translateX, translateY);
         }
         
-        latestX = x;
-        latestY = y;
+        if (draggingLength){
+            latestX = x;
+            latestY = y;
+        }
+        else if (!sObjMove.isMoveFailed()){
+            latestX = x;
+            latestY = y;
+        }
         event.consume();
     };
     

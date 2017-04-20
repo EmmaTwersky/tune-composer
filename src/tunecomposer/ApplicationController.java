@@ -1,8 +1,16 @@
 package tunecomposer;
 
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 //import java.util.Observable;
 
 /**
@@ -10,12 +18,39 @@ import javafx.fxml.Initializable;
  */
 public class ApplicationController implements Initializable {  
     
+    
+    @FXML
+    private MenuItem UndoMenuItem;
+    @FXML
+    private MenuItem RedoMenuItem;
+    @FXML
+    private MenuItem CutMenuItem;
+    @FXML
+    private MenuItem CopyMenuItem;
+    @FXML
+    private MenuItem PasteMenuItem;
+    @FXML
+    private MenuItem DeleteMenuItem;
+    @FXML
+    private MenuItem SelAllMenuItem;
+    @FXML
+    private MenuItem GroupMenuItem;
+    @FXML
+    private MenuItem UngroupMenuItem;
+    @FXML
+    private MenuItem PlayMenuItem;
+    @FXML
+    private MenuItem StopMenuItem;
+    
+    
     /**
      * Object that contains the undo and redo stack for the program. 
      */
     private ActionManager actionManager;
 //    private Observer actionManagerObserver;
-     
+    
+    private ActionManagerObserver actionObserver;
+    
     /**
      * Reference to the compositionPaneController. 
      */
@@ -33,8 +68,12 @@ public class ApplicationController implements Initializable {
     @FXML
     @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
+        
+        toggleMenuItemDisable(true);
+        
+        actionObserver = new ActionManagerObserver();
         actionManager = new ActionManager();
-//        actionManager.addObserver(this);
+        actionManager.addObserver(actionObserver);
         compositionPaneController.setActionManager(actionManager);
     }   
         
@@ -165,7 +204,8 @@ public class ApplicationController implements Initializable {
     @FXML 
     protected void handlePlayMenuItemAction(ActionEvent event) {
         compositionPaneController.play();
-//        stopMenuItem.setDisable(false);
+        PlayMenuItem.setDisable(true);
+        StopMenuItem.setDisable(false);
     }
     
     /**
@@ -176,5 +216,93 @@ public class ApplicationController implements Initializable {
     @FXML 
     protected void handleStopMenuItemAction(ActionEvent event) {
         compositionPaneController.stop();
-    }     
+        PlayMenuItem.setDisable(false);
+        StopMenuItem.setDisable(true);
+    }
+    
+    private void toggleMenuItemDisable(boolean on){
+        UndoMenuItem.setDisable(on);
+        RedoMenuItem.setDisable(on);
+        SelAllMenuItem.setDisable(on);
+        PlayMenuItem.setDisable(on);
+        CopyMenuItem.setDisable(on);
+        CutMenuItem.setDisable(on);
+        DeleteMenuItem.setDisable(on);
+        GroupMenuItem.setDisable(on);
+        UngroupMenuItem.setDisable(on);
+        StopMenuItem.setDisable(on);
+        PasteMenuItem.setDisable(on);
+    }
+    
+    /**
+     *
+     */
+    class ActionManagerObserver implements Observer {
+        
+        @Override
+        public void update(Observable manager, Object x){
+            ActionManager observable = (ActionManager) manager;
+            setDisable(observable.isRedoStackEmpty(),observable.isUndoStackEmpty());
+        }
+        
+        private void setDisable(boolean isRedoEmpty,boolean isUndoEmpty){
+            
+            toggleMenuItemDisable(false);
+            UngroupMenuItem.setDisable(true);
+            StopMenuItem.setDisable(true);
+            
+            ArrayList<SoundObject> selItems = 
+                    SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY;
+            
+            ObservableList<Node> allSoundObjects = compositionPaneController.
+                    soundObjectPaneController.soundObjectPane.getChildren();
+            
+            if (isUndoEmpty){
+                UndoMenuItem.setDisable(true);
+            }
+            if (isRedoEmpty){
+                RedoMenuItem.setDisable(true);
+            }
+
+            if (allSoundObjects.isEmpty()){
+                SelAllMenuItem.setDisable(true);
+                PlayMenuItem.setDisable(true);
+            }
+            
+            else{
+                SelAllMenuItem.setDisable(true);
+                for (Node node : allSoundObjects){
+                    SoundObject sObj = (SoundObject) node.getUserData();
+                    if (!sObj.isSelected()){
+                        SelAllMenuItem.setDisable(false);
+                    }
+                }
+            }
+            
+            if(selItems.isEmpty()){
+                CopyMenuItem.setDisable(true);
+                CutMenuItem.setDisable(true);
+                DeleteMenuItem.setDisable(true);
+                GroupMenuItem.setDisable(true);
+            }
+            
+            for (SoundObject sObj: selItems){
+                if (sObj instanceof Gesture){
+                    UngroupMenuItem.setDisable(false);
+                }
+            }
+            
+            // IMPLEMENTATION FOR PASTE DISABLE DOESNT WORK YET
+//            Clipboard clipboard;
+//            clipboard = Clipboard.getSystemClipboard();
+//            ClipboardContent content = new ClipboardContent();
+//            if(content.getString() != null){
+//                if (!content.getString().contains("<notebar>") &&
+//                        !content.getString().contains("<gesture>")){
+//                    PasteMenuItem.setDisable(true);
+//                }
+//            }
+        }
+        
+    }
 }
