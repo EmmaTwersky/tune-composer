@@ -1,24 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer.actionclasses;
 
-import java.util.ArrayList;
 import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.layout.Pane;
-import tunecomposer.SoundObject;
 
 /**
- *
- * @author EmmaTwersky
+ * An action which pastes clipboard contents to the soundObjectPane.
  */
 public class PasteAction extends Action {
 /**
-     * Constructs an action event to copy SoundObjects.
+     * Constructs an action event to paste SoundObjects.
      * Sets affectObjs and soundObjectPane.
      * @param soundObjectPane
      */
@@ -36,7 +27,7 @@ public class PasteAction extends Action {
     }
     
     /**
-     * Copies all affectedObjs from the soundObjectPane.
+     * Pastes all affectedObjs to the soundObjectPane.
      */
     @Override
     public void execute() {        
@@ -46,7 +37,7 @@ public class PasteAction extends Action {
     }
     
     /**
-     * Not possible.
+     * Un-pastes the affectedObjs from the soundObjectPane.
      */
     @Override
     public void undo() {
@@ -56,9 +47,10 @@ public class PasteAction extends Action {
     }
 
     /**
-     * Not possible. 
+     * Re-executes paste action. 
      */
     @Override
     public void redo() {
+        execute();
     }
 }

@@ -6,8 +6,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.CopyAction;
+import tunecomposer.actionclasses.CutAction;
 import tunecomposer.actionclasses.DeleteAction;
 import tunecomposer.actionclasses.GroupAction;
+import tunecomposer.actionclasses.PasteAction;
 import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.UngroupAction;
 
@@ -66,35 +69,31 @@ public class SoundObjectPaneController {
     }
     
     public void cut() {
-        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
-//            CutAction cutAction;
-//                        
-//            cutAction = new CutAction(SELECTED_SOUNDOBJECT_ARRAY);
-//            actionManager.execute(cutAction);
-//            actionManager.putInUndoStack(cutAction);
-        }
+        CutAction cutAction;
+
+        cutAction = new CutAction(SELECTED_SOUNDOBJECT_ARRAY, soundObjectPane);
+        actionManager.execute(cutAction);
+        actionManager.putInUndoStack(cutAction);
         
         updateSelectedSoundObjectArray();
     }
     
     public void copy() {
-        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
-//            CopyAction copyAction;
-//                        
-//            copyAction = new CopyAction(SELECTED_SOUNDOBJECT_ARRAY);
-//            actionManager.execute(copyAction);
-//            actionManager.putInUndoStack(copyAction);
-        }
+        CopyAction copyAction;
+
+        copyAction = new CopyAction(SELECTED_SOUNDOBJECT_ARRAY);
+        actionManager.execute(copyAction);
+        actionManager.putInUndoStack(copyAction);
         
         updateSelectedSoundObjectArray();
     }
     
     public void paste() {
-//            PasteAction pasteAction;
-//                        
-//            pasteAction = new PasteAction();
-//            actionManager.execute(pasteAction);
-//            actionManager.putInUndoStack(pasteAction);
+        PasteAction pasteAction;
+
+        pasteAction = new PasteAction(soundObjectPane);
+        actionManager.execute(pasteAction);
+        actionManager.putInUndoStack(pasteAction);
 
         updateSelectedSoundObjectArray();
     }
@@ -123,13 +122,11 @@ public class SoundObjectPaneController {
         
         ArrayList<Action> deletions = new ArrayList();
         
-        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
-            DeleteAction deleteAction;
-            deleteAction = new DeleteAction(SELECTED_SOUNDOBJECT_ARRAY, soundObjectPane);
+        DeleteAction deleteAction;
+        deleteAction = new DeleteAction(SELECTED_SOUNDOBJECT_ARRAY, soundObjectPane);
 
-            deleteAction.execute();
-            deletions.add(deleteAction);
-        }
+        deleteAction.execute();
+        deletions.add(deleteAction);
         
         updateSelectedSoundObjectArray();
         actionManager.putInUndoStack(deletions);

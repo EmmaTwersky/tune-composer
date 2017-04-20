@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import javafx.scene.layout.Pane;
 import tunecomposer.SoundObject;
 
+/**
+ * An action which cuts objects to the clipboard and removes from a pane.
+ */
 public class CutAction extends Action {
         
     DeleteAction deleteAction;
