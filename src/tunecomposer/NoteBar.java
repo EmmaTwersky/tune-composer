@@ -308,6 +308,8 @@ public class NoteBar extends SoundObject {
             prepareSelectionAction(event.isControlDown());
             
             prepareMoveOrStretchAction();
+            
+            SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
         }
     };
     
@@ -344,6 +346,8 @@ public class NoteBar extends SoundObject {
                 latestY = y;
             }
             
+            SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
+            
             event.consume();
         }
     };
@@ -374,6 +378,9 @@ public class NoteBar extends SoundObject {
             }
             
             actionManager.putInUndoStack(actionList);
+            
+            SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
+            
             event.consume();
         }
     };

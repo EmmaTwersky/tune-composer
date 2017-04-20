@@ -102,13 +102,21 @@ public class SoundObjectPaneController {
     }
 
     public void selectAll() {
-        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
-            SelectAction selectAction;
-
-            selectAction = new SelectAction(SELECTED_SOUNDOBJECT_ARRAY);
-            actionManager.execute(selectAction);
-            actionManager.putInUndoStack(selectAction);
+        ArrayList<SoundObject> allSObjs = new ArrayList();
+        
+        for (Node n: soundObjectPane.getChildren()) {
+            Rectangle r = (Rectangle) n;
+            SoundObject sObj = (SoundObject) (r).getUserData();
+            if (!sObj.isSelected()) {
+                allSObjs.add(sObj);
+            }
         }
+
+        SelectAction selectAction;
+        selectAction = new SelectAction(allSObjs);
+        
+        actionManager.execute(selectAction);
+        actionManager.putInUndoStack(selectAction);
         
         updateSelectedSoundObjectArray();
     }
@@ -141,21 +149,26 @@ public class SoundObjectPaneController {
      * Ungroups the selected group.
      */
     public void ungroup() {
+        ArrayList<Action> actions = new ArrayList();
         for (SoundObject sObj : SELECTED_SOUNDOBJECT_ARRAY) {
             if ((sObj instanceof Gesture) && (sObj.visualRectangle.getUserData() == sObj)) {
                 UngroupAction ungroupAction = new UngroupAction(
                                             (Gesture) sObj, soundObjectPane);
-                actionManager.undoStack.forEach((actionList) -> {
-                    for (Action action : actionList) {
-                        if (!action.affectedObjs.equals(SELECTED_SOUNDOBJECT_ARRAY)) {
-                            actionManager.execute(ungroupAction);
-                            actionManager.putInUndoStack(ungroupAction);
-                        }
-                    }
-                });
+                actions.add(ungroupAction);
+//                actionManager.undoStack.forEach((actionList) -> {
+//                    for (Action action : actionList) {
+//                        System.out.println(action);
+////                        if (!action.affectedObjs.equals(SELECTED_SOUNDOBJECT_ARRAY)) {
+//                            actionManager.execute(ungroupAction);
+//                            actionManager.putInUndoStack(ungroupAction);
+//                        }
+//                    }
+//                });
             }
         }
         
+        actionManager.execute(actions);
+        actionManager.putInUndoStack(actions);
         updateSelectedSoundObjectArray();
     }
     

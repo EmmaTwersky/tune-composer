@@ -378,6 +378,8 @@ public final class Gesture extends SoundObject{
         prepareSelectionAction(event.isControlDown());
             
         prepareMoveOrStretchAction();
+        
+//        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
     };
     
     /**
@@ -401,9 +403,11 @@ public final class Gesture extends SoundObject{
             sObjMove.move(translateX, translateY);
         }
         
-        
         latestX = x;
         latestY = y;
+        
+//        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
+
         event.consume();
     };
     
@@ -431,6 +435,7 @@ public final class Gesture extends SoundObject{
         }
 
         actionManager.putInUndoStack(actionList);
+//        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
         event.consume();
     };
     

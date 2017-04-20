@@ -260,21 +260,21 @@ public abstract class SoundObject {
         ArrayList<SoundObject> thisSoundObject = new ArrayList();
         thisSoundObject.add((SoundObject) visualRectangle.getUserData());
         if (!selected) {
-                if(!isCtrlDown){
-                    ArrayList<SoundObject> allSelected;
-                    allSelected = getOtherSelectedItems();
-                    unselectAction = new UnselectAction(allSelected);
-                    unselectAction.execute();
-                    actionList.add(unselectAction);
-                }
-                selectAction = new SelectAction(thisSoundObject);
-                selectAction.execute();
-                actionList.add(selectAction);
-            }
-            else if (isCtrlDown){
-                unselectAction = new UnselectAction(thisSoundObject);
+            if(!isCtrlDown){
+                ArrayList<SoundObject> allSelected;
+                allSelected = getOtherSelectedItems();
+                unselectAction = new UnselectAction(allSelected);
                 unselectAction.execute();
                 actionList.add(unselectAction);
             }
+            selectAction = new SelectAction(thisSoundObject);
+            selectAction.execute();
+            actionList.add(selectAction);
+        }
+        else if (isCtrlDown){
+            unselectAction = new UnselectAction(thisSoundObject);
+            unselectAction.execute();
+            actionList.add(unselectAction);
+        }
     }
 }
