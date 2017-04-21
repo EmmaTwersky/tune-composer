@@ -81,9 +81,15 @@ public class SoundObjectParser {
      * Convert given string of SoundObject representations into an ArrayList of
      * fully instantiated SundObjects. Input string must have open and close
      * tags for all objects. See example at end of file.
+     * @param isRecusive true if this is a recusive call, false if not.
      * @return ArrayList of SoundObjects created from a given, valid, string
      */
-    public ArrayList<SoundObject> stringToObjects() {
+    public ArrayList<SoundObject> stringToObjects(boolean isRecursive) {
+        if (iterateStr.isEmpty()) {
+            System.out.println("empty iterateStr");
+            Thread.dumpStack();
+        }
+        
         ArrayList<SoundObject> foundSoundObjs = new ArrayList();
         
         String tag;
@@ -93,24 +99,38 @@ public class SoundObjectParser {
             if (tag.equals("<notebar>")) {
                 ArrayList<Integer> noteData = getNoteData();
                 NoteBar note = makeNote(noteData);
+                foundSoundObjs.add(note);
+                moveThroughNextTag();
             }
             else if (tag.equals("<gesture>")) {
-                //TODO
+                ArrayList<SoundObject> gestureContents;
+                gestureContents = stringToObjects(true);
+                if (!gestureContents.isEmpty()) { //add if gest not empty
+                    Gesture gest = new Gesture(gestureContents, actionManager, soundObjPane);
+                    gest.visualRectangle.setUserData(gest);
+                    foundSoundObjs.add(gest);
+                }
             }
             else if (tag.equals("</gesture>")) {
-                //TODO
-                //put all foundSoundOBjs in one gesture
-                //return only that gesture in the array
+               return foundSoundObjs;
             }
             else if (tag.equals("NO TAG")) {
-                //TODO
-                //how do you be sure that you're not in a gesture in this call?
-                //could be in one or not
+                    System.out.println(isRecursive);
+                if (isRecursive) {
+                    String error = "No end tag in XML: " + iterateStr;
+                    throw new InvalidXMLTagException(error);
+                }
+                else {
+                    for (SoundObject sObj : foundSoundObjs) {
+                        System.out.println("add item" + sObj);
+                        sObj.addToPane(soundObjPane);
+                    }
+                    return null;
+                }
             }
             else {
-                //ERROR
-                //TAG not recognized
-                return foundSoundObjs;
+                String error = "Tag, '"+tag+"', not recognized: ";
+                throw new InvalidXMLTagException(error);
             }
         }
         //TODO
@@ -196,17 +216,16 @@ public class SoundObjectParser {
     public String getNextTag() throws InvalidXMLTagException{
         int tagStart = getNextTagStartIndex();
         if ( tagStart == -1 ) {
-            System.out.println("NO TAG");
             return "NO TAG";
         }
         int tagEnd = getEndIndexOfTag(tagStart);
         //if tagEnd is end of iterateStr, return tagStart to end
         if ( tagEnd == iterateStr.length() - 1 ) {
-            System.out.println(iterateStr.substring(tagStart));
+            System.out.println("get rest of string: " +iterateStr.substring(tagStart));
             return iterateStr.substring(tagStart);
         }
         else {
-            System.out.println(iterateStr.substring(tagStart, tagEnd+1));
+            System.out.println("get substring: " + iterateStr.substring(tagStart, tagEnd+1));
             return iterateStr.substring(tagStart, tagEnd+1);
         }
     }
@@ -295,7 +314,8 @@ public class SoundObjectParser {
         int instrument = noteData.get(3);
         
         NoteBar note = new NoteBar(x, y, width, instrument, actionManager, soundObjPane);
-        
+        note.visualRectangle.setUserData(note);
+
         return note;
     }
     

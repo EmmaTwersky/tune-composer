@@ -44,6 +44,11 @@ public class NoteBar extends SoundObject {
     private final int DEFAULT_LENGTH = 100;
     
     /**
+     * Default for note sound to be set to if instrument not recognized.
+     */
+    private static final String DEFAULT_NAME = "Piano";
+    
+    /**
      * Minimum length that a NoteBar rectangle can become. 
      * Consequently, also limits the minimum duration of the note.
      */
@@ -91,32 +96,33 @@ public class NoteBar extends SoundObject {
      * @param x the top left corner x value of the note clicked
      * @param y the top left corner y value of the note clicked
      * @param length length the note 
-     * @param instrument must be a valid MIDI instrument number.
+     * @param instrument must be a valid MIDI instrument number. If value not
+     *      found in INSTRUMENT_VALUE map, then note is set to "Piano"
      * @param am must be the actionManager being used for undo/redo.
      * @param soundObjPane must be pane all SoundObjects are put in
      */
     public NoteBar(int x, int y, int length, int instrument, 
                                           ActionManager am, Pane soundObjPane) {
+        if (instrumentInfo.getInstName(instrument) == "NOT FOUND") {
+            name = DEFAULT_NAME;
+        }
+        else { name = instrumentInfo.getInstName(instrument); }
+        this.instrument = instrumentInfo.getInstrumentValue(name);
+        channel = instrumentInfo.getInstrumentChannel(name);
+        actionManager = am;
+        soundObjectPane = soundObjPane;
+        
         pitch = PITCH_RANGE - (int) y / NOTE_HEIGHT;
         startTick = x;
         duration = DEFAULT_LENGTH;
         
-        this.instrument = instrument;
-        //TODO : find channel
-        actionManager = am;
-        soundObjectPane = soundObjPane;
         
         int xLocation = x;
         int yLocation = (int) Math.round((double) y / NOTE_HEIGHT) * NOTE_HEIGHT;
         visualRectangle = new Rectangle(xLocation, yLocation, duration, NOTE_HEIGHT);
-//        visualRectangle.setId(name); //TODO: is 'setId' needed?
-        //TODO: remove this name or refactor to pass name
-        name = "Piano";
-        channel = instrumentInfo.getInstrumentChannel(name);
-
+        visualRectangle.setId(name);
 
         setHandlers();
-
         select();
     }
     

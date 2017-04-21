@@ -83,4 +83,22 @@ public class InstrumentInfo {
     public int getInstrumentChannel(String instrument){
         return INSTRUMENT_CHANNELS.get(instrument);
     }
+
+    /**
+     * Return the key in INSTRUMENT_VALUES that is mapped to given int.
+     * If no map is found to given value, then prints error in console and 
+     * returns "NOT FOUND".
+     * @param instrument MIDI player instrument id value
+     * @return Instrument name, or "NOT FOUND" if instrument name not recognized
+     */
+    public String getInstName(int instrument) {
+        for (String key : INSTRUMENT_VALUES.keySet()) {
+          if (INSTRUMENT_VALUES.get(key) == instrument) {
+            return key;               // we found it
+          }
+        }
+        System.out.println("could not find name of specified instrument");
+        Thread.dumpStack();
+        return "NOT FOUND"; //give default piano
+    }
 }
