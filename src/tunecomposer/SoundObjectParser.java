@@ -7,6 +7,8 @@ package tunecomposer;
 
 import java.util.ArrayList;
 import java.lang.Integer;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 /**
@@ -105,9 +107,8 @@ public class SoundObjectParser {
             else if (tag.equals("<gesture>")) {
                 ArrayList<SoundObject> gestureContents;
                 gestureContents = stringToObjects(true);
-                if (!gestureContents.isEmpty()) { //add if gest not empty
-                    Gesture gest = new Gesture(gestureContents, actionManager, soundObjPane);
-                    gest.visualRectangle.setUserData(gest);
+                if (!gestureContents.isEmpty()) {
+                    Gesture gest = createGesture(gestureContents);
                     foundSoundObjs.add(gest);
                 }
             }
@@ -317,6 +318,24 @@ public class SoundObjectParser {
         note.visualRectangle.setUserData(note);
 
         return note;
+    }
+    
+    /**
+     * Creates a gesture with the given contents. Sets the mouse handlers for
+     * all children of gesture.
+     * @param gestureContents populated ArrayList of SoundObjects
+     * @return 
+     */
+    private Gesture createGesture(ArrayList<SoundObject> gestureContents) {
+        //add if gest not empty
+        Gesture gest = new Gesture(gestureContents, actionManager, soundObjPane);
+        gest.visualRectangle.setUserData(gest);
+        gest.group(soundObjPane);
+//        EventHandler<MouseEvent> press = gest.handleGesturePressed;
+//        EventHandler<MouseEvent> drag = gest.handleGestureDragged;
+//        EventHandler<MouseEvent> release = gest.handleGestureReleased;
+//        gest.setHandlers(press, drag, release);
+        return gest;
     }
     
     /**

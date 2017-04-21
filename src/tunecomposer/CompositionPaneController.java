@@ -1,5 +1,6 @@
 package tunecomposer;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -209,7 +210,8 @@ public class CompositionPaneController implements Initializable {
         if (arrayOfMouseActions == null) {
             throw new IllegalArgumentException();
         }
-        String parseStr = "<gesture> <notebar> x:30 y:30 width:30 instrument:0 </notebar><notebar> x:50 y:50 width:30 instrument:0 </notebar> </gesture>";
+//        String parseStr = "<gesture> <notebar> x:30 y:30 width:30 instrument:0 </notebar><notebar> x:50 y:50 width:30 instrument:0 </notebar> </gesture>";
+        String parseStr = "<notebar> x:30 y:30 width:30 instrument:0 </notebar><notebar> x:50 y:50 width:30 instrument:0 </notebar>";
         SoundObjectParser p = new SoundObjectParser(parseStr, soundObjectPane, actionManager);
         p.stringToObjects(false);
 //        p = new SoundObjectParser("<notebar> x:00 y:000 width:10 instrument:0 </notebar>", soundObjectPane, actionManager);
