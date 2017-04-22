@@ -211,9 +211,13 @@ public class CompositionPaneController implements Initializable {
             throw new IllegalArgumentException();
         }
 //        String parseStr = "<gesture> <notebar> x:30 y:30 width:30 instrument:0 </notebar><notebar> x:50 y:50 width:30 instrument:0 </notebar> </gesture>";
-        String parseStr = "<notebar> x:30 y:30 width:30 instrument:0 </notebar><notebar> x:50 y:50 width:30 instrument:0 </notebar>";
-        SoundObjectParser p = new SoundObjectParser(parseStr, soundObjectPane, actionManager);
-        p.stringToObjects(false);
+//        String parseStr = "<gesture>"
+//                + "<notebar> x:30 y:30 width:30 instrument:0 </notebar>"
+//                + "<notebar> x:50 y:50 width:30 instrument:0 </notebar>"
+//                + "<gesture><notebar> x:80 y:80 width:30 instrument:0 </notebar><notebar> x:100 y:300 width:30 instrument:0 </notebar></gesture>"
+//                + "</gesture>";
+//        SoundObjectParser p = new SoundObjectParser(parseStr, soundObjectPane, actionManager);
+//        p.stringToObjects(false);
 //        p = new SoundObjectParser("<notebar> x:00 y:000 width:10 instrument:0 </notebar>", soundObjectPane, actionManager);
 //        p.stringToObjects(false);
         

@@ -6,8 +6,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.CopyAction;
+import tunecomposer.actionclasses.CutAction;
 import tunecomposer.actionclasses.DeleteAction;
 import tunecomposer.actionclasses.GroupAction;
+import tunecomposer.actionclasses.PasteAction;
 import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.UngroupAction;
 
@@ -66,63 +69,67 @@ public class SoundObjectPaneController {
     }
     
     public void cut() {
-        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
-//            CutAction cutAction;
-//                        
-//            cutAction = new CutAction(SELECTED_SOUNDOBJECT_ARRAY);
-//            actionManager.execute(cutAction);
-//            actionManager.putInUndoStack(cutAction);
-        }
+        CutAction cutAction;
+
+        cutAction = new CutAction(SELECTED_SOUNDOBJECT_ARRAY, soundObjectPane);
+        actionManager.execute(cutAction);
+        actionManager.putInUndoStack(cutAction);
         
         updateSelectedSoundObjectArray();
     }
     
     public void copy() {
-        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
-//            CopyAction copyAction;
-//                        
-//            copyAction = new CopyAction(SELECTED_SOUNDOBJECT_ARRAY);
-//            actionManager.execute(copyAction);
-//            actionManager.putInUndoStack(copyAction);
-        }
+        CopyAction copyAction;
+
+        copyAction = new CopyAction(SELECTED_SOUNDOBJECT_ARRAY);
+        actionManager.execute(copyAction);
+        actionManager.putInUndoStack(copyAction);
         
         updateSelectedSoundObjectArray();
     }
     
     public void paste() {
-        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
-//            PasteAction pasteAction;
-//                        
-//            pasteAction = new PasteAction();
-//            actionManager.execute(pasteAction);
-//            actionManager.putInUndoStack(pasteAction);
-        }
+        PasteAction pasteAction;
+
+        pasteAction = new PasteAction(soundObjectPane, actionManager);
+        actionManager.execute(pasteAction);
+        actionManager.putInUndoStack(pasteAction);
 
         updateSelectedSoundObjectArray();
     }
 
     public void selectAll() {
-        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
-            SelectAction selectAction;
-
-            selectAction = new SelectAction(SELECTED_SOUNDOBJECT_ARRAY);
-            actionManager.execute(selectAction);
-            actionManager.putInUndoStack(selectAction);
-        }
+        ArrayList<SoundObject> allSObjs = new ArrayList();
         
+        for (Node n: soundObjectPane.getChildren()) {
+            Rectangle r = (Rectangle) n;
+            SoundObject sObj = (SoundObject) (r).getUserData();
+            if (!sObj.isSelected()) {
+                allSObjs.add(sObj);
+            }
+        }
+
+        SelectAction selectAction;
+        selectAction = new SelectAction(allSObjs);
+        
+        actionManager.execute(selectAction);
         updateSelectedSoundObjectArray();
+        
+        actionManager.putInUndoStack(selectAction);
     }
     
     public void delete() {
-        if (!SELECTED_SOUNDOBJECT_ARRAY.isEmpty()) {
-            DeleteAction deleteAction;
-            deleteAction = new DeleteAction(SELECTED_SOUNDOBJECT_ARRAY, soundObjectPane);
+        
+        ArrayList<Action> deletions = new ArrayList();
+        
+        DeleteAction deleteAction;
+        deleteAction = new DeleteAction(SELECTED_SOUNDOBJECT_ARRAY, soundObjectPane);
 
-            deleteAction.execute();
-            actionManager.putInUndoStack(deleteAction);
-        }
+        deleteAction.execute();
+        deletions.add(deleteAction);
         
         updateSelectedSoundObjectArray();
+        actionManager.putInUndoStack(deletions);
     }
     
     /**
@@ -132,31 +139,35 @@ public class SoundObjectPaneController {
         GroupAction groupAction = new GroupAction(SELECTED_SOUNDOBJECT_ARRAY, 
         actionManager, soundObjectPane);
         actionManager.execute(groupAction);
-        actionManager.putInUndoStack(groupAction);
-        
         updateSelectedSoundObjectArray();
+        actionManager.putInUndoStack(groupAction);
     }
     
     /**
      * Ungroups the selected group.
      */
     public void ungroup() {
+        ArrayList<Action> actions = new ArrayList();
         for (SoundObject sObj : SELECTED_SOUNDOBJECT_ARRAY) {
             if ((sObj instanceof Gesture) && (sObj.visualRectangle.getUserData() == sObj)) {
                 UngroupAction ungroupAction = new UngroupAction(
                                             (Gesture) sObj, soundObjectPane);
-                actionManager.undoStack.forEach((actionList) -> {
-                    for (Action action : actionList) {
-                        if (!action.affectedObjs.equals(SELECTED_SOUNDOBJECT_ARRAY)) {
-                            actionManager.execute(ungroupAction);
-                            actionManager.putInUndoStack(ungroupAction);
-                        }
-                    }
-                });
+                actions.add(ungroupAction);
+//                actionManager.undoStack.forEach((actionList) -> {
+//                    for (Action action : actionList) {
+//                        System.out.println(action);
+////                        if (!action.affectedObjs.equals(SELECTED_SOUNDOBJECT_ARRAY)) {
+//                            actionManager.execute(ungroupAction);
+//                            actionManager.putInUndoStack(ungroupAction);
+//                        }
+//                    }
+//                });
             }
         }
         
+        actionManager.execute(actions);
         updateSelectedSoundObjectArray();
+        actionManager.putInUndoStack(actions);
     }
     
     /**

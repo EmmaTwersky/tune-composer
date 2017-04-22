@@ -61,22 +61,17 @@ public class SoundObjectParser {
         noteBarKeywords.add("instrument");
     }
     
-    
-    /**
-     * Instantiates the string field that will be stepped through as the class
-     * reads the given XML string. USED FOR TESTING.
-     * @param stringToParse string in XML format to convert into an object
-     */
-    public SoundObjectParser(String stringToParse) {
-        actionManager = null;
-        soundObjPane = null;
-        
-        iterateStr = stringToParse.toLowerCase();
-        
-        noteBarKeywords.add("x");
-        noteBarKeywords.add("y");
-        noteBarKeywords.add("width");
-        noteBarKeywords.add("instrument");
+    public ArrayList<SoundObject> parseString() {
+        ArrayList<SoundObject> sObjs = stringToObjects(false);
+        if (sObjs == null) {
+            System.out.println("sObjs in parseString() was returned null");
+        }
+        if (sObjs.isEmpty()) {
+            System.out.println("tried to paste objects, but no content found in clipboard: ");
+            System.out.println("\t"+iterateStr);
+            Thread.dumpStack();
+        }
+        return sObjs;
     }
     
     /**
@@ -124,9 +119,9 @@ public class SoundObjectParser {
                 else {
                     for (SoundObject sObj : foundSoundObjs) {
                         System.out.println("add item" + sObj);
-                        sObj.addToPane(soundObjPane);
+//                        sObj.addToPane(soundObjPane);
                     }
-                    return null;
+                    return foundSoundObjs;
                 }
             }
             else {
@@ -134,24 +129,6 @@ public class SoundObjectParser {
                 throw new InvalidXMLTagException(error);
             }
         }
-        //TODO
-//        while
-//        tag = getNextTag(str)
-//        if t is notebar:
-//            get data
-//            make notebar
-//            add to foundSoundObjs
-//        elif t is gesture:
-//            s = stringToObjs(str)
-//            if nothing found, then don't add
-//            add s to foundSoundObjs
-//        elif t is /gesture:
-//           create gesture, gest, containing all items in foundSoundObjects
-//           return gest;
-//        elif:
-//           no tag found, are we at end of string?
-//           yes: return foundSoundObjs
-//           no: error
     }
     
     /**
@@ -222,11 +199,9 @@ public class SoundObjectParser {
         int tagEnd = getEndIndexOfTag(tagStart);
         //if tagEnd is end of iterateStr, return tagStart to end
         if ( tagEnd == iterateStr.length() - 1 ) {
-            System.out.println("get rest of string: " +iterateStr.substring(tagStart));
             return iterateStr.substring(tagStart);
         }
         else {
-            System.out.println("get substring: " + iterateStr.substring(tagStart, tagEnd+1));
             return iterateStr.substring(tagStart, tagEnd+1);
         }
     }
@@ -269,7 +244,7 @@ public class SoundObjectParser {
             Integer value = getDataFieldValue(field, dataString);
             noteValues.add(value);
         }
-        System.out.println(noteValues);
+        System.out.println("note data: " + noteValues);
         return noteValues;
     }
     
@@ -330,11 +305,7 @@ public class SoundObjectParser {
         //add if gest not empty
         Gesture gest = new Gesture(gestureContents, actionManager, soundObjPane);
         gest.visualRectangle.setUserData(gest);
-        gest.group(soundObjPane);
-//        EventHandler<MouseEvent> press = gest.handleGesturePressed;
-//        EventHandler<MouseEvent> drag = gest.handleGestureDragged;
-//        EventHandler<MouseEvent> release = gest.handleGestureReleased;
-//        gest.setHandlers(press, drag, release);
+        gest.groupDontAddVisual();
         return gest;
     }
     

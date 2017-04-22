@@ -162,13 +162,19 @@ public abstract class SoundObject {
     */
     public abstract void addToMidiPlayer(MidiPlayer player);
     
-    
     /**
      * Method for recursively grabbing all children of a SoundObject. 
      * Returns an ArrayList of all children below the object not including self.
      * @return list of all, as in every level below, the current SoundObject.
      */
     public abstract ArrayList<SoundObject> getAllChildren();
+    
+    /**
+     * Converts the NoteBar or Gesture to a XML styled string to be copied to
+     * the clipboard.
+     * @return XML styled String
+     */
+    public abstract String objectToXML();
     
 
     /**
@@ -260,21 +266,21 @@ public abstract class SoundObject {
         ArrayList<SoundObject> thisSoundObject = new ArrayList();
         thisSoundObject.add((SoundObject) visualRectangle.getUserData());
         if (!selected) {
-                if(!isCtrlDown){
-                    ArrayList<SoundObject> allSelected;
-                    allSelected = getOtherSelectedItems();
-                    unselectAction = new UnselectAction(allSelected);
-                    unselectAction.execute();
-                    actionList.add(unselectAction);
-                }
-                selectAction = new SelectAction(thisSoundObject);
-                selectAction.execute();
-                actionList.add(selectAction);
-            }
-            else if (isCtrlDown){
-                unselectAction = new UnselectAction(thisSoundObject);
+            if(!isCtrlDown){
+                ArrayList<SoundObject> allSelected;
+                allSelected = getOtherSelectedItems();
+                unselectAction = new UnselectAction(allSelected);
                 unselectAction.execute();
                 actionList.add(unselectAction);
             }
+            selectAction = new SelectAction(thisSoundObject);
+            selectAction.execute();
+            actionList.add(selectAction);
+        }
+        else if (isCtrlDown){
+            unselectAction = new UnselectAction(thisSoundObject);
+            unselectAction.execute();
+            actionList.add(unselectAction);
+        }
     }
 }

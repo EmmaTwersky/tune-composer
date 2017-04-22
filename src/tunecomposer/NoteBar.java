@@ -20,11 +20,11 @@ public class NoteBar extends SoundObject {
      * pitch, starting value, and duration. 
      */
     public final String name;
-    public final int instrument;
+    private final int instrument;
     public final int channel;
-    public int pitch;
-    public int startTick;
-    public int duration;
+    private int pitch;
+    private int startTick;
+    private int duration;
 
     /**
      * ActionManager instance that holds the undo and redo stacks.
@@ -82,8 +82,8 @@ public class NoteBar extends SoundObject {
                 
         int xLocation = (int) x;
         int yLocation = (int) Math.round(y / NOTE_HEIGHT) * NOTE_HEIGHT;
-        visualRectangle = new Rectangle(xLocation, yLocation, duration, NOTE_HEIGHT);
-        visualRectangle.setId(name); 
+        visualRectangle = new Rectangle(xLocation, yLocation, getDuration(), NOTE_HEIGHT);
+        visualRectangle.setId(name);
 
         setHandlers();
 
@@ -202,7 +202,7 @@ public class NoteBar extends SoundObject {
         int maxX = CompositionPaneController.PANE_X_MAX;
         int maxY = CompositionPaneController.PANE_Y_MAX;
         
-        if ((x < minX || x+duration > maxX) ||
+        if ((x < minX || x+getDuration() > maxX) ||
             (y < minY || y+HEIGHT > maxY)){
             onEdge = true;
         }
@@ -216,10 +216,10 @@ public class NoteBar extends SoundObject {
      */
     @Override
     public void changeLength(int lengthChange){ 
-        int newLength = duration + lengthChange;
+        int newLength = getDuration() + lengthChange;
         if (newLength > minLength) {
             duration = newLength;
-            visualRectangle.setWidth(duration);
+            visualRectangle.setWidth(getDuration());
         }
     }
 
@@ -321,10 +321,8 @@ public class NoteBar extends SoundObject {
      */
     @Override
     public void addToMidiPlayer(MidiPlayer player) {
-        player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + this.channel, 
-                this.instrument, 0, 0, this.channel);
-        player.addNote(this.pitch, VOLUME, this.startTick, 
-                this.duration, this.channel, 0);
+        player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + this.channel, this.getInstrument(), 0, 0, this.channel);
+        player.addNote(this.getPitch(), VOLUME, this.getStartTick(), this.getDuration(), this.channel, 0);
     }
     
     /**
@@ -349,6 +347,8 @@ public class NoteBar extends SoundObject {
             prepareSelectionAction(event.isControlDown());
             
             prepareMoveOrStretchAction();
+            
+            SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
         }
     };
     
@@ -374,16 +374,16 @@ public class NoteBar extends SoundObject {
                 double translateX = (x - latestX);
                 double translateY = (y - latestY);
                 sObjMove.move(translateX, translateY);
+                latestX = x;
+                latestY = y;
             }
             
-            if (draggingLength){
+            if (draggingLength || !sObjMove.isMoveFailed()){
                 latestX = x;
                 latestY = y;
             }
-            else if (!sObjMove.isMoveFailed()){
-                latestX = x;
-                latestY = y;
-            }
+            
+            SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
             
             event.consume();
         }
@@ -415,6 +415,9 @@ public class NoteBar extends SoundObject {
             }
             
             actionManager.putInUndoStack(actionList);
+            
+            SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
+            
             event.consume();
         }
     };
@@ -427,7 +430,7 @@ public class NoteBar extends SoundObject {
      */
     @Override
     void prepareMoveOrStretchAction(){
-        double editLengthMax = visualRectangle.getX() + duration;
+        double editLengthMax = visualRectangle.getX() + getDuration();
         double editLengthMin = editLengthMax - clickToEditLength;
         if ((editLengthMin <= latestX) && (latestX <= editLengthMax)) {
             draggingLength = true;
@@ -441,5 +444,53 @@ public class NoteBar extends SoundObject {
                     latestX, latestY);
         }
     }
+
+    /**
+     * @return the instrument
+     */
+    public int getInstrument() {
+        return instrument;
+    }
+
+    /**
+     * @return the pitch
+     */
+    public int getPitch() {
+        return pitch;
+    }
+
+    /**
+     * @return the startTick
+     */
+    public int getStartTick() {
+        return startTick;
+    }
+
+    /**
+     * @return the duration
+     */
+    public int getDuration() {
+        return duration;
+    }
     
+    @Override
+    public String objectToXML(){
+	String startTag = "<notebar>";
+	String endTag = " </notebar>";
+	String xstr = " x:";
+	String ystr = " y:";
+	String widthstr = " width:";
+	String inststr = " instrument:";
+	
+	String x = String.valueOf((int) this.visualRectangle.getX());
+	String y = String.valueOf((int) this.visualRectangle.getY());
+	String instrument = String.valueOf(this.instrument);
+	String width = String.valueOf(this.duration);
+	
+	String result = startTag + xstr + x + ystr + y + widthstr + width + inststr + instrument + endTag;
+	
+        System.out.println(result);
+        
+	return result;
+    }
 }

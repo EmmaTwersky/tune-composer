@@ -29,11 +29,13 @@
                 <Menu text = "Edit" >
                     <items>
                         <MenuItem 
+                            fx:id = "UndoMenuItem"
                             text = "Undo" 
                             onAction = "#handleUndoMenuItemAction"  
                             accelerator = "Shortcut + Z" >
                         </MenuItem>
                         <MenuItem 
+                            fx:id = "RedoMenuItem"
                             text = "Redo" 
                             onAction = "#handleRedoMenuItemAction"  
                             accelerator = "Shortcut + SHIFT + Z" >
@@ -41,16 +43,19 @@
                         <SeparatorMenuItem>
                         </SeparatorMenuItem>
                         <MenuItem 
+                            fx:id = "CutMenuItem"
                             text = "Cut" 
                             onAction = "#handleCutMenuItemAction"  
                             accelerator = "Shortcut + X" >
                         </MenuItem>
                         <MenuItem 
+                            fx:id = "CopyMenuItem"
                             text = "Copy" 
                             onAction = "#handleCopyMenuItemAction"  
                             accelerator = "Shortcut + C" >
                         </MenuItem>
                         <MenuItem 
+                            fx:id = "PasteMenuItem"
                             text = "Paste" 
                             onAction = "#handlePasteMenuItemAction"  
                             accelerator = "Shortcut + V" >
@@ -58,11 +63,13 @@
                         <SeparatorMenuItem>
                         </SeparatorMenuItem>
                         <MenuItem 
+                            fx:id = "DeleteMenuItem"
                             text = "Delete" 
                             onAction = "#handleDeleteMenuItemAction"  
                             accelerator = "Shortcut + Backspace" >
                         </MenuItem>
                         <MenuItem 
+                            fx:id = "SelAllMenuItem"
                             text = "Select All" 
                             onAction = "#handleSelectAllMenuItemAction"  
                             accelerator = "Shortcut + A" >
@@ -70,11 +77,13 @@
                         <SeparatorMenuItem>
                         </SeparatorMenuItem>
                         <MenuItem 
+                            fx:id = "GroupMenuItem"
                             text = "Group" 
                             onAction = "#handleGroupMenuItemAction"  
                             accelerator = "Shortcut + G" >
                         </MenuItem>
                         <MenuItem 
+                            fx:id = "UngroupMenuItem"
                             text = "Ungroup" 
                             onAction = "#handleUngroupMenuItemAction"  
                             accelerator = "Shortcut + SHIFT + G" >
@@ -84,11 +93,13 @@
                 <Menu text = "Actions" >
                     <items>
                         <MenuItem 
+                            fx:id = "PlayMenuItem"
                             text = "Play" 
                             onAction = "#handlePlayMenuItemAction" 
                             accelerator = "Shortcut + P" >
                         </MenuItem>
                         <MenuItem
+                            fx:id = "StopMenuItem"
                             text = "Stop" 
                             onAction = "#handleStopMenuItemAction" 
                             accelerator = "Shortcut + S" >

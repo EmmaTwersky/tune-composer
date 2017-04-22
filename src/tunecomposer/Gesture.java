@@ -128,7 +128,7 @@ public final class Gesture extends SoundObject{
         selected = true;
         visualRectangle.getStyleClass().removeAll("unselectedGesture");
         visualRectangle.getStyleClass().add("selectedGesture");
-//        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane); 
+        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane); 
     }
     
     /**
@@ -143,7 +143,7 @@ public final class Gesture extends SoundObject{
         selected = false;
         visualRectangle.getStyleClass().removeAll("selectedGesture");
         visualRectangle.getStyleClass().add("unselectedGesture");
-//        SoundObjectPaneController.updateSelectedSoundObjectArray(soundObjectPane); 
+        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane); 
     }
     
     /**
@@ -232,9 +232,13 @@ public final class Gesture extends SoundObject{
      */
     @Override
     public void setHandlers() {
-        visualRectangle.setOnMousePressed(handleGesturePressed);
-        visualRectangle.setOnMouseDragged(handleGestureDragged);
-        visualRectangle.setOnMouseReleased(handleGestureReleased);
+        this.visualRectangle.setOnMousePressed(handleGesturePressed);
+        this.visualRectangle.setOnMouseDragged(handleGestureDragged);
+        this.visualRectangle.setOnMouseReleased(handleGestureReleased);
+        for (SoundObject sObj : containedSoundObjects) {
+            sObj.setHandlers(handleGesturePressed, handleGestureDragged, 
+                    handleGestureReleased);
+        }
     }
     
     /**
@@ -324,8 +328,21 @@ public final class Gesture extends SoundObject{
         });
     }
 
+    /**
+     * Sets handlers for all contained items to this Gesture.
+     * Does not change selection state. Does not handle if given pane is null. 
+     * Does not handle exceptions if Object can not be removed from given pane.
+     * TODO: refactor the names of this method and group() to be more accurate
+     */
+    public void groupDontAddVisual() {
+        for (SoundObject sObj : containedSoundObjects) {
+            sObj.setHandlers(handleGesturePressed, handleGestureDragged, handleGestureReleased);
+            if (sObj.getTopGesture() == null) {
+                sObj.setTopGesture(this);
+            }
+        }
+    }
 
-    
     /**
      * Adds the gestureBox to the given pane and sets all containedItems' 
      * handlers to this Gesture's. 
@@ -336,12 +353,7 @@ public final class Gesture extends SoundObject{
     public void group(Pane soundObjectPane) {
         refreshVisualRectangle();
         soundObjectPane.getChildren().add(visualRectangle);
-        for (SoundObject sObj : containedSoundObjects) {
-            sObj.setHandlers(handleGesturePressed, handleGestureDragged, handleGestureReleased);
-            if (sObj.getTopGesture() == null) {
-                sObj.setTopGesture(this);
-            }
-        }
+        groupDontAddVisual();
     }
     
     
@@ -382,6 +394,7 @@ public final class Gesture extends SoundObject{
         prepareSelectionAction(event.isControlDown());
             
         prepareMoveOrStretchAction();
+        
     };
     
     /**
@@ -405,9 +418,14 @@ public final class Gesture extends SoundObject{
             sObjMove.move(translateX, translateY);
         }
         
-        
-        latestX = x;
-        latestY = y;
+        if (draggingLength){
+            latestX = x;
+            latestY = y;
+        }
+        else if (!sObjMove.isMoveFailed()){
+            latestX = x;
+            latestY = y;
+        }
         event.consume();
     };
     
@@ -464,5 +482,21 @@ public final class Gesture extends SoundObject{
                 SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                 latestX, latestY);
         }
+    }
+    
+    @Override
+    public String objectToXML(){
+        String result = "";
+	String startTag = "<gesture>";
+        String endTag = " </gesture>";
+        result = result + startTag;
+        
+        for (SoundObject soundobject: containedSoundObjects) {
+            result = result + " " + soundobject.objectToXML();
+        }
+        
+        result = result + endTag;
+	System.out.println(result);
+        return result;
     }
 }
