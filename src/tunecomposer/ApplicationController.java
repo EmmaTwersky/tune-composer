@@ -75,17 +75,7 @@ public class ApplicationController implements Initializable {
         actionManager = new ActionManager();
         actionManager.addObserver(actionObserver);
         compositionPaneController.setActionManager(actionManager);
-//        SoundObjectParser p = new SoundObjectParser(" x:1234 y:2344 width:324 instrument:42455523 </notebar>");
-//        p.getNoteData();
-        
-//        p = new SoundObjectParser("  <tag>");
-//        p.getNextTag();
-//        p = new SoundObjectParser("   <tag> ");
-//        p.getNextTag();
-//        p = new SoundObjectParser("  <tag>  <a> ");
-//        p.getNextTag();
-//        p = new SoundObjectParser("tag");
-//        p.getNextTag();        
+    
     }   
         
     /**

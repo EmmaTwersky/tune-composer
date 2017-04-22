@@ -1,6 +1,7 @@
 package tunecomposer;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Stack;
 import tunecomposer.actionclasses.Action;
 import java.util.Observable;
@@ -79,6 +80,16 @@ public class ActionManager extends Observable {
         redoStack.clear();
         undoStack.push(actionArray);
         notifyObservers();
+    }
+    
+    /**
+     * Return top value on undo stack, but do not remove it from the stack.
+     * If stack is empty, throws exception.
+     * @return reference to top item on undo stack
+     * @throws EmptyStackException if the stack is empty
+     */
+    public ArrayList<Action> peekUndoStack() throws EmptyStackException {
+        return undoStack.peek();
     }
     
     /**

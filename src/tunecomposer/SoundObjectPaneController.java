@@ -1,6 +1,7 @@
 package tunecomposer;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.scene.Node;
@@ -10,6 +11,7 @@ import tunecomposer.actionclasses.CopyAction;
 import tunecomposer.actionclasses.CutAction;
 import tunecomposer.actionclasses.DeleteAction;
 import tunecomposer.actionclasses.GroupAction;
+import tunecomposer.actionclasses.MoveAction;
 import tunecomposer.actionclasses.PasteAction;
 import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.UngroupAction;
@@ -92,6 +94,24 @@ public class SoundObjectPaneController {
         PasteAction pasteAction;
 
         pasteAction = new PasteAction(soundObjectPane, actionManager);
+        ArrayList<Action> lastActions;
+        try {
+            lastActions = actionManager.peekUndoStack();
+        } catch (EmptyStackException ex) {
+            actionManager.execute(pasteAction);
+            actionManager.putInUndoStack(pasteAction);
+            return;
+        }
+        Action a = lastActions.get(0);
+        if (a instanceof PasteAction) {
+            PasteAction oldPaste = (PasteAction) a;
+            //offset if last action was pasting the same objects
+            if (pasteAction.hasSameString(oldPaste)) {
+                int lastOffset = oldPaste.getOffset();
+                lastOffset += 10;
+                pasteAction.setOffset(lastOffset);
+            }
+        }
         actionManager.execute(pasteAction);
         actionManager.putInUndoStack(pasteAction);
 
