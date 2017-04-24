@@ -9,9 +9,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
-//import java.util.Observable;
+import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.CopyAction;
+import tunecomposer.actionclasses.CutAction;
 
 /**
  * Controls the application and handles the menu item selections.
@@ -243,14 +243,18 @@ public class ApplicationController implements Initializable {
         @Override
         public void update(Observable manager, Object x){
             ActionManager observable = (ActionManager) manager;
-            setDisable(observable.isRedoStackEmpty(),observable.isUndoStackEmpty());
+            setDisable(observable);
         }
         
-        private void setDisable(boolean isRedoEmpty,boolean isUndoEmpty){
+        private void setDisable(ActionManager observable){
+            
+            boolean isRedoEmpty = observable.isRedoStackEmpty();
+            boolean isUndoEmpty = observable.isUndoStackEmpty();
             
             toggleMenuItemDisable(false);
             UngroupMenuItem.setDisable(true);
             StopMenuItem.setDisable(true);
+            PasteMenuItem.setDisable(true);
             
             ArrayList<SoundObject> selItems = 
                     SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY;
@@ -286,6 +290,9 @@ public class ApplicationController implements Initializable {
                 DeleteMenuItem.setDisable(true);
                 GroupMenuItem.setDisable(true);
             }
+            else if (selItems.size()==1){
+                GroupMenuItem.setDisable(true);
+            }
             
             for (SoundObject sObj: selItems){
                 if (sObj instanceof Gesture){
@@ -293,16 +300,14 @@ public class ApplicationController implements Initializable {
                 }
             }
             
-            // IMPLEMENTATION FOR PASTE DISABLE DOESNT WORK YET
-//            Clipboard clipboard;
-//            clipboard = Clipboard.getSystemClipboard();
-//            ClipboardContent content = new ClipboardContent();
-//            if(content.getString() != null){
-//                if (!content.getString().contains("<notebar>") &&
-//                        !content.getString().contains("<gesture>")){
-//                    PasteMenuItem.setDisable(true);
-//                }
-//            }
+            for (ArrayList<Action> aList: observable.undoStack){
+                for (Action aObj: aList){
+                    if ((aObj instanceof CutAction) || (aObj instanceof CopyAction)){
+                        PasteMenuItem.setDisable(false);
+                    }
+                }
+            }
+            
         }
         
     }
