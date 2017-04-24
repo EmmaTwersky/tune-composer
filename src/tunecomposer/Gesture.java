@@ -464,13 +464,7 @@ public final class Gesture extends SoundObject{
      */
     @Override
     void prepareMoveOrStretchAction(){
-        containedSoundObjects.forEach((sObj) -> {
-            double editLengthMax =  (sObj.visualRectangle.getX() + sObj.visualRectangle.getWidth());
-            double editLengthMin = editLengthMax - clickToEditLength;
-            if ((editLengthMin <= latestX) && (latestX <= editLengthMax)) {
-                draggingLength = true;
-            }
-        });
+        draggingLength = isDraggingLength(this);
         
         if (draggingLength) {
             sObjStretch = new LengthChangeAction(
@@ -482,6 +476,22 @@ public final class Gesture extends SoundObject{
                 SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                 latestX, latestY);
         }
+    }
+    
+    private boolean isDraggingLength(Gesture sGest){
+        for (SoundObject sObj: sGest.containedSoundObjects){
+            if (sObj instanceof Gesture){
+                if (isDraggingLength((Gesture)sObj)){
+                    return true;
+                }
+            }
+            double editLengthMax =  (sObj.visualRectangle.getX() + sObj.visualRectangle.getWidth());
+            double editLengthMin = editLengthMax - clickToEditLength;
+            if ((editLengthMin <= latestX) && (latestX <= editLengthMax)) {
+                return true;
+            }
+        }
+        return false;
     }
     
     @Override
