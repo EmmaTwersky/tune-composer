@@ -169,7 +169,6 @@ public class NoteBar extends SoundObject {
 
     /**
      * Moves note freely on pane.
-
      * @param x the increment to change current x value by
      * @param y the increment to change current y value by
      */
@@ -488,9 +487,7 @@ public class NoteBar extends SoundObject {
 	String width = String.valueOf(this.duration);
 	
 	String result = startTag + xstr + x + ystr + y + widthstr + width + inststr + instrument + endTag;
-	
-        System.out.println(result);
-        
+	        
 	return result;
     }
 }

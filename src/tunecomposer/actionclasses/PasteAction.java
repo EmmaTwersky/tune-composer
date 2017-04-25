@@ -35,7 +35,6 @@ public class PasteAction extends Action {
         
         SoundObjectParser parser = new SoundObjectParser(parseString, soundObjectPane, am);
         affectedObjs = parser.parseString();
-//        TODO: compare to most recent in undo stack (mayb happens in sound objectpane controller)
 
     }
     

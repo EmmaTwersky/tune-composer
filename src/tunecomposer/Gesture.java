@@ -506,7 +506,6 @@ public final class Gesture extends SoundObject{
         }
         
         result = result + endTag;
-	System.out.println(result);
         return result;
     }
 }
