@@ -76,7 +76,7 @@ public class NoteBar extends SoundObject {
         actionManager = _actionManager;
         this.soundObjectPane = soundObjectPane;
         
-        pitch = PITCH_RANGE - (int) y / NOTE_HEIGHT;
+        pitch = PITCH_RANGE - ((int) Math.round(y / NOTE_HEIGHT));
         startTick = (int) x;
         duration = DEFAULT_LENGTH;
                 
@@ -93,6 +93,7 @@ public class NoteBar extends SoundObject {
     /**
      * Useful to create a NoteBar from XML. Given x, y, and length must be 
      * positive coordinates. 
+     * 
      * @param x the top left corner x value of the note clicked
      * @param y the top left corner y value of the note clicked
      * @param length length the note 
@@ -112,7 +113,7 @@ public class NoteBar extends SoundObject {
         actionManager = am;
         soundObjectPane = soundObjPane;
         
-        pitch = PITCH_RANGE - (int) y / NOTE_HEIGHT;
+        pitch = PITCH_RANGE - ((int) Math.round(y / NOTE_HEIGHT));
         startTick = x;
         duration = DEFAULT_LENGTH;
         
@@ -294,7 +295,7 @@ public class NoteBar extends SoundObject {
         int xRaw = (int) visualRectangle.getX();
         int yRaw = (int) visualRectangle.getY();
         
-        pitch = PITCH_RANGE - (int) yRaw / NOTE_HEIGHT;
+        pitch = PITCH_RANGE - ((int) Math.round(yRaw / NOTE_HEIGHT));
         startTick = (int) xRaw;
         
         //Fix raw values.
