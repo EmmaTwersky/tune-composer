@@ -284,7 +284,7 @@ public class SoundObjectParser {
         //add if gest not empty
         Gesture gest = new Gesture(gestureContents, actionManager, soundObjPane);
         gest.visualRectangle.setUserData(gest);
-        gest.groupDontAddVisual();
+        gest.setTopGesture();
         return gest;
     }
     
