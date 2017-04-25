@@ -1,6 +1,5 @@
 package tunecomposer;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,7 +24,7 @@ public class CompositionPaneController implements Initializable {
     public static final int PANE_Y_MAX = 1280;
     
     /**
-     * Create the tune player to compose and play notes on the composition pane.
+     * Create the tune player to compose and play notes on the CompositionPane.
      */
     public static TunePlayer tunePlayerObj;
     
@@ -110,26 +109,42 @@ public class CompositionPaneController implements Initializable {
         redBarPaneController.stopAnimation();
     }
     
+    /**
+     * Adds selected SoundObjects to Clipboard and removes them from the
+     * CompositionPane.
+     */
     public void cut() {
         stop();
         soundObjectPaneController.cut();
     }
     
+    /**
+     * Adds selected SoundObjects to Clipboard.
+     */
     public void copy() {
         stop();
         soundObjectPaneController.copy();
     }
     
+    /**
+     * Adds most recently copied or cut SoundObjects onto the CompositionPane.
+     */
     public void paste() {
         stop();
         soundObjectPaneController.paste();
     }
     
+    /**
+     * Selects all the SoundObjects on the CompositionPane.
+     */
     public void selectAll() {
         stop();
         soundObjectPaneController.selectAll();        
     }
     
+    /**
+     * Deletes the selected SoundObjects from the CompositionPane.
+     */
     public void delete() {
         stop();
         soundObjectPaneController.delete();

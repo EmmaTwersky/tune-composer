@@ -4,7 +4,6 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import tunecomposer.actionclasses.GroupAction;
 import tunecomposer.actionclasses.MoveAction;
 import tunecomposer.actionclasses.LengthChangeAction;
 
@@ -56,10 +55,10 @@ public final class Gesture extends SoundObject{
      * Gesture constructor that sets containedObjects equal to given ArrayList
         of SoundObjects instead of copying the SELECTED_SOUNDOBJECT_ARRAY
      * @param selList ArrayList of SoundObjects within this group 
-     * @param _actionManager assigns reference to actionManager field
+     * @param actionManager assigns reference to actionManager field
      * @param soundObjectPane assigns reference to pane field.
      */
-    public Gesture(ArrayList<SoundObject>  selList, ActionManager _actionManager,
+    public Gesture(ArrayList<SoundObject> selList, ActionManager actionManager,
             Pane soundObjectPane) {
         visualRectangle = new Rectangle();
         visualRectangle.setMouseTransparent(true);
@@ -68,7 +67,7 @@ public final class Gesture extends SoundObject{
         containedSoundObjects = new ArrayList();
         containedSoundObjects = (ArrayList<SoundObject>) selList.clone();
         
-        actionManager = _actionManager;
+        this.actionManager = actionManager;
         this.soundObjectPane = soundObjectPane;
         
         refreshVisualRectangle();
@@ -157,7 +156,7 @@ public final class Gesture extends SoundObject{
     }
     
     /**
-     * Returns whether object is selected.
+     * Returns true if the SoundObject is selected.
      * 
      * @return boolean representing state of selected
      */
@@ -262,10 +261,6 @@ public final class Gesture extends SoundObject{
         }
     }
     
-    public void isEqual(GroupAction groupAction) {
-        
-    }
-    
     /**
      * Adds the gesture to the given pane. 
      * Does not manage selection. Does not handle if given pane is null. 
@@ -329,12 +324,9 @@ public final class Gesture extends SoundObject{
     }
 
     /**
-     * Sets handlers for all contained items to this Gesture.
-     * Does not change selection state. Does not handle if given pane is null. 
-     * Does not handle exceptions if Object can not be removed from given pane.
-     * TODO: refactor the names of this method and group() to be more accurate
+     * Resets handlers for all contained items to this top Gesture.
      */
-    public void groupDontAddVisual() {
+    public void setTopGesture() {
         for (SoundObject sObj : containedSoundObjects) {
             sObj.setHandlers(handleGesturePressed, handleGestureDragged, handleGestureReleased);
             if (sObj.getTopGesture() == null) {
@@ -346,14 +338,12 @@ public final class Gesture extends SoundObject{
     /**
      * Adds the gestureBox to the given pane and sets all containedItems' 
      * handlers to this Gesture's. 
-     * Does not change selection state. Does not handle if given pane is null. 
-     * Does not handle exceptions if Object can not be removed from given pane.
      * @param soundObjectPane the pane to add the gestureBox to
      */
     public void group(Pane soundObjectPane) {
         refreshVisualRectangle();
         soundObjectPane.getChildren().add(visualRectangle);
-        groupDontAddVisual();
+        setTopGesture();
     }
     
     
@@ -463,7 +453,7 @@ public final class Gesture extends SoundObject{
      * Helper method to the handleGesturePressed event handler.
      */
     @Override
-    void prepareMoveOrStretchAction(){
+    public void prepareMoveOrStretchAction(){
         draggingLength = isDraggingLength(this);
         
         if (draggingLength) {
@@ -478,6 +468,14 @@ public final class Gesture extends SoundObject{
         }
     }
     
+    /**
+     * Checks whether the Gesture is being clicked in the stretching area of its
+     * NoteBars.
+     * 
+     * @param sGest current Gesture
+     * @return boolean; True if clicked in 10 rightmost pixels of the Rectangle,
+     *          False otherwise
+     */
     private boolean isDraggingLength(Gesture sGest){
         for (SoundObject sObj: sGest.containedSoundObjects){
             if (sObj instanceof Gesture){
@@ -494,6 +492,12 @@ public final class Gesture extends SoundObject{
         return false;
     }
     
+    /**
+     * Parser that converts a Gesture to a String to be used in the 
+     * Clipboard.
+     * 
+     * @return String in an XML-like format
+     */
     @Override
     public String objectToXML(){
         String result = "";

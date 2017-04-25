@@ -172,7 +172,7 @@ public abstract class SoundObject {
     /**
      * Converts the NoteBar or Gesture to a XML styled string to be copied to
      * the clipboard.
-     * @return XML styled String
+     * @return XML-like styled String
      */
     public abstract String objectToXML();
     

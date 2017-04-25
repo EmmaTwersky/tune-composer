@@ -14,8 +14,8 @@ public class ActionManager extends Observable {
     /**
      * References to the stacks which hold actions to manage.
      */
-    Stack<ArrayList<Action>> undoStack;
-    Stack<ArrayList<Action>> redoStack;
+    public Stack<ArrayList<Action>> undoStack;
+    public Stack<ArrayList<Action>> redoStack;
     
     /**
      * Constructs the undo and redo stacks. 
