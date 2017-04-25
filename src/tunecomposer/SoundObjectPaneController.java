@@ -11,7 +11,6 @@ import tunecomposer.actionclasses.CopyAction;
 import tunecomposer.actionclasses.CutAction;
 import tunecomposer.actionclasses.DeleteAction;
 import tunecomposer.actionclasses.GroupAction;
-import tunecomposer.actionclasses.MoveAction;
 import tunecomposer.actionclasses.PasteAction;
 import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.UngroupAction;
@@ -19,7 +18,6 @@ import tunecomposer.actionclasses.UngroupAction;
 /**
  * This is a controller class for the Pane that holds the sound objects such as
  * NoteBars and Gestures.
- *
  */
 public class SoundObjectPaneController {
 
@@ -57,6 +55,10 @@ public class SoundObjectPaneController {
         }
     }
     
+    /**
+     * Fills the SELECTED_SOUNDOBJECT_ARRAY with the currently selected notes.
+     * @param pane the current pane
+     */
     public static void staticUpdateSelectedArray(Pane pane){
         SELECTED_SOUNDOBJECT_ARRAY.clear();
         for (Node n: pane.getChildren()) {
@@ -70,6 +72,10 @@ public class SoundObjectPaneController {
         }
     }
     
+    /**
+     * Adds selected SoundObjects to Clipboard and removes them from the
+     * CompositionPane.
+     */
     public void cut() {
         CutAction cutAction;
 
@@ -80,6 +86,9 @@ public class SoundObjectPaneController {
         updateSelectedSoundObjectArray();
     }
     
+    /**
+     * Adds selected SoundObjects to Clipboard.
+     */
     public void copy() {
         CopyAction copyAction;
 
@@ -90,6 +99,10 @@ public class SoundObjectPaneController {
         updateSelectedSoundObjectArray();
     }
     
+    /**
+     * Adds most recently copied or cut SoundObjects onto the CompositionPane
+     * ten pixels to the right and down.
+     */
     public void paste() {
         PasteAction pasteAction;
 
@@ -117,7 +130,10 @@ public class SoundObjectPaneController {
 
         updateSelectedSoundObjectArray();
     }
-
+    
+    /**
+     * Selects all the SoundObjects on the CompositionPane.
+     */
     public void selectAll() {
         ArrayList<SoundObject> allSObjs = new ArrayList();
         
@@ -137,7 +153,10 @@ public class SoundObjectPaneController {
         
         actionManager.putInUndoStack(selectAction);
     }
-    
+        
+    /**
+     * Deletes the selected SoundObjects from the CompositionPane.
+     */
     public void delete() {
         
         ArrayList<Action> deletions = new ArrayList();
@@ -153,7 +172,7 @@ public class SoundObjectPaneController {
     }
     
     /**
-     * Groups the selected notes or gestures.
+     * Groups the selected NoteBars or Gestures.
      */
     public void group() {
         GroupAction groupAction = new GroupAction(SELECTED_SOUNDOBJECT_ARRAY, 
@@ -173,15 +192,6 @@ public class SoundObjectPaneController {
                 UngroupAction ungroupAction = new UngroupAction(
                                             (Gesture) sObj, soundObjectPane);
                 actions.add(ungroupAction);
-//                actionManager.undoStack.forEach((actionList) -> {
-//                    for (Action action : actionList) {
-//                        System.out.println(action);
-////                        if (!action.affectedObjs.equals(SELECTED_SOUNDOBJECT_ARRAY)) {
-//                            actionManager.execute(ungroupAction);
-//                            actionManager.putInUndoStack(ungroupAction);
-//                        }
-//                    }
-//                });
             }
         }
         

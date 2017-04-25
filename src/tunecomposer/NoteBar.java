@@ -166,6 +166,66 @@ public class NoteBar extends SoundObject {
     public boolean isSelected(){
         return selected;
     }
+    
+    /**
+     * Returns instrument.
+     * 
+     * @return the instrument
+     */
+    public int getInstrument() {
+        return instrument;
+    }
+
+    /**
+     * Returns pitch.
+     * @return the pitch
+     */
+    public int getPitch() {
+        return pitch;
+    }
+
+    /**
+     * Returns startTick.
+     * 
+     * @return the startTick
+     */
+    public int getStartTick() {
+        return startTick;
+    }
+
+    /**
+     * Returns duration.
+     * 
+     * @return the duration
+     */
+    public int getDuration() {
+        return duration;
+    }
+    
+    /**
+     * Parser that converts a NoteBar to a String to be used in the  Clipboard.
+     * 
+     * @return String in an XML-like format
+     */
+    @Override
+    public String objectToXML(){
+	String startTag = "<notebar>";
+	String endTag = " </notebar>";
+	String xstr = " x:";
+	String ystr = " y:";
+	String widthstr = " width:";
+	String inststr = " instrument:";
+	
+	String x = String.valueOf((int) this.visualRectangle.getX());
+	String y = String.valueOf((int) this.visualRectangle.getY());
+	String instrument = String.valueOf(this.instrument);
+	String width = String.valueOf(this.duration);
+	
+	String result = startTag + xstr + x + ystr + y + widthstr + width + inststr + instrument + endTag;
+	        
+	return result;
+    }
+    
 
     /**
      * Moves note freely on pane.
@@ -442,52 +502,5 @@ public class NoteBar extends SoundObject {
             SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                     latestX, latestY);
         }
-    }
-
-    /**
-     * @return the instrument
-     */
-    public int getInstrument() {
-        return instrument;
-    }
-
-    /**
-     * @return the pitch
-     */
-    public int getPitch() {
-        return pitch;
-    }
-
-    /**
-     * @return the startTick
-     */
-    public int getStartTick() {
-        return startTick;
-    }
-
-    /**
-     * @return the duration
-     */
-    public int getDuration() {
-        return duration;
-    }
-    
-    @Override
-    public String objectToXML(){
-	String startTag = "<notebar>";
-	String endTag = " </notebar>";
-	String xstr = " x:";
-	String ystr = " y:";
-	String widthstr = " width:";
-	String inststr = " instrument:";
-	
-	String x = String.valueOf((int) this.visualRectangle.getX());
-	String y = String.valueOf((int) this.visualRectangle.getY());
-	String instrument = String.valueOf(this.instrument);
-	String width = String.valueOf(this.duration);
-	
-	String result = startTag + xstr + x + ystr + y + widthstr + width + inststr + instrument + endTag;
-	        
-	return result;
     }
 }
