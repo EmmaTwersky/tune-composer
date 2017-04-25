@@ -13,6 +13,7 @@ public class DeleteAction extends Action {
     /**
      * Constructs an action event to delete SoundObjects.
      * Sets affectObjs and soundObjectPane.
+     * 
      * @param selectedObjs selList all SoundObjects to be affected
      * @param soundObjectPane the SoundObjectPane these selectedObjs are on
      */

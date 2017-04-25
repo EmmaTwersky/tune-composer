@@ -1,7 +1,6 @@
 package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
-import javafx.scene.input.Clipboard;
 import javafx.scene.layout.Pane;
 import tunecomposer.SoundObject;
 

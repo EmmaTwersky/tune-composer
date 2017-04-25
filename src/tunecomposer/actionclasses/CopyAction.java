@@ -13,6 +13,7 @@ public class CopyAction extends Action {
     /**
      * Constructs an action event to copy SoundObjects.
      * Sets affectObjs and soundObjectPane.
+     * 
      * @param selectedObjs selList all SoundObjects to be affected
      */
     public CopyAction(ArrayList<SoundObject> selectedObjs) {

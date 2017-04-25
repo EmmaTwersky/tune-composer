@@ -11,7 +11,6 @@ import tunecomposer.actionclasses.CopyAction;
 import tunecomposer.actionclasses.CutAction;
 import tunecomposer.actionclasses.DeleteAction;
 import tunecomposer.actionclasses.GroupAction;
-import tunecomposer.actionclasses.MoveAction;
 import tunecomposer.actionclasses.PasteAction;
 import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.UngroupAction;
@@ -104,13 +103,15 @@ public class SoundObjectPaneController {
         }
         Action a = lastActions.get(0);
         if (a instanceof PasteAction) {
+            System.out.println("PASTED and INCREMENT");
             PasteAction oldPaste = (PasteAction) a;
-            //offset if last action was pasting the same objects
-            if (pasteAction.hasSameString(oldPaste)) {
-                int lastOffset = oldPaste.getOffset();
-                lastOffset += 10;
-                pasteAction.setOffset(lastOffset);
-            }
+            int lastOffset = oldPaste.getOffset();
+            lastOffset += 10;
+            pasteAction.setOffset(lastOffset);
+        }
+        else if (a instanceof CopyAction) {
+            int OFFSET = 10;
+            pasteAction.setOffset(OFFSET);
         }
         actionManager.execute(pasteAction);
         actionManager.putInUndoStack(pasteAction);

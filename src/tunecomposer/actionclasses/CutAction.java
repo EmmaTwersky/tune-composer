@@ -15,6 +15,7 @@ public class CutAction extends Action {
     /**
      * Constructs an action event to copy SoundObjects.
      * Sets affectObjs and soundObjectPane.
+     * 
      * @param selectedObjs selList all SoundObjects to be affected
      * @param soundObjectPane
      */
@@ -36,7 +37,7 @@ public class CutAction extends Action {
     }
     
     /**
-     * Not possible.
+     * Undoes cut.
      */
     @Override
     public void undo() {
@@ -45,7 +46,7 @@ public class CutAction extends Action {
     }
 
     /**
-     * Not possible. 
+     * Redoes cut. 
      */
     @Override
     public void redo() {

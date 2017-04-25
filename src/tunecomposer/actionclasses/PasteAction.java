@@ -13,16 +13,17 @@ public class PasteAction extends Action {
     /**
      * String that the action copied off of. Used for action comparison.
      */
-    private String parseString;
+    private final String parseString;
     
     /**
      * The amount the objects in this action were offset by.
      */
-    private int offset = 10;
+    private int offset = 0;
     
     /**
      * Constructs an action event to paste SoundObjects.
      * Sets affectObjs and soundObjectPane.
+     * 
      * @param soundObjectPane
      * @param am ActionManager passed to SoundObject constructors
      */
@@ -80,26 +81,16 @@ public class PasteAction extends Action {
     
     /**
      * Return the number of pixels that the affectedObjs were offset by.
+     * @return offset
      */
     public int getOffset() {
         return offset;
     }
     
     /**
-     * Method to check if this PasteAction is equal to another. 
-     * @param other the other PasteAction to compare to
-     */
-    public boolean hasSameString(PasteAction other) {
-        String otherStr = other.getParseString();
-        if (parseString.equals(otherStr)) {
-            return true;
-        }
-        return false;
-    }
-    
-    /**
      * Sets this.offsetAmt to given amount.
      * The offset is applied at execution call.
+     * @param offset int to move note down and right
      */
     public void setOffset(int offset) {
         this.offset = offset;
