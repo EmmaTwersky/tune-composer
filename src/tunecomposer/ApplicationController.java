@@ -18,27 +18,59 @@ import tunecomposer.actionclasses.CutAction;
  */
 public class ApplicationController implements Initializable {  
     
-    
+    /**
+     * Undo Menu Button, available to be enabled or disabled.
+     */
     @FXML
     private MenuItem UndoMenuItem;
+    /**
+     * Redo Menu Button, available to be enabled or disabled.
+     */
     @FXML
     private MenuItem RedoMenuItem;
+    /**
+     * Cut Menu Button, available to be enabled or disabled.
+     */
     @FXML
     private MenuItem CutMenuItem;
+    /**
+     * Copy Menu Button, available to be enabled or disabled.
+     */
     @FXML
     private MenuItem CopyMenuItem;
+    /**
+     * Paste Menu Button, available to be enabled or disabled.
+     */
     @FXML
     private MenuItem PasteMenuItem;
+    /**
+     * Delete Menu Button, available to be enabled or disabled.
+     */
     @FXML
     private MenuItem DeleteMenuItem;
+    /**
+     * Select All Menu Button, available to be enabled or disabled.
+     */
     @FXML
     private MenuItem SelAllMenuItem;
+    /**
+     * Group Menu Button, available to be enabled or disabled.
+     */
     @FXML
     private MenuItem GroupMenuItem;
+    /**
+     * Ungroup Menu Button, available to be enabled or disabled.
+     */
     @FXML
     private MenuItem UngroupMenuItem;
+    /**
+     * Play Menu Button, available to be enabled or disabled.
+     */
     @FXML
     private MenuItem PlayMenuItem;
+    /**
+     * Stop Menu Button, available to be enabled or disabled.
+     */
     @FXML
     private MenuItem StopMenuItem;
     
@@ -47,8 +79,10 @@ public class ApplicationController implements Initializable {
      * Object that contains the undo and redo stack for the program. 
      */
     private ActionManager actionManager;
-//    private Observer actionManagerObserver;
     
+    /**
+     * 
+     */
     private ActionManagerObserver actionObserver;
     
     /**
@@ -72,8 +106,13 @@ public class ApplicationController implements Initializable {
         toggleMenuItemDisable(true);
         
         actionObserver = new ActionManagerObserver();
-        actionManager = new ActionManager();
+        actionManager = compositionPaneController.actionManager;
+        
+        compositionPaneController.redBarPaneController
+                .addObserver(actionObserver);
+        
         actionManager.addObserver(actionObserver);
+        
         compositionPaneController.setActionManager(actionManager);
     
     }   
@@ -205,7 +244,6 @@ public class ApplicationController implements Initializable {
     @FXML 
     protected void handlePlayMenuItemAction(ActionEvent event) {
         compositionPaneController.play();
-        PlayMenuItem.setDisable(true);
         StopMenuItem.setDisable(false);
     }
     
@@ -221,6 +259,11 @@ public class ApplicationController implements Initializable {
         StopMenuItem.setDisable(true);
     }
     
+    /**
+     * Disables or enables all menu items
+     * 
+     * @param on if true, then disable all menu items, if false, enable them
+     */
     private void toggleMenuItemDisable(boolean on){
         UndoMenuItem.setDisable(on);
         RedoMenuItem.setDisable(on);
@@ -236,79 +279,189 @@ public class ApplicationController implements Initializable {
     }
     
     /**
-     *
+     * Nested class that observes the ActionManager and RedBarPaneController
+     * and uses the observed info to disable or enable the menuItems.
      */
     class ActionManagerObserver implements Observer {
         
+        /**
+         * List of selected items updated from ActionManager.
+         */
+        ArrayList<SoundObject> selItems;
+        /**
+         * List of all sound objects on the pane, updated from ActionManager.
+         */
+        ObservableList<Node> allSoundObjects;
+        
+        boolean isRedoEmpty;
+        boolean isUndoEmpty;
+        
+        /**
+         * Update is called by notifyObservers in Action Manager and the Red Bar
+         * Controller whenever a change is made to the undo stack or the red line
+         * reaches the end of the last note.
+         * Updates the disabling of all menu buttons.
+         * 
+         * @param observed instance of the observable class.
+         * @param x optional object to be passed, not used.
+         */
         @Override
-        public void update(Observable manager, Object x){
-            ActionManager observable = (ActionManager) manager;
-            setDisable(observable);
+        public void update(Observable observed, Object x){
+            if (observed instanceof ActionManager){
+                actionManager = (ActionManager) observed;
+            }
+            
+            setDisable();
         }
         
-        private void setDisable(ActionManager observable){
+        /**
+         * Updates the disabling of all menu items based on changes made to the
+         * observable classes.
+         */
+        private void setDisable(){
             
-            boolean isRedoEmpty = observable.isRedoStackEmpty();
-            boolean isUndoEmpty = observable.isUndoStackEmpty();
+            isRedoEmpty = actionManager.isRedoStackEmpty();
+            isUndoEmpty = actionManager.isUndoStackEmpty();
             
-            toggleMenuItemDisable(false);
-            UngroupMenuItem.setDisable(true);
-            StopMenuItem.setDisable(true);
-            PasteMenuItem.setDisable(true);
+            selItems = SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY;
             
-            ArrayList<SoundObject> selItems = 
-                    SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY;
-            
-            ObservableList<Node> allSoundObjects = compositionPaneController.
+            allSoundObjects = compositionPaneController.
                     soundObjectPaneController.soundObjectPane.getChildren();
             
+            toggleMenuItemDisable(false);
+            
+            checkDisableUndo();
+            checkDisableRedo();
+            checkDisableCopy();
+            checkDisableCut();
+            checkDisablePaste();
+            checkDisableSelAll();
+            checkDisableGroup();
+            checkDisableUngroup();
+            checkDisablePlay();
+            checkDisableDelete();
+            checkDisableStop();
+        }
+        
+        /**
+         * Disables "Undo" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisableUndo(){
             if (isUndoEmpty){
                 UndoMenuItem.setDisable(true);
             }
+        }
+        
+        /**
+         * Disables "Redo" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisableRedo(){
             if (isRedoEmpty){
                 RedoMenuItem.setDisable(true);
             }
-
-            if (allSoundObjects.isEmpty()){
-                SelAllMenuItem.setDisable(true);
-                PlayMenuItem.setDisable(true);
-            }
-            
-            else{
-                SelAllMenuItem.setDisable(true);
-                for (Node node : allSoundObjects){
-                    SoundObject sObj = (SoundObject) node.getUserData();
-                    if (!sObj.isSelected()){
-                        SelAllMenuItem.setDisable(false);
-                    }
-                }
-            }
-            
+        }
+        
+        /**
+         * Disables "Copy" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisableCopy(){
             if(selItems.isEmpty()){
                 CopyMenuItem.setDisable(true);
+            }
+        }
+        
+        /**
+         * Disables "Cut" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisableCut(){
+            if(selItems.isEmpty()){
                 CutMenuItem.setDisable(true);
-                DeleteMenuItem.setDisable(true);
-                GroupMenuItem.setDisable(true);
             }
-            else if (selItems.size()==1){
-                GroupMenuItem.setDisable(true);
-            }
-            
-            for (SoundObject sObj: selItems){
-                if (sObj instanceof Gesture){
-                    UngroupMenuItem.setDisable(false);
-                }
-            }
-            
-            for (ArrayList<Action> aList: observable.undoStack){
+        }
+        
+        /**
+         * Disables "Paste" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisablePaste(){
+            PasteMenuItem.setDisable(true);
+            for (ArrayList<Action> aList: actionManager.undoStack){
                 for (Action aObj: aList){
                     if ((aObj instanceof CutAction) || (aObj instanceof CopyAction)){
                         PasteMenuItem.setDisable(false);
                     }
                 }
             }
-            
         }
+        
+        /**
+         * Disables "Select All" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisableSelAll(){
+            if (allSoundObjects.isEmpty()){
+                SelAllMenuItem.setDisable(true);
+            }
+        }
+        
+        /**
+         * Disables "Group" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisableGroup(){
+            if(selItems.isEmpty()){
+                GroupMenuItem.setDisable(true);
+            }
+            else if (selItems.size()==1){
+                GroupMenuItem.setDisable(true);
+            }
+        }
+        
+        /**
+         * Disables "Ungroup" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisableUngroup(){
+            UngroupMenuItem.setDisable(true);
+            for (SoundObject sObj: selItems){
+                if (sObj instanceof Gesture){
+                    UngroupMenuItem.setDisable(false);
+                }
+            }
+        }
+        
+        /**
+         * Disables "Delete" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisableDelete(){
+            if(selItems.isEmpty()){
+                DeleteMenuItem.setDisable(true);
+            }
+        }
+        
+        /**
+         * Disables "Play" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisablePlay(){
+            if (allSoundObjects.isEmpty()){
+                PlayMenuItem.setDisable(true);
+            }
+        }
+        
+        /**
+         * Disables "Stop" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisableStop(){
+            StopMenuItem.setDisable(true);
+        }
+        
         
     }
 }

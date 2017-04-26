@@ -263,7 +263,7 @@ public class NoteBar extends SoundObject {
         int maxY = CompositionPaneController.PANE_Y_MAX;
         
         if ((x < minX || x+getDuration() > maxX) ||
-            (y < minY || y+HEIGHT > maxY)){
+            (y < minY || y+NOTE_HEIGHT > maxY)){
             onEdge = true;
         }
         return onEdge;
@@ -434,8 +434,6 @@ public class NoteBar extends SoundObject {
                 double translateX = (x - latestX);
                 double translateY = (y - latestY);
                 sObjMove.move(translateX, translateY);
-                latestX = x;
-                latestY = y;
             }
             
             if (draggingLength || !sObjMove.isMoveFailed()){

@@ -1,5 +1,6 @@
 package tunecomposer;
 
+import java.util.Observable;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -16,7 +17,7 @@ import javafx.util.Duration;
  * Controls and animates the red bar which visualizes the moment at which
  * the MidiPlayer is playing.
  */
-public class RedBarPaneController implements Initializable {
+public class RedBarPaneController extends Observable implements Initializable{
     
     /**
      * Creates timeline for animation and RED_BAR object.
@@ -51,10 +52,11 @@ public class RedBarPaneController implements Initializable {
         timeline = new Timeline();
         RED_BAR.setVisible(false);
     }
-    
+        
     /**
      * Moves the line across the screen at the speed set by movementSpeed, 
      * disappears at end of last note displayed.
+     * Notify Observer (Application Controller) that change has been made.
      * 
      * @param soundObjectPane pane where all SoundObject visuals live.
      */
@@ -70,9 +72,12 @@ public class RedBarPaneController implements Initializable {
         Duration duration = Duration.millis(compositionEnd * FRAME_RATE);
                 
         EventHandler onFinished = (EventHandler<ActionEvent>) (ActionEvent event) -> {
+            setChanged();
             timeline.stop();
             RED_BAR.setVisible(false);
-            RED_BAR.setX(0);  
+            RED_BAR.setX(0);
+
+            notifyObservers();
         };
         
         KeyFrame kf = new KeyFrame(duration, onFinished, kv);

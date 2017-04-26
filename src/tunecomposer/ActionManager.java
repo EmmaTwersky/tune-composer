@@ -51,6 +51,7 @@ public class ActionManager extends Observable {
      * Puts given Action onto the stack. 
      * If actionArray is null, then does nothing. 
      * Clears redoStack to avoid redoing actions when it doesn't make sense to.
+     * Notify Observer (Application Controller) that a change has been made.
      * 
      * @param action action to put onto the stack
      */
