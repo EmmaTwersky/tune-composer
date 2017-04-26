@@ -68,7 +68,10 @@ public class PasteAction extends Action {
      */
     @Override
     public void redo() {
-        execute();
+        affectedObjs.forEach((sObj) -> {
+            sObj.addToPane(soundObjectPane);
+            sObj.select();
+        });
     }
     
     /**
