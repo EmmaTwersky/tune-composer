@@ -20,27 +20,27 @@ public class ApplicationController implements Initializable {
     
     
     @FXML
-    private MenuItem undoMenuItem;
+    private MenuItem UndoMenuItem;
     @FXML
-    private MenuItem redoMenuItem;
+    private MenuItem RedoMenuItem;
     @FXML
-    private MenuItem cutMenuItem;
+    private MenuItem CutMenuItem;
     @FXML
-    private MenuItem copyMenuItem;
+    private MenuItem CopyMenuItem;
     @FXML
-    private MenuItem pasteMenuItem;
+    private MenuItem PasteMenuItem;
     @FXML
-    private MenuItem deleteMenuItem;
+    private MenuItem DeleteMenuItem;
     @FXML
-    private MenuItem selAllMenuItem;
+    private MenuItem SelAllMenuItem;
     @FXML
-    private MenuItem groupMenuItem;
+    private MenuItem GroupMenuItem;
     @FXML
-    private MenuItem ungroupMenuItem;
+    private MenuItem UngroupMenuItem;
     @FXML
-    private MenuItem playMenuItem;
+    private MenuItem PlayMenuItem;
     @FXML
-    private MenuItem stopMenuItem;
+    private MenuItem StopMenuItem;
     
     
     /**
@@ -205,8 +205,8 @@ public class ApplicationController implements Initializable {
     @FXML 
     protected void handlePlayMenuItemAction(ActionEvent event) {
         compositionPaneController.play();
-        playMenuItem.setDisable(true);
-        stopMenuItem.setDisable(false);
+        PlayMenuItem.setDisable(true);
+        StopMenuItem.setDisable(false);
     }
     
     /**
@@ -217,22 +217,22 @@ public class ApplicationController implements Initializable {
     @FXML 
     protected void handleStopMenuItemAction(ActionEvent event) {
         compositionPaneController.stop();
-        playMenuItem.setDisable(false);
-        stopMenuItem.setDisable(true);
+        PlayMenuItem.setDisable(false);
+        StopMenuItem.setDisable(true);
     }
     
     private void toggleMenuItemDisable(boolean on){
-        undoMenuItem.setDisable(on);
-        redoMenuItem.setDisable(on);
-        selAllMenuItem.setDisable(on);
-        playMenuItem.setDisable(on);
-        copyMenuItem.setDisable(on);
-        cutMenuItem.setDisable(on);
-        deleteMenuItem.setDisable(on);
-        groupMenuItem.setDisable(on);
-        ungroupMenuItem.setDisable(on);
-        stopMenuItem.setDisable(on);
-        pasteMenuItem.setDisable(on);
+        UndoMenuItem.setDisable(on);
+        RedoMenuItem.setDisable(on);
+        SelAllMenuItem.setDisable(on);
+        PlayMenuItem.setDisable(on);
+        CopyMenuItem.setDisable(on);
+        CutMenuItem.setDisable(on);
+        DeleteMenuItem.setDisable(on);
+        GroupMenuItem.setDisable(on);
+        UngroupMenuItem.setDisable(on);
+        StopMenuItem.setDisable(on);
+        PasteMenuItem.setDisable(on);
     }
     
     /**
@@ -252,9 +252,9 @@ public class ApplicationController implements Initializable {
             boolean isUndoEmpty = observable.isUndoStackEmpty();
             
             toggleMenuItemDisable(false);
-            ungroupMenuItem.setDisable(true);
-            stopMenuItem.setDisable(true);
-            pasteMenuItem.setDisable(true);
+            UngroupMenuItem.setDisable(true);
+            StopMenuItem.setDisable(true);
+            PasteMenuItem.setDisable(true);
             
             ArrayList<SoundObject> selItems = 
                     SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY;
@@ -263,47 +263,47 @@ public class ApplicationController implements Initializable {
                     soundObjectPaneController.soundObjectPane.getChildren();
             
             if (isUndoEmpty){
-                undoMenuItem.setDisable(true);
+                UndoMenuItem.setDisable(true);
             }
             if (isRedoEmpty){
-                redoMenuItem.setDisable(true);
+                RedoMenuItem.setDisable(true);
             }
 
             if (allSoundObjects.isEmpty()){
-                selAllMenuItem.setDisable(true);
-                playMenuItem.setDisable(true);
+                SelAllMenuItem.setDisable(true);
+                PlayMenuItem.setDisable(true);
             }
             
             else{
-                selAllMenuItem.setDisable(true);
+                SelAllMenuItem.setDisable(true);
                 for (Node node : allSoundObjects){
                     SoundObject sObj = (SoundObject) node.getUserData();
                     if (!sObj.isSelected()){
-                        selAllMenuItem.setDisable(false);
+                        SelAllMenuItem.setDisable(false);
                     }
                 }
             }
             
             if(selItems.isEmpty()){
-                copyMenuItem.setDisable(true);
-                cutMenuItem.setDisable(true);
-                deleteMenuItem.setDisable(true);
-                groupMenuItem.setDisable(true);
+                CopyMenuItem.setDisable(true);
+                CutMenuItem.setDisable(true);
+                DeleteMenuItem.setDisable(true);
+                GroupMenuItem.setDisable(true);
             }
             else if (selItems.size()==1){
-                groupMenuItem.setDisable(true);
+                GroupMenuItem.setDisable(true);
             }
             
             for (SoundObject sObj: selItems){
                 if (sObj instanceof Gesture){
-                    ungroupMenuItem.setDisable(false);
+                    UngroupMenuItem.setDisable(false);
                 }
             }
             
             for (ArrayList<Action> aList: observable.undoStack){
                 for (Action aObj: aList){
                     if ((aObj instanceof CutAction) || (aObj instanceof CopyAction)){
-                        pasteMenuItem.setDisable(false);
+                        PasteMenuItem.setDisable(false);
                     }
                 }
             }

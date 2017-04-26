@@ -117,7 +117,6 @@ public class SoundObjectPaneController {
         }
         Action a = lastActions.get(0);
         if (a instanceof PasteAction) {
-            System.out.println("PASTED and INCREMENT");
             PasteAction oldPaste = (PasteAction) a;
             int lastOffset = oldPaste.getOffset();
             lastOffset += 10;
