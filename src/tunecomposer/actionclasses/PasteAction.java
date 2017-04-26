@@ -36,21 +36,22 @@ public class PasteAction extends Action {
         
         SoundObjectParser parser = new SoundObjectParser(parseString, soundObjectPane, am);
         affectedObjs = parser.parseString();
-
+//        System.out.println(affectedObjs[0].);
     }
     
     /**
      * Pastes all affectedObjs to the soundObjectPane.
      */
     @Override
-    public void execute() {        
-        affectedObjs.forEach((sObj) -> {
-            sObj.addToPane(soundObjectPane);
-            sObj.select();
-        });
+    public void execute() {   
         MoveAction movePaste = new MoveAction(affectedObjs, 0, 0);
         movePaste.move(offset, offset);
 
+        affectedObjs.forEach((sObj) -> {
+            sObj.snapInPlace();
+            sObj.addToPane(soundObjectPane);
+            sObj.select();
+        });
     }
     
     /**

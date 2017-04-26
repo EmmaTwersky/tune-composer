@@ -104,7 +104,7 @@ public class NoteBar extends SoundObject {
      */
     public NoteBar(int x, int y, int length, int instrument, 
                                           ActionManager am, Pane soundObjPane) {
-        if (instrumentInfo.getInstName(instrument) == "NOT FOUND") {
+        if ("NOT FOUND".equals(instrumentInfo.getInstName(instrument))) {
             name = DEFAULT_NAME;
         }
         else { name = instrumentInfo.getInstName(instrument); }
@@ -115,7 +115,7 @@ public class NoteBar extends SoundObject {
         
         pitch = PITCH_RANGE - ((int) Math.round(y / NOTE_HEIGHT));
         startTick = x;
-        duration = DEFAULT_LENGTH;
+        duration = length;
         
         
         int xLocation = x;

@@ -14,6 +14,7 @@ import tunecomposer.actionclasses.GroupAction;
 import tunecomposer.actionclasses.PasteAction;
 import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.UngroupAction;
+import tunecomposer.actionclasses.UnselectAction;
 
 /**
  * This is a controller class for the Pane that holds the sound objects such as
@@ -104,8 +105,11 @@ public class SoundObjectPaneController {
      * ten pixels to the right and down.
      */
     public void paste() {
+        UnselectAction unselectAction;
+        unselectAction = new UnselectAction(SELECTED_SOUNDOBJECT_ARRAY);
+        
         PasteAction pasteAction;
-
+        
         pasteAction = new PasteAction(soundObjectPane, actionManager);
         ArrayList<Action> lastActions;
         try {
@@ -126,8 +130,16 @@ public class SoundObjectPaneController {
             int OFFSET = 10;
             pasteAction.setOffset(OFFSET);
         }
-        actionManager.execute(pasteAction);
-        actionManager.putInUndoStack(pasteAction);
+//        actionManager.execute(pasteAction);
+//        unselectAction.execute();
+        
+        ArrayList<Action> actions = new ArrayList();
+        actions.add(pasteAction);
+        actions.add(unselectAction);
+        
+        actionManager.execute(actions); 
+        
+        actionManager.putInUndoStack(actions);
 
         updateSelectedSoundObjectArray();
     }
