@@ -8,7 +8,12 @@ import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import static javafx.scene.control.Alert.AlertType.INFORMATION;
+import static javafx.scene.control.Alert.AlertType.NONE;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
+import javafx.stage.WindowEvent;
 import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.CopyAction;
 import tunecomposer.actionclasses.CutAction;
@@ -116,6 +121,31 @@ public class ApplicationController implements Initializable {
         compositionPaneController.setActionManager(actionManager);
     
     }   
+    
+    @FXML
+    protected void handleAboutMenuItemAction(ActionEvent event) {
+        Alert about = new Alert(NONE);
+        about.setTitle("About");
+        about.setContentText("This da best project eva ma boiiiii.");
+        about.showAndWait();
+//        about.setOnCloseRequest(close());
+    }
+    
+    @FXML
+    protected void handleNewMenuItemAction(ActionEvent event) {
+    }
+    
+    @FXML
+    protected void handleOpenMenuItemAction(ActionEvent event) {
+    }
+    
+    @FXML
+    protected void handleSaveMenuItemAction(ActionEvent event) {
+    }
+    
+    @FXML
+    protected void handleSaveAsMenuItemAction(ActionEvent event) {
+    }
         
     /**
      * Handles the Exit menu item and exits the scene.

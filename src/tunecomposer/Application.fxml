@@ -10,8 +10,8 @@
 <BorderPane
     xmlns:fx = "http://javafx.com/fxml/1" 
     xmlns = "http://javafx.com/javafx/8" 
-    prefHeight = "600.0" 
-    prefWidth = "900.0" 
+    prefHeight = "400.0" 
+    prefWidth = "600.0" 
     stylesheets = "@TuneComposer.css" 
     fx:controller = "tunecomposer.ApplicationController" >
     <top>
@@ -20,10 +20,39 @@
                 <Menu text = "File" >
                     <items>
                         <MenuItem 
+                            text = "About..." 
+                            onAction = "#handleAboutMenuItemAction" >
+                        </MenuItem>
+                        <SeparatorMenuItem>
+                        </SeparatorMenuItem>
+                        <MenuItem 
+                            text = "New" 
+                            onAction = "#handleNewMenuItemAction" 
+                            accelerator = "Shortcut + N" >
+                        </MenuItem>
+                        <MenuItem 
+                            text = "Open..." 
+                            onAction = "#handleOpenMenuItemAction" 
+                            accelerator = "Shortcut + O" >
+                        </MenuItem>
+                        <MenuItem 
+                            text = "Save" 
+                            onAction = "#handleSaveMenuItemAction" 
+                            accelerator = "Shortcut + S" >
+                        </MenuItem>
+                        <MenuItem 
+                            text = "Save as..." 
+                            onAction = "#handleSaveAsMenuItemAction" 
+                            accelerator = "SHIFT + Shortcut + S" >
+                        </MenuItem>
+                        <SeparatorMenuItem>
+                        </SeparatorMenuItem>
+                        <MenuItem 
                             text = "Exit" 
                             onAction = "#handleExitMenuItemAction" 
                             accelerator = "Shortcut + Q" >
                         </MenuItem>
+                        
                     </items>
                 </Menu>
                 <Menu text = "Edit" >
