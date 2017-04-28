@@ -5,6 +5,10 @@
  */
 package tunecomposer;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.Observable;
 import javafx.scene.layout.Pane;
@@ -21,7 +25,7 @@ public class FileManager extends Observable {
      * If null, then the composition pane has not been associated to a file,
      * and one will have to be specified before saving.
      */
-    private String filePath = null;
+    private String filePath;
     
     /**
      * Last action performed before last save. 
@@ -44,12 +48,41 @@ public class FileManager extends Observable {
     private Pane soundObjPane;
     
     /**
+     * Initializes all the fields, used to prepare for saving and loading. Not 
+     * for building FileManager object before saving or loading.
+     * @param aManager ActionManager for the compositionPane wish to save/load
+     * @param sObjPane pane to save and load soundObjects from/to
+     */
+    public FileManager(Pane sObjPane, ActionManager aManager) {
+        actionManager = aManager;
+        soundObjPane = sObjPane;
+        
+        filePath = "~/Desktop/TuneComposerSave.txt";
+    }
+    
+    /**
      * Saves the current state of the composition pane to the file in filePath.
      * Does not check to see if filePath is null. Will create a new file if file
      * in filePath does not exist. Will overwrite data stored in filePath.
      */
     public void save(){
-        
+        try{
+          // Create file 
+            File file = new File(filePath);
+            System.out.println("made file");
+            System.out.println(file.getPath());
+//            System.out.println(file.getAbsoluteFile());
+//            System.out.println(file.getCanonicalPath());
+//            System.out.println(file.getCanonicalFile());
+            Writer out = new BufferedWriter(new FileWriter(file));
+            System.out.println("made out");
+            out.write("Hello Java");
+            System.out.println("wrote to out");
+            //Close the output stream
+            out.close();
+        } catch (Exception e){//Catch exception if any
+            System.err.println("Error: " + e.getMessage());
+        }
     }
     
     /**
@@ -78,8 +111,9 @@ public class FileManager extends Observable {
      * Also returns true if the file has never been saved or if filePath is null.
      * @return 
      */
+    @Override
     public boolean hasChanged() {
-        
+        return false;
     }
     
     /**
@@ -91,6 +125,17 @@ public class FileManager extends Observable {
     }
     
     /**
+     * Get the string representation of the entire soundObjectPane.
+     * Returns the found string. If pane empty, then returns empty String. 
+     * String must be in the format that soundObjectParser expects for loading. 
+     * Does not perform any error checking on the string. 
+     * @return string representing all soundObjects in this.soundObjectPane
+     */
+    private String getPaneObjectsInString() {
+        return "";
+    }
+    
+    /**
      * Prompt user to save the current file.
      * Used before executing action that would erase unsaved data. Returns 
      * false if the user selected cancel.
@@ -98,7 +143,7 @@ public class FileManager extends Observable {
      *      true if user selects yes or no. False if selected cancel.
      */
     private boolean promptToSave() {
-        
+        return false;
     }
     
     /**
@@ -110,7 +155,7 @@ public class FileManager extends Observable {
      *      true if filePath was changed. False if filePath unchanged
      */
     private boolean promptOpenFilePath() {
-        
+        return false;
     }
     
     /**
@@ -121,7 +166,7 @@ public class FileManager extends Observable {
      *      true if filePath changed, false if filePath unchanged
      */
     private boolean promptSaveFilePath() {
-        
+        return false;
     }
     
 }

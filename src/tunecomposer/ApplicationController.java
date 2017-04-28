@@ -9,11 +9,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import static javafx.scene.control.Alert.AlertType.INFORMATION;
 import static javafx.scene.control.Alert.AlertType.NONE;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextInputDialog;
-import javafx.stage.WindowEvent;
+import javafx.scene.layout.Pane;
 import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.CopyAction;
 import tunecomposer.actionclasses.CutAction;
@@ -91,6 +89,12 @@ public class ApplicationController implements Initializable {
     private ActionManagerObserver actionObserver;
     
     /**
+     * Reference to object used to save and load SoundObjects from/to provided 
+     * pane in constructor. 
+     */
+    private FileManager fileManager;
+    
+    /**
      * Reference to the compositionPaneController. 
      */
     @FXML
@@ -119,6 +123,9 @@ public class ApplicationController implements Initializable {
         actionManager.addObserver(actionObserver);
         
         compositionPaneController.setActionManager(actionManager);
+        
+        Pane sObjPane = compositionPaneController. soundObjectPaneController.soundObjectPane;
+        fileManager = new FileManager(sObjPane, actionManager);
     
     }   
     
@@ -141,6 +148,7 @@ public class ApplicationController implements Initializable {
     
     @FXML
     protected void handleSaveMenuItemAction(ActionEvent event) {
+        fileManager.save();
     }
     
     @FXML
