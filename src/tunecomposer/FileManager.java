@@ -12,9 +12,15 @@ import java.io.Writer;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Observable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceDialog;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import tunecomposer.actionclasses.Action;
 
 /**
@@ -60,7 +66,7 @@ public class FileManager extends Observable {
         actionManager = aManager;
         soundObjPane = sObjPane;
         
-        filePath = "~/Desktop/TuneComposerSave.txt";
+        filePath = "/home/lazarcl/Desktop/TuneComposerSave.txt";
     }
     
     /**
@@ -74,13 +80,10 @@ public class FileManager extends Observable {
             File file = new File(filePath);
             System.out.println("made file");
             System.out.println(file.getPath());
-//            System.out.println(file.getAbsoluteFile());
-//            System.out.println(file.getCanonicalPath());
-//            System.out.println(file.getCanonicalFile());
             Writer out = new BufferedWriter(new FileWriter(file));
-            System.out.println("made out");
+            String paneToString = getPaneObjectsInString();
             out.write("Hello Java");
-            System.out.println("wrote to out");
+            System.out.println("wrote to " + filePath);
             //Close the output stream
             out.close();
         } catch (Exception e){//Catch exception if any
@@ -95,7 +98,14 @@ public class FileManager extends Observable {
      * @throws FileAlreadyExistsException if chosen filepath and name exists.
      */
     public void saveAs() throws FileAlreadyExistsException {
-        
+//        createNewContactBox();
+        if (promptOpenFilePath()) {
+            System.out.println("Path set to: " + filePath);
+            save();
+        }
+        else {
+            System.out.println("path not set");
+        }
        
     }
     
@@ -105,7 +115,7 @@ public class FileManager extends Observable {
      * to save the current pane before opening another file.
      */
     public void open(){
-        
+        promptOpenFilePath();
     }
     
     /**
@@ -166,6 +176,18 @@ public class FileManager extends Observable {
      *      true if filePath was changed. False if filePath unchanged
      */
     private boolean promptOpenFilePath() {
+        Stage choosingStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        fileChooser.getExtensionFilters().addAll(
+             new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+       // File selectedFile = fileChooser.getInitialDirectory();
+        File selectedFile = fileChooser.showOpenDialog(choosingStage);
+        if (selectedFile != null) {
+            System.out.println("Filepath: " + selectedFile.getPath() );
+            filePath = selectedFile.getPath();
+            return true;
+        }
         return false;
     }
     
@@ -177,6 +199,18 @@ public class FileManager extends Observable {
      *      true if filePath changed, false if filePath unchanged
      */
     private boolean promptSaveFilePath() {
+        Stage mainStage = new Stage();
+//        FileChooser fileChooser = new FileChooser();
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Open Resource File");
+//        fileChooser.getExtensionFilters().addAll(
+//             new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        File selectedFile = directoryChooser.showDialog(mainStage);
+        if (selectedFile != null) {
+            System.out.println("Filepath: " + selectedFile.getPath() );
+            filePath = selectedFile.getPath();
+            return true;
+        }
         return false;
     }
     

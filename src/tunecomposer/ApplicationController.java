@@ -1,5 +1,7 @@
 package tunecomposer;
 
+import java.io.File;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -160,6 +162,7 @@ public class ApplicationController implements Initializable {
     
     @FXML
     protected void handleOpenMenuItemAction(ActionEvent event) {
+        fileManager.open();
     }
     
     @FXML
@@ -169,6 +172,11 @@ public class ApplicationController implements Initializable {
     
     @FXML
     protected void handleSaveAsMenuItemAction(ActionEvent event) {
+        try {
+            fileManager.saveAs();
+        } catch (FileAlreadyExistsException ex) {
+            System.out.println("Chosen file already exists");
+        }
     }
         
     /**
