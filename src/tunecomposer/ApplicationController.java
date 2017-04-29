@@ -10,8 +10,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import static javafx.scene.control.Alert.AlertType.NONE;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.CopyAction;
 import tunecomposer.actionclasses.CutAction;
@@ -133,9 +136,14 @@ public class ApplicationController implements Initializable {
     protected void handleAboutMenuItemAction(ActionEvent event) {
         Alert about = new Alert(NONE);
         about.setTitle("About");
-        about.setContentText("This da best project eva ma boiiiii.");
+        about.setResizable(true);
+        about.getDialogPane().setPrefSize(500, 150);
+        String text = "TuneComposer by Synergy\u2122\n"
+                + "\nRicardo Vivanco, Emma Twerskey, Cooper Lazar & Niki Lonberg.\n"
+                + "\n\u2122 and \u00a9 2017 Synergy Inc. All Rights Reserved. Lisence and Warranty";
+        about.setContentText(text);
+        about.getDialogPane().getButtonTypes().add(ButtonType.OK);
         about.showAndWait();
-//        about.setOnCloseRequest(close());
     }
     
     @FXML
