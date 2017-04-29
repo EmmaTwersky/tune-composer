@@ -12,11 +12,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import static javafx.scene.control.Alert.AlertType.NONE;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Stage;
 import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.CopyAction;
 import tunecomposer.actionclasses.CutAction;
@@ -138,9 +137,14 @@ public class ApplicationController implements Initializable {
     protected void handleAboutMenuItemAction(ActionEvent event) {
         Alert about = new Alert(NONE);
         about.setTitle("About");
-        about.setContentText("This da best project eva ma boiiiii.");
+        about.setResizable(true);
+        about.getDialogPane().setPrefSize(500, 150);
+        String text = "TuneComposer by Synergy\u2122\n"
+                + "\nRicardo Vivanco, Emma Twerskey, Cooper Lazar & Niki Lonberg.\n"
+                + "\n\u2122 and \u00a9 2017 Synergy Inc. All Rights Reserved. License and Warranty";
+        about.setContentText(text);
+        about.getDialogPane().getButtonTypes().add(ButtonType.OK);
         about.showAndWait();
-//        about.setOnCloseRequest(close());
     }
     
     @FXML
@@ -328,7 +332,7 @@ public class ApplicationController implements Initializable {
     }
     
     /**
-     * Nested class that observes the ActionManager and RedBarPaneController
+     * Nested class that observes the ActionManager, FileManager and RedBarPaneController
      * and uses the observed info to disable or enable the menuItems.
      */
     class ActionManagerObserver implements Observer {
