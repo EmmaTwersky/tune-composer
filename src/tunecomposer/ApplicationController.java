@@ -174,7 +174,7 @@ public class ApplicationController implements Initializable {
     @FXML
     protected void handleSaveAsMenuItemAction(ActionEvent event) {
         try {
-            fileManager.saveAs();
+            boolean tempBool = fileManager.saveAs();
         } catch (FileAlreadyExistsException ex) {
             System.out.println("Chosen file already exists");
         }

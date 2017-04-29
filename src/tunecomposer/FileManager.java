@@ -107,10 +107,8 @@ public class FileManager extends Observable {
             try{
             saveAs();
             } catch(Exception e){
-                System.err.println("Error: " + e.getMessage());
-                
-            }
-            
+                System.err.println("Error: " + e.getMessage()); 
+            }    
         }
         try{
           // Create file 
@@ -146,8 +144,7 @@ public class FileManager extends Observable {
         else {
             System.out.println("path not set");
         }
-        return saveCanceled;
-       
+        return saveCanceled;  
     }
      
     
@@ -235,6 +232,7 @@ public class FileManager extends Observable {
         actionManager.undoStack.clear();
         actionManager.redoStack.clear();
         lastSaveAction = null;
+        filePath = null;
     }
     
     
