@@ -90,7 +90,12 @@ public class ActionManager extends Observable {
      * @throws EmptyStackException if the stack is empty
      */
     public ArrayList<Action> peekUndoStack() throws EmptyStackException {
-        return undoStack.peek();
+        try{
+            return undoStack.peek();
+        }
+        catch (EmptyStackException emptyStack){
+            return null;
+        }
     }
     
     /**
