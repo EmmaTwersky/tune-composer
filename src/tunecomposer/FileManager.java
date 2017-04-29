@@ -119,28 +119,33 @@ public class FileManager extends Observable {
      * to save the current pane before opening another file.
      */
     public void open(){
-        if (promptOpenFilePath()){
-            try{
-                FileReader fileRead = new FileReader(filePath);
-                BufferedReader buffRead = new BufferedReader(fileRead);
-                try{
-                    String fileText = buffRead.readLine();
-                    SoundObjectParser parser = 
-                            new SoundObjectParser(fileText,soundObjPane, actionManager);
-                    clearSession();
-                    parser.parseString().forEach((sObj) -> {
-                        sObj.addToPane(soundObjPane);
-                    });
-                }
-                catch(IOException ex){
-                    System.out.println("An error occured while reading the file");
-                }
+        
+        if (hasUnsavedChanges()){
+            if (!promptToSave()){
+                return;
             }
-            catch(FileNotFoundException ex){
-                System.out.println("Unable to open file '" + filePath + "'");
+        
+        try{
+            FileReader fileRead = new FileReader(filePath);
+            BufferedReader buffRead = new BufferedReader(fileRead);
+            try{
+                String fileText = buffRead.readLine();
+                SoundObjectParser parser = 
+                        new SoundObjectParser(fileText,soundObjPane, actionManager);
+                clearSession();
+                parser.parseString().forEach((sObj) -> {
+                    sObj.addToPane(soundObjPane);
+                });
+            }
+            catch(IOException ex){
+                System.out.println("An error occured while reading the file");
             }
         }
+        catch(FileNotFoundException ex){
+            System.out.println("Unable to open file '" + filePath + "'");
+        } 
     }
+}
     
     /**
      * Returns true if soundObjPane has changed since last save, and false if
