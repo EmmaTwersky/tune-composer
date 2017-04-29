@@ -12,6 +12,10 @@ import java.io.Writer;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Optional;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -96,7 +100,7 @@ public class FileManager extends Observable {
      */
     public void saveAs() throws FileAlreadyExistsException {
 //        createNewContactBox();
-        if (promptOpenFilePath()) {
+        if (promptSaveFilePath()) {
             System.out.println("Path set to: " + filePath);
             save();
         }
@@ -186,7 +190,6 @@ public class FileManager extends Observable {
         fileChooser.setTitle("Open Resource File");
         fileChooser.getExtensionFilters().addAll(
              new FileChooser.ExtensionFilter("Text Files", "*.txt"));
-       // File selectedFile = fileChooser.getInitialDirectory();
         File selectedFile = fileChooser.showOpenDialog(choosingStage);
         if (selectedFile != null) {
             System.out.println("Filepath: " + selectedFile.getPath() );
@@ -204,17 +207,27 @@ public class FileManager extends Observable {
      *      true if filePath changed, false if filePath unchanged
      */
     private boolean promptSaveFilePath() {
-        Stage mainStage = new Stage();
-//        FileChooser fileChooser = new FileChooser();
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Open Resource File");
-//        fileChooser.getExtensionFilters().addAll(
-//             new FileChooser.ExtensionFilter("Text Files", "*.txt"));
-        File selectedFile = directoryChooser.showDialog(mainStage);
-        if (selectedFile != null) {
-            System.out.println("Filepath: " + selectedFile.getPath() );
-            filePath = selectedFile.getPath();
-            return true;
+
+        TextInputDialog input = new TextInputDialog("Untitled.txt");
+        input.setTitle("Save As");
+        input.setHeaderText("File Name:");
+        ButtonType okay = new ButtonType("Okay", ButtonData.OK_DONE);
+        ButtonType cancel = new ButtonType("Cancel",ButtonData.CANCEL_CLOSE);
+        Optional<String> result;
+        result = input.showAndWait();
+        
+        if (result.isPresent()){
+            Stage mainStage = new Stage();
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setTitle("Open Resource File");
+            File selectedFile = directoryChooser.showDialog(mainStage);
+            
+            if (selectedFile != null) {
+                System.out.println("Filepath: " + selectedFile.getPath() );
+                filePath = selectedFile.getPath();
+                filePath = filePath + "/" + result.get();
+                return true;
+            }
         }
         return false;
     }
