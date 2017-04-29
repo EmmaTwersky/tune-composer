@@ -12,15 +12,13 @@ import java.io.Writer;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Observable;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import static tunecomposer.SoundObjectParser.soundObjsToXML;
 import tunecomposer.actionclasses.Action;
 
 /**
@@ -77,14 +75,13 @@ public class FileManager extends Observable {
     public void save(){
         try{
           // Create file 
-            File file = new File(filePath);
             System.out.println("made file");
+            File file = new File(filePath);
             System.out.println(file.getPath());
             Writer out = new BufferedWriter(new FileWriter(file));
-            String paneToString = getPaneObjectsInString();
-            out.write("Hello Java");
+            String parseStr = getPaneObjectsAsString();
+            out.write(parseStr);
             System.out.println("wrote to " + filePath);
-            //Close the output stream
             out.close();
         } catch (Exception e){//Catch exception if any
             System.err.println("Error: " + e.getMessage());
@@ -146,8 +143,16 @@ public class FileManager extends Observable {
      * Does not perform any error checking on the string. 
      * @return string representing all soundObjects in this.soundObjectPane
      */
-    private String getPaneObjectsInString() {
-        return "";
+    private String getPaneObjectsAsString() {
+        ArrayList<SoundObject> itemsArray = new ArrayList();
+        for (Node n: soundObjPane.getChildren()) {
+            Rectangle r = (Rectangle) n;
+            SoundObject sObj = (SoundObject) (r).getUserData();
+            if (sObj.getTopGesture() == null) {
+                itemsArray.add(sObj);
+            }
+        }
+        return soundObjsToXML(itemsArray);
     }
     
     /**

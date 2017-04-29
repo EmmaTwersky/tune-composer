@@ -54,6 +54,20 @@ public class SoundObjectParser {
     }
     
     /**
+     * Converts given array of SoundObjects into their string XML representation.
+     * If given array is empty, then returns empty string.
+     * @param sObjs ArrayList of SoundObjects to be converted 
+     * @return string representation of given SoundObjects
+     */
+    public static String soundObjsToXML(ArrayList<SoundObject> sObjs) {
+        String parseStr = "";
+        for (SoundObject s : sObjs) {
+            parseStr += s.objectToXML();
+        }
+        return parseStr;
+    }
+    
+    /**
      * Returns parsed SoundObjects.
      * 
      * @return array list of SoundObjects that were parsed.
