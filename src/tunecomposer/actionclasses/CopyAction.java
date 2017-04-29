@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import tunecomposer.SoundObject;
+import static tunecomposer.SoundObjectParser.soundObjsToXML;
 
 /**
  * An action which copies objects to the clipboard.
@@ -25,10 +26,7 @@ public class CopyAction extends Action {
      */
     @Override
     public void execute() {
-        String sObjsString = "";
-        for (SoundObject sObj : affectedObjs) {
-            sObjsString = sObjsString + sObj.objectToXML();
-        }
+        String sObjsString = soundObjsToXML(affectedObjs);
         
         Clipboard clipboard;
         clipboard = Clipboard.getSystemClipboard();

@@ -73,6 +73,7 @@ public class SoundObjectPaneController {
         }
     }
     
+  
     /**
      * Adds selected SoundObjects to Clipboard and removes them from the
      * CompositionPane.
