@@ -145,6 +145,7 @@ public class FileManager extends Observable {
         }
        
     }
+     
     
     /**
      * Prompts user to chose a file to open, and loads it into the compositionPane.
