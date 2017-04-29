@@ -121,16 +121,20 @@ public class FileManager extends Observable {
      * before saving. If the given filename already exists in chosen directory
      * then throws an Exception.
      * @throws FileAlreadyExistsException if chosen filepath and name exists.
+     * @return
+     *      true if the user went threw with the saveAs, false if the user canceled it
      */
-    public void saveAs() throws FileAlreadyExistsException {
-//        createNewContactBox();
-        if (promptSaveFilePath()) {
+    public boolean saveAs() throws FileAlreadyExistsException {
+        boolean saveCanceled;
+        saveCanceled = promptSaveFilePath();
+        if (saveCanceled) {
             System.out.println("Path set to: " + filePath);
             save();
         }
         else {
             System.out.println("path not set");
         }
+        return saveCanceled;
        
     }
     
@@ -256,7 +260,12 @@ public class FileManager extends Observable {
                 return true;
             }
             else{
-                return promptSaveFilePath();
+                try{
+                    return saveAs();
+                }
+                catch (FileAlreadyExistsException e){
+                    System.err.println("Error: " + e.getMessage());
+                }
             }
         }
         
