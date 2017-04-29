@@ -17,10 +17,15 @@ import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Optional;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import static javafx.scene.control.Alert.AlertType.NONE;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
@@ -72,6 +77,21 @@ public class FileManager extends Observable {
         actionManager = aManager;
         soundObjPane = sObjPane;
         
+    }
+    
+    /**
+     * Creates a new, empty file.
+     * If working composition is open and has unsaved changes, prompts user
+     * if they want to save their changes.
+     */    
+    public void newFile(){
+        System.out.println("Creating new file");
+        if (hasUnsavedChanges()){
+            System.out.println("has unsaved changes");
+            if (promptToSave()){
+                clearSession();
+            }
+        }
     }
     
     /**
@@ -213,11 +233,49 @@ public class FileManager extends Observable {
      *      true if user selects yes or no. False if selected cancel.
      */
     private boolean promptToSave() {
+        Alert alert = new Alert(NONE);
+        alert.setTitle("Save");
+        alert.setContentText("Would you like to save your changes?");
         
-////        Alert about = new Alert();
-//        about.setTitle("Save");
-//        about.setContentText("Would you like to save your changes?");
-//        about.showAndWait();
+        ButtonType save = new ButtonType("Save", ButtonData.YES);
+        ButtonType cancel= new ButtonType("Cancel");
+        ButtonType dontSave = new ButtonType("Don't Save");
+        
+        alert.getButtonTypes().setAll(save, cancel, dontSave);
+        
+        Optional<ButtonType> result = alert.showAndWait();
+        
+        if (result.get() == save){
+            System.out.println("SAVE");
+            if (hasSavedAs()){
+                save();
+                return true;
+            }
+            else{
+                return promptSaveFilePath();
+            }
+        }
+        
+        else if (result.get() == cancel){
+            System.out.println("CANCEL");
+            return false;
+        }
+         
+        else if (result.get() == dontSave){
+            System.out.println("DONTSAVE");
+            return true;
+        }
+        
+//        alert.getDialogPane().getChildren().addAll(save, cancel, dontSave);
+        
+//        alert.showAndWait();
+        
+//        save.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override public void handle(ActionEvent e) {
+//                System.out.println("save pressed");
+//            }
+//        });
+        
         
         return false;
     }

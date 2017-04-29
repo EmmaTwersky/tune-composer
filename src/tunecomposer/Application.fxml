@@ -47,7 +47,7 @@
                             fx:id = "SaveAsMenuItem"
                             text = "Save as..." 
                             onAction = "#handleSaveAsMenuItemAction" 
-                            accelerator = "SHIFT + Shortcut + S" >
+                            accelerator = "Shortcut + SHIFT + S" >
                         </MenuItem>
                         <SeparatorMenuItem>
                         </SeparatorMenuItem>
