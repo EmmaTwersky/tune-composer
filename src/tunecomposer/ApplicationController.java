@@ -1,5 +1,7 @@
 package tunecomposer;
 
+import java.io.File;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -12,6 +14,9 @@ import javafx.scene.control.Alert;
 import static javafx.scene.control.Alert.AlertType.NONE;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.CopyAction;
 import tunecomposer.actionclasses.CutAction;
@@ -144,6 +149,7 @@ public class ApplicationController implements Initializable {
     
     @FXML
     protected void handleOpenMenuItemAction(ActionEvent event) {
+        fileManager.open();
     }
     
     @FXML
@@ -153,6 +159,11 @@ public class ApplicationController implements Initializable {
     
     @FXML
     protected void handleSaveAsMenuItemAction(ActionEvent event) {
+        try {
+            fileManager.saveAs();
+        } catch (FileAlreadyExistsException ex) {
+            System.out.println("Chosen file already exists");
+        }
     }
         
     /**
