@@ -121,6 +121,7 @@ public class FileManager extends Observable {
             String parseStr = getPaneObjectsAsString();
             out.write(parseStr);
             System.out.println("wrote to " + filePath);
+            updateLastSaveAction();
             out.close();
         } catch (Exception e){//Catch exception if any
             System.err.println("Error: " + e.getMessage());
@@ -151,33 +152,35 @@ public class FileManager extends Observable {
      * to save the current pane before opening another file.
      */
     public void open(){
-        
+        System.out.println("MAMA WE MADE IT");
         if (hasUnsavedChanges()){
             if (!promptToSave()){
                 return;
             }
-        
-        try{
-            FileReader fileRead = new FileReader(filePath);
-            BufferedReader buffRead = new BufferedReader(fileRead);
-            try{
-                String fileText = buffRead.readLine();
-                SoundObjectParser parser = 
-                        new SoundObjectParser(fileText,soundObjPane, actionManager);
-                clearSession();
-                parser.parseString().forEach((sObj) -> {
-                    sObj.addToPane(soundObjPane);
-                });
-            }
-            catch(IOException ex){
-                System.out.println("An error occured while reading the file");
-            }
         }
-        catch(FileNotFoundException ex){
-            System.out.println("Unable to open file '" + filePath + "'");
-        } 
+
+        if (promptOpenFilePath()){
+            try{
+                FileReader fileRead = new FileReader(filePath);
+                BufferedReader buffRead = new BufferedReader(fileRead);
+                try{
+                    String fileText = buffRead.readLine();
+                    SoundObjectParser parser = 
+                            new SoundObjectParser(fileText,soundObjPane, actionManager);
+                    clearSession();
+                    parser.parseString().forEach((sObj) -> {
+                        sObj.addToPane(soundObjPane);
+                    });
+                }
+                catch(IOException ex){
+                    System.out.println("An error occured while reading the file");
+                }
+            }
+            catch(FileNotFoundException ex){
+                System.out.println("Unable to open file '" + filePath + "'");
+            } 
+        }
     }
-}
     
     /**
      * Returns true if soundObjPane has changed since last save, and false if
@@ -194,7 +197,7 @@ public class FileManager extends Observable {
      * Update lastSaveAction from top of undoStack in actionManger.
      * If the stack is empty, then sets lastSaveAction to null.
      */
-    public void updateLastSaveAction() {
+    private void updateLastSaveAction() {
         setChanged();
         lastSaveAction = actionManager.peekUndoStack();
         notifyObservers();
@@ -226,6 +229,7 @@ public class FileManager extends Observable {
         soundObjPane.getChildren().clear();
         actionManager.undoStack.clear();
         actionManager.redoStack.clear();
+        lastSaveAction = null;
     }
     
     
