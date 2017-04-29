@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
 import java.nio.file.FileAlreadyExistsException;
+import java.util.ArrayList;
 import java.util.Observable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
@@ -35,7 +36,7 @@ public class FileManager extends Observable {
      * Action during each save. Compare this to the current top of undoStack 
      * to see if an action has been performed. If null, then stack was empty.
      */
-    private Action lastSaveAction;
+    private ArrayList<Action> lastSaveAction;
     
     /**
      * Reference to the composition pane's actionManager for note creation and 
@@ -123,7 +124,9 @@ public class FileManager extends Observable {
      * If the stack is empty, then sets lastSaveAction to null.
      */
     public void updateLastSaveAction() {
-        
+        setChanged();
+        lastSaveAction = actionManager.peekUndoStack();
+        notifyObservers();
     }
     
     /**
@@ -175,6 +178,15 @@ public class FileManager extends Observable {
      */
     private boolean promptSaveFilePath() {
         return false;
+    }
+    
+    /**
+     * Returns the action that was at the top of the stack at the time that
+     * the last save was made.
+     * @return 
+     */
+    public ArrayList<Action> getLastSaveAction(){
+        return lastSaveAction;
     }
     
 }

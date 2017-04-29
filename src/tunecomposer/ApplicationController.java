@@ -11,10 +11,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import static javafx.scene.control.Alert.AlertType.NONE;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.CopyAction;
 import tunecomposer.actionclasses.CutAction;
@@ -79,8 +77,17 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     private MenuItem StopMenuItem;
-    
-    
+    /**
+     * Save Menu Button, available to be enabled or disabled.
+     */
+    @FXML
+    private MenuItem SaveMenuItem;
+    /**
+     * Save As Menu Button, available to be enabled or disabled.
+     */
+    @FXML
+    private MenuItem SaveAsMenuItem;
+
     /**
      * Object that contains the undo and redo stack for the program. 
      */
@@ -89,7 +96,7 @@ public class ApplicationController implements Initializable {
     /**
      * 
      */
-    private ActionManagerObserver actionObserver;
+    private ApplicationObserver appObserver;
     
     /**
      * Reference to object used to save and load SoundObjects from/to provided 
@@ -117,19 +124,20 @@ public class ApplicationController implements Initializable {
         
         toggleMenuItemDisable(true);
         
-        actionObserver = new ActionManagerObserver();
+        appObserver = new ApplicationObserver();
         actionManager = compositionPaneController.actionManager;
         
         compositionPaneController.redBarPaneController
-                .addObserver(actionObserver);
+                .addObserver(appObserver);
         
-        actionManager.addObserver(actionObserver);
+        actionManager.addObserver(appObserver);
         
         compositionPaneController.setActionManager(actionManager);
         
         Pane sObjPane = compositionPaneController. soundObjectPaneController.soundObjectPane;
         fileManager = new FileManager(sObjPane, actionManager);
-    
+        
+        fileManager.addObserver(appObserver);
     }   
     
     @FXML
@@ -322,13 +330,15 @@ public class ApplicationController implements Initializable {
         UngroupMenuItem.setDisable(on);
         StopMenuItem.setDisable(on);
         PasteMenuItem.setDisable(on);
+        SaveMenuItem.setDisable(on);
+        SaveAsMenuItem.setDisable(on);
     }
     
     /**
      * Nested class that observes the ActionManager, FileManager and RedBarPaneController
      * and uses the observed info to disable or enable the menuItems.
      */
-    class ActionManagerObserver implements Observer {
+    class ApplicationObserver implements Observer {
         
         /**
          * List of selected items updated from ActionManager.
@@ -341,6 +351,8 @@ public class ApplicationController implements Initializable {
         
         boolean isRedoEmpty;
         boolean isUndoEmpty;
+        
+        ArrayList<Action> lastSavedAction;
         
         /**
          * Update is called by notifyObservers in Action Manager and the Red Bar
@@ -355,6 +367,9 @@ public class ApplicationController implements Initializable {
         public void update(Observable observed, Object x){
             if (observed instanceof ActionManager){
                 actionManager = (ActionManager) observed;
+            }
+            else if (observed instanceof FileManager){
+                lastSavedAction = ((FileManager)observed).getLastSaveAction();
             }
             
             setDisable();
@@ -387,6 +402,8 @@ public class ApplicationController implements Initializable {
             checkDisablePlay();
             checkDisableDelete();
             checkDisableStop();
+            checkDisableSave();
+            checkDisableSaveAs();
         }
         
         /**
@@ -508,6 +525,25 @@ public class ApplicationController implements Initializable {
             StopMenuItem.setDisable(true);
         }
         
+        /**
+         * Disables "Save" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisableSave(){
+            if (lastSavedAction == actionManager.peekUndoStack()){
+                SaveMenuItem.setDisable(true);
+            }
+        }
+        
+        /**
+         * Disables "SaveAs" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisableSaveAs(){
+            if (lastSavedAction == actionManager.peekUndoStack()){
+                SaveAsMenuItem.setDisable(true);
+            }
+        }
         
     }
 }
