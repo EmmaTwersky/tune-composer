@@ -140,7 +140,7 @@ public class ApplicationController implements Initializable {
         about.getDialogPane().setPrefSize(500, 150);
         String text = "TuneComposer by Synergy\u2122\n"
                 + "\nRicardo Vivanco, Emma Twerskey, Cooper Lazar & Niki Lonberg.\n"
-                + "\n\u2122 and \u00a9 2017 Synergy Inc. All Rights Reserved. Lisence and Warranty";
+                + "\n\u2122 and \u00a9 2017 Synergy Inc. All Rights Reserved. License and Warranty";
         about.setContentText(text);
         about.getDialogPane().getButtonTypes().add(ButtonType.OK);
         about.showAndWait();
