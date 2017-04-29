@@ -5,9 +5,13 @@
  */
 package tunecomposer;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
@@ -66,7 +70,6 @@ public class FileManager extends Observable {
         actionManager = aManager;
         soundObjPane = sObjPane;
         
-        filePath = "/home/lazarcl/Desktop/TuneComposerSave.txt";
     }
     
     /**
@@ -115,7 +118,27 @@ public class FileManager extends Observable {
      * to save the current pane before opening another file.
      */
     public void open(){
-        promptOpenFilePath();
+        if (promptOpenFilePath()){
+            try{
+                FileReader fileRead = new FileReader(filePath);
+                BufferedReader buffRead = new BufferedReader(fileRead);
+                try{
+                    String fileText = buffRead.readLine();
+                    SoundObjectParser parser = 
+                            new SoundObjectParser(fileText,soundObjPane, actionManager);
+                    clearSession();
+                    parser.parseString().forEach((sObj) -> {
+                        sObj.addToPane(soundObjPane);
+                    });
+                }
+                catch(IOException ex){
+                    System.out.println("An error occured while reading the file");
+                }
+            }
+            catch(FileNotFoundException ex){
+                System.out.println("Unable to open file '" + filePath + "'");
+            }
+        }
     }
     
     /**
@@ -148,6 +171,24 @@ public class FileManager extends Observable {
      */
     private String getPaneObjectsInString() {
         return "";
+    }
+    
+    /**
+     * TEMPORARY? 
+     */
+    private void clearSession(){
+        soundObjPane.getChildren().clear();
+        actionManager.undoStack.clear();
+        actionManager.redoStack.clear();
+    }
+    
+    
+    private boolean hasSavedAs(){
+        return (filePath != null);
+    }
+    
+    public boolean hasUnsavedChanges(){
+        return (lastSaveAction != actionManager.peekUndoStack());
     }
     
     /**
@@ -194,7 +235,7 @@ public class FileManager extends Observable {
     /**
      * Prompt the user to choose where to save the file, and what to name it,
      * then sets filePath to chosen path.
-     * If user presses cancel, then filePath is unch
+     * If user presses cancel, then filePath is unchanged
      * @return
      *      true if filePath changed, false if filePath unchanged
      */
