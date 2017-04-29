@@ -11,6 +11,8 @@ import java.io.FileWriter;
 import java.io.Writer;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.Observable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.layout.Pane;
 import tunecomposer.actionclasses.Action;
 
@@ -143,6 +145,12 @@ public class FileManager extends Observable {
      *      true if user selects yes or no. False if selected cancel.
      */
     private boolean promptToSave() {
+        
+////        Alert about = new Alert();
+//        about.setTitle("Save");
+//        about.setContentText("Would you like to save your changes?");
+//        about.showAndWait();
+        
         return false;
     }
     
