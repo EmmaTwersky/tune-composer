@@ -93,7 +93,7 @@ public class FileManager extends Observable {
             }
         }
         else{
-            System.out.println("does not have unsaved changes");
+            clearSession();
         }
     }
     
