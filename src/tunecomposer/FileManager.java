@@ -92,6 +92,9 @@ public class FileManager extends Observable {
                 clearSession();
             }
         }
+        else{
+            System.out.println("does not have unsaved changes");
+        }
     }
     
     /**
@@ -100,6 +103,15 @@ public class FileManager extends Observable {
      * in filePath does not exist. Will overwrite data stored in filePath.
      */
     public void save(){
+        if (!hasSavedAs()){
+            try{
+            saveAs();
+            } catch(Exception e){
+                System.err.println("Error: " + e.getMessage());
+                
+            }
+            
+        }
         try{
           // Create file 
             System.out.println("made file");
@@ -137,6 +149,7 @@ public class FileManager extends Observable {
         return saveCanceled;
        
     }
+     
     
     /**
      * Prompts user to chose a file to open, and loads it into the compositionPane.
@@ -251,7 +264,9 @@ public class FileManager extends Observable {
         
         alert.getButtonTypes().setAll(save, cancel, dontSave);
         
+        
         Optional<ButtonType> result = alert.showAndWait();
+        
         
         if (result.get() == save){
             System.out.println("SAVE");
