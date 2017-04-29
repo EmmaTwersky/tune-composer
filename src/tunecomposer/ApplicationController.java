@@ -325,7 +325,7 @@ public class ApplicationController implements Initializable {
     }
     
     /**
-     * Nested class that observes the ActionManager and RedBarPaneController
+     * Nested class that observes the ActionManager, FileManager and RedBarPaneController
      * and uses the observed info to disable or enable the menuItems.
      */
     class ActionManagerObserver implements Observer {
