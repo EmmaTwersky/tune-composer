@@ -158,6 +158,7 @@ public class ApplicationController implements Initializable {
     
     @FXML
     protected void handleNewMenuItemAction(ActionEvent event) {
+        fileManager.newFile();
     }
     
     @FXML
