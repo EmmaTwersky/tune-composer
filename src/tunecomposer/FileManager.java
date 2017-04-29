@@ -323,7 +323,7 @@ public class FileManager extends Observable {
         if (result.isPresent()){
             Stage mainStage = new Stage();
             DirectoryChooser directoryChooser = new DirectoryChooser();
-            directoryChooser.setTitle("Open Resource File");
+            directoryChooser.setTitle("Save Resource File");
             File selectedFile = directoryChooser.showDialog(mainStage);
             
             if (selectedFile != null) {
