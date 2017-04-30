@@ -135,7 +135,7 @@
                             fx:id = "StopMenuItem"
                             text = "Stop" 
                             onAction = "#handleStopMenuItemAction" 
-                            accelerator = "Shortcut + S" >
+                            accelerator = "Shortcut + SHIFT + P" >
                         </MenuItem>
                     </items>
                 </Menu>
