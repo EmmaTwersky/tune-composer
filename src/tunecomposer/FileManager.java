@@ -17,15 +17,12 @@ import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Optional;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import static javafx.scene.control.Alert.AlertType.NONE;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
@@ -136,13 +133,16 @@ public class FileManager extends Observable {
      */
     public boolean saveAs() throws FileAlreadyExistsException {
         boolean saveCanceled;
-        saveCanceled = promptSaveFilePath();
-        if (saveCanceled) {
+        String path = getSaveFilePath();
+        if (path != null) {
+            filePath = path;
             System.out.println("Path set to: " + filePath);
             save();
+            saveCanceled = true;
         }
         else {
             System.out.println("path not set");
+            saveCanceled = false;
         }
         return saveCanceled;  
     }
@@ -260,8 +260,6 @@ public class FileManager extends Observable {
         ButtonType cancel= new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
         ButtonType dontSave = new ButtonType("Don't Save");
         
-
-        
         alert.getButtonTypes().setAll(save, cancel, dontSave);
         
         
@@ -333,35 +331,26 @@ public class FileManager extends Observable {
     
     /**
      * Prompt the user to choose where to save the file, and what to name it,
-     * then sets filePath to chosen path.
-     * If user presses cancel, then filePath is unchanged
+     * returns the selected path.
+     * The name of the file always ends in .txt. If the user pressed 'cancel', 
+     * then null is returned.
      * @return
-     *      true if filePath changed, false if filePath unchanged
+     *      String of chosen path, null if save was canceled 
      */
-    private boolean promptSaveFilePath() {
-
-        TextInputDialog input = new TextInputDialog("Untitled.txt");
-        input.setTitle("Save As");
-        input.setHeaderText("File Name:");
-        ButtonType okay = new ButtonType("Okay", ButtonData.OK_DONE);
-        ButtonType cancel = new ButtonType("Cancel",ButtonData.CANCEL_CLOSE);
-        Optional<String> result;
-        result = input.showAndWait();
-        
-        if (result.isPresent()){
-            Stage mainStage = new Stage();
-            DirectoryChooser directoryChooser = new DirectoryChooser();
-            directoryChooser.setTitle("Save Resource File");
-            File selectedFile = directoryChooser.showDialog(mainStage);
-            
-            if (selectedFile != null) {
-                System.out.println("Filepath: " + selectedFile.getPath() );
-                filePath = selectedFile.getPath();
-                filePath = filePath + "/" + result.get();
-                return true;
+    private String getSaveFilePath() {
+            Stage stage = new Stage();
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save stuff");
+            File file = fileChooser.showSaveDialog(stage);
+            if (file != null) {
+                String path = file.getPath();
+                if (!path.endsWith(".txt")) {
+                    path += ".txt";
+                }
+                System.out.println("save to: " + path);
+                return path;
             }
-        }
-        return false;
+            return null;
     }
     
     /**
