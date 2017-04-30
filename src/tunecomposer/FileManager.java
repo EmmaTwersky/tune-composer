@@ -225,21 +225,34 @@ public class FileManager extends Observable {
     }
     
     /**
-     * TEMPORARY? 
+     * Clears the current session by clearing the action stacks, deleting all
+     * sound objects, and resenting the file name and last save action.
+     * Used for "new".
      */
     private void clearSession(){
+        setChanged();
         soundObjPane.getChildren().clear();
         actionManager.undoStack.clear();
         actionManager.redoStack.clear();
         lastSaveAction = null;
         filePath = null;
+        notifyObservers();
     }
     
-    
+    /**
+     * Returns if the user has or has not "saved as" during the current session.
+     * @return 
+     *      true if the user has saved as. false if the user has not.
+     */
     private boolean hasSavedAs(){
         return (filePath != null);
     }
     
+    /**
+     * Returns if the user has unsaved changes in the current session.
+     * @return 
+     *      true if there are unsaved changes. false if there are no unsaved changes.
+     */
     public boolean hasUnsavedChanges(){
         return (lastSaveAction != actionManager.peekUndoStack());
     }
