@@ -89,14 +89,18 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     private MenuItem SaveAsMenuItem;
-
+    /**
+     * Save As Menu Button, available to be enabled or disabled.
+     */
+    @FXML
+    private MenuItem NewMenuItem;
     /**
      * Object that contains the undo and redo stack for the program. 
      */
     private ActionManager actionManager;
     
     /**
-     * 
+     * Instance of the nested inner class that observes several lower classes.
      */
     private ApplicationObserver appObserver;
     
@@ -341,6 +345,7 @@ public class ApplicationController implements Initializable {
         PasteMenuItem.setDisable(on);
         SaveMenuItem.setDisable(on);
         SaveAsMenuItem.setDisable(on);
+        NewMenuItem.setDisable(on);
     }
     
     /**
@@ -413,6 +418,7 @@ public class ApplicationController implements Initializable {
             checkDisableStop();
             checkDisableSave();
             checkDisableSaveAs();
+            checkDisableNew();
         }
         
         /**
@@ -551,6 +557,16 @@ public class ApplicationController implements Initializable {
         private void checkDisableSaveAs(){
             if (lastSavedAction == actionManager.peekUndoStack()){
                 SaveAsMenuItem.setDisable(true);
+            }
+        }
+        
+        /**
+         * Disables "New" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisableNew(){
+            if (allSoundObjects.isEmpty()){
+                NewMenuItem.setDisable(true);
             }
         }
         
