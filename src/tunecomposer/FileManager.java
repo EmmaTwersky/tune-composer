@@ -256,9 +256,11 @@ public class FileManager extends Observable {
         alert.setTitle("Save");
         alert.setContentText("Would you like to save your changes?");
         
-        ButtonType save = new ButtonType("Save", ButtonData.YES);
-        ButtonType cancel= new ButtonType("Cancel");
+        ButtonType save = new ButtonType("Save");
+        ButtonType cancel= new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
         ButtonType dontSave = new ButtonType("Don't Save");
+        
+
         
         alert.getButtonTypes().setAll(save, cancel, dontSave);
         
