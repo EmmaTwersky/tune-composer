@@ -36,7 +36,6 @@ public class PasteAction extends Action {
         
         SoundObjectParser parser = new SoundObjectParser(parseString, soundObjectPane, am);
         affectedObjs = parser.parseString();
-//        System.out.println(affectedObjs[0].);
     }
     
     /**

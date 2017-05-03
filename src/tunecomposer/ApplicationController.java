@@ -471,6 +471,11 @@ public class ApplicationController implements Initializable {
             clipboard = Clipboard.getSystemClipboard();
 
             String clipboardStr = clipboard.getString();
+            
+            if (clipboardStr == null) {
+                return;
+            }
+            
             SoundObjectParser parser = new SoundObjectParser(clipboardStr, compositionPaneController.
                     soundObjectPaneController.soundObjectPane, actionManager);
             
@@ -530,7 +535,6 @@ public class ApplicationController implements Initializable {
          * Precondition: button is enabled.
          */
         private void checkDisablePlay(){
-            System.out.println(allSoundObjects);
             if (allSoundObjects.isEmpty()){
                 PlayMenuItem.setDisable(true);
             }
