@@ -5,36 +5,36 @@
 
 /* Sets style for the compositionPane, and staff and measure lines. */
 #compositionPane{
-    -fx-background-color: Gainsboro;
+    -fx-background-color: derive(black, 40%);
 }
 
 #staffLine{
-    -fx-stroke: DarkGrey;
+    -fx-stroke: derive(black, 50%);
 }
 
 #measureLine{
-    -fx-stroke: LightGrey;
+    -fx-stroke: derive(black, 45%);
 }
 
 /* Sets style for the instrument tool bar background and text. 
 Uses opacity features and drop shadow effects. */
 #instrumentToolBar{
-    -fx-background-color: RGBA(50, 50, 50, 0.2); 
-    -fx-effect: DropShadow(Gaussian , Thistle , 10, 0, 0, 1 );
+    -fx-background-color: derive(black, 80%); 
+    -fx-effect: DropShadow(Gaussian, darkblue, 10, 0, 0, 1 );
     -fx-font-family: 'Trebuchet MS', Helvetica, Sans-Serif;
     -fx-font-weight: Bold;
 }
 
 /* Sets style for the selected and unselected note bar attributes. */
 .selectedNote{
-    -fx-stroke: Coral; 
+    -fx-stroke: coral; 
     -fx-stroke-width: 3px; 
     -fx-arc-width: 7px;
     -fx-arc-height: 7px;
 }
 
 .unselectedNote{
-    -fx-stroke: DimGrey; 
+    -fx-stroke: darkgray; 
     -fx-stroke-width: 2px; 
     -fx-arc-width: 7px;
     -fx-arc-height: 7px;
@@ -43,7 +43,7 @@ Uses opacity features and drop shadow effects. */
 /* Sets style for the selected and unselected gesture attributes. */
 .selectedGesture{
     -fx-fill: Transparent;
-    -fx-stroke: Coral;
+    -fx-stroke: coral;
     -fx-stroke-width: 2px;
     -fx-stroke-dash-array: 5 8;
     -fx-arc-width: 11px;
@@ -66,7 +66,7 @@ Uses opacity features and drop shadow effects. */
 
 /* Sets selection window style. */
 #SELECTION_WINDOW{
-    -fx-stroke: Coral; 
+    -fx-stroke: coral; 
     -fx-fill: None;
     -fx-stroke-width: 3px; 
     -fx-arc-width: 11px;
@@ -75,41 +75,42 @@ Uses opacity features and drop shadow effects. */
 
 /* Sets colors for each of the eight instrument's text and note attributes. */
 #Piano{
-    -fx-text-fill: LemonChiffon;
-    -fx-fill: LemonChiffon;
+    -fx-text-fill: gold;
+    -fx-fill: gold;
+    /*-fx-fill: radial-gradient(radius 50%, gold, white);*/
 }
 
 #Harpsichord{
-    -fx-text-fill: Azure;
-    -fx-fill: Azure; 
+    -fx-text-fill: lightgreen;
+    -fx-fill: lightgreen; 
 }
 
 #Marimba{
-    -fx-text-fill: LavenderBlush;
-    -fx-fill: LavenderBlush;
+    -fx-text-fill: lightseagreen;
+    -fx-fill: lightseagreen;
 }
 
 #Organ{
-    -fx-text-fill: Lavender;
-    -fx-fill: Lavender; 
+    -fx-text-fill: limegreen;
+    -fx-fill: limegreen; 
 }
 
 #Accordion{
-    -fx-text-fill: PaleTurquoise;
-    -fx-fill: PaleTurquoise; 
+    -fx-text-fill: skyblue;
+    -fx-fill: skyblue; 
 }
 
 #Guitar{
-    -fx-text-fill: Derive(Aquamarine, 50%);
-    -fx-fill: Derive(Aquamarine, 50%);
+    -fx-text-fill: deepskyblue;
+    -fx-fill: deepskyblue;
 }
 
 #Violin{
-    -fx-text-fill: PeachPuff;
-    -fx-fill: PeachPuff;
+    -fx-text-fill: derive(mediumslateblue, 50%);
+    -fx-fill: derive(mediumslateblue, 50%);
 }
 
 #FrenchHorn{
-    -fx-text-fill: Derive(Pink, 10%);
-    -fx-fill: Derive(Pink, 10%);
+    -fx-text-fill: mediumvioletred;
+    -fx-fill: mediumvioletred;
 }
