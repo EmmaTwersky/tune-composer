@@ -1,6 +1,5 @@
 package tunecomposer;
 
-import java.io.File;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -358,6 +357,7 @@ public class ApplicationController implements Initializable {
          * List of selected items updated from ActionManager.
          */
         ArrayList<SoundObject> selItems;
+        
         /**
          * List of all sound objects on the pane, updated from ActionManager.
          */
