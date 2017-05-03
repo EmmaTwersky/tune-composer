@@ -19,13 +19,11 @@ import java.util.Observable;
 import java.util.Optional;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import static javafx.scene.control.Alert.AlertType.NONE;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import static tunecomposer.SoundObjectParser.soundObjsToXML;
@@ -154,7 +152,6 @@ public class FileManager extends Observable {
      * to save the current pane before opening another file.
      */
     public void open(){
-        System.out.println("MAMA WE MADE IT");
         if (hasUnsavedChanges()){
             if (!promptToSave()){
                 return;
@@ -173,6 +170,8 @@ public class FileManager extends Observable {
                     parser.parseString().forEach((sObj) -> {
                         sObj.addToPane(soundObjPane);
                     });
+                    setChanged();
+                    notifyObservers();
                 }
                 catch(IOException ex){
                     System.out.println("An error occured while reading the file");

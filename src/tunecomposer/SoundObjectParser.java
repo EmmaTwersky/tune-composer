@@ -53,6 +53,17 @@ public class SoundObjectParser {
         noteBarKeywords.add("instrument");
     }
     
+    public boolean isParsable() {
+        ArrayList<SoundObject> sObjs = parseString();
+        if (sObjs.isEmpty()) {
+            return false;
+        }
+        else {
+            return true;
+        }
+        
+    }
+    
     /**
      * Converts given array of SoundObjects into their string XML representation.
      * If given array is empty, then returns empty string.
@@ -69,12 +80,18 @@ public class SoundObjectParser {
     
     /**
      * Returns parsed SoundObjects.
-     * 
+     * If the given string cannot be parsed, then it handles that by returning
+     * an empty ArrayList.
      * @return array list of SoundObjects that were parsed.
      */
-    public ArrayList<SoundObject> parseString() {
-        ArrayList<SoundObject> sObjs = stringToObjects(false);
-        return sObjs;
+    public ArrayList<SoundObject> parseString()  {
+        try {
+            ArrayList<SoundObject> sObjs = stringToObjects(false);
+            return sObjs;
+        }
+        catch (InvalidXMLTagException ex) {
+            return new ArrayList<>();
+        }
     }
     
     /**
@@ -84,8 +101,11 @@ public class SoundObjectParser {
      * 
      * @param isRecursive true if this is a recursive call, false if not.
      * @return ArrayList of SoundObjects created from a given, valid, string
+     * @throws InvalidXMLTagException if a tag was not recognized or no closing
+     *          tag was found.
      */
-    public ArrayList<SoundObject> stringToObjects(boolean isRecursive) {        
+    public ArrayList<SoundObject> stringToObjects(boolean isRecursive) 
+                                                throws InvalidXMLTagException{        
         ArrayList<SoundObject> foundSoundObjs = new ArrayList();
         
         String tag;
@@ -114,7 +134,13 @@ public class SoundObjectParser {
                         throw new InvalidXMLTagException(error);
                     }
                     else {
-                        return foundSoundObjs;
+                        if (foundSoundObjs.isEmpty()) {
+                            String error = "no notes found in given string to parse";
+                            throw new InvalidXMLTagException(error);                            
+                        }
+                        else {
+                            return foundSoundObjs;
+                        }
                     }
                 default:
                     String error = "Tag, '"+tag+"', not recognized: ";

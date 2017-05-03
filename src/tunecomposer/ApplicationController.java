@@ -1,6 +1,5 @@
 package tunecomposer;
 
-import java.io.File;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -14,10 +13,9 @@ import javafx.scene.control.Alert;
 import static javafx.scene.control.Alert.AlertType.NONE;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.Clipboard;
 import javafx.scene.layout.Pane;
 import tunecomposer.actionclasses.Action;
-import tunecomposer.actionclasses.CopyAction;
-import tunecomposer.actionclasses.CutAction;
 
 /**
  * Controls the application and handles the menu item selections.
@@ -402,7 +400,7 @@ public class ApplicationController implements Initializable {
             
             allSoundObjects = compositionPaneController.
                     soundObjectPaneController.soundObjectPane.getChildren();
-            
+                        
             toggleMenuItemDisable(false);
             
             checkDisableUndo();
@@ -462,17 +460,22 @@ public class ApplicationController implements Initializable {
         }
         
         /**
-         * Disables "Paste" if it needs to be disabled.
+         * Disables "Paste" menuItem if it needs to be disabled.
+         * Disables if the clipboard does not contain data that can be parsed
          * Precondition: button is enabled.
          */
         private void checkDisablePaste(){
             PasteMenuItem.setDisable(true);
-            for (ArrayList<Action> aList: actionManager.undoStack){
-                for (Action aObj: aList){
-                    if ((aObj instanceof CutAction) || (aObj instanceof CopyAction)){
-                        PasteMenuItem.setDisable(false);
-                    }
-                }
+            
+            Clipboard clipboard;
+            clipboard = Clipboard.getSystemClipboard();
+
+            String clipboardStr = clipboard.getString();
+            SoundObjectParser parser = new SoundObjectParser(clipboardStr, compositionPaneController.
+                    soundObjectPaneController.soundObjectPane, actionManager);
+            
+            if (parser.isParsable()) {
+                PasteMenuItem.setDisable(false);
             }
         }
         
@@ -527,6 +530,7 @@ public class ApplicationController implements Initializable {
          * Precondition: button is enabled.
          */
         private void checkDisablePlay(){
+            System.out.println(allSoundObjects);
             if (allSoundObjects.isEmpty()){
                 PlayMenuItem.setDisable(true);
             }
