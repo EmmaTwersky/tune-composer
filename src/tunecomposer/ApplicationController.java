@@ -189,6 +189,9 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleExitMenuItemAction(ActionEvent event) {
+        if (fileManager.hasUnsavedChanges()){
+            fileManager.promptToSave();
+        };
         System.exit(0);
     }
     

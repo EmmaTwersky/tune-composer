@@ -254,7 +254,7 @@ public class FileManager extends Observable {
      * @return
      *      true if user selects yes or no. False if selected cancel.
      */
-    private boolean promptToSave() {
+    protected boolean promptToSave() {
         Alert alert = new Alert(NONE);
         alert.setTitle("Save");
         alert.setContentText("Would you like to save your changes?");
