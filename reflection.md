@@ -27,6 +27,8 @@ A new addition of inelegance is creating our own version of an XML parser. This 
 
 As noted by you, it violates Liskov Substitution Principle that CopyAction has undo and redo when not possible, though when approaching solving this, we could not find a better way to pattern it's implimentation as a seperate and different action type. In a different version, making save, etc. actions and making these actions extend UndoableAction and Action extend to these two types may make more sense.
 
+We also have a clear issue of "If the user chooses Cancel, then the exiting is canceled and the application stays running" since our System.exit call and instances are not able to find each other to always prompt the correct exit request dialog window. This was another static trap that we need to resolve.
+
 ## Time Spent:
  As a team we spent about 30 hours. We estimated that we would have about 70 story points for this project where 5 points was our base for a moderately simple implementation. Our velocity then was about 2.3 storypoints/hour, which is a large increase (about an additional storypoint per hour!) The ratio of points/person-hour is 2.3:1. I think this is because our planning and estimation skills, especially in the context of this project, are greatly increasing as we continue working.
 
