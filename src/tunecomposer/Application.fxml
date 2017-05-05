@@ -45,7 +45,7 @@
                         </MenuItem>
                         <MenuItem 
                             fx:id = "SaveAsMenuItem"
-                            text = "Save as..." 
+                            text = "Save As..." 
                             onAction = "#handleSaveAsMenuItemAction" 
                             accelerator = "Shortcut + SHIFT + S" >
                         </MenuItem>

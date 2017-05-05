@@ -371,7 +371,6 @@ public class CompositionPaneController implements Initializable {
             soundObjectPaneController.setActionManager(actionManager);
         } catch (NullPointerException ex) {
             System.out.println("Action Manager null");
-            System.exit(1);
         }
     }
 }

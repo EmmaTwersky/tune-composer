@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer;
 
 import java.io.BufferedReader;
@@ -346,6 +341,14 @@ public class FileManager extends Observable {
      */
     public ArrayList<Action> getLastSaveAction(){
         return lastSaveAction;
+    }
+    
+    public void promptToExit(){
+        if (hasUnsavedChanges()){
+            if(promptToSave()){
+                System.exit(1);
+            }
+        }
     }
     
 }

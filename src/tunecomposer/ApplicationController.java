@@ -106,7 +106,7 @@ public class ApplicationController implements Initializable {
      * Reference to object used to save and load SoundObjects from/to provided 
      * pane in constructor. 
      */
-    private FileManager fileManager;
+    protected FileManager fileManager;
     
     /**
      * Reference to the compositionPaneController. 
@@ -189,10 +189,7 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleExitMenuItemAction(ActionEvent event) {
-        if (fileManager.hasUnsavedChanges()){
-            fileManager.promptToSave();
-        };
-        System.exit(0);
+        fileManager.promptToExit();
     }
     
     /**
