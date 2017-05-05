@@ -30,8 +30,7 @@ import static tunecomposer.SoundObjectParser.soundObjsToXML;
 import tunecomposer.actionclasses.Action;
 
 /**
- *
- * @author lonbern
+ * Handles the creation, saving and opening of files.
  */
 public class FileManager extends Observable {
     
@@ -80,9 +79,7 @@ public class FileManager extends Observable {
      * if they want to save their changes.
      */    
     public void newFile(){
-        System.out.println("Creating new file");
         if (hasUnsavedChanges()){
-            System.out.println("has unsaved changes");
             if (promptToSave()){
                 clearSession();
             }
@@ -106,17 +103,13 @@ public class FileManager extends Observable {
             }    
         }
         try{
-          // Create file 
-            System.out.println("made file");
             File file = new File(filePath);
-            System.out.println(file.getPath());
             Writer out = new BufferedWriter(new FileWriter(file));
             String parseStr = getPaneObjectsAsString();
             out.write(parseStr);
-            System.out.println("wrote to " + filePath);
             updateLastSaveAction();
             out.close();
-        } catch (Exception e){//Catch exception if any
+        } catch (Exception e){
             System.err.println("Error: " + e.getMessage());
         }
     }
@@ -134,12 +127,10 @@ public class FileManager extends Observable {
         String path = getSaveFilePath();
         if (path != null) {
             filePath = path;
-            System.out.println("Path set to: " + filePath);
             save();
             saveCanceled = true;
         }
         else {
-            System.out.println("path not set");
             saveCanceled = false;
         }
         return saveCanceled;  
@@ -174,11 +165,11 @@ public class FileManager extends Observable {
                     notifyObservers();
                 }
                 catch(IOException ex){
-                    System.out.println("An error occured while reading the file");
+                    System.err.println("An error occured while reading the file");
                 }
             }
             catch(FileNotFoundException ex){
-                System.out.println("Unable to open file '" + filePath + "'");
+                System.err.println("Unable to open file '" + filePath + "'");
             } 
         }
     }
@@ -279,7 +270,6 @@ public class FileManager extends Observable {
         
         
         if (result.get() == save){
-            System.out.println("SAVE");
             if (hasSavedAs()){
                 save();
                 return true;
@@ -295,26 +285,12 @@ public class FileManager extends Observable {
         }
         
         else if (result.get() == cancel){
-            System.out.println("CANCEL");
             return false;
         }
          
         else if (result.get() == dontSave){
-            System.out.println("DONTSAVE");
             return true;
-        }
-        
-//        alert.getDialogPane().getChildren().addAll(save, cancel, dontSave);
-        
-//        alert.showAndWait();
-        
-//        save.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override public void handle(ActionEvent e) {
-//                System.out.println("save pressed");
-//            }
-//        });
-        
-        
+        }        
         return false;
     }
     
@@ -334,7 +310,6 @@ public class FileManager extends Observable {
              new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         File selectedFile = fileChooser.showOpenDialog(choosingStage);
         if (selectedFile != null) {
-            System.out.println("Filepath: " + selectedFile.getPath() );
             filePath = selectedFile.getPath();
             return true;
         }
@@ -359,7 +334,6 @@ public class FileManager extends Observable {
                 if (!path.endsWith(".txt")) {
                     path += ".txt";
                 }
-                System.out.println("save to: " + path);
                 return path;
             }
             return null;
