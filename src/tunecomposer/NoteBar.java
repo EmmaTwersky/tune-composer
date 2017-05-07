@@ -293,14 +293,14 @@ public class NoteBar extends SoundObject {
     public void snapYInPlace() {
         //Get raw values of rectangle location.
         int xRaw = (int) visualRectangle.getX();
-        int yRaw = (int) visualRectangle.getY();
+        double yRaw = visualRectangle.getY();
         
-        pitch = PITCH_RANGE - ((int) Math.round(yRaw / NOTE_HEIGHT));
+        pitch = PITCH_RANGE - ((int) Math.round((int)yRaw / NOTE_HEIGHT));
         startTick = (int) xRaw;
         
         //Fix raw values.
         int xFixed = (int) xRaw;
-        int yFixed = (int) Math.round(yRaw / NOTE_HEIGHT) * NOTE_HEIGHT;
+        int yFixed = (int) Math.round(yRaw / (double)NOTE_HEIGHT) * NOTE_HEIGHT;
         
         //Reset rectangle to fixed values.
         visualRectangle.setX(xFixed);
@@ -313,12 +313,10 @@ public class NoteBar extends SoundObject {
      */
     @Override
     public void snapXInPlace() {
-        int xRaw = (int) visualRectangle.getX();
-        
-        startTick = (int) xRaw;
-        
+        double xRaw = visualRectangle.getX();
+                
         //Fix raw values.
-        int xFixed = (int) Math.round(xRaw / snapXDistance) * snapXDistance;
+        int xFixed = (int) Math.round(xRaw / (double) snapXDistance) * snapXDistance;
         
         //Reset rectangle to fixed values.
         visualRectangle.setX(xFixed);
@@ -428,7 +426,7 @@ public class NoteBar extends SoundObject {
             SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
         }
     };
-    
+
     /**
      * Handles note dragged event.
      * Continuously updates the execution of Move/Stretch Actions using their
