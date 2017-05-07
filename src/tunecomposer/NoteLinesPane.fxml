@@ -7,10 +7,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane 
+<AnchorPane 
     xmlns:fx = "http://javafx.com/fxml/1" 
     xmlns = "http://javafx.com/javafx/8" 
     fx:id = "noteLinesPane" 
     stylesheets = "@TuneComposer.css"
     fx:controller = "tunecomposer.NoteLinesPaneController" > 
-</Pane>
+    <Pane 
+        fx:id = "pitchLabels"
+        prefWidth = "5.0"
+        AnchorPane.leftAnchor = "0.0" 
+    />
+</AnchorPane>
