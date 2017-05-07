@@ -93,7 +93,7 @@ public final class Gesture extends SoundObject{
      * Sets the current TopX, TopY, BottomX and BottomY.
      */
     public void setVisualRectangleCoords() {
-        topX = 2000;
+        topX = 18000;
         topY = 1280;
         bottomX = 0;
         bottomY = 0;

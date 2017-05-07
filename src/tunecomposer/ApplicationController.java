@@ -93,6 +93,16 @@ public class ApplicationController implements Initializable {
     @FXML
     private MenuItem NewMenuItem;
     /**
+     * Major Chord Menu Button.
+     */
+    @FXML
+    private MenuItem MajorChordMenuItem;
+    /**
+     * Minor Chord Menu Button.
+     */
+    @FXML
+    private MenuItem MinorChordMenuItem;
+    /**
      * Object that contains the undo and redo stack for the program. 
      */
     private ActionManager actionManager;
@@ -300,6 +310,26 @@ public class ApplicationController implements Initializable {
         compositionPaneController.stop();
 
         compositionPaneController.ungroup();
+    }
+    
+    /**
+     * Handles the Major chord menu item selection.
+     * 
+     * @param event the button click event
+     */
+    @FXML
+    protected void handleMajorChordMenuItemAction(ActionEvent event){
+        
+    }
+    
+    /**
+     * Handles the Minor chord menu item selection.
+     * 
+     * @param event the button click event
+     */
+    @FXML
+    protected void handleMinorChordMenuItemAction(ActionEvent event){
+        
     }
     
     /**
