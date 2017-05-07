@@ -346,7 +346,7 @@ public class FileManager extends Observable {
     public void promptToExit(){
         if (hasUnsavedChanges()){
             if(promptToSave()){
-                System.exit(1);
+                System.exit(0);
             }
         }
     }

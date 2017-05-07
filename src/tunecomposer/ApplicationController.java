@@ -106,7 +106,7 @@ public class ApplicationController implements Initializable {
      * Reference to object used to save and load SoundObjects from/to provided 
      * pane in constructor. 
      */
-    protected FileManager fileManager;
+    protected static FileManager fileManager;
     
     /**
      * Reference to the compositionPaneController. 
@@ -140,7 +140,8 @@ public class ApplicationController implements Initializable {
         
         Pane sObjPane = compositionPaneController. soundObjectPaneController.soundObjectPane;
         fileManager = new FileManager(sObjPane, actionManager);
-        
+        TuneComposer.setFileManager(fileManager);
+
         fileManager.addObserver(appObserver);
     }   
     
