@@ -55,6 +55,14 @@ public class NoteBar extends SoundObject {
     public final int minLength = 5;
     
     /**
+     * X value that the rectangle would be at if the note didn't snap in place.
+     * Used to prevent loosing positional information when rounding x-coordinate
+     * of rectangle.
+     */
+    private double unsnappedX;
+
+    
+    /**
      * Load InstrumentInfo HashMap to look up instrument key values.
      */
     private final InstrumentInfo instrumentInfo = new InstrumentInfo();
@@ -85,6 +93,10 @@ public class NoteBar extends SoundObject {
         visualRectangle = new Rectangle(xLocation, yLocation, getDuration(), NOTE_HEIGHT);
         visualRectangle.setId(name);
 
+        unsnappedX = x;
+        snapXInPlace();
+        unsnappedX = visualRectangle.getX();
+        
         setHandlers();
 
         select();
@@ -123,6 +135,10 @@ public class NoteBar extends SoundObject {
         visualRectangle = new Rectangle(xLocation, yLocation, duration, NOTE_HEIGHT);
         visualRectangle.setId(name);
 
+        unsnappedX = x;
+        snapXInPlace();
+        unsnappedX = visualRectangle.getX();
+        
         setHandlers();
         select();
     }
@@ -227,7 +243,7 @@ public class NoteBar extends SoundObject {
 	return result;
     }
     
-
+    
     /**
      * Moves note freely on pane.
      * @param x the increment to change current x value by
@@ -235,10 +251,9 @@ public class NoteBar extends SoundObject {
      */
     @Override
     public void move(double x, double y){
-        double newXLoc = x + visualRectangle.getX();
         double newYLoc = y + visualRectangle.getY();
         
-        visualRectangle.setX(newXLoc);
+        unsnappedX += x;
         visualRectangle.setY(newYLoc);
     }
     
@@ -305,22 +320,19 @@ public class NoteBar extends SoundObject {
         //Reset rectangle to fixed values.
         visualRectangle.setX(xFixed);
         visualRectangle.setY(yFixed);
-        visualRectangle.getStyleClass().add(name);
     }
     
     /**
-     * Snaps the note to the nearest x-coordinate using snapXDistance
+     * Snaps the note to the nearest x-coordinate using snapXDistance.
+     * 
      */
     @Override
     public void snapXInPlace() {
-        double xRaw = visualRectangle.getX();
-                
-        //Fix raw values.
-        int xFixed = (int) Math.round(xRaw / (double) snapXDistance) * snapXDistance;
+        int xFixed = (int) Math.round(unsnappedX / (double) snapXDistance) * snapXDistance;
+        startTick = xFixed;
         
         //Reset rectangle to fixed values.
         visualRectangle.setX(xFixed);
-        visualRectangle.getStyleClass().add(name);        
     }
     
     /**
