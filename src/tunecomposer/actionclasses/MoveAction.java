@@ -50,7 +50,7 @@ public class MoveAction extends Action {
     public void execute() {
         affectedObjs.forEach((sObj)->{
             sObj.move(lastX-startX, lastY-startY);
-            sObj.snapInPlace();
+            sObj.snapYInPlace();
         });
     }
     
@@ -61,7 +61,7 @@ public class MoveAction extends Action {
     public void undo() {
         affectedObjs.forEach((sObj)->{
             sObj.move(startX-lastX, startY-lastY+sObj.HEIGHT);
-            sObj.snapInPlace();
+            sObj.snapYInPlace();
         });
     }
     
@@ -94,6 +94,7 @@ public class MoveAction extends Action {
         if (!lockMove){
             affectedObjs.forEach((sObj) -> {
                 sObj.move(mouseX, mouseY);
+                sObj.snapXInPlace();
             });
         }
     }

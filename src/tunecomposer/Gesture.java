@@ -212,15 +212,29 @@ public final class Gesture extends SoundObject{
     }
     
     /**
-     * Recursively snap all items in gesture to closest note.
+     * Recursively snap all items in gesture to closest note pitch.
      * Precondition: the gesture has just been moved.
      * Postcondition: the location of the notes in the gesture is 
      * fixed so they sit in between staff lines.
      */
     @Override
-    public void snapInPlace() {
+    public void snapYInPlace() {
         containedSoundObjects.forEach((note) -> {
-            note.snapInPlace();
+            note.snapYInPlace();
+        });
+        refreshVisualRectangle();
+    }
+    
+    /**
+     * Recursively snap all items in gesture to closest x value.
+     * The NoteBars in containedSoundObjects must have references to their rectangles.
+     * The location of the notes are snapped so that the x values fall only on
+     * increments of the current value of snapXDistance.
+     */
+    @Override
+    public void snapXInPlace() {
+        containedSoundObjects.forEach((note) -> {
+            note.snapXInPlace();
         });
         refreshVisualRectangle();
     }
@@ -437,7 +451,7 @@ public final class Gesture extends SoundObject{
                 actionList.add(sObjMove);
             }
             SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
-                sObj.snapInPlace();
+                sObj.snapYInPlace();
             });
             draggingLength = false;
         }
