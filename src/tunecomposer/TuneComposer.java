@@ -13,7 +13,9 @@ import javafx.stage.WindowEvent;
  */
 public class TuneComposer extends Application {
 
-    public FileManager fileManager;
+    public static FileManager fileManager;
+    
+    public ApplicationController appController;
     
     /**
      * Construct the scene and start the application.
@@ -28,6 +30,7 @@ public class TuneComposer extends Application {
         primaryStage.setTitle("Tune Composer");
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
+            System.out.println("HERE");
             fileManager.promptToExit();
         });        
         primaryStage.show();                
@@ -40,5 +43,9 @@ public class TuneComposer extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+    
+    public static void setFileManager(FileManager fManager){
+        fileManager = fManager;
     }
 }

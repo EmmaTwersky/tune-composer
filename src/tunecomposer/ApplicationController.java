@@ -93,6 +93,16 @@ public class ApplicationController implements Initializable {
     @FXML
     private MenuItem NewMenuItem;
     /**
+     * Major Chord Menu Button.
+     */
+    @FXML
+    private MenuItem MajorChordMenuItem;
+    /**
+     * Minor Chord Menu Button.
+     */
+    @FXML
+    private MenuItem MinorChordMenuItem;
+    /**
      * Object that contains the undo and redo stack for the program. 
      */
     private ActionManager actionManager;
@@ -106,7 +116,7 @@ public class ApplicationController implements Initializable {
      * Reference to object used to save and load SoundObjects from/to provided 
      * pane in constructor. 
      */
-    protected FileManager fileManager;
+    protected static FileManager fileManager;
     
     /**
      * Reference to the compositionPaneController. 
@@ -140,7 +150,8 @@ public class ApplicationController implements Initializable {
         
         Pane sObjPane = compositionPaneController. soundObjectPaneController.soundObjectPane;
         fileManager = new FileManager(sObjPane, actionManager);
-        
+        TuneComposer.setFileManager(fileManager);
+
         fileManager.addObserver(appObserver);
     }   
     
@@ -299,6 +310,26 @@ public class ApplicationController implements Initializable {
         compositionPaneController.stop();
 
         compositionPaneController.ungroup();
+    }
+    
+    /**
+     * Handles the Major chord menu item selection.
+     * 
+     * @param event the button click event
+     */
+    @FXML
+    protected void handleMajorChordMenuItemAction(ActionEvent event){
+        
+    }
+    
+    /**
+     * Handles the Minor chord menu item selection.
+     * 
+     * @param event the button click event
+     */
+    @FXML
+    protected void handleMinorChordMenuItemAction(ActionEvent event){
+        
     }
     
     /**
