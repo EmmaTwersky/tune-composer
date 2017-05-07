@@ -47,7 +47,7 @@ public class PasteAction extends Action {
         movePaste.move(offset, offset);
 
         affectedObjs.forEach((sObj) -> {
-            sObj.snapInPlace();
+            sObj.snapYInPlace();
             sObj.addToPane(soundObjectPane);
             sObj.select();
         });

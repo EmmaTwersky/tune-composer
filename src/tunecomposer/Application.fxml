@@ -123,6 +123,24 @@
                         </MenuItem>
                     </items>
                 </Menu>
+                <Menu text = "Insert" >
+                    <items>
+                        <Menu text = "Chords" >
+                    <items>
+                        <MenuItem 
+                            fx:id = "MajorChordMenuItem"
+                            text = "Major" 
+                            onAction = "#handleMajorChordMenuItemAction">
+                        </MenuItem>
+                        <MenuItem
+                            fx:id = "MinorChordMenuItem"
+                            text = "Minor" 
+                            onAction = "#handleMinorChordMenuItemAction">
+                        </MenuItem>
+                    </items>
+                </Menu>
+                    </items>
+                </Menu>
                 <Menu text = "Actions" >
                     <items>
                         <MenuItem 

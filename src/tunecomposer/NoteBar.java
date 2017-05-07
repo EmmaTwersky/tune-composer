@@ -55,6 +55,14 @@ public class NoteBar extends SoundObject {
     public final int minLength = 5;
     
     /**
+     * X value that the rectangle would be at if the note didn't snap in place.
+     * Used to prevent loosing positional information when rounding x-coordinate
+     * of rectangle.
+     */
+    private double unsnappedX;
+
+    
+    /**
      * Load InstrumentInfo HashMap to look up instrument key values.
      */
     private final InstrumentInfo instrumentInfo = new InstrumentInfo();
@@ -85,6 +93,10 @@ public class NoteBar extends SoundObject {
         visualRectangle = new Rectangle(xLocation, yLocation, getDuration(), NOTE_HEIGHT);
         visualRectangle.setId(name);
 
+        unsnappedX = x;
+        snapXInPlace();
+        unsnappedX = visualRectangle.getX();
+        
         setHandlers();
 
         select();
@@ -123,6 +135,10 @@ public class NoteBar extends SoundObject {
         visualRectangle = new Rectangle(xLocation, yLocation, duration, NOTE_HEIGHT);
         visualRectangle.setId(name);
 
+        unsnappedX = x;
+        snapXInPlace();
+        unsnappedX = visualRectangle.getX();
+        
         setHandlers();
         select();
     }
@@ -227,7 +243,7 @@ public class NoteBar extends SoundObject {
 	return result;
     }
     
-
+    
     /**
      * Moves note freely on pane.
      * @param x the increment to change current x value by
@@ -235,10 +251,9 @@ public class NoteBar extends SoundObject {
      */
     @Override
     public void move(double x, double y){
-        double newXLoc = x + visualRectangle.getX();
         double newYLoc = y + visualRectangle.getY();
         
-        visualRectangle.setX(newXLoc);
+        unsnappedX += x;
         visualRectangle.setY(newYLoc);
     }
     
@@ -290,22 +305,34 @@ public class NoteBar extends SoundObject {
      * Postcondition: the notes location is fixed to sit in between staff lines.
      */
     @Override
-    public void snapInPlace() {
+    public void snapYInPlace() {
         //Get raw values of rectangle location.
         int xRaw = (int) visualRectangle.getX();
-        int yRaw = (int) visualRectangle.getY();
+        double yRaw = visualRectangle.getY();
         
-        pitch = PITCH_RANGE - ((int) Math.round(yRaw / NOTE_HEIGHT));
+        pitch = PITCH_RANGE - ((int) Math.round((int)yRaw / NOTE_HEIGHT));
         startTick = (int) xRaw;
         
         //Fix raw values.
         int xFixed = (int) xRaw;
-        int yFixed = (int) Math.round(yRaw / NOTE_HEIGHT) * NOTE_HEIGHT;
+        int yFixed = (int) Math.round(yRaw / (double)NOTE_HEIGHT) * NOTE_HEIGHT;
         
         //Reset rectangle to fixed values.
         visualRectangle.setX(xFixed);
         visualRectangle.setY(yFixed);
-        visualRectangle.getStyleClass().add(name);
+    }
+    
+    /**
+     * Snaps the note to the nearest x-coordinate using snapXDistance.
+     * 
+     */
+    @Override
+    public void snapXInPlace() {
+        int xFixed = (int) Math.round(unsnappedX / (double) snapXDistance) * snapXDistance;
+        startTick = xFixed;
+        
+        //Reset rectangle to fixed values.
+        visualRectangle.setX(xFixed);
     }
     
     /**
@@ -411,7 +438,7 @@ public class NoteBar extends SoundObject {
             SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
         }
     };
-    
+
     /**
      * Handles note dragged event.
      * Continuously updates the execution of Move/Stretch Actions using their
@@ -467,7 +494,7 @@ public class NoteBar extends SoundObject {
                     actionList.add(sObjMove);
                 }
                 for (SoundObject soundItem : SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
-                    soundItem.snapInPlace();
+                    soundItem.snapYInPlace();
                 }
                 draggingLength = false;
             }

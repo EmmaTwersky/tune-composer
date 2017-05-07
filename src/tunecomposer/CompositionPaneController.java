@@ -20,7 +20,7 @@ public class CompositionPaneController implements Initializable {
     /**
      * Dimensions of the Composition StackPane.
      */
-    public static final int PANE_X_MAX = 2000;
+    public static final int PANE_X_MAX = 18000;
     public static final int PANE_Y_MAX = 1280;
     
     /**
