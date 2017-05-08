@@ -319,7 +319,7 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleMajorChordMenuItemAction(ActionEvent event){
-        
+        compositionPaneController.addMajorChord();
     }
     
     /**
@@ -329,7 +329,7 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleMinorChordMenuItemAction(ActionEvent event){
-        
+        compositionPaneController.addMinorChord();
     }
     
     /**

@@ -165,6 +165,22 @@ public class CompositionPaneController implements Initializable {
         stop();
         soundObjectPaneController.ungroup();
     }   
+    
+    /**
+     * Adds a major chord to the composition pane.
+     */
+    public void addMajorChord(){
+        stop();
+        soundObjectPaneController.makeMajorChord();
+    }
+    
+    /**
+     * Adds a minor chord to the composition pane.
+     */
+    public void addMinorChord(){
+        stop();
+        soundObjectPaneController.makeMinorChord();
+    }
        
     /**
      * Overwrites selectedObjs and unselectedObjs into their respective actions

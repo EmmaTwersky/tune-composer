@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.AddSoundAction;
 import tunecomposer.actionclasses.CopyAction;
 import tunecomposer.actionclasses.CutAction;
 import tunecomposer.actionclasses.DeleteAction;
@@ -213,6 +214,35 @@ public class SoundObjectPaneController {
         updateSelectedSoundObjectArray();
         actionManager.putInUndoStack(actions);
     }
+    
+    /**
+     * Creates a major chord shape and places it on the pane.
+     */
+    public void makeMajorChord(){
+        System.out.println("EYYYYOOOO MAJOR");
+        AddSoundAction addSoundAction;
+        
+        String majorChord = 
+                "<gesture>"
+                + "<notebar> x:100 y:730 width:100 instrument:88 </notebar>"
+                + "<notebar> x:100 y:690 width:100 instrument:88 </notebar>"
+                + "<notebar> x:100 y:660 width:100 instrument:88 </notebar>"
+                + "</gesture>";
+
+        addSoundAction = new AddSoundAction(majorChord, soundObjectPane, actionManager);
+        actionManager.execute(addSoundAction);
+        actionManager.putInUndoStack(addSoundAction);
+        
+        updateSelectedSoundObjectArray();
+    }
+     
+    /**
+     * Creates a major chord shape and places it on the pane.
+     */
+    public void makeMinorChord(){
+        System.out.println("EYYYYOOOO MINOR");
+    }
+    
     
     /**
      * Set the GroupAction to the instance that contains the undo and 

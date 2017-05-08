@@ -310,7 +310,7 @@ public class NoteBar extends SoundObject {
         int xRaw = (int) visualRectangle.getX();
         double yRaw = visualRectangle.getY();
         
-        pitch = PITCH_RANGE - ((int) Math.round((int)yRaw / NOTE_HEIGHT));
+        pitch = PITCH_RANGE - ((int) Math.round(yRaw /NOTE_HEIGHT));
         startTick = (int) xRaw;
         
         //Fix raw values.

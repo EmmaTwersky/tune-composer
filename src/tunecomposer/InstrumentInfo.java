@@ -11,7 +11,7 @@ public class InstrumentInfo {
      * <https://www.midi.org/specifications/item/gm-level-1-sound-set>.
      * The channels signify that each instrument is a private MidiEvent channel.
      */
-    private static final int PIANO = 0; //1-8
+    private static final int PIANO = 88; //1-8
     private static final int PIANO_CHANNEL = 0;
     
     private static final int HARPSICHORD = 7; //7
