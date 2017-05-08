@@ -30,8 +30,12 @@ public class TuneComposer extends Application {
         primaryStage.setTitle("Tune Composer");
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
-            System.out.println("HERE");
-            fileManager.promptToExit();
+            boolean exit = fileManager.promptToExit();
+            if (exit){
+                System.exit(0);
+            } else{
+                we.consume();
+            }
         });        
         primaryStage.show();                
     }

@@ -15,6 +15,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.Pane;
+import static tunecomposer.TuneComposer.fileManager;
 import tunecomposer.actionclasses.Action;
 
 /**
@@ -200,7 +201,11 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleExitMenuItemAction(ActionEvent event) {
-        fileManager.promptToExit();
+        boolean exit = fileManager.promptToExit();
+        if (exit){
+            System.exit(0);
+        }
+        event.consume();
     }
     
     /**

@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/ricardovivanco/NetBeansProjects/project-5-9-synergy/src/tunecomposer/InstrumentToolBarController.java</file>
-            <file>file:/Users/ricardovivanco/NetBeansProjects/project-5-9-synergy/src/tunecomposer/NoteLinesPaneController.java</file>
-            <file>file:/Users/ricardovivanco/NetBeansProjects/project-5-9-synergy/src/tunecomposer/InstrumentToolBar.fxml</file>
-            <file>file:/Users/ricardovivanco/NetBeansProjects/project-5-9-synergy/src/tunecomposer/CompositionPaneController.java</file>
+            <file>file:/Users/ricardovivanco/NetBeansProjects/project-5-9-synergy/src/tunecomposer/FileManager.java</file>
+            <file>file:/Users/ricardovivanco/NetBeansProjects/project-5-9-synergy/src/tunecomposer/ApplicationController.java</file>
             <file>file:/Users/ricardovivanco/NetBeansProjects/project-5-9-synergy/src/tunecomposer/NoteBar.java</file>
+            <file>file:/Users/ricardovivanco/NetBeansProjects/project-5-9-synergy/src/tunecomposer/TuneComposer.java</file>
         </group>
     </open-files>
 </project-private>

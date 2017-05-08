@@ -263,6 +263,7 @@ public class FileManager extends Observable {
         
         Optional<ButtonType> result = alert.showAndWait();
         
+        new Exception().printStackTrace();
         
         if (result.get() == save){
             if (hasSavedAs()){
@@ -343,12 +344,11 @@ public class FileManager extends Observable {
         return lastSaveAction;
     }
     
-    public void promptToExit(){
+    public boolean promptToExit(){
         if (hasUnsavedChanges()){
-            if(promptToSave()){
-                System.exit(0);
-            }
+            return promptToSave();
         }
+        return true; //true if we want to exit
     }
     
 }
