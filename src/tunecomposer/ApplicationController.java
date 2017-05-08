@@ -15,7 +15,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.Pane;
-import static tunecomposer.TuneComposer.fileManager;
 import tunecomposer.actionclasses.Action;
 
 /**
@@ -151,7 +150,7 @@ public class ApplicationController implements Initializable {
         
         Pane sObjPane = compositionPaneController. soundObjectPaneController.soundObjectPane;
         fileManager = new FileManager(sObjPane, actionManager);
-        TuneComposer.setFileManager(fileManager);
+        TuneComposer.setAppController(this);
 
         fileManager.addObserver(appObserver);
     }   
@@ -201,11 +200,15 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleExitMenuItemAction(ActionEvent event) {
+        close();
+    }
+    
+    public boolean close() {
         boolean exit = fileManager.promptToExit();
         if (exit){
             System.exit(0);
         }
-        event.consume();
+        return false;
     }
     
     /**
@@ -613,7 +616,6 @@ public class ApplicationController implements Initializable {
             if (allSoundObjects.isEmpty()){
                 NewMenuItem.setDisable(true);
             }
-        }
-        
+        }  
     }
 }

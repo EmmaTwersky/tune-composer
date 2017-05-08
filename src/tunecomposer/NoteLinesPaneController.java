@@ -1,15 +1,13 @@
 package tunecomposer;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 
 /**
@@ -30,17 +28,23 @@ public class NoteLinesPaneController implements Initializable {
     private static final int PITCH_RANGE = 128;
     private static final int BAR_RANGE = 180; 
     
+    /**
+     * Create the array list of note pitch labels.      
+     */
     private final ArrayList<String> pitchList = 
             new ArrayList(Arrays.asList(" ","G"," ","F","E"," ","D"," ","C","B"," ","A"));
-    
-    @FXML
-    public Pane pitchLabels;
     
     /**
      * Create the pane which the note events take place on.      
      */
     @FXML
     public Pane noteLinesPane;
+    
+    /**
+     * Create the pane which the label events take place on.      
+     */
+    @FXML
+    public Pane pitchLabels;
     
     /**
      * Draws initial setup of note lines on the pane.
@@ -52,7 +56,8 @@ public class NoteLinesPaneController implements Initializable {
     @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
         TextFlow tf = new TextFlow();
-        tf.setMaxWidth(5);
+        tf.setMaxWidth(NOTE_HEIGHT/2);
+        tf.setTextAlignment(TextAlignment.RIGHT);
 
         for (int i = 0; i < PITCH_RANGE; i++) {
             Line staffLine = new Line(0, i * NOTE_HEIGHT, 

@@ -262,9 +262,7 @@ public class FileManager extends Observable {
         
         
         Optional<ButtonType> result = alert.showAndWait();
-        
-        new Exception().printStackTrace();
-        
+                
         if (result.get() == save){
             if (hasSavedAs()){
                 save();
