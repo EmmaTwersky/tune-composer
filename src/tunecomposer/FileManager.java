@@ -260,7 +260,6 @@ public class FileManager extends Observable {
         
         alert.getButtonTypes().setAll(save, cancel, dontSave);
         
-        
         Optional<ButtonType> result = alert.showAndWait();
                 
         if (result.get() == save){

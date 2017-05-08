@@ -201,6 +201,7 @@ public class ApplicationController implements Initializable {
     @FXML
     protected void handleExitMenuItemAction(ActionEvent event) {
         close();
+        event.consume();
     }
     
     public boolean close() {
