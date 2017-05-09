@@ -77,7 +77,7 @@ public class NoteLinesPaneController implements Initializable {
             
             for (int k = 0; k < PITCH_RANGE; k++) {
                 Text pitch = new Text(pitchList.get(k % pitchList.size()));
-                pitch.setId("pitchLabel");
+                pitch.setId("label");
                 tf.getChildren().add(pitch);
             }
             

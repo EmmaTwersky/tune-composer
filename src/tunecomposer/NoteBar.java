@@ -14,7 +14,7 @@ import tunecomposer.actionclasses.LengthChangeAction;
  * and be played in MidiPLayer.
  * @extends SoundObject
  */
-public class NoteBar extends SoundObject {
+public final class NoteBar extends SoundObject {
     /**
      * Create variables for the note name, instrument number, channel number,
      * pitch, starting value, and duration. 
@@ -41,7 +41,7 @@ public class NoteBar extends SoundObject {
     /**
     * Sets default duration, minimum duration and default click range to edit duration. 
     */
-    private final int DEFAULT_LENGTH = 20;
+    public static int noteLength = 40;
     
     /**
      * Default for note sound to be set to if instrument not recognized.
@@ -86,7 +86,7 @@ public class NoteBar extends SoundObject {
         
         pitch = PITCH_RANGE - ((int) Math.round(y / NOTE_HEIGHT));
         startTick = (int) x;
-        duration = DEFAULT_LENGTH;
+        duration = noteLength;
                 
         int xLocation = (int) x;
         int yLocation = (int) Math.round(y / NOTE_HEIGHT) * NOTE_HEIGHT;
