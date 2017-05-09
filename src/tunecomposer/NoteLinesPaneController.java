@@ -27,6 +27,9 @@ public class NoteLinesPaneController implements Initializable {
      */
     private static final int PITCH_RANGE = 128;
     private static final int BAR_RANGE = 180; 
+    private static final int LABEL_FREQ = 7;
+    private static final int LABEL_RANGE = BAR_RANGE / LABEL_FREQ;
+    
     
     /**
      * Create the array list of note pitch labels.      
@@ -55,10 +58,6 @@ public class NoteLinesPaneController implements Initializable {
     @FXML
     @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
-        TextFlow tf = new TextFlow();
-        tf.setMaxWidth(NOTE_HEIGHT/2);
-        tf.setTextAlignment(TextAlignment.RIGHT);
-
         for (int i = 0; i < PITCH_RANGE; i++) {
             Line staffLine = new Line(0, i * NOTE_HEIGHT, 
                     BAR_RANGE * INITIAL_NOTE_LENGTH, i * NOTE_HEIGHT);
@@ -71,11 +70,19 @@ public class NoteLinesPaneController implements Initializable {
             measureLine.setId("measureLine");
             noteLinesPane.getChildren().add(measureLine);
         }
-        for (int i = 0; i < PITCH_RANGE; i++) {
-            Text pitch = new Text(pitchList.get(i % pitchList.size()));
-            pitch.setId("pitchLabel");
-            tf.getChildren().add(pitch);
+        for (int i = 0; i <= LABEL_RANGE; i++) {
+            TextFlow tf = new TextFlow();
+            tf.setMaxWidth(NOTE_HEIGHT / 2);
+            tf.setTextAlignment(TextAlignment.RIGHT);
+            
+            for (int k = 0; k < PITCH_RANGE; k++) {
+                Text pitch = new Text(pitchList.get(k % pitchList.size()));
+                pitch.setId("pitchLabel");
+                tf.getChildren().add(pitch);
+            }
+            
+            tf.relocate(i * INITIAL_NOTE_LENGTH * LABEL_FREQ, 0);
+            pitchLabels.getChildren().add(tf);
         }
-        pitchLabels.getChildren().add(tf);
-    }    
-}
+    }
+}    
