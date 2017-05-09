@@ -19,7 +19,7 @@ public class NoteLinesPaneController implements Initializable {
      * Set note height to 10 pixels and note length to 100 pixels. 
      */
     private static final int NOTE_HEIGHT = 10; 
-    private static final int INITIAL_NOTE_LENGTH = 100;
+    private static final int INITIAL_NOTE_LENGTH = 80;
     
     /**
      * Set pitch range from 1 to 127 and bar range, 

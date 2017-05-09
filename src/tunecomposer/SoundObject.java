@@ -37,15 +37,15 @@ public abstract class SoundObject {
     public static final int HEIGHT = 10;
     
     /**
-     * Distance between x-coordinates that soundobjects will snap to.
+     * Distance between x-coordinates that sound objects will snap to.
      */
-    public static int snapXDistance = 25;
+    public static int snapXDistance = 20;
     
     /**
     * Sets given values for SoundObject dragging when clicked.
     */
     // 10 shows better selection, though 5 is the indicated value.
-    public final int clickToEditLength = 10; 
+    public final int clickToEditLength = 5; 
     
     /**
     * Boolean value representing the SoundObjects selection state.

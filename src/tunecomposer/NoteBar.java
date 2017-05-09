@@ -41,7 +41,7 @@ public class NoteBar extends SoundObject {
     /**
     * Sets default duration, minimum duration and default click range to edit duration. 
     */
-    private final int DEFAULT_LENGTH = 100;
+    private final int DEFAULT_LENGTH = 20;
     
     /**
      * Default for note sound to be set to if instrument not recognized.
