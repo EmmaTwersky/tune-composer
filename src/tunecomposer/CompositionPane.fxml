@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.*?>
 
 <ScrollPane 
+    fx:id = "scrollPane"
     xmlns:fx = "http://javafx.com/fxml/1" 
     xmlns = "http://javafx.com/javafx/8" 
     prefHeight = "1280.0" 

@@ -5,11 +5,12 @@
  */
 package tunecomposer.actionclasses;
 
+import javafx.geometry.Bounds;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import tunecomposer.ActionManager;
+import tunecomposer.CompositionPaneController;
 import tunecomposer.SoundObjectParser;
-import java.util.ArrayList;
-import tunecomposer.SoundObject;
 
 /**
  *  An action which adds a new chord to the soundObjectPane.
@@ -18,12 +19,17 @@ public class AddSoundAction extends Action{
     
     public final SoundObjectParser parser;
     
-    public AddSoundAction(String soundXML, Pane soundObjectPane, ActionManager actionManager) {
+    public ScrollPane scrollPane;
+    
+    public AddSoundAction(String soundXML, Pane soundObjectPane, ActionManager actionManager, ScrollPane scrollP) {
         
         this.soundObjectPane = soundObjectPane;
         
         parser = new SoundObjectParser(soundXML, soundObjectPane, actionManager);
-       
+        affectedObjs = parser.parseString();
+        
+        scrollPane = scrollP;
+
     }
     
     
@@ -32,8 +38,17 @@ public class AddSoundAction extends Action{
      */
     @Override
     public void execute(){
-        ArrayList<SoundObject> objToAdd = parser.parseString();
-        objToAdd.forEach((sObj) -> {
+        int topLeftX = (int) ((18000)*  scrollPane.getHvalue());
+        int topLeftY = (int) ((1280)* scrollPane.getVvalue());
+        
+        int newX = topLeftX;
+        int newY = topLeftY;
+        
+        System.out.println(newX);
+        System.out.println(newX);
+
+        affectedObjs.forEach((sObj) -> {
+            sObj.move(newX, newY);
             sObj.addToPane(soundObjectPane);
                     });
     }
@@ -43,7 +58,9 @@ public class AddSoundAction extends Action{
      */
     @Override
     public void undo(){
-        
+        affectedObjs.forEach((sObj) -> {
+            sObj.removeFromPane(soundObjectPane);
+        });
     }
     
     /**

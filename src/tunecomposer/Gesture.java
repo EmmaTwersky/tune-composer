@@ -308,7 +308,6 @@ public final class Gesture extends SoundObject{
         //TODO need a method to reset handlers of children to what they would be without this group
     }
     
-    
     /**
      * Method for recursively grabbing all children of this Gesture. 
      * Returns an ArrayList of all children below this object not including self.

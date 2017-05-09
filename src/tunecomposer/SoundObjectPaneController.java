@@ -31,6 +31,8 @@ public class SoundObjectPaneController {
      */
     private ActionManager actionManager;
     
+    public CompositionPaneController compositionPaneController;
+    
     /**
      * Create array of selected NoteBar objects.      
      */
@@ -219,28 +221,53 @@ public class SoundObjectPaneController {
      * Creates a major chord shape and places it on the pane.
      */
     public void makeMajorChord(){
-        System.out.println("EYYYYOOOO MAJOR");
-        AddSoundAction addSoundAction;
+        UnselectAction usAction = new UnselectAction(SELECTED_SOUNDOBJECT_ARRAY);
+        usAction.execute();
         
+        AddSoundAction addSoundAction;
         String majorChord = 
                 "<gesture>"
-                + "<notebar> x:100 y:730 width:100 instrument:88 </notebar>"
-                + "<notebar> x:100 y:690 width:100 instrument:88 </notebar>"
-                + "<notebar> x:100 y:660 width:100 instrument:88 </notebar>"
+                + "<notebar> x:100 y:130 width:100 instrument:88 </notebar>"
+                + "<notebar> x:100 y:90 width:100 instrument:88 </notebar>"
+                + "<notebar> x:100 y:60 width:100 instrument:88 </notebar>"
                 + "</gesture>";
 
-        addSoundAction = new AddSoundAction(majorChord, soundObjectPane, actionManager);
+        addSoundAction = new AddSoundAction(majorChord, soundObjectPane, actionManager, compositionPaneController.scrollPane);
         actionManager.execute(addSoundAction);
         actionManager.putInUndoStack(addSoundAction);
         
         updateSelectedSoundObjectArray();
+        
+        ArrayList<Action> actionList = new ArrayList();
+        actionList.add(usAction);
+        actionList.add(addSoundAction);
     }
      
     /**
      * Creates a major chord shape and places it on the pane.
      */
     public void makeMinorChord(){
-        System.out.println("EYYYYOOOO MINOR");
+        UnselectAction usAction = new UnselectAction(SELECTED_SOUNDOBJECT_ARRAY);
+        usAction.execute();
+        
+        AddSoundAction addSoundAction;
+        
+        String minorChord = 
+                "<gesture> "
+                + "<notebar> x:100 y:130 width:100 instrument:88 </notebar> "
+                + "<notebar> x:100 y:100 width:100 instrument:88 </notebar> "
+                + "<notebar> x:100 y:60 width:100 instrument:88 </notebar> "
+                + "</gesture>";
+
+        addSoundAction = new AddSoundAction(minorChord, soundObjectPane, actionManager, compositionPaneController.scrollPane);
+        actionManager.execute(addSoundAction);
+        actionManager.putInUndoStack(addSoundAction);
+        
+        updateSelectedSoundObjectArray();
+        
+        ArrayList<Action> actionList = new ArrayList();
+        actionList.add(usAction);
+        actionList.add(addSoundAction);
     }
     
     
@@ -255,5 +282,12 @@ public class SoundObjectPaneController {
             throw new NullPointerException();
         }
         actionManager = manager;
+    }
+    
+    public void setCompositionPaneController(CompositionPaneController controller) throws NullPointerException{
+        if (controller == null) {
+            throw new NullPointerException();
+        }
+        compositionPaneController = controller;
     }
 }

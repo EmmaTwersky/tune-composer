@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -33,6 +34,9 @@ public class CompositionPaneController implements Initializable {
      */
     @FXML
     public Pane soundObjectPane;
+    
+    @FXML
+    public ScrollPane scrollPane;
     
     /**
      * Controller for pane that holds all SoundObject visuals.
@@ -91,6 +95,7 @@ public class CompositionPaneController implements Initializable {
         tunePlayerObj = new TunePlayer();
         actionManager = new ActionManager();
         soundObjectPaneController.setActionManager(actionManager);
+        soundObjectPaneController.setCompositionPaneController(this);
     }   
     
     /**
