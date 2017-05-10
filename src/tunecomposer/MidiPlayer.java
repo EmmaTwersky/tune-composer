@@ -100,9 +100,8 @@ public class MidiPlayer {
      * Plays all the Midi events in all the tracks of this composition
      * immediately.
      */
-    public void play()
-    {
-        // This next line should be unnecessary, but seems to be needed.
+    public void play(long startTick) {
+        sequencer.setTickPosition(startTick);
         sequencer.setTempoInBPM(beatsPerMinute);
         sequencer.start();
     }
@@ -136,7 +135,7 @@ public class MidiPlayer {
         }
     }
     
-    public void changeBMP(int beatsPerMinute) {
+    public void changeBPM(int beatsPerMinute) {
         this.beatsPerMinute = beatsPerMinute;
     }
 }

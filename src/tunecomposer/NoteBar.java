@@ -19,11 +19,10 @@ public final class NoteBar extends SoundObject {
      * Create variables for the note name, instrument number, channel number,
      * pitch, starting value, and duration. 
      */
-    public final String name;
-    private final int instrument;
-    public final int channel;
+    public String name;
+    private int instrument;
+    public int channel;
     private int pitch;
-    private int startTick;
     private int duration;
 
     /**
@@ -78,6 +77,7 @@ public final class NoteBar extends SoundObject {
      */
     public NoteBar(double x, double y, ActionManager _actionManager, Pane soundObjectPane){
         
+
         name = InstrumentToolBarController.selectedInstrument;
         instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
@@ -192,6 +192,17 @@ public final class NoteBar extends SoundObject {
     public int getInstrument() {
         return instrument;
     }
+    
+    /**
+     * Changes instrument.
+     */
+    @Override
+    public void changeInstrument(String instrument) {
+        name = instrument;
+        this.instrument = instrumentInfo.getInstrumentValue(name);
+        channel = instrumentInfo.getInstrumentChannel(name);
+        visualRectangle.setId(name);
+    }
 
     /**
      * Returns pitch.
@@ -199,15 +210,6 @@ public final class NoteBar extends SoundObject {
      */
     public int getPitch() {
         return pitch;
-    }
-
-    /**
-     * Returns startTick.
-     * 
-     * @return the startTick
-     */
-    public int getStartTick() {
-        return startTick;
     }
 
     /**
@@ -508,9 +510,9 @@ public final class NoteBar extends SoundObject {
                 draggingLength = false;
             }
             
-            actionManager.putInUndoStack(actionList);
-            
             SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
+            
+            actionManager.putInUndoStack(actionList);
             
             event.consume();
         }

@@ -1,5 +1,6 @@
 package tunecomposer;
 
+import java.util.List;
 import java.util.Observable;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -35,10 +36,12 @@ public class RedBarPaneController extends Observable implements Initializable{
      */
     public static double milliPerMin = 60000;
     
+    private int compositionStart;
+    
     /**
      * Initializes end of notes to time 0.
      */
-    private int compositionEnd = 0;
+    private int compositionEnd;
     
     /**
      * Creates RED_BAR object on given pane and initializes timeline.
@@ -58,18 +61,20 @@ public class RedBarPaneController extends Observable implements Initializable{
      * disappears at end of last note displayed.
      * Notify Observer (Application Controller) that change has been made.
      * 
-     * @param soundObjectPane pane where all SoundObject visuals live.
+     * @param playNotes notes that redBar should play over.
+     * @param startTick start tick of first note play should begin on.
      */
-    public void playAnimation(Pane soundObjectPane) {
+    public void playAnimation(List<Node> playNotes, long startTick) {
         timeline.stop();
         timeline.getKeyFrames().clear();
-        RED_BAR.setX(0);
+        RED_BAR.setX(startTick);
+        compositionStart = (int) startTick;
         RED_BAR.setVisible(true);
         
-        findEndCoordinate(soundObjectPane);
+        findEndCoordinate(playNotes);
         
         KeyValue kv = new KeyValue(RED_BAR.xProperty(), compositionEnd);
-        Duration duration = Duration.millis((((double) compositionEnd / 
+        Duration duration = Duration.millis((((double) (compositionEnd - compositionStart) / 
                 (double) TunePlayer.RESOLUTION) / (double) TunePlayer.beatsPerMinute) * milliPerMin);
 
                 
@@ -101,9 +106,9 @@ public class RedBarPaneController extends Observable implements Initializable{
      * 
      * @param soundObjectPane the pane of the SoundObjects
      */
-    private void findEndCoordinate(Pane soundObjectPane) {
+    private void findEndCoordinate(List<Node> playNotes) {
         compositionEnd = 0;
-        for (Node sObj : soundObjectPane.getChildren()) {
+        for (Node sObj : playNotes) {
             Rectangle r = (Rectangle) sObj;
             int end = (int) (r.getX() + r.getWidth());
             if (end > compositionEnd)

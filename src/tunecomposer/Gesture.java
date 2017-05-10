@@ -23,6 +23,9 @@ public final class Gesture extends SoundObject{
     public double bottomX;
     public double bottomY;
 
+    
+    
+    
     /**
     * An ArrayList of the SoundObjects contained within the Gesture.
     */
@@ -73,6 +76,7 @@ public final class Gesture extends SoundObject{
         this.setTopGesture();
         
         refreshVisualRectangle();
+        startTick = (int) visualRectangle.getX();
         
         select();
     }
@@ -88,6 +92,7 @@ public final class Gesture extends SoundObject{
         visualRectangle.setY(topY);
         visualRectangle.setWidth(width);
         visualRectangle.setHeight(height);
+        startTick = (int) visualRectangle.getX();
     }
     
     /**
@@ -154,6 +159,16 @@ public final class Gesture extends SoundObject{
     public void toggleSelection(){
         this.containedSoundObjects.forEach((note) -> {
             note.toggleSelection();
+        });
+    }
+
+    /**
+     * Change the instrument.
+     */
+    @Override
+    public void changeInstrument(String instrument){
+        this.containedSoundObjects.forEach((note) -> {
+            note.changeInstrument(instrument);
         });
     }
     

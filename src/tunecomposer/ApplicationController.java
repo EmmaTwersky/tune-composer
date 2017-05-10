@@ -77,6 +77,11 @@ public class ApplicationController implements Initializable {
     @FXML
     private MenuItem PlayMenuItem;
     /**
+     * Play Selected Menu Button, available to be enabled or disabled.
+     */
+    @FXML
+    private MenuItem PlaySelectedMenuItem;
+    /**
      * Stop Menu Button, available to be enabled or disabled.
      */
     @FXML
@@ -152,7 +157,7 @@ public class ApplicationController implements Initializable {
         
         compositionPaneController.setActionManager(actionManager);
         
-        Pane sObjPane = compositionPaneController. soundObjectPaneController.soundObjectPane;
+        Pane sObjPane = compositionPaneController.soundObjectPane;
         fileManager = new FileManager(sObjPane, actionManager);
         TuneComposer.setAppController(this);
 
@@ -325,6 +330,55 @@ public class ApplicationController implements Initializable {
         compositionPaneController.ungroup();
     }
     
+    @FXML
+    protected void handlePianoMenuItemAction(ActionEvent event) {
+        changeInstrument("Piano");
+    }
+    
+    @FXML
+    protected void handleHarpsichordMenuItemAction(ActionEvent event) {
+        changeInstrument("Harpsichord");
+    }
+    
+    @FXML
+    protected void handleMarimbaMenuItemAction(ActionEvent event) {
+        changeInstrument("Marimba");
+    }
+    
+    @FXML
+    protected void handleOrganMenuItemAction(ActionEvent event) {
+        changeInstrument("Organ");
+    }
+    
+    @FXML
+    protected void handleAccordianMenuItemAction(ActionEvent event) {
+        changeInstrument("Accordian");
+    }
+    
+    @FXML
+    protected void handleGuitarMenuItemAction(ActionEvent event) {
+        changeInstrument("Guitar");
+    }
+    
+    @FXML
+    protected void handleViolinMenuItemAction(ActionEvent event) {
+        changeInstrument("Violin");
+    }
+    
+    @FXML
+    protected void handleFrenchHornMenuItemAction(ActionEvent event) {
+        changeInstrument("FrenchHorn");
+    }
+    
+    @FXML
+    protected void handleBassMenuItemAction(ActionEvent event) {
+        changeInstrument("Bass");
+    }
+    
+    protected void changeInstrument(String instrumentName) {
+        compositionPaneController.changeInstrument(instrumentName);
+    }
+    
     /**
      * Handles the Major chord menu item selection.
      * 
@@ -395,6 +449,17 @@ public class ApplicationController implements Initializable {
     
     
     /**
+     * Handles the Play Selected menu item selection.
+     * 
+     * @param event the menu selection event
+     */
+    @FXML 
+    protected void handlePlaySelectedMenuItemAction(ActionEvent event) {
+        compositionPaneController.playSelected();
+        StopMenuItem.setDisable(false);
+    }
+    
+    /**
      * Handles the Stop menu item selection.
      * 
      * @param event the button click event
@@ -403,14 +468,17 @@ public class ApplicationController implements Initializable {
     protected void handleStopMenuItemAction(ActionEvent event) {
         compositionPaneController.stop();
         PlayMenuItem.setDisable(false);
+        PlaySelectedMenuItem.setDisable(false);
         StopMenuItem.setDisable(true);
     }
     
     @FXML
     protected void handleTempoMenuItemAction(ActionEvent event) {
-        TextInputDialog dialog = new TextInputDialog("80");
+        TextInputDialog dialog = new TextInputDialog("240");
         dialog.setTitle("Change Tempo");
-        dialog.setHeaderText("Please enter a new tempo (60-120):");
+        dialog.setHeaderText("Please enter a new tempo in beats per minute, BPM:");
+        dialog.setContentText("120 (Largo) - 500 (Presto)");
+        dialog.setGraphic(null);
 
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()){
@@ -429,6 +497,7 @@ public class ApplicationController implements Initializable {
         RedoMenuItem.setDisable(on);
         SelAllMenuItem.setDisable(on);
         PlayMenuItem.setDisable(on);
+        PlaySelectedMenuItem.setDisable(on);
         CopyMenuItem.setDisable(on);
         CutMenuItem.setDisable(on);
         DeleteMenuItem.setDisable(on);
@@ -495,7 +564,7 @@ public class ApplicationController implements Initializable {
             selItems = SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY;
             
             allSoundObjects = compositionPaneController.
-                    soundObjectPaneController.soundObjectPane.getChildren();
+                    soundObjectPane.getChildren();
                         
             toggleMenuItemDisable(false);
             
@@ -508,6 +577,7 @@ public class ApplicationController implements Initializable {
             checkDisableGroup();
             checkDisableUngroup();
             checkDisablePlay();
+            checkDisablePlaySelected();
             checkDisableDelete();
             checkDisableStop();
             checkDisableSave();
@@ -573,7 +643,7 @@ public class ApplicationController implements Initializable {
             }
             
             SoundObjectParser parser = new SoundObjectParser(clipboardStr, compositionPaneController.
-                    soundObjectPaneController.soundObjectPane, actionManager);
+                    soundObjectPane, actionManager);
             
             if (parser.isParsable()) {
                 PasteMenuItem.setDisable(false);
@@ -633,6 +703,16 @@ public class ApplicationController implements Initializable {
         private void checkDisablePlay(){
             if (allSoundObjects.isEmpty()){
                 PlayMenuItem.setDisable(true);
+            }
+        }
+        
+        /**
+         * Disables "Play Selected" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisablePlaySelected(){
+            if (selItems.isEmpty()){
+                PlaySelectedMenuItem.setDisable(true);
             }
         }
         

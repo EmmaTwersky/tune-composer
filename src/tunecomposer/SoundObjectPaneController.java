@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.ChangeInstrumentAction;
 import tunecomposer.actionclasses.AddSoundAction;
 import tunecomposer.actionclasses.CopyAction;
 import tunecomposer.actionclasses.CutAction;
@@ -178,7 +179,6 @@ public class SoundObjectPaneController {
      * Deletes the selected SoundObjects from the CompositionPane.
      */
     public void delete() {
-        
         ArrayList<Action> deletions = new ArrayList();
         
         DeleteAction deleteAction;
@@ -221,6 +221,24 @@ public class SoundObjectPaneController {
     }
     
     /**
+     * Changes instrument of sound objects.
+     * @param instrumentName
+     */
+    public void changeInstrument(String instrumentName) {
+        ArrayList<Action> changes = new ArrayList();
+        
+        ChangeInstrumentAction changeInstrumentAction;
+        changeInstrumentAction = new ChangeInstrumentAction(instrumentName, 
+                SELECTED_SOUNDOBJECT_ARRAY, soundObjectPane);
+
+        changeInstrumentAction.execute();
+        changes.add(changeInstrumentAction);
+        
+        updateSelectedSoundObjectArray();
+        actionManager.putInUndoStack(changes);
+    }
+    
+    /**
      * Creates a chord of the specified type.
      * 
      * @param chordType type of chord:
@@ -239,6 +257,7 @@ public class SoundObjectPaneController {
         NoteBar note3 = new NoteBar(100 + shiftX, noteData.get(2) + shiftY, 80, 5, actionManager, soundObjectPane);
         
         ArrayList<SoundObject> notes = new ArrayList<>(Arrays.asList(note1, note2, note3));
+        
         for (SoundObject note : notes){
             note.visualRectangle.setUserData(note);
         }
