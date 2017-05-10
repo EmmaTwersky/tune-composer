@@ -30,7 +30,7 @@ public class AddSoundAction extends Action{
         scrollPane = scrollP;
 
     }
-    
+     
     
     /**
      * Adds the chord to the soundObjectPane.
