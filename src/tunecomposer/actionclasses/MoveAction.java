@@ -79,21 +79,21 @@ public class MoveAction extends Action {
      * positions, then implemented to each selectObj in the array. Call
      * this method to move affectedObjs without creating a new action; dragging.
      * 
-     * @param mouseX x location of mouse click
-     * @param mouseY y location of mouse click
+     * @param incX increment to move x coordinate by
+     * @param incY increment to move y coordinate by
      */
-    public void move(double mouseX, double mouseY) {
+    public void move(double incX, double incY) {
         lockMove = false;
         
         affectedObjs.forEach((sObj) -> {
-            if (sObj.isOnEdge(mouseX,mouseY)){
+            if (sObj.isOnEdge(incX,incY)){
                 lockMove = true;
             }
         });
         
         if (!lockMove){
             affectedObjs.forEach((sObj) -> {
-                sObj.move(mouseX, mouseY);
+                sObj.move(incX, incY);
             });
         }
     }

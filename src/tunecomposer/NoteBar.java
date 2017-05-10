@@ -245,7 +245,8 @@ public class NoteBar extends SoundObject {
     
     
     /**
-     * Moves note freely on pane.
+     * Moves note on pane by given increments.
+     * Keeps note's pitch and startTick up to date with current position.
      * @param xInc the increment to change current x value by
      * @param yInc the increment to change current y value by
      */
@@ -308,7 +309,7 @@ public class NoteBar extends SoundObject {
 
     /**
      * Fixes note to sit in-between staff lines.
-     * 
+     * Also updates the note's pitch to match the movement.
      * Precondition: the note has just been moved.
      * Postcondition: the notes location is fixed to sit in between staff lines.
      */
@@ -328,7 +329,9 @@ public class NoteBar extends SoundObject {
     }
     
     /**
-     * Snaps the note to the nearest x-coordinate using snapXDistance.
+     * Snaps the note to the nearest x-coordinate using snapXDistance as the
+     * distance to snap to.
+     * Updates the startTick of the note.
      * 
      */
     @Override
@@ -430,16 +433,18 @@ public class NoteBar extends SoundObject {
         public void handle(MouseEvent event) {
             CompositionPaneController.tunePlayerObj.stop();
             
+            //used for dragging note length
             latestX = event.getX();
             latestY = event.getY();
+            //used for dragging note
             
+            lastXShiftMouseLoc = event.getX();
+            lastYShiftMouseLoc = event.getY();
 
             actionList = new ArrayList();
             
             prepareSelectionAction(event.isControlDown());
             
-            lastXShiftMouseLoc = event.getX();
-            lastYShiftMouseLoc = event.getY();
             prepareMoveOrStretchAction();
             SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
         }
