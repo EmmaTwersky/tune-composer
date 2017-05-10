@@ -121,24 +121,66 @@
                             onAction = "#handleUngroupMenuItemAction"  
                             accelerator = "Shortcut + SHIFT + G" >
                         </MenuItem>
+                        <SeparatorMenuItem>
+                        </SeparatorMenuItem>
+                        <Menu text = "Change Instrument" >
+                            <items>
+                                <MenuItem 
+                                    text = "Piano" 
+                                    onAction = "#handlePianoMenuItemAction">
+                                </MenuItem>
+                                <MenuItem 
+                                    text = "Harpsichord" 
+                                    onAction = "#handleHarpsichordMenuItemAction">
+                                </MenuItem>
+                                <MenuItem 
+                                    text = "Marimba" 
+                                    onAction = "#handleMarimbaMenuItemAction">
+                                </MenuItem>
+                                <MenuItem 
+                                    text = "Organ" 
+                                    onAction = "#handleOrganMenuItemAction">
+                                </MenuItem>
+                                <MenuItem 
+                                    text = "Accordian" 
+                                    onAction = "#handleAccordianMenuItemAction">
+                                </MenuItem>
+                                <MenuItem 
+                                    text = "Guitar" 
+                                    onAction = "#handleGuitarMenuItemAction">
+                                </MenuItem>
+                                <MenuItem 
+                                    text = "Violin" 
+                                    onAction = "#handleViolinMenuItemAction">
+                                </MenuItem>
+                                <MenuItem 
+                                    text = "French Horn" 
+                                    onAction = "#handleFrenchHornMenuItemAction">
+                                </MenuItem>
+                                <MenuItem 
+                                    text = "Bass" 
+                                    onAction = "#handleBassMenuItemAction">
+                                </MenuItem>
+                            </items>
+                        </Menu>
                     </items>
                 </Menu>
                 <Menu text = "Insert" >
                     <items>
                         <Menu text = "Chords" >
-                    <items>
-                        <MenuItem 
-                            fx:id = "MajorChordMenuItem"
-                            text = "Major" 
-                            onAction = "#handleMajorChordMenuItemAction">
-                        </MenuItem>
-                        <MenuItem
-                            fx:id = "MinorChordMenuItem"
-                            text = "Minor" 
-                            onAction = "#handleMinorChordMenuItemAction">
-                        </MenuItem>
-                    </items>
-                </Menu>
+                            <items>
+                                <MenuItem 
+                                    fx:id = "MajorChordMenuItem"
+                                    text = "Major" 
+                                    onAction = "#handleMajorChordMenuItemAction">
+                                </MenuItem>
+                                <MenuItem
+                                    fx:id = "MinorChordMenuItem"
+                                    text = "Minor" 
+                                    onAction = "#handleMinorChordMenuItemAction">
+                                </MenuItem>
+                            </items>
+                        </Menu>
                     </items>
                 </Menu>
                 <Menu text = "Actions" >

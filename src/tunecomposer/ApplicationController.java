@@ -330,6 +330,55 @@ public class ApplicationController implements Initializable {
         compositionPaneController.ungroup();
     }
     
+    @FXML
+    protected void handlePianoMenuItemAction(ActionEvent event) {
+        changeInstrument("Piano");
+    }
+    
+    @FXML
+    protected void handleHarpsichordMenuItemAction(ActionEvent event) {
+        changeInstrument("Harpsichord");
+    }
+    
+    @FXML
+    protected void handleMarimbaMenuItemAction(ActionEvent event) {
+        changeInstrument("Marimba");
+    }
+    
+    @FXML
+    protected void handleOrganMenuItemAction(ActionEvent event) {
+        changeInstrument("Organ");
+    }
+    
+    @FXML
+    protected void handleAccordianMenuItemAction(ActionEvent event) {
+        changeInstrument("Accordian");
+    }
+    
+    @FXML
+    protected void handleGuitarMenuItemAction(ActionEvent event) {
+        changeInstrument("Guitar");
+    }
+    
+    @FXML
+    protected void handleViolinMenuItemAction(ActionEvent event) {
+        changeInstrument("Violin");
+    }
+    
+    @FXML
+    protected void handleFrenchHornMenuItemAction(ActionEvent event) {
+        changeInstrument("FrenchHorn");
+    }
+    
+    @FXML
+    protected void handleBassMenuItemAction(ActionEvent event) {
+        changeInstrument("Bass");
+    }
+    
+    protected void changeInstrument(String instrumentName) {
+        compositionPaneController.changeInstrument(instrumentName);
+    }
+    
     /**
      * Handles the Major chord menu item selection.
      * 
@@ -389,7 +438,9 @@ public class ApplicationController implements Initializable {
     protected void handleTempoMenuItemAction(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog("80");
         dialog.setTitle("Change Tempo");
-        dialog.setHeaderText("Please enter a new tempo (60-120):");
+        dialog.setHeaderText("Please enter a new tempo in beats per minute, BPM:");
+        dialog.setContentText("60 (Largo) - 250 (Presto)");
+        dialog.setGraphic(null);
 
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()){

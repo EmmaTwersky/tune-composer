@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.Action;
+import tunecomposer.actionclasses.ChangeInstrumentAction;
 import tunecomposer.actionclasses.CopyAction;
 import tunecomposer.actionclasses.CutAction;
 import tunecomposer.actionclasses.DeleteAction;
@@ -172,7 +173,6 @@ public class SoundObjectPaneController {
      * Deletes the selected SoundObjects from the CompositionPane.
      */
     public void delete() {
-        
         ArrayList<Action> deletions = new ArrayList();
         
         DeleteAction deleteAction;
@@ -212,6 +212,24 @@ public class SoundObjectPaneController {
         actionManager.execute(actions);
         updateSelectedSoundObjectArray();
         actionManager.putInUndoStack(actions);
+    }
+    
+    /**
+     * Changes instrument of sound objects.
+     * @param instrumentName
+     */
+    public void changeInstrument(String instrumentName) {
+        ArrayList<Action> changes = new ArrayList();
+        
+        ChangeInstrumentAction changeInstrumentAction;
+        changeInstrumentAction = new ChangeInstrumentAction(instrumentName, 
+                SELECTED_SOUNDOBJECT_ARRAY, soundObjectPane);
+
+        changeInstrumentAction.execute();
+        changes.add(changeInstrumentAction);
+        
+        updateSelectedSoundObjectArray();
+        actionManager.putInUndoStack(changes);
     }
     
     /**

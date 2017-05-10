@@ -191,7 +191,16 @@ public class CompositionPaneController implements Initializable {
     public void ungroup() {
         stop();
         soundObjectPaneController.ungroup();
-    }   
+    } 
+    
+    /**
+     * Changes instrument of sound objects.
+     * @param instrumentName
+     */
+    public void changeInstrument(String instrumentName) {
+        stop();
+        soundObjectPaneController.changeInstrument(instrumentName);
+    }
        
     /**
      * Overwrites selectedObjs and unselectedObjs into their respective actions
