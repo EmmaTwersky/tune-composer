@@ -33,7 +33,7 @@ public class RedBarPaneController extends Observable implements Initializable{
     /**
      * Sets frame rate, AKA animation speed, to 10.
      */
-    private static final int FRAME_RATE = 10;
+    public static double milliPerMin = 60000;
     
     /**
      * Initializes end of notes to time 0.
@@ -69,7 +69,9 @@ public class RedBarPaneController extends Observable implements Initializable{
         findEndCoordinate(soundObjectPane);
         
         KeyValue kv = new KeyValue(RED_BAR.xProperty(), compositionEnd);
-        Duration duration = Duration.millis(compositionEnd * FRAME_RATE);
+        Duration duration = Duration.millis((((double) compositionEnd / 
+                (double) TunePlayer.RESOLUTION) / (double) TunePlayer.beatsPerMinute) * milliPerMin);
+
                 
         EventHandler onFinished = (EventHandler<ActionEvent>) (ActionEvent event) -> {
             setChanged();

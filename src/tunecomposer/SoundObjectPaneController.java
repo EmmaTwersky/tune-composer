@@ -131,13 +131,13 @@ public class SoundObjectPaneController {
         Action a = lastActions.get(0);
         if (a instanceof PasteAction) {
             PasteAction oldPaste = (PasteAction) a;
-            int lastOffset = oldPaste.getOffset();
-            lastOffset += 10;
-            pasteAction.setOffset(lastOffset);
+            int lastYOffset = oldPaste.getOffset();
+            lastYOffset += 10;
+            pasteAction.setOffset(lastYOffset);
         }
         else if (a instanceof CopyAction) {
-            int OFFSET = 10;
-            pasteAction.setOffset(OFFSET);
+            int yOffset = 10;
+            pasteAction.setOffset(yOffset);
         }
         
         ArrayList<Action> actions = new ArrayList();

@@ -13,12 +13,12 @@ public class TunePlayer {
      * One midi player is used throughout, so that it can be stopped.
      * Set resolution to 100 and beats per minute to 60.
      */
-    private static final int RESOLUTION = 100;
-    private static final int BEATS_PER_MINUTE = 60;
+    public static final int RESOLUTION = 20;
+    public static int beatsPerMinute = 120;
     private final MidiPlayer player;
     
     TunePlayer() {
-        this.player = new MidiPlayer(RESOLUTION, BEATS_PER_MINUTE);
+        this.player = new MidiPlayer(RESOLUTION, beatsPerMinute);
     }
     
     /**
@@ -27,6 +27,7 @@ public class TunePlayer {
      * @param soundObjectPane pane the SoundObjects are kept in
      */
     protected void play(Pane soundObjectPane) {
+        updateBMP();
         playSequence(soundObjectPane);
     }
     
@@ -61,5 +62,9 @@ public class TunePlayer {
     public void stop() {
         player.stop();
         player.clear();
+    }
+    
+    private void updateBMP() {
+        player.changeBMP(beatsPerMinute);
     }
 }
