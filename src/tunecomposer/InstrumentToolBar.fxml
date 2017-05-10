@@ -24,114 +24,136 @@
     stylesheets = "@TuneComposer.css" 
     styleClass = "instrumentToolBar" >
     <items>
+        <Label  
+            text = "Note Length:"
+            styleClass = "Label" 
+            layoutX = "20.0" 
+            layoutY = "20.0"/>
+        <Slider 
+            fx:id = "noteLength" 
+            blockIncrement = "0.0"
+            layoutX = "20.0" 
+            layoutY = "40.0" 
+            majorTickUnit = "10.0" 
+            value = "40.0"
+            min = "10.0"
+            max = "80.0" 
+            minorTickCount = "0" 
+            showTickLabels = "false" 
+            showTickMarks = "true" 
+            snapToTicks = "true" />
         <fx:define>
             <ToggleGroup
                 fx:id = "instrumentSelection" />
-      </fx:define>
-      <RadioButton 
+        </fx:define>
+        <RadioButton 
             fx:id = "Piano" 
             toggleGroup = "$instrumentSelection"
             onAction = "#handleInstrumentMenuAction" 
             text = "Piano"
             styleClass = "Piano" 
-            selected = "true"
-            userData = "0" >
+            selected = "true" >
             <padding>
                <Insets 
                    top = "20" 
                    left = "15" />
             </padding>
-      </RadioButton>
-      <RadioButton 
+        </RadioButton>
+        <RadioButton 
             fx:id = "Harpsichord" 
             toggleGroup = "$instrumentSelection"
             onAction = "#handleInstrumentMenuAction" 
             text = "Harpsichord"
-            styleClass = "Harpsichord" 
-            userData = "7" >
+            styleClass = "Harpsichord" >
             <padding>
                 <Insets 
                     top = "30" 
                     left = "15" />
             </padding>
-      </RadioButton>
-      <RadioButton 
+        </RadioButton>
+        <RadioButton 
             fx:id = "Marimba" 
             toggleGroup = "$instrumentSelection"
             onAction = "#handleInstrumentMenuAction" 
             text = "Marimba"
-            styleClass = "Marimba" 
-            userData = "13" >
+            styleClass = "Marimba" >
             <padding>
                <Insets 
                    top = "30" 
                    left = "15" />
             </padding>
-      </RadioButton>
-      <RadioButton 
+        </RadioButton>
+        <RadioButton 
             fx:id = "Organ" 
             toggleGroup = "$instrumentSelection"
             onAction = "#handleInstrumentMenuAction" 
             text = "Organ"
-            styleClass = "Organ" 
-            userData = "17" >
+            styleClass = "Organ" >
             <padding>
                <Insets 
                    top = "30" 
                    left = "15" />
             </padding>
-      </RadioButton>
-      <RadioButton 
+        </RadioButton>
+        <RadioButton 
             fx:id = "Accordion" 
             toggleGroup = "$instrumentSelection"
             onAction = "#handleInstrumentMenuAction"  
             text = "Accordion"
-            styleClass = "Accordion" 
-            userData = "22" >
+            styleClass = "Accordion" >
             <padding>
                <Insets 
                    top = "30" 
                    left = "15" />
             </padding>
-      </RadioButton>
-      <RadioButton 
+        </RadioButton>
+        <RadioButton 
             fx:id = "Guitar" 
             toggleGroup = "$instrumentSelection"
             onAction = "#handleInstrumentMenuAction" 
             text = "Guitar"
-            styleClass = "Guitar" 
-            userData = "25" >
+            styleClass = "Guitar" >
             <padding>
                <Insets 
                    top = "30" 
                    left = "15" />
             </padding>
-      </RadioButton>
-      <RadioButton 
+        </RadioButton>
+        <RadioButton 
             fx:id = "Violin" 
             toggleGroup = "$instrumentSelection"
             onAction = "#handleInstrumentMenuAction" 
             text = "Violin"
-            styleClass = "Violin" 
-            userData = "41" >
+            styleClass = "Violin" >
             <padding>
                <Insets 
                    top = "30" 
                    left = "15" />
             </padding>
-      </RadioButton>
-      <RadioButton 
+        </RadioButton>
+        <RadioButton 
             fx:id = "FrenchHorn" 
             toggleGroup = "$instrumentSelection"
             onAction = "#handleInstrumentMenuAction"  
             text = "French Horn"
-            styleClass = "FrenchHorn" 
-            userData = "61" >
+            styleClass = "FrenchHorn" >
             <padding>
                <Insets 
                    top = "30" 
                    left = "15" />
             </padding>
-      </RadioButton>
+        </RadioButton>
+        <RadioButton 
+            fx:id = "Bass" 
+            toggleGroup = "$instrumentSelection"
+            onAction = "#handleInstrumentMenuAction" 
+            text = "Bass"
+            styleClass = "Piano" >
+            <padding>
+               <Insets 
+                   top = "30" 
+                   left = "15" />
+            </padding>
+        </RadioButton>
     </items>
 </ToolBar>

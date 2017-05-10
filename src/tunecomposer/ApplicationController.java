@@ -150,7 +150,7 @@ public class ApplicationController implements Initializable {
         
         Pane sObjPane = compositionPaneController. soundObjectPaneController.soundObjectPane;
         fileManager = new FileManager(sObjPane, actionManager);
-        TuneComposer.setFileManager(fileManager);
+        TuneComposer.setAppController(this);
 
         fileManager.addObserver(appObserver);
     }   
@@ -200,7 +200,16 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleExitMenuItemAction(ActionEvent event) {
-        fileManager.promptToExit();
+        close();
+        event.consume();
+    }
+    
+    public boolean close() {
+        boolean exit = fileManager.promptToExit();
+        if (exit){
+            System.exit(0);
+        }
+        return false;
     }
     
     /**
@@ -608,7 +617,6 @@ public class ApplicationController implements Initializable {
             if (allSoundObjects.isEmpty()){
                 NewMenuItem.setDisable(true);
             }
-        }
-        
+        }  
     }
 }

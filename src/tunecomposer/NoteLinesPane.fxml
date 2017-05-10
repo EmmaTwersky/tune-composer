@@ -15,7 +15,5 @@
     fx:controller = "tunecomposer.NoteLinesPaneController" > 
     <Pane 
         fx:id = "pitchLabels"
-        prefWidth = "5.0"
-        AnchorPane.leftAnchor = "0.0" 
     />
 </AnchorPane>

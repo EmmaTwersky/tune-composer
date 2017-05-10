@@ -16,8 +16,9 @@
     -fx-stroke: derive(black, 45%);
 }
 
-#pitchLabel{
+#label{
     -fx-fill: derive(black, 90%);
+    -fx-font-fill: derive(black, 90%);
     -fx-font-family: 'Trebuchet MS', Helvetica, Sans-Serif;
     -fx-font-weight: Bold;
     -fx-font-size: 8.615px;

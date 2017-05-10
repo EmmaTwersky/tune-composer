@@ -260,10 +260,8 @@ public class FileManager extends Observable {
         
         alert.getButtonTypes().setAll(save, cancel, dontSave);
         
-        
         Optional<ButtonType> result = alert.showAndWait();
-        
-        
+                
         if (result.get() == save){
             if (hasSavedAs()){
                 save();
@@ -343,12 +341,11 @@ public class FileManager extends Observable {
         return lastSaveAction;
     }
     
-    public void promptToExit(){
+    public boolean promptToExit(){
         if (hasUnsavedChanges()){
-            if(promptToSave()){
-                System.exit(0);
-            }
+            return promptToSave();
         }
+        return true; //true if we want to exit
     }
     
 }

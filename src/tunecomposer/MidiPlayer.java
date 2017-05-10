@@ -9,7 +9,7 @@ import javax.sound.midi.*;
  * @since September 6, 2016 
  */
 public class MidiPlayer {
-    private static final int NUM_TRACKS = 8;
+    private static final int NUM_TRACKS = 15;
 
     /** The sequencer that stores Midi events and plays them when requested. */
     private Sequencer sequencer;
