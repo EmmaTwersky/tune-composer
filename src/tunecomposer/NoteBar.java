@@ -23,7 +23,6 @@ public final class NoteBar extends SoundObject {
     private final int instrument;
     public final int channel;
     private int pitch;
-    private int startTick;
     private int duration;
 
     /**
@@ -199,15 +198,6 @@ public final class NoteBar extends SoundObject {
      */
     public int getPitch() {
         return pitch;
-    }
-
-    /**
-     * Returns startTick.
-     * 
-     * @return the startTick
-     */
-    public int getStartTick() {
-        return startTick;
     }
 
     /**

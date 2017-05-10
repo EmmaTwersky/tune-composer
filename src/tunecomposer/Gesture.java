@@ -23,6 +23,9 @@ public final class Gesture extends SoundObject{
     public double bottomX;
     public double bottomY;
 
+    
+    
+    
     /**
     * An ArrayList of the SoundObjects contained within the Gesture.
     */
@@ -71,6 +74,7 @@ public final class Gesture extends SoundObject{
         this.soundObjectPane = soundObjectPane;
         
         refreshVisualRectangle();
+        startTick = (int) visualRectangle.getX();
         
         select();
     }
@@ -86,6 +90,7 @@ public final class Gesture extends SoundObject{
         visualRectangle.setY(topY);
         visualRectangle.setWidth(width);
         visualRectangle.setHeight(height);
+        startTick = (int) visualRectangle.getX();
     }
     
     /**

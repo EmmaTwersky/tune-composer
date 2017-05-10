@@ -1,6 +1,7 @@
 package tunecomposer;
 
-import javafx.scene.layout.Pane;
+import java.util.List;
+import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -21,38 +22,33 @@ public class TunePlayer {
         this.player = new MidiPlayer(RESOLUTION, BEATS_PER_MINUTE);
     }
     
-    /**
-     * Plays the SoundObjects on the given pane.
-     * 
-     * @param soundObjectPane pane the SoundObjects are kept in
-     */
-    protected void play(Pane soundObjectPane) {
-        playSequence(soundObjectPane);
-    }
     
     /**
      * Plays the MidiPLayer.
      * Each time playSequence is called the current sequence clears, all SoundObjects 
      * in given pane are added to the player, and player starts from the beginning.
      * 
-     * @param soundObjectPane pane that contains the SoundObjects
+     * @param soundObjsToPlay pane that contains the SoundObjects
      */
-    protected void playSequence(Pane soundObjectPane) {
+    public void play(List<Node> soundObjsToPlay, long startTick) {
+//        updateBPM();
         player.stop();
         player.clear();
-        populateMidiPlayer(soundObjectPane);
-        player.play();
+        populateMidiPlayer(soundObjsToPlay);
+        player.play(startTick);
     }
     
     /**
-     * Adds all NoteBar objects in musicNotesArray to MidiPlayer.
+     * Adds given, all or selected, NoteBar objects to MidiPlayer.
+     * 
+     * @param soundObjsToPlay
      */
-    private void populateMidiPlayer(Pane soundObjectPane) {
-        soundObjectPane.getChildren().forEach((sObj) -> {
+    private void populateMidiPlayer(List<Node> soundObjsToPlay) {
+        for (Node sObj: soundObjsToPlay){
             Rectangle r = (Rectangle) sObj;
             SoundObject s = (SoundObject) r.getUserData();
             s.addToMidiPlayer(player);
-        });
+        }
     }
     
     /**

@@ -42,6 +42,11 @@ public abstract class SoundObject {
     public static int snapXDistance = 20;
     
     /**
+     * Location of the start of the sound object in ticks.
+     */
+    protected int startTick;
+    
+    /**
     * Sets given values for SoundObject dragging when clicked.
     */
     // 10 shows better selection, though 5 is the indicated value.
@@ -188,6 +193,15 @@ public abstract class SoundObject {
     public abstract String objectToXML();
     
 
+    /**
+     * Returns startTick.
+     * 
+     * @return the startTick
+     */
+    public int getStartTick() {
+        return startTick;
+    }
+    
     /**
      * Sets this.topGesture to the given Gesture object. 
      * Give null if this gesture is no longer a child of another parent.

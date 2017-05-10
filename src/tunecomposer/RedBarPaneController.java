@@ -60,10 +60,10 @@ public class RedBarPaneController extends Observable implements Initializable{
      * 
      * @param soundObjectPane pane where all SoundObject visuals live.
      */
-    public void playAnimation(Pane soundObjectPane) {
+    public void playAnimation(Pane soundObjectPane, long startTick) {
         timeline.stop();
         timeline.getKeyFrames().clear();
-        RED_BAR.setX(0);
+        RED_BAR.setX(startTick);
         RED_BAR.setVisible(true);
         
         findEndCoordinate(soundObjectPane);

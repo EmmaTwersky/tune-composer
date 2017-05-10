@@ -73,6 +73,11 @@ public class ApplicationController implements Initializable {
     @FXML
     private MenuItem PlayMenuItem;
     /**
+     * Play Selected Menu Button, available to be enabled or disabled.
+     */
+    @FXML
+    private MenuItem PlaySelectedMenuItem;
+    /**
      * Stop Menu Button, available to be enabled or disabled.
      */
     @FXML
@@ -353,6 +358,17 @@ public class ApplicationController implements Initializable {
     }
     
     /**
+     * Handles the Play Selected menu item selection.
+     * 
+     * @param event the menu selection event
+     */
+    @FXML 
+    protected void handlePlaySelectedMenuItemAction(ActionEvent event) {
+        compositionPaneController.playSelected();
+        StopMenuItem.setDisable(false);
+    }
+    
+    /**
      * Handles the Stop menu item selection.
      * 
      * @param event the button click event
@@ -374,6 +390,7 @@ public class ApplicationController implements Initializable {
         RedoMenuItem.setDisable(on);
         SelAllMenuItem.setDisable(on);
         PlayMenuItem.setDisable(on);
+        PlaySelectedMenuItem.setDisable(on);
         CopyMenuItem.setDisable(on);
         CutMenuItem.setDisable(on);
         DeleteMenuItem.setDisable(on);
@@ -453,6 +470,7 @@ public class ApplicationController implements Initializable {
             checkDisableGroup();
             checkDisableUngroup();
             checkDisablePlay();
+            checkDisablePlaySelected();
             checkDisableDelete();
             checkDisableStop();
             checkDisableSave();
@@ -577,6 +595,16 @@ public class ApplicationController implements Initializable {
          */
         private void checkDisablePlay(){
             if (allSoundObjects.isEmpty()){
+                PlayMenuItem.setDisable(true);
+            }
+        }
+        
+        /**
+         * Disables "Play Selected" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisablePlaySelected(){
+            if (selItems.isEmpty()){
                 PlayMenuItem.setDisable(true);
             }
         }
