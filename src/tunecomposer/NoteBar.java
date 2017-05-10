@@ -19,9 +19,9 @@ public final class NoteBar extends SoundObject {
      * Create variables for the note name, instrument number, channel number,
      * pitch, starting value, and duration. 
      */
-    public final String name;
-    private final int instrument;
-    public final int channel;
+    public String name;
+    private int instrument;
+    public int channel;
     private int pitch;
     private int startTick;
     private int duration;
@@ -191,6 +191,17 @@ public final class NoteBar extends SoundObject {
      */
     public int getInstrument() {
         return instrument;
+    }
+    
+    /**
+     * Changes instrument.
+     */
+    @Override
+    public void changeInstrument(String instrument) {
+        name = instrument;
+        this.instrument = instrumentInfo.getInstrumentValue(name);
+        channel = instrumentInfo.getInstrumentChannel(name);
+        visualRectangle.setId(name);
     }
 
     /**

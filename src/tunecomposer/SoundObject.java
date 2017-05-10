@@ -134,6 +134,12 @@ public abstract class SoundObject {
     public abstract void changeLength(int length);
     
     /**
+    *  Change the SoundObject's instrument.
+     * @param instrument
+    */    
+    public abstract void changeInstrument(String instrument);
+    
+    /**
     * Snap object to y-coordinate of nearest note.
     */
     public abstract void snapYInPlace();

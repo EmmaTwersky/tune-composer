@@ -154,6 +154,16 @@ public final class Gesture extends SoundObject{
             note.toggleSelection();
         });
     }
+
+    /**
+     * Change the instrument.
+     */
+    @Override
+    public void changeInstrument(String instrument){
+        this.containedSoundObjects.forEach((note) -> {
+            note.changeInstrument(instrument);
+        });
+    }
     
     /**
      * Returns true if the SoundObject is selected.
