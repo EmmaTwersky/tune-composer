@@ -11,7 +11,7 @@ public class InstrumentInfo {
      * <https://www.midi.org/specifications/item/gm-level-1-sound-set>.
      * The channels signify that each instrument is a private MidiEvent channel.
      */
-    private static final int PIANO = 88; //1-8
+    private static final int PIANO = 5; //1-8
     private static final int PIANO_CHANNEL = 0;
     
     private static final int HARPSICHORD = 7; //7
@@ -20,20 +20,23 @@ public class InstrumentInfo {
     private static final int MARIMBA = 13; //13
     private static final int MARIMBA_CHANNEL = 2;
     
-    private static final int ORGAN = 17; //17-24
+    private static final int ORGAN = 18; //17-24
     private static final int ORGAN_CHANNEL = 3;
     
     private static final int ACCORDIAN = 22; //22
     private static final int ACCORDIAN_CHANNEL = 4;
     
-    private static final int GUITAR = 25; //25-32
+    private static final int GUITAR = 29; //25-32
     private static final int GUITAR_CHANNEL = 5;
     
-    private static final int VIOLIN = 41; //41
+    private static final int VIOLIN = 42; //41
     private static final int VIOLIN_CHANNEL = 6;
     
     private static final int FRENCHHORN = 61; //61
     private static final int FRENCHHORN_CHANNEL = 7;
+    
+    private static final int BASS = 33;
+    private static final int BASS_CHANNEL = 8;
     
     /**
      * Initializes the HashMaps to store the value and channel information.
@@ -53,6 +56,7 @@ public class InstrumentInfo {
         INSTRUMENT_VALUES.put("Guitar", GUITAR);
         INSTRUMENT_VALUES.put("Violin", VIOLIN);
         INSTRUMENT_VALUES.put("FrenchHorn", FRENCHHORN);
+        INSTRUMENT_VALUES.put("Bass", BASS);
         
         INSTRUMENT_CHANNELS.put("Piano", PIANO_CHANNEL);
         INSTRUMENT_CHANNELS.put("Harpsichord", HARPSICHORD_CHANNEL);
@@ -62,6 +66,7 @@ public class InstrumentInfo {
         INSTRUMENT_CHANNELS.put("Guitar", GUITAR_CHANNEL);
         INSTRUMENT_CHANNELS.put("Violin", VIOLIN_CHANNEL);
         INSTRUMENT_CHANNELS.put("FrenchHorn", FRENCHHORN_CHANNEL);
+        INSTRUMENT_CHANNELS.put("Bass", BASS_CHANNEL);
     }
     
     /**

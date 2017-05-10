@@ -12,10 +12,8 @@ import javafx.stage.WindowEvent;
  * This class creates and launches the Tune Composer window and application.
  */
 public class TuneComposer extends Application {
-
-    public static FileManager fileManager;
     
-    public ApplicationController appController;
+    public static ApplicationController appController;
     
     /**
      * Construct the scene and start the application.
@@ -30,8 +28,9 @@ public class TuneComposer extends Application {
         primaryStage.setTitle("Tune Composer");
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
-            System.out.println("HERE");
-            fileManager.promptToExit();
+            if (!appController.close()) {
+                we.consume();
+            }
         });        
         primaryStage.show();                
     }
@@ -45,7 +44,7 @@ public class TuneComposer extends Application {
         launch(args);
     }
     
-    public static void setFileManager(FileManager fManager){
-        fileManager = fManager;
+    public static void setAppController(ApplicationController aController){
+        appController = aController;
     }
 }

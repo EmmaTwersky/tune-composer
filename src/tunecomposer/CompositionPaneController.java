@@ -174,17 +174,9 @@ public class CompositionPaneController implements Initializable {
     /**
      * Adds a major chord to the composition pane.
      */
-    public void addMajorChord(){
+    public void addChord(ArrayList<Integer> chordType){
         stop();
-        soundObjectPaneController.makeMajorChord();
-    }
-    
-    /**
-     * Adds a minor chord to the composition pane.
-     */
-    public void addMinorChord(){
-        stop();
-        soundObjectPaneController.makeMinorChord();
+        soundObjectPaneController.makeChord(chordType);
     }
        
     /**

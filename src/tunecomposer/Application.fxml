@@ -137,6 +137,16 @@
                             text = "Minor" 
                             onAction = "#handleMinorChordMenuItemAction">
                         </MenuItem>
+                        <MenuItem
+                            fx:id = "DiminishedChordMenuItem"
+                            text = "Diminished" 
+                            onAction = "#handleDiminishedChordMenuItemAction">
+                        </MenuItem>
+                        <MenuItem
+                            fx:id = "AugmentedChordMenuItem"
+                            text = "Augmented" 
+                            onAction = "#handleAugmentedChordMenuItemAction">
+                        </MenuItem>
                     </items>
                 </Menu>
                     </items>

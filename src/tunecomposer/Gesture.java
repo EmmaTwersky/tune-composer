@@ -69,6 +69,8 @@ public final class Gesture extends SoundObject{
         
         this.actionManager = actionManager;
         this.soundObjectPane = soundObjectPane;
+        visualRectangle.setUserData(this);
+        this.setTopGesture();
         
         refreshVisualRectangle();
         
@@ -286,6 +288,7 @@ public final class Gesture extends SoundObject{
     public void addToPane(Pane soundObjectPane) {
         if (!soundObjectPane.getChildren().contains(visualRectangle)) {
             soundObjectPane.getChildren().add(visualRectangle);
+
         }
         for (SoundObject sObj : containedSoundObjects) {
             sObj.addToPane(soundObjectPane);

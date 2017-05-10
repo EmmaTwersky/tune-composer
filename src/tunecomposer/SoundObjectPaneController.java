@@ -1,6 +1,7 @@
 package tunecomposer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EmptyStackException;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
@@ -50,7 +51,11 @@ public class SoundObjectPaneController {
         SELECTED_SOUNDOBJECT_ARRAY.clear();
         for (Node n: soundObjectPane.getChildren()) {
             Rectangle r = (Rectangle) n;
+
             SoundObject sObj = (SoundObject) (r).getUserData();
+            if(sObj == null){
+                System.out.println("NULL");
+            }
             if (sObj.isSelected()) {
                 if (sObj.getTopGesture() == null) {
                     SELECTED_SOUNDOBJECT_ARRAY.add(sObj);
@@ -134,8 +139,6 @@ public class SoundObjectPaneController {
             int OFFSET = 10;
             pasteAction.setOffset(OFFSET);
         }
-//        actionManager.execute(pasteAction);
-//        unselectAction.execute();
         
         ArrayList<Action> actions = new ArrayList();
         actions.add(pasteAction);
@@ -218,56 +221,37 @@ public class SoundObjectPaneController {
     }
     
     /**
-     * Creates a major chord shape and places it on the pane.
+     * Creates a chord of the specified type.
+     * 
+     * @param chordType type of chord:
+     *              major, minor, diminished, augmented
      */
-    public void makeMajorChord(){
-        UnselectAction usAction = new UnselectAction(SELECTED_SOUNDOBJECT_ARRAY);
-        usAction.execute();
-        
-        AddSoundAction addSoundAction;
-        String majorChord = 
-                "<gesture>"
-                + "<notebar> x:100 y:130 width:100 instrument:88 </notebar>"
-                + "<notebar> x:100 y:90 width:100 instrument:88 </notebar>"
-                + "<notebar> x:100 y:60 width:100 instrument:88 </notebar>"
-                + "</gesture>";
-
-        addSoundAction = new AddSoundAction(majorChord, soundObjectPane, actionManager, compositionPaneController.scrollPane);
-        actionManager.execute(addSoundAction);
-        actionManager.putInUndoStack(addSoundAction);
-        
-        updateSelectedSoundObjectArray();
-        
+    public void makeChord(ArrayList<Integer> noteData){
         ArrayList<Action> actionList = new ArrayList();
-        actionList.add(usAction);
-        actionList.add(addSoundAction);
-    }
-     
-    /**
-     * Creates a major chord shape and places it on the pane.
-     */
-    public void makeMinorChord(){
         UnselectAction usAction = new UnselectAction(SELECTED_SOUNDOBJECT_ARRAY);
-        usAction.execute();
-        
-        AddSoundAction addSoundAction;
-        
-        String minorChord = 
-                "<gesture> "
-                + "<notebar> x:100 y:130 width:100 instrument:88 </notebar> "
-                + "<notebar> x:100 y:100 width:100 instrument:88 </notebar> "
-                + "<notebar> x:100 y:60 width:100 instrument:88 </notebar> "
-                + "</gesture>";
-
-        addSoundAction = new AddSoundAction(minorChord, soundObjectPane, actionManager, compositionPaneController.scrollPane);
-        actionManager.execute(addSoundAction);
-        actionManager.putInUndoStack(addSoundAction);
-        
-        updateSelectedSoundObjectArray();
-        
-        ArrayList<Action> actionList = new ArrayList();
         actionList.add(usAction);
+        
+        int shiftX = (-1) * (int) compositionPaneController.scrollPane.getViewportBounds().getMinX();
+        int shiftY = (-1) * (int) compositionPaneController.scrollPane.getViewportBounds().getMinY();
+   
+        NoteBar note1 = new NoteBar(100 + shiftX, noteData.get(0) + shiftY, 80, 5, actionManager, soundObjectPane);
+        NoteBar note2 = new NoteBar(100 + shiftX, noteData.get(1) + shiftY, 80, 5, actionManager, soundObjectPane);
+        NoteBar note3 = new NoteBar(100 + shiftX, noteData.get(2) + shiftY, 80, 5, actionManager, soundObjectPane);
+        
+        ArrayList<SoundObject> notes = new ArrayList<>(Arrays.asList(note1, note2, note3));
+        for (SoundObject note : notes){
+            note.visualRectangle.setUserData(note);
+        }
+        
+        Gesture gest = new Gesture(notes, actionManager, soundObjectPane);
+        gest.visualRectangle.setUserData(gest);
+        
+        ArrayList<SoundObject> soundToAdd = new ArrayList<>(Arrays.asList(gest));
+        AddSoundAction addSoundAction = new AddSoundAction(soundToAdd, soundObjectPane, actionManager, compositionPaneController.scrollPane);
         actionList.add(addSoundAction);
+        actionManager.execute(actionList);
+        updateSelectedSoundObjectArray();
+        actionManager.putInUndoStack(actionList);
     }
     
     

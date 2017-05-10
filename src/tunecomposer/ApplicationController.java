@@ -150,7 +150,7 @@ public class ApplicationController implements Initializable {
         
         Pane sObjPane = compositionPaneController. soundObjectPaneController.soundObjectPane;
         fileManager = new FileManager(sObjPane, actionManager);
-        TuneComposer.setFileManager(fileManager);
+        TuneComposer.setAppController(this);
 
         fileManager.addObserver(appObserver);
     }   
@@ -200,7 +200,16 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleExitMenuItemAction(ActionEvent event) {
-        fileManager.promptToExit();
+        close();
+        event.consume();
+    }
+    
+    public boolean close() {
+        boolean exit = fileManager.promptToExit();
+        if (exit){
+            System.exit(0);
+        }
+        return false;
     }
     
     /**
@@ -319,7 +328,11 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleMajorChordMenuItemAction(ActionEvent event){
-        compositionPaneController.addMajorChord();
+        ArrayList<Integer> noteData = new ArrayList();
+        noteData.add(100);
+        noteData.add(130);
+        noteData.add(170);
+        compositionPaneController.addChord(noteData);
     }
     
     /**
@@ -329,7 +342,39 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     protected void handleMinorChordMenuItemAction(ActionEvent event){
-        compositionPaneController.addMinorChord();
+        ArrayList<Integer> noteData = new ArrayList();
+        noteData.add(100);
+        noteData.add(140);
+        noteData.add(170);
+        compositionPaneController.addChord(noteData);
+    }
+        
+    /**
+     * Handles the Major chord menu item selection.
+     * 
+     * @param event the button click event
+     */
+    @FXML
+    protected void handleDiminishedChordMenuItemAction(ActionEvent event){
+        ArrayList<Integer> noteData = new ArrayList();
+        noteData.add(100);
+        noteData.add(130);
+        noteData.add(160);
+        compositionPaneController.addChord(noteData);
+    }
+    
+    /**
+     * Handles the Minor chord menu item selection.
+     * 
+     * @param event the button click event
+     */
+    @FXML
+    protected void handleAugmentedChordMenuItemAction(ActionEvent event){
+        ArrayList<Integer> noteData = new ArrayList();
+        noteData.add(100);
+        noteData.add(140);
+        noteData.add(180);
+        compositionPaneController.addChord(noteData);
     }
     
     /**
@@ -342,6 +387,8 @@ public class ApplicationController implements Initializable {
         compositionPaneController.play();
         StopMenuItem.setDisable(false);
     }
+    
+    
     
     /**
      * Handles the Stop menu item selection.
@@ -608,7 +655,6 @@ public class ApplicationController implements Initializable {
             if (allSoundObjects.isEmpty()){
                 NewMenuItem.setDisable(true);
             }
-        }
-        
+        }  
     }
 }
