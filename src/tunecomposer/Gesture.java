@@ -394,7 +394,10 @@ public final class Gesture extends SoundObject{
         latestY = event.getY();
             
         actionList = new ArrayList();
-            
+        
+        lastXShiftMouseLoc = event.getX();
+        lastYShiftMouseLoc = event.getY();
+
         prepareSelectionAction(event.isControlDown());
             
         prepareMoveOrStretchAction();
@@ -417,16 +420,14 @@ public final class Gesture extends SoundObject{
             sObjStretch.stretch((int)(x - latestX));
         }
         else {
-            double translateX = (x - latestX);
-            double translateY = (y - latestY);
-            sObjMove.move(translateX, translateY);
+            shiftNotePosition(x, y);
         }
         
         if (draggingLength){
             latestX = x;
             latestY = y;
         }
-        else if (!sObjMove.isMoveFailed()){
+        else if (!sObjMoveAction.isMoveFailed()){
             latestX = x;
             latestY = y;
         }
@@ -447,8 +448,8 @@ public final class Gesture extends SoundObject{
                 actionList.add(sObjStretch);
             }
             else {
-                sObjMove.setLastCoords(latestX, latestY);
-                actionList.add(sObjMove);
+                sObjMoveAction.setLastCoords(latestX, latestY);
+                actionList.add(sObjMoveAction);
             }
             SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {
                 sObj.snapYInPlace();
@@ -476,7 +477,10 @@ public final class Gesture extends SoundObject{
                 (int) latestX);
         } 
         else {
-            sObjMove = new MoveAction(
+//            sObjMoveAction = new MoveAction(
+//                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
+//                lastXShiftMouseLoc, lastYShiftMouseLoc);
+            sObjMoveAction = new MoveAction(
                 SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                 latestX, latestY);
         }

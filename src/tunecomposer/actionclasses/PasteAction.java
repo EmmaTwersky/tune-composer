@@ -3,6 +3,7 @@ package tunecomposer.actionclasses;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.Pane;
 import tunecomposer.ActionManager;
+import tunecomposer.SoundObject;
 import tunecomposer.SoundObjectParser;
 
 /**
@@ -16,9 +17,9 @@ public class PasteAction extends Action {
     private final String parseString;
     
     /**
-     * The amount the objects in this action were offset by.
+     * The amount the objects y coordinates in this action were offset by.
      */
-    private int offset = 0;
+    private int yOffset = 0;
     
     /**
      * Constructs an action event to paste SoundObjects.
@@ -44,7 +45,8 @@ public class PasteAction extends Action {
     @Override
     public void execute() {   
         MoveAction movePaste = new MoveAction(affectedObjs, 0, 0);
-        movePaste.move(offset, offset);
+        int xOffset = Math.round(yOffset / 10) * SoundObject.snapXDistance;
+        movePaste.move(xOffset, yOffset);
 
         affectedObjs.forEach((sObj) -> {
             sObj.snapYInPlace();
@@ -83,19 +85,20 @@ public class PasteAction extends Action {
     }
     
     /**
-     * Return the number of pixels that the affectedObjs were offset by.
-     * @return offset
+     * Return the number of pixels that the y coordinate of affectedObjs 
+     * were offset by.
+     * @return yOffset
      */
     public int getOffset() {
-        return offset;
+        return yOffset;
     }
     
     /**
-     * Sets this.offsetAmt to given amount.
-     * The offset is applied at execution call.
+     * Sets yOffset to given amount.
+     * The offset is applied, and the notes moved at execute call.
      * @param offset int to move note down and right
      */
     public void setOffset(int offset) {
-        this.offset = offset;
+        this.yOffset = offset;
     }
 }
