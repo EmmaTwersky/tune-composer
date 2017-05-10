@@ -155,6 +155,11 @@
                             onAction = "#handleStopMenuItemAction" 
                             accelerator = "Shortcut + SHIFT + P" >
                         </MenuItem>
+                        <MenuItem 
+                            fx:id = "Tempo"
+                            text = "Tempo" 
+                            onAction = "#handleTempoMenuItemAction" >
+                        </MenuItem>
                     </items>
                 </Menu>
             </menus>

@@ -135,4 +135,8 @@ public class MidiPlayer {
             e.printStackTrace();
         }
     }
+    
+    public void changeBMP(int beatsPerMinute) {
+        this.beatsPerMinute = beatsPerMinute;
+    }
 }
