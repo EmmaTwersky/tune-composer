@@ -153,13 +153,18 @@
                             fx:id = "StopMenuItem"
                             text = "Stop" 
                             onAction = "#handleStopMenuItemAction" 
-                            accelerator = "Shortcut + P" >
+                            accelerator = "Shortcut + Alt + P" >
                         </MenuItem>
                         <MenuItem 
                             fx:id = "PlaySelectedMenuItem"
                             text = "Play Selected" 
                             onAction = "#handlePlaySelectedMenuItemAction" 
                             accelerator = "Shortcut + SHIFT + P" >
+                        </MenuItem>
+                        <MenuItem 
+                            fx:id = "Tempo"
+                            text = "Tempo" 
+                            onAction = "#handleTempoMenuItemAction" >
                         </MenuItem>
                     </items>
                 </Menu>

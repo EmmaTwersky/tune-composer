@@ -77,7 +77,7 @@ public abstract class SoundObject {
      * List of actions to be pushed onto undo stack. Used for compound actions.
      */
     ArrayList<Action> actionList;
-    MoveAction sObjMove;
+    MoveAction sObjMoveAction;
     
     /**
      * Instances of potential actions that could be execute/pushed onto undo stack.
@@ -85,6 +85,22 @@ public abstract class SoundObject {
     LengthChangeAction sObjStretch;
     SelectAction selectAction;
     UnselectAction unselectAction;
+    
+    /**
+     * Used to save the mouse location with all the horizontal shifts added.
+     * For the mouse dragged handler. It is set to mouse x coordinate on mouse
+     * press, and on drag will be incremented by the shift amount as the mouse
+     * moves more than snapXDistance.
+     */
+    double lastXShiftMouseLoc;
+    
+    /**
+     * Used to save the mouse location with all the vertical shifts added.
+     * For the mouse dragged handler. It is set to mouse y coordinate on mouse
+     * press, and on drag will be incremented by the shift amount as the mouse
+     * moves more than one note HEIGHT.
+     */
+    double lastYShiftMouseLoc;    
     
     /**
     * Creates abstract set of SoundObject selection methods.
@@ -258,6 +274,51 @@ public abstract class SoundObject {
         }
         
         return topGest.getAllChildren();
+    }
+    
+    /**
+     * Finds the amount to shift the selected objects by, and then moves 
+     * contained items in the sObjMoveAction object.
+     * Will only move if the mouse has shifted at least the current value of 
+     * HEIGHT and snapXDistance.
+     * @param x the current x coordinate of the mouse
+     * @param y the current y coordinate of the mouse
+     */
+    void shiftNotePosition(double x, double y) {
+        double shiftXBy = getNumOfMouseShift(x, snapXDistance, lastXShiftMouseLoc);
+        double shiftYBy = getNumOfMouseShift(y, HEIGHT, lastYShiftMouseLoc);
+        
+        sObjMoveAction.move(shiftXBy, shiftYBy);
+        //if move didn't fail then increment lastXShiftMouseLoc
+        if (!sObjMoveAction.isMoveFailed()) {
+            lastXShiftMouseLoc += shiftXBy;
+            lastYShiftMouseLoc += shiftYBy;
+        }
+    }    
+    
+    
+    /**
+     * Will find if the mouse is more than one snapDistance from the given
+     * lastShiftLoc, and return the number of pixels that the objects should 
+     * be shifted by.
+     * The returned value will be an increment of snapDistance depending on 
+     * how far mouseCord is from lastShiftLoc.
+     * @param mouseCord coordinate of the current mouse location
+     * @param snapDistance 
+     *          number of pixels that the mouseCord must be from lastShiftLoc 
+     *          to give a shift
+     * @param lastShiftLoc last coordinate that mouse was shifted to
+     * @return number of pixels to shift by. Will be an increment of snapDistance
+     */
+    double getNumOfMouseShift(double mouseCord, int snapDistance, double lastShiftLoc) {
+        double shiftBy = 0;
+        
+        double mouseDelta = mouseCord - lastShiftLoc;
+        double inc = Math.round(mouseDelta / (double) snapDistance);
+        if (Math.abs(inc) >= 1) {
+            shiftBy = Math.round(inc * snapDistance);
+        }
+        return shiftBy;
     }
     
     /**

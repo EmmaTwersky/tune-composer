@@ -73,13 +73,12 @@ public class ActionManager extends Observable {
      * @param actionArray Actions to put onto the stack
      */
     public void putInUndoStack(ArrayList<Action> actionArray) {
-        setChanged();
         if (actionArray.isEmpty()) {
             return;
         }
-        
         redoStack.clear();
         undoStack.push(actionArray);
+        setChanged();
         notifyObservers();
     }
     

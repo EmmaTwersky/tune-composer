@@ -14,27 +14,28 @@ public class TunePlayer {
      * One midi player is used throughout, so that it can be stopped.
      * Set resolution to 100 and beats per minute to 60.
      */
-    private static final int RESOLUTION = 100;
-    private static final int BEATS_PER_MINUTE = 60;
+    public static final int RESOLUTION = 20;
+    public static int beatsPerMinute = 200;
     private final MidiPlayer player;
     
     TunePlayer() {
-        this.player = new MidiPlayer(RESOLUTION, BEATS_PER_MINUTE);
+        this.player = new MidiPlayer(RESOLUTION, beatsPerMinute);
     }
     
     
     /**
      * Plays the MidiPLayer.
-     * Each time playSequence is called the current sequence clears, all SoundObjects 
-     * in given pane are added to the player, and player starts from the beginning.
+     * Each time play is called the current sequence clears, all SoundObjects 
+     * in given pane are added to the player, and player starts from the startTick.
      * 
      * @param soundObjsToPlay pane that contains the SoundObjects
+     * @param startTick where the player begins to play from.
      */
     public void play(List<Node> soundObjsToPlay, long startTick) {
-//        updateBPM();
         player.stop();
         player.clear();
         populateMidiPlayer(soundObjsToPlay);
+        updateBPM();
         player.play(startTick);
     }
     
@@ -57,5 +58,12 @@ public class TunePlayer {
     public void stop() {
         player.stop();
         player.clear();
+    }
+    
+    /**
+     * Updates the BPM in the midi player according to the most recent user input.
+     */
+    private void updateBPM() {
+        player.changeBPM(beatsPerMinute);
     }
 }

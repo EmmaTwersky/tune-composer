@@ -23,6 +23,9 @@ public class CompositionPaneController implements Initializable {
     public static final int PANE_X_MAX = 18000;
     public static final int PANE_Y_MAX = 1280;
     
+    /**
+     * Used by play and playSelected to determine where to begin play.
+     */
     long startTick;
     
     /**
@@ -100,10 +103,13 @@ public class CompositionPaneController implements Initializable {
      */
     public void play() {
         startTick = 0;
-        tunePlayerObj.play(soundObjectPane.getChildren(),startTick);
+        tunePlayerObj.play(soundObjectPane.getChildren(), startTick);
         redBarPaneController.playAnimation(soundObjectPane, startTick);
     }
     
+    /**
+     * Plays the selected notes on the CompositionPane.
+     */
     public void playSelected() {
         ArrayList<Node> selectedNotes = new ArrayList();
         startTick = PANE_X_MAX;
@@ -118,8 +124,8 @@ public class CompositionPaneController implements Initializable {
             }
         });
         
-        tunePlayerObj.play(selectedNotes,startTick);
-        redBarPaneController.playAnimation(soundObjectPane,startTick);
+        tunePlayerObj.play(selectedNotes, startTick);
+        redBarPaneController.playAnimation(soundObjectPane, startTick);
     }
     
     /**

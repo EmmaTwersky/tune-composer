@@ -2,8 +2,10 @@ package tunecomposer;
 
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
@@ -12,7 +14,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import static javafx.scene.control.Alert.AlertType.NONE;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.Pane;
 import tunecomposer.actionclasses.Action;
@@ -377,7 +381,21 @@ public class ApplicationController implements Initializable {
     protected void handleStopMenuItemAction(ActionEvent event) {
         compositionPaneController.stop();
         PlayMenuItem.setDisable(false);
+        PlaySelectedMenuItem.setDisable(false);
         StopMenuItem.setDisable(true);
+    }
+    
+    @FXML
+    protected void handleTempoMenuItemAction(ActionEvent event) {
+        TextInputDialog dialog = new TextInputDialog("80");
+        dialog.setTitle("Change Tempo");
+        dialog.setHeaderText("Please enter a new tempo (60-120):");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()){
+            int tempo = Integer.parseInt(result.get());
+            TunePlayer.beatsPerMinute = tempo;
+        }   
     }
     
     /**
@@ -605,7 +623,7 @@ public class ApplicationController implements Initializable {
          */
         private void checkDisablePlaySelected(){
             if (selItems.isEmpty()){
-                PlayMenuItem.setDisable(true);
+                PlaySelectedMenuItem.setDisable(true);
             }
         }
         

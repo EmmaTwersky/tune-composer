@@ -35,7 +35,7 @@ public class InstrumentInfo {
     private static final int FRENCHHORN = 61; //61
     private static final int FRENCHHORN_CHANNEL = 7;
     
-    private static final int BASS = 33;
+    private static final int BASS = 96;
     private static final int BASS_CHANNEL = 8;
     
     /**

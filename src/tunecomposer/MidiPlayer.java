@@ -100,13 +100,9 @@ public class MidiPlayer {
      * Plays all the Midi events in all the tracks of this composition
      * immediately.
      */
-    public void play(long startTick)
-    {
-        // This next line should be unnecessary, but seems to be needed.
-        sequencer.setTempoInBPM(beatsPerMinute);
-        System.out.println("inputed Start tick = " + startTick);
+    public void play(long startTick) {
         sequencer.setTickPosition(startTick);
-        System.out.println("Sequencer Start tick = " + sequencer.getTickPosition());
+        sequencer.setTempoInBPM(beatsPerMinute);
         sequencer.start();
     }
     
@@ -137,5 +133,9 @@ public class MidiPlayer {
         } catch (InvalidMidiDataException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void changeBPM(int beatsPerMinute) {
+        this.beatsPerMinute = beatsPerMinute;
     }
 }

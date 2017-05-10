@@ -235,16 +235,25 @@ public final class NoteBar extends SoundObject {
     
     
     /**
-     * Moves note freely on pane.
-     * @param x the increment to change current x value by
-     * @param y the increment to change current y value by
+     * Moves note on pane by given increments.
+     * Keeps note's pitch and startTick up to date with current position.
+     * @param xInc the increment to change current x value by
+     * @param yInc the increment to change current y value by
      */
     @Override
-    public void move(double x, double y){
-        double newYLoc = y + visualRectangle.getY();
+    public void move(double xInc, double yInc){
+        double newYLoc = yInc + visualRectangle.getY();
+        double newXLoc = xInc + visualRectangle.getX();
         
-        unsnappedX += x;
+        visualRectangle.setX(newXLoc);
         visualRectangle.setY(newYLoc);
+        
+        //update pitch and startTick
+        startTick = (int) visualRectangle.getX();
+        pitch = PITCH_RANGE - ((int) Math.round((int)visualRectangle.getY() / NOTE_HEIGHT));
+
+//        snapYInPlace();
+//        snapXInPlace();
     }
     
     /**
@@ -290,36 +299,35 @@ public final class NoteBar extends SoundObject {
 
     /**
      * Fixes note to sit in-between staff lines.
-     * 
+     * Also updates the note's pitch to match the movement.
      * Precondition: the note has just been moved.
      * Postcondition: the notes location is fixed to sit in between staff lines.
      */
     @Override
     public void snapYInPlace() {
         //Get raw values of rectangle location.
-        int xRaw = (int) visualRectangle.getX();
         double yRaw = visualRectangle.getY();
         
         pitch = PITCH_RANGE - ((int) Math.round((int)yRaw / NOTE_HEIGHT));
-        startTick = (int) xRaw;
         
         //Fix raw values.
-        int xFixed = (int) xRaw;
         int yFixed = (int) Math.round(yRaw / (double)NOTE_HEIGHT) * NOTE_HEIGHT;
         
         //Reset rectangle to fixed values.
-        visualRectangle.setX(xFixed);
+//        visualRectangle.setX(xFixed);
         visualRectangle.setY(yFixed);
     }
     
     /**
-     * Snaps the note to the nearest x-coordinate using snapXDistance.
+     * Snaps the note to the nearest x-coordinate using snapXDistance as the
+     * distance to snap to.
+     * Updates the startTick of the note.
      * 
      */
     @Override
     public void snapXInPlace() {
         int xFixed = (int) Math.round(unsnappedX / (double) snapXDistance) * snapXDistance;
-        startTick = xFixed;
+        startTick = (int) visualRectangle.getX();
         
         //Reset rectangle to fixed values.
         visualRectangle.setX(xFixed);
@@ -415,16 +423,19 @@ public final class NoteBar extends SoundObject {
         public void handle(MouseEvent event) {
             CompositionPaneController.tunePlayerObj.stop();
             
+            //used for dragging note length
             latestX = event.getX();
             latestY = event.getY();
+            //used for dragging note
             
+            lastXShiftMouseLoc = event.getX();
+            lastYShiftMouseLoc = event.getY();
 
             actionList = new ArrayList();
             
             prepareSelectionAction(event.isControlDown());
             
             prepareMoveOrStretchAction();
-            
             SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
         }
     };
@@ -447,13 +458,11 @@ public final class NoteBar extends SoundObject {
                 latestX = x;
                 latestY = y;
             }
-            else {
-                double translateX = (x - latestX);
-                double translateY = (y - latestY);
-                sObjMove.move(translateX, translateY);
+            else { 
+                shiftNotePosition(x, y);
             }
             
-            if (draggingLength || !sObjMove.isMoveFailed()){
+            if (draggingLength || !sObjMoveAction.isMoveFailed()){
                 latestX = x;
                 latestY = y;
             }
@@ -480,8 +489,8 @@ public final class NoteBar extends SoundObject {
                     actionList.add(sObjStretch);
                 }
                 else {
-                    sObjMove.setLastCoords(latestX, latestY);
-                    actionList.add(sObjMove);
+                    sObjMoveAction.setLastCoords(lastXShiftMouseLoc, lastYShiftMouseLoc);
+                    actionList.add(sObjMoveAction);
                 }
                 for (SoundObject soundItem : SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
                     soundItem.snapYInPlace();
@@ -489,9 +498,9 @@ public final class NoteBar extends SoundObject {
                 draggingLength = false;
             }
             
-            actionManager.putInUndoStack(actionList);
-            
             SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
+            
+            actionManager.putInUndoStack(actionList);
             
             event.consume();
         }
@@ -514,9 +523,9 @@ public final class NoteBar extends SoundObject {
                     (int)latestX);
         }
         else {
-            sObjMove = new MoveAction(
+            sObjMoveAction = new MoveAction(
             SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
-                    latestX, latestY);
+                    lastXShiftMouseLoc, lastYShiftMouseLoc);
         }
     }
 }
