@@ -246,15 +246,23 @@ public class NoteBar extends SoundObject {
     
     /**
      * Moves note freely on pane.
-     * @param x the increment to change current x value by
-     * @param y the increment to change current y value by
+     * @param xInc the increment to change current x value by
+     * @param yInc the increment to change current y value by
      */
     @Override
-    public void move(double x, double y){
-        double newYLoc = y + visualRectangle.getY();
+    public void move(double xInc, double yInc){
+        double newYLoc = yInc + visualRectangle.getY();
+        double newXLoc = xInc + visualRectangle.getX();
         
-        unsnappedX += x;
+        visualRectangle.setX(newXLoc);
         visualRectangle.setY(newYLoc);
+        
+        //update pitch and startTick
+        startTick = (int) visualRectangle.getX();
+        pitch = PITCH_RANGE - ((int) Math.round((int)visualRectangle.getY() / NOTE_HEIGHT));
+
+//        snapYInPlace();
+//        snapXInPlace();
     }
     
     /**
@@ -307,18 +315,15 @@ public class NoteBar extends SoundObject {
     @Override
     public void snapYInPlace() {
         //Get raw values of rectangle location.
-        int xRaw = (int) visualRectangle.getX();
         double yRaw = visualRectangle.getY();
         
         pitch = PITCH_RANGE - ((int) Math.round((int)yRaw / NOTE_HEIGHT));
-        startTick = (int) xRaw;
         
         //Fix raw values.
-        int xFixed = (int) xRaw;
         int yFixed = (int) Math.round(yRaw / (double)NOTE_HEIGHT) * NOTE_HEIGHT;
         
         //Reset rectangle to fixed values.
-        visualRectangle.setX(xFixed);
+//        visualRectangle.setX(xFixed);
         visualRectangle.setY(yFixed);
     }
     
@@ -329,7 +334,7 @@ public class NoteBar extends SoundObject {
     @Override
     public void snapXInPlace() {
         int xFixed = (int) Math.round(unsnappedX / (double) snapXDistance) * snapXDistance;
-        startTick = xFixed;
+        startTick = (int) visualRectangle.getX();
         
         //Reset rectangle to fixed values.
         visualRectangle.setX(xFixed);
@@ -433,8 +438,9 @@ public class NoteBar extends SoundObject {
             
             prepareSelectionAction(event.isControlDown());
             
+            lastXShiftMouseLoc = event.getX();
+            lastYShiftMouseLoc = event.getY();
             prepareMoveOrStretchAction();
-            
             SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
         }
     };
@@ -457,13 +463,11 @@ public class NoteBar extends SoundObject {
                 latestX = x;
                 latestY = y;
             }
-            else {
-                double translateX = (x - latestX);
-                double translateY = (y - latestY);
-                sObjMove.move(translateX, translateY);
+            else { 
+                shiftNotePosition(x, y);
             }
             
-            if (draggingLength || !sObjMove.isMoveFailed()){
+            if (draggingLength || !sObjMoveAction.isMoveFailed()){
                 latestX = x;
                 latestY = y;
             }
@@ -490,8 +494,8 @@ public class NoteBar extends SoundObject {
                     actionList.add(sObjStretch);
                 }
                 else {
-                    sObjMove.setLastCoords(latestX, latestY);
-                    actionList.add(sObjMove);
+                    sObjMoveAction.setLastCoords(lastXShiftMouseLoc, lastYShiftMouseLoc);
+                    actionList.add(sObjMoveAction);
                 }
                 for (SoundObject soundItem : SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY) {
                     soundItem.snapYInPlace();
@@ -524,9 +528,9 @@ public class NoteBar extends SoundObject {
                     (int)latestX);
         }
         else {
-            sObjMove = new MoveAction(
+            sObjMoveAction = new MoveAction(
             SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
-                    latestX, latestY);
+                    lastXShiftMouseLoc, lastYShiftMouseLoc);
         }
     }
 }
