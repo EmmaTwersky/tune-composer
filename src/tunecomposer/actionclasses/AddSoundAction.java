@@ -27,7 +27,6 @@ public class AddSoundAction extends Action{
         
         parser = new SoundObjectParser(soundXML, soundObjectPane, actionManager);
         affectedObjs = parser.parseString();
-        
         scrollPane = scrollP;
 
     }
@@ -38,18 +37,12 @@ public class AddSoundAction extends Action{
      */
     @Override
     public void execute(){
-        int topLeftX = (int) ((18000)*  scrollPane.getHvalue());
-        int topLeftY = (int) ((1280)* scrollPane.getVvalue());
+        int shiftX = (-1) * (int) scrollPane.getViewportBounds().getMinX();
+        int shiftY = (-1) * (int) scrollPane.getViewportBounds().getMinY();
         
-        int newX = topLeftX;
-        int newY = topLeftY;
-        
-        System.out.println(newX);
-        System.out.println(newX);
-
         affectedObjs.forEach((sObj) -> {
-            sObj.move(newX, newY);
             sObj.addToPane(soundObjectPane);
+            sObj.move(shiftX, shiftY);
                     });
     }
     
