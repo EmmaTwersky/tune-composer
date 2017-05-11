@@ -2,7 +2,6 @@ package tunecomposer;
 
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
@@ -14,7 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import static javafx.scene.control.Alert.AlertType.NONE;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.Clipboard;
@@ -26,6 +25,11 @@ import tunecomposer.actionclasses.Action;
  */
 public class ApplicationController implements Initializable {  
     
+    /**
+     * Change Instrument Menu, available to be enabled or disabled.
+     */
+    @FXML
+    private Menu ChangeInstrumentMenu;
     /**
      * Undo Menu Button, available to be enabled or disabled.
      */
@@ -508,6 +512,7 @@ public class ApplicationController implements Initializable {
         SaveMenuItem.setDisable(on);
         SaveAsMenuItem.setDisable(on);
         NewMenuItem.setDisable(on);
+        ChangeInstrumentMenu.setDisable(on);
     }
     
     /**
@@ -583,6 +588,7 @@ public class ApplicationController implements Initializable {
             checkDisableSave();
             checkDisableSaveAs();
             checkDisableNew();
+            checkDisableChangeInstrument();
         }
         
         /**
@@ -722,6 +728,16 @@ public class ApplicationController implements Initializable {
          */
         private void checkDisableStop(){
             StopMenuItem.setDisable(true);
+        }
+        
+        /**
+         * Disables "Change Instrument" if it needs to be disabled.
+         * Precondition: button is enabled.
+         */
+        private void checkDisableChangeInstrument(){
+            if (selItems.isEmpty()){
+                ChangeInstrumentMenu.setDisable(true);
+            }
         }
         
         /**

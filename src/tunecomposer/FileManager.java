@@ -77,10 +77,12 @@ public class FileManager extends Observable {
         if (hasUnsavedChanges()){
             if (promptToSave()){
                 clearSession();
+                filePath = null;
             }
         }
         else{
             clearSession();
+            filePath = null;
         }
     }
     
@@ -97,15 +99,18 @@ public class FileManager extends Observable {
                 System.err.println("Error: " + e.getMessage()); 
             }    
         }
-        try{
-            File file = new File(filePath);
-            Writer out = new BufferedWriter(new FileWriter(file));
-            String parseStr = getPaneObjectsAsString();
-            out.write(parseStr);
-            updateLastSaveAction();
-            out.close();
-        } catch (Exception e){
-            System.err.println("Error: " + e.getMessage());
+        else{
+            try{
+                File file = new File(filePath);
+                Writer out = new BufferedWriter(new FileWriter(file));
+                String parseStr = getPaneObjectsAsString();
+                out.write(parseStr);
+                updateLastSaveAction();
+                out.close();
+            }
+            catch (Exception e){
+                System.err.println("Error: " + e.getMessage());
+            }
         }
     }
     
@@ -220,7 +225,6 @@ public class FileManager extends Observable {
         actionManager.undoStack.clear();
         actionManager.redoStack.clear();
         lastSaveAction = null;
-        filePath = null;
         notifyObservers();
     }
     

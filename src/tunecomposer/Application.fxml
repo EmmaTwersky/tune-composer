@@ -123,7 +123,8 @@
                         </MenuItem>
                         <SeparatorMenuItem>
                         </SeparatorMenuItem>
-                        <Menu text = "Change Instrument" >
+                        <Menu text = "Change Instrument" 
+                              fx:id = "ChangeInstrumentMenu">
                             <items>
                                 <MenuItem 
                                     text = "Piano" 
