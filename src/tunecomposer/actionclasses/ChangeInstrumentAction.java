@@ -9,21 +9,22 @@ import tunecomposer.SoundObject;
  */
 public class ChangeInstrumentAction extends Action {
     
-    private String instrument;
+    private final String instrument;
     
-    public ArrayList<SoundObject> originalObjs;
+    public ArrayList<SoundObject> originalObjs = new ArrayList();
     
     /**
      * Constructs an action event to delete SoundObjects.
      * Sets affectObjs and soundObjectPane.
      * 
+     * @param instrumentName
      * @param selectedObjs selList all SoundObjects to be affected
      * @param soundObjectPane the SoundObjectPane these selectedObjs are on
      */
     public ChangeInstrumentAction(String instrumentName, 
             ArrayList<SoundObject> selectedObjs, Pane soundObjectPane) {
         affectedObjs = (ArrayList<SoundObject>) selectedObjs.clone();
-        originalObjs = (ArrayList<SoundObject>) selectedObjs.clone();
+        
         this.soundObjectPane = soundObjectPane;
         instrument = instrumentName;
     }
@@ -34,9 +35,9 @@ public class ChangeInstrumentAction extends Action {
     @Override
     public void execute() { 
         affectedObjs.forEach((sObj) -> {
-            sObj.removeFromPane(soundObjectPane);
+//            sObj.removeFromPane(soundObjectPane);
             sObj.changeInstrument(instrument);
-            sObj.addToPane(soundObjectPane);
+//            sObj.addToPane(soundObjectPane);
         });
     }
     
@@ -47,9 +48,6 @@ public class ChangeInstrumentAction extends Action {
     public void undo() {
         affectedObjs.forEach((sObj) -> {
             sObj.removeFromPane(soundObjectPane);
-        });
-        originalObjs.forEach((sObj) -> {
-            sObj.addToPane(soundObjectPane);
         });
     }
 

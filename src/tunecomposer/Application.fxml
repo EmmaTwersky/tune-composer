@@ -142,8 +142,8 @@
                                     onAction = "#handleOrganMenuItemAction">
                                 </MenuItem>
                                 <MenuItem 
-                                    text = "Accordian" 
-                                    onAction = "#handleAccordianMenuItemAction">
+                                    text = "Accordion" 
+                                    onAction = "#handleAccordionMenuItemAction">
                                 </MenuItem>
                                 <MenuItem 
                                     text = "Guitar" 

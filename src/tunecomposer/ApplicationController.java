@@ -346,8 +346,8 @@ public class ApplicationController implements Initializable {
     }
     
     @FXML
-    protected void handleAccordianMenuItemAction(ActionEvent event) {
-        changeInstrument("Accordian");
+    protected void handleAccordionMenuItemAction(ActionEvent event) {
+        changeInstrument("Accordion");
     }
     
     @FXML
