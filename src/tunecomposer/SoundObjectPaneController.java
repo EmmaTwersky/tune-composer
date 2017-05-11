@@ -1,6 +1,7 @@
 package tunecomposer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EmptyStackException;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
@@ -8,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.actionclasses.Action;
 import tunecomposer.actionclasses.ChangeInstrumentAction;
+import tunecomposer.actionclasses.AddSoundAction;
 import tunecomposer.actionclasses.CopyAction;
 import tunecomposer.actionclasses.CutAction;
 import tunecomposer.actionclasses.DeleteAction;
@@ -31,6 +33,8 @@ public class SoundObjectPaneController {
      */
     private ActionManager actionManager;
     
+    public CompositionPaneController compositionPaneController;
+    
     /**
      * Create array of selected NoteBar objects.      
      */
@@ -48,7 +52,11 @@ public class SoundObjectPaneController {
         SELECTED_SOUNDOBJECT_ARRAY.clear();
         for (Node n: soundObjectPane.getChildren()) {
             Rectangle r = (Rectangle) n;
+
             SoundObject sObj = (SoundObject) (r).getUserData();
+            if(sObj == null){
+                System.out.println("NULL");
+            }
             if (sObj.isSelected()) {
                 if (sObj.getTopGesture() == null) {
                     SELECTED_SOUNDOBJECT_ARRAY.add(sObj);
@@ -132,8 +140,6 @@ public class SoundObjectPaneController {
             int yOffset = 10;
             pasteAction.setOffset(yOffset);
         }
-//        actionManager.execute(pasteAction);
-//        unselectAction.execute();
         
         ArrayList<Action> actions = new ArrayList();
         actions.add(pasteAction);
@@ -233,6 +239,42 @@ public class SoundObjectPaneController {
     }
     
     /**
+     * Creates a chord of the specified type.
+     * 
+     * @param chordType type of chord:
+     *              major, minor, diminished, augmented
+     */
+    public void makeChord(ArrayList<Integer> noteData){
+        ArrayList<Action> actionList = new ArrayList();
+        UnselectAction usAction = new UnselectAction(SELECTED_SOUNDOBJECT_ARRAY);
+        actionList.add(usAction);
+        
+        int shiftX = (-1) * (int) compositionPaneController.scrollPane.getViewportBounds().getMinX();
+        int shiftY = (-1) * (int) compositionPaneController.scrollPane.getViewportBounds().getMinY();
+   
+        NoteBar note1 = new NoteBar(100 + shiftX, noteData.get(0) + shiftY, 80, 5, actionManager, soundObjectPane);
+        NoteBar note2 = new NoteBar(100 + shiftX, noteData.get(1) + shiftY, 80, 5, actionManager, soundObjectPane);
+        NoteBar note3 = new NoteBar(100 + shiftX, noteData.get(2) + shiftY, 80, 5, actionManager, soundObjectPane);
+        
+        ArrayList<SoundObject> notes = new ArrayList<>(Arrays.asList(note1, note2, note3));
+        
+        for (SoundObject note : notes){
+            note.visualRectangle.setUserData(note);
+        }
+        
+        Gesture gest = new Gesture(notes, actionManager, soundObjectPane);
+        gest.visualRectangle.setUserData(gest);
+        
+        ArrayList<SoundObject> soundToAdd = new ArrayList<>(Arrays.asList(gest));
+        AddSoundAction addSoundAction = new AddSoundAction(soundToAdd, soundObjectPane, actionManager, compositionPaneController.scrollPane);
+        actionList.add(addSoundAction);
+        actionManager.execute(actionList);
+        updateSelectedSoundObjectArray();
+        actionManager.putInUndoStack(actionList);
+    }
+    
+    
+    /**
      * Set the GroupAction to the instance that contains the undo and 
      * redo stacks. If given manager is null, then throws NullPointerException.
      * @param manager
@@ -243,5 +285,12 @@ public class SoundObjectPaneController {
             throw new NullPointerException();
         }
         actionManager = manager;
+    }
+    
+    public void setCompositionPaneController(CompositionPaneController controller) throws NullPointerException{
+        if (controller == null) {
+            throw new NullPointerException();
+        }
+        compositionPaneController = controller;
     }
 }

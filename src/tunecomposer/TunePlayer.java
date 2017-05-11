@@ -1,6 +1,7 @@
 package tunecomposer;
 
-import javafx.scene.layout.Pane;
+import java.util.List;
+import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -14,46 +15,41 @@ public class TunePlayer {
      * Set resolution to 100 and beats per minute to 60.
      */
     public static final int RESOLUTION = 20;
-    public static int beatsPerMinute = 120;
+    public static int beatsPerMinute = 240;
     private final MidiPlayer player;
     
     TunePlayer() {
         this.player = new MidiPlayer(RESOLUTION, beatsPerMinute);
     }
     
-    /**
-     * Plays the SoundObjects on the given pane.
-     * 
-     * @param soundObjectPane pane the SoundObjects are kept in
-     */
-    protected void play(Pane soundObjectPane) {
-        updateBMP();
-        playSequence(soundObjectPane);
-    }
     
     /**
      * Plays the MidiPLayer.
-     * Each time playSequence is called the current sequence clears, all SoundObjects 
-     * in given pane are added to the player, and player starts from the beginning.
+     * Each time play is called the current sequence clears, all SoundObjects 
+     * in given pane are added to the player, and player starts from the startTick.
      * 
-     * @param soundObjectPane pane that contains the SoundObjects
+     * @param soundObjsToPlay pane that contains the SoundObjects
+     * @param startTick where the player begins to play from.
      */
-    protected void playSequence(Pane soundObjectPane) {
+    public void play(List<Node> soundObjsToPlay, long startTick) {
         player.stop();
         player.clear();
-        populateMidiPlayer(soundObjectPane);
-        player.play();
+        populateMidiPlayer(soundObjsToPlay);
+        updateBPM();
+        player.play(startTick);
     }
     
     /**
-     * Adds all NoteBar objects in musicNotesArray to MidiPlayer.
+     * Adds given, all or selected, NoteBar objects to MidiPlayer.
+     * 
+     * @param soundObjsToPlay
      */
-    private void populateMidiPlayer(Pane soundObjectPane) {
-        soundObjectPane.getChildren().forEach((sObj) -> {
+    private void populateMidiPlayer(List<Node> soundObjsToPlay) {
+        for (Node sObj: soundObjsToPlay){
             Rectangle r = (Rectangle) sObj;
             SoundObject s = (SoundObject) r.getUserData();
             s.addToMidiPlayer(player);
-        });
+        }
     }
     
     /**
@@ -64,7 +60,10 @@ public class TunePlayer {
         player.clear();
     }
     
-    private void updateBMP() {
-        player.changeBMP(beatsPerMinute);
+    /**
+     * Updates the BPM in the midi player according to the most recent user input.
+     */
+    private void updateBPM() {
+        player.changeBPM(beatsPerMinute);
     }
 }

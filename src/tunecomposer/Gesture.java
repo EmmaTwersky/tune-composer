@@ -23,6 +23,9 @@ public final class Gesture extends SoundObject{
     public double bottomX;
     public double bottomY;
 
+    
+    
+    
     /**
     * An ArrayList of the SoundObjects contained within the Gesture.
     */
@@ -69,8 +72,11 @@ public final class Gesture extends SoundObject{
         
         this.actionManager = actionManager;
         this.soundObjectPane = soundObjectPane;
+        visualRectangle.setUserData(this);
+        this.setTopGesture();
         
         refreshVisualRectangle();
+        startTick = (int) visualRectangle.getX();
         
         select();
     }
@@ -86,6 +92,7 @@ public final class Gesture extends SoundObject{
         visualRectangle.setY(topY);
         visualRectangle.setWidth(width);
         visualRectangle.setHeight(height);
+        startTick = (int) visualRectangle.getX();
     }
     
     /**
@@ -97,7 +104,7 @@ public final class Gesture extends SoundObject{
         topY = 1280;
         bottomX = 0;
         bottomY = 0;
-
+                
         containedSoundObjects.forEach((sObj) -> {
             Rectangle r = sObj.visualRectangle;
             if (topX > r.getX()) {
@@ -296,6 +303,7 @@ public final class Gesture extends SoundObject{
     public void addToPane(Pane soundObjectPane) {
         if (!soundObjectPane.getChildren().contains(visualRectangle)) {
             soundObjectPane.getChildren().add(visualRectangle);
+
         }
         for (SoundObject sObj : containedSoundObjects) {
             sObj.addToPane(soundObjectPane);
@@ -317,7 +325,6 @@ public final class Gesture extends SoundObject{
         soundObjectPane.getChildren().remove(visualRectangle);
         //TODO need a method to reset handlers of children to what they would be without this group
     }
-    
     
     /**
      * Method for recursively grabbing all children of this Gesture. 
@@ -368,6 +375,7 @@ public final class Gesture extends SoundObject{
         refreshVisualRectangle();
         soundObjectPane.getChildren().add(visualRectangle);
         setTopGesture();
+        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
     }
     
     
@@ -398,6 +406,7 @@ public final class Gesture extends SoundObject{
      * @param event the mouse click event
      */
     EventHandler<MouseEvent> handleGesturePressed = (MouseEvent event) -> {
+                
         CompositionPaneController.tunePlayerObj.stop();
             
         latestX = event.getX();
@@ -487,9 +496,6 @@ public final class Gesture extends SoundObject{
                 (int) latestX);
         } 
         else {
-//            sObjMoveAction = new MoveAction(
-//                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
-//                lastXShiftMouseLoc, lastYShiftMouseLoc);
             sObjMoveAction = new MoveAction(
                 SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                 latestX, latestY);

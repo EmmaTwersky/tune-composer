@@ -23,7 +23,6 @@ public final class NoteBar extends SoundObject {
     private int instrument;
     public int channel;
     private int pitch;
-    private int startTick;
     private int duration;
 
     /**
@@ -78,6 +77,7 @@ public final class NoteBar extends SoundObject {
      */
     public NoteBar(double x, double y, ActionManager _actionManager, Pane soundObjectPane){
         
+
         name = InstrumentToolBarController.selectedInstrument;
         instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
@@ -210,15 +210,6 @@ public final class NoteBar extends SoundObject {
      */
     public int getPitch() {
         return pitch;
-    }
-
-    /**
-     * Returns startTick.
-     * 
-     * @return the startTick
-     */
-    public int getStartTick() {
-        return startTick;
     }
 
     /**
@@ -519,9 +510,9 @@ public final class NoteBar extends SoundObject {
                 draggingLength = false;
             }
             
-            actionManager.putInUndoStack(actionList);
-            
             SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
+            
+            actionManager.putInUndoStack(actionList);
             
             event.consume();
         }

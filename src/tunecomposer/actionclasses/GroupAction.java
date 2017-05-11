@@ -32,7 +32,7 @@ public class GroupAction extends Action{
         gesture = new Gesture(affectedObjs, actionManager, soundObjectPane);
         
         this.soundObjectPane = soundObjectPane;
-        gesture.visualRectangle.setUserData(gesture);
+//        gesture.visualRectangle.setUserData(gesture);
     }
     
     /**

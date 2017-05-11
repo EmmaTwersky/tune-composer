@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -20,8 +21,13 @@ public class CompositionPaneController implements Initializable {
     /**
      * Dimensions of the Composition StackPane.
      */
-    public static final int PANE_X_MAX = 18000;
+    public static final int PANE_X_MAX = 14400;
     public static final int PANE_Y_MAX = 1280;
+    
+    /**
+     * Used by play and playSelected to determine where to begin play.
+     */
+    long startTick;
     
     /**
      * Create the tune player to compose and play notes on the CompositionPane.
@@ -33,6 +39,9 @@ public class CompositionPaneController implements Initializable {
      */
     @FXML
     public Pane soundObjectPane;
+    
+    @FXML
+    public ScrollPane scrollPane;
     
     /**
      * Controller for pane that holds all SoundObject visuals.
@@ -91,14 +100,37 @@ public class CompositionPaneController implements Initializable {
         tunePlayerObj = new TunePlayer();
         actionManager = new ActionManager();
         soundObjectPaneController.setActionManager(actionManager);
+        soundObjectPaneController.setCompositionPaneController(this);
     }   
     
     /**
      * Plays the current composition on the CompositionPane.
      */
     public void play() {
-        tunePlayerObj.play(soundObjectPane);
-        redBarPaneController.playAnimation(soundObjectPane);
+        startTick = 0;
+        tunePlayerObj.play(soundObjectPane.getChildren(), startTick);
+        redBarPaneController.playAnimation(soundObjectPane.getChildren(), startTick);
+    }
+    
+    /**
+     * Plays the selected notes on the CompositionPane.
+     */
+    public void playSelected() {
+        ArrayList<Node> selectedNotes = new ArrayList();
+        startTick = PANE_X_MAX;
+        soundObjectPane.getChildren().forEach((n) -> {
+            Rectangle r = (Rectangle) n;
+            SoundObject sObj = (SoundObject) r.getUserData();
+            if (sObj.isSelected()) {
+                selectedNotes.add(n);
+                if (startTick > sObj.getStartTick()){
+                    startTick = sObj.getStartTick();
+                }
+            }
+        });
+        
+        tunePlayerObj.play(selectedNotes, startTick);
+        redBarPaneController.playAnimation(selectedNotes, startTick);
     }
     
     /**
@@ -164,6 +196,14 @@ public class CompositionPaneController implements Initializable {
     public void ungroup() {
         stop();
         soundObjectPaneController.ungroup();
+    }   
+    
+    /**
+     * Adds a major chord to the composition pane.
+     */
+    public void addChord(ArrayList<Integer> chordType){
+        stop();
+        soundObjectPaneController.makeChord(chordType);
     } 
     
     /**
