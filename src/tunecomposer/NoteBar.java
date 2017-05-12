@@ -82,6 +82,7 @@ public final class NoteBar extends SoundObject {
         
 
         name = InstrumentToolBarController.selectedInstrument;
+        System.out.println(name);
         instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
         actionManager = _actionManager;
@@ -156,7 +157,7 @@ public final class NoteBar extends SoundObject {
         visualRectangle.getStyleClass().removeAll("unselectedNote");
         visualRectangle.getStyleClass().add("selectedNote");
         SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane); 
-    }
+    } 
     
     /**
      * Un-selects note and removes visualRectangle selection.
