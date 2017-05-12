@@ -6,14 +6,10 @@
 package tunecomposer.actionclasses;
 
 import java.util.ArrayList;
-import javafx.geometry.Bounds;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import tunecomposer.ActionManager;
-import tunecomposer.CompositionPaneController;
 import tunecomposer.SoundObject;
-import tunecomposer.SoundObjectPaneController;
-import tunecomposer.SoundObjectParser;
 
 /**
  *  An action which adds a new chord to the soundObjectPane.
