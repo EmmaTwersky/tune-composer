@@ -263,7 +263,7 @@ public class SoundObjectPaneController {
         double vvalue = compositionPaneController.scrollPane.getVvalue();
         double contentHeight = 1280;
         double viewportHeight = compositionPaneController.scrollPane.getViewportBounds().getHeight();
-
+ 
         int yShift = (int)
             (Math.max(0,  contentHeight - viewportHeight) * (vvalue - vmin) / (vmax - vmin));
 
