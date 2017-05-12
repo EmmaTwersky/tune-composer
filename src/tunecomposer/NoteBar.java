@@ -79,6 +79,7 @@ public final class NoteBar extends SoundObject {
         
 
         name = InstrumentToolBarController.selectedInstrument;
+        System.out.println(name);
         instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
         actionManager = _actionManager;
