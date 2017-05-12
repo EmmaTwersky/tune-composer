@@ -153,7 +153,7 @@ public final class NoteBar extends SoundObject {
         visualRectangle.getStyleClass().removeAll("unselectedNote");
         visualRectangle.getStyleClass().add("selectedNote");
         SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane); 
-    }
+    } 
     
     /**
      * Un-selects note and removes visualRectangle selection.
