@@ -15,7 +15,7 @@ import javafx.scene.control.ButtonType;
  * The pizza will ALWAYS come the immediate location of the user.
  * User's credit card will be charged automatically for pizza purchases.
  * While Domino's has a 30-minutes-or-less refund policy,
- * such guarantees to not translate to SynergyTM.
+ * such guarantees do not translate to SynergyTM.
  * 
  */
 public class PizzaModule {
