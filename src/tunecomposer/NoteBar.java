@@ -8,6 +8,7 @@ import javafx.scene.shape.Rectangle;
 import javax.sound.midi.ShortMessage;
 import tunecomposer.actionclasses.MoveAction;
 import tunecomposer.actionclasses.LengthChangeAction;
+import java.util.Stack;
 
 /**
  * This class creates and edits NoteBar objects to display notes in the tune 
@@ -20,6 +21,7 @@ public final class NoteBar extends SoundObject {
      * pitch, starting value, and duration. 
      */
     public String name;
+    public Stack<String> previousNames = new Stack<>();
     private int instrument;
     public int channel;
     private int pitch;
@@ -204,7 +206,26 @@ public final class NoteBar extends SoundObject {
         channel = instrumentInfo.getInstrumentChannel(name);
         visualRectangle.setId(name);
     }
-
+    
+    /**
+     * Sets previous instrument.
+     */
+    @Override
+    public void changeToPreviousInstrument() {
+        name = previousNames.pop();
+        this.instrument = instrumentInfo.getInstrumentValue(name);
+        channel = instrumentInfo.getInstrumentChannel(name);
+        visualRectangle.setId(name);
+    }
+    
+    /**
+     * Sets previous instrument.
+     */
+    @Override
+    public void setPreviousName() {
+        previousNames.push(name);
+    }
+    
     /**
      * Returns pitch.
      * @return the pitch

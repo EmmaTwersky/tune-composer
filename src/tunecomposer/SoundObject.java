@@ -143,6 +143,8 @@ public abstract class SoundObject {
      * @param instrument
     */    
     public abstract void changeInstrument(String instrument);
+    public abstract void setPreviousName();
+    public abstract void changeToPreviousInstrument();
     
     /**
     * Snap object to y-coordinate of nearest note.

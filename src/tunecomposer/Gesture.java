@@ -173,6 +173,26 @@ public final class Gesture extends SoundObject{
     }
     
     /**
+     * Sets previous instrument.
+     */
+    @Override
+    public void changeToPreviousInstrument() {
+        this.containedSoundObjects.forEach((note) -> {
+            note.changeToPreviousInstrument();
+        });
+    }
+    
+    /**
+     * Sets previous instrument.
+     */
+    @Override
+    public void setPreviousName() {
+        this.containedSoundObjects.forEach((note) -> {
+            note.setPreviousName();
+        });
+    }
+    
+    /**
      * Returns true if the SoundObject is selected.
      * 
      * @return boolean representing state of selected
