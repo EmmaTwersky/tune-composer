@@ -345,11 +345,17 @@ public class FileManager extends Observable {
         return lastSaveAction;
     }
     
+    /**
+     * Prompts user to exit.
+     * 
+     * @return boolean
+     *             returns true if we want to exit
+     */
     public boolean promptToExit(){
         if (hasUnsavedChanges()){
             return promptToSave();
         }
-        return true; //true if we want to exit
+        return true;
     }
     
 }

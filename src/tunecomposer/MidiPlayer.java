@@ -99,6 +99,8 @@ public class MidiPlayer {
     /**
      * Plays all the Midi events in all the tracks of this composition
      * immediately.
+     * @param startTick 
+     *              the tick to begin playing the MidiPlayer and animation at
      */
     public void play(long startTick) {
         sequencer.setTickPosition(startTick);
@@ -135,6 +137,10 @@ public class MidiPlayer {
         }
     }
     
+    /**
+     * Change the tempo of the MidiPlayer by changing the beats per minute field.
+     * @param beatsPerMinute integer representing the new speed to play the 
+     */
     public void changeBPM(int beatsPerMinute) {
         this.beatsPerMinute = beatsPerMinute;
     }

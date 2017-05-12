@@ -488,7 +488,7 @@ public final class Gesture extends SoundObject{
                 actionList.add(sObjStretch);
             }
             else {
-                sObjMoveAction.setLastCoords(latestX, latestY);
+                sObjMoveAction.setLastCoords(lastXShiftMouseLoc, lastYShiftMouseLoc);
                 actionList.add(sObjMoveAction);
             }
             SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY.forEach((sObj) -> {

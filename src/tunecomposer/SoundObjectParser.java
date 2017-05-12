@@ -53,8 +53,16 @@ public class SoundObjectParser {
         noteBarKeywords.add("instrument");
     }
     
+    /**
+     * Find whether the given string in this parser instance is able to be
+     * parsed into SoundObject objects.
+     * @return 
+     *      true if it can be parsed, false if it cannot or if the string is empty.
+     */
     public boolean isParsable() {
+        String strReset = iterateStr;
         ArrayList<SoundObject> sObjs = parseString();
+        iterateStr = strReset;
         if (sObjs.isEmpty()) {
             return false;
         }
