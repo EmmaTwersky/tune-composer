@@ -269,7 +269,7 @@ public class CompositionPaneController implements Initializable {
     private void paneClickedInPlace(MouseEvent event, ArrayList<Action> arrayOfMouseActions) 
                                       throws IllegalArgumentException {
         if (event == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(); 
         }
         if (arrayOfMouseActions == null) {
             throw new IllegalArgumentException();
