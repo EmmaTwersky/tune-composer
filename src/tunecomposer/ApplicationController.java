@@ -478,7 +478,7 @@ public class ApplicationController implements Initializable {
     
     @FXML
     protected void handleTempoMenuItemAction(ActionEvent event) {
-        TextInputDialog dialog = new TextInputDialog("240");
+        TextInputDialog dialog = new TextInputDialog(Integer.toString(TunePlayer.beatsPerMinute));
         dialog.setTitle("Change Tempo");
         dialog.setHeaderText("Please enter a new tempo in beats per minute, BPM:");
         dialog.setContentText("120 (Largo) - 500 (Presto)");
