@@ -241,8 +241,7 @@ public class SoundObjectPaneController {
     /**
      * Creates a chord of the specified type.
      * 
-     * @param chordType type of chord:
-     *              major, minor, diminished, augmented
+     * @param noteData an integer array of the steps between each note.
      */
     public void makeChord(ArrayList<Integer> noteData){
         ArrayList<Action> actionList = new ArrayList();
@@ -251,7 +250,7 @@ public class SoundObjectPaneController {
         
         int shiftX = (-1) * (int) compositionPaneController.scrollPane.getViewportBounds().getMinX();
         int shiftY = (-1) * (int) compositionPaneController.scrollPane.getViewportBounds().getMinY();
-   
+
         NoteBar note1 = new NoteBar(100 + shiftX, noteData.get(0) + shiftY, 80, 5, actionManager, soundObjectPane);
         NoteBar note2 = new NoteBar(100 + shiftX, noteData.get(1) + shiftY, 80, 5, actionManager, soundObjectPane);
         NoteBar note3 = new NoteBar(100 + shiftX, noteData.get(2) + shiftY, 80, 5, actionManager, soundObjectPane);

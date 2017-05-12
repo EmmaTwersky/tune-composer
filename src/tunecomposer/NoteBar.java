@@ -119,7 +119,9 @@ public final class NoteBar extends SoundObject {
         if ("NOT FOUND".equals(instrumentInfo.getInstName(instrument))) {
             name = DEFAULT_NAME;
         }
-        else { name = instrumentInfo.getInstName(instrument); }
+        else {
+            name = InstrumentToolBarController.selectedInstrument; }
+        System.out.println("In second NoteBar constructor");
         this.instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
         actionManager = am;
