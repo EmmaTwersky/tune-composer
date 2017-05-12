@@ -16,17 +16,25 @@ import tunecomposer.SoundObject;
  */
 public class AddSoundAction extends Action{
     
-    
+    /**
+     * An instance of the ScrollPane that the composition pane is set on.
+     */
     public ScrollPane scrollPane;
     
+    /**
+     * Constructor for AddSoundAction.
+     * 
+     * @param chordNotes
+     * @param soundObjPane
+     * @param actionManager
+     * @param scrollP 
+     */
     public AddSoundAction(ArrayList<SoundObject> chordNotes, Pane soundObjPane, ActionManager actionManager, ScrollPane scrollP) {
         affectedObjs = chordNotes;
         soundObjectPane = soundObjPane;
         scrollPane = scrollP;
-
     }
      
-    
     /**
      * Adds the chord to the soundObjectPane.
      */

@@ -11,6 +11,10 @@ import tunecomposer.actionclasses.MoveAction;
 import tunecomposer.actionclasses.SelectAction;
 import tunecomposer.actionclasses.UnselectAction;
 
+/**
+ * An abstract class that is extendable to create sound objects to put on the
+ * composition pane.
+ */
 public abstract class SoundObject {
     
     /**
@@ -139,11 +143,19 @@ public abstract class SoundObject {
     public abstract void changeLength(int length);
     
     /**
-    *  Change the SoundObject's instrument.
-     * @param instrument
+    * Change the SoundObject's instrument.
+    * @param instrument
     */    
     public abstract void changeInstrument(String instrument);
+    
+    /**
+     * Sets the previous instrument name.
+     */
     public abstract void setPreviousName();
+    
+    /**
+     * Changes instrument to previous instrument.
+     */
     public abstract void changeToPreviousInstrument();
     
     /**
@@ -192,7 +204,13 @@ public abstract class SoundObject {
      */
     public abstract boolean isOnEdge(double x, double y);
     
-    
+    /**
+     * Sets the handlers for the Sound Objects.
+     * 
+     * @param press
+     * @param drag
+     * @param release 
+     */
     public abstract void setHandlers(EventHandler press, EventHandler drag, EventHandler release);
     
     /**

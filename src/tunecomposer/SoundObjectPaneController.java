@@ -25,6 +25,9 @@ import tunecomposer.actionclasses.UnselectAction;
  */
 public class SoundObjectPaneController {
 
+    /**
+     * The pane that the Sound Objects are placed on.
+     */
     @FXML
     public Pane soundObjectPane;
     
@@ -33,6 +36,9 @@ public class SoundObjectPaneController {
      */
     private ActionManager actionManager;
     
+    /**
+     * An instance of the CompositionPaneController.
+     */
     public CompositionPaneController compositionPaneController;
     
     /**
@@ -241,20 +247,34 @@ public class SoundObjectPaneController {
     /**
      * Creates a chord of the specified type.
      * 
-     * @param chordType type of chord:
-     *              major, minor, diminished, augmented
+     * @param noteData an integer array of the steps between each note.
      */
     public void makeChord(ArrayList<Integer> noteData){
         ArrayList<Action> actionList = new ArrayList();
         UnselectAction usAction = new UnselectAction(SELECTED_SOUNDOBJECT_ARRAY);
         actionList.add(usAction);
+                    
+        double hmin = compositionPaneController.scrollPane.getHmin();
+        double hmax = compositionPaneController.scrollPane.getHmax();
+        double hvalue = compositionPaneController.scrollPane.getHvalue();
+        double contentWidth = 14400.0;
+        double viewportWidth = compositionPaneController.scrollPane.getViewportBounds().getWidth();
+
+        int xShift = (int)
+            (Math.max(0, contentWidth - viewportWidth) * (hvalue - hmin) / (hmax - hmin));
         
-        int shiftX = (-1) * (int) compositionPaneController.scrollPane.getViewportBounds().getMinX();
-        int shiftY = (-1) * (int) compositionPaneController.scrollPane.getViewportBounds().getMinY();
-   
-        NoteBar note1 = new NoteBar(100 + shiftX, noteData.get(0) + shiftY, 80, 5, actionManager, soundObjectPane);
-        NoteBar note2 = new NoteBar(100 + shiftX, noteData.get(1) + shiftY, 80, 5, actionManager, soundObjectPane);
-        NoteBar note3 = new NoteBar(100 + shiftX, noteData.get(2) + shiftY, 80, 5, actionManager, soundObjectPane);
+        double vmin = compositionPaneController.scrollPane.getVmin();
+        double vmax = compositionPaneController.scrollPane.getVmax();
+        double vvalue = compositionPaneController.scrollPane.getVvalue();
+        double contentHeight = 1280;
+        double viewportHeight = compositionPaneController.scrollPane.getViewportBounds().getHeight();
+ 
+        int yShift = (int)
+            (Math.max(0,  contentHeight - viewportHeight) * (vvalue - vmin) / (vmax - vmin));
+ 
+        NoteBar note1 = new NoteBar(100 + xShift, noteData.get(0) + yShift, 80, 5, actionManager, soundObjectPane);
+        NoteBar note2 = new NoteBar(100 + xShift, noteData.get(1) + yShift, 80, 5, actionManager, soundObjectPane);
+        NoteBar note3 = new NoteBar(100 + xShift, noteData.get(2) + yShift, 80, 5, actionManager, soundObjectPane);
         
         ArrayList<SoundObject> notes = new ArrayList<>(Arrays.asList(note1, note2, note3));
         
@@ -287,6 +307,12 @@ public class SoundObjectPaneController {
         actionManager = manager;
     }
     
+    /**
+     * Sets the composition pane so that it is not null.
+     * 
+     * @param controller
+     * @throws NullPointerException 
+     */
     public void setCompositionPaneController(CompositionPaneController controller) throws NullPointerException{
         if (controller == null) {
             throw new NullPointerException();

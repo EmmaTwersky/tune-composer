@@ -168,6 +168,11 @@ public class ApplicationController implements Initializable {
         fileManager.addObserver(appObserver);
     }   
     
+    /**
+     * Handles the About menu item and opens an About window.
+     * 
+     * @param event the menu selection event
+     */
     @FXML
     protected void handleAboutMenuItemAction(ActionEvent event) {
         Alert about = new Alert(NONE);
@@ -182,21 +187,42 @@ public class ApplicationController implements Initializable {
         about.showAndWait();
     }
     
+    /**
+     * Handles the New menu item and opens a clear composition pane.
+     * 
+     * @param event the menu selection event
+     */
     @FXML
     protected void handleNewMenuItemAction(ActionEvent event) {
         fileManager.newFile();
     }
     
+    /**
+     * Handles the Open menu item and opens a previously saved composition.
+     * 
+     * @param event the menu selection event
+     */
     @FXML
     protected void handleOpenMenuItemAction(ActionEvent event) {
         fileManager.open();
     }
     
+    /**
+     * Handles the Save menu item and saves the composition to the current
+     * file path.
+     * 
+     * @param event the menu selection event
+     */
     @FXML
     protected void handleSaveMenuItemAction(ActionEvent event) {
         fileManager.save();
     }
     
+    /**
+     * Handles the Save As menu item and opens a Save As window.
+     * 
+     * @param event the menu selection event
+     */
     @FXML
     protected void handleSaveAsMenuItemAction(ActionEvent event) {
         try {
@@ -217,6 +243,12 @@ public class ApplicationController implements Initializable {
         event.consume();
     }
     
+    /**
+     * Closes the program.
+     * 
+     * @return boolean
+     *          true if the program was closed
+     */
     public boolean close() {
         boolean exit = fileManager.promptToExit();
         if (exit){
@@ -334,51 +366,101 @@ public class ApplicationController implements Initializable {
         compositionPaneController.ungroup();
     }
     
+    /**
+     * Handles the change instrument menu item for Piano.
+     * 
+     * @param event the menu selection event
+     */
     @FXML
     protected void handlePianoMenuItemAction(ActionEvent event) {
         changeInstrument("Piano");
     }
     
+    /**
+     * Handles the change instrument menu item for Harpsichord.
+     * 
+     * @param event the menu selection event
+     */    
     @FXML
     protected void handleHarpsichordMenuItemAction(ActionEvent event) {
         changeInstrument("Harpsichord");
     }
     
+    /**
+     * Handles the change instrument menu item for Marimba.
+     * 
+     * @param event the menu selection event
+     */    
     @FXML
     protected void handleMarimbaMenuItemAction(ActionEvent event) {
         changeInstrument("Marimba");
     }
     
+    /**
+     * Handles the change instrument menu item for Organ.
+     * 
+     * @param event the menu selection event
+     */
     @FXML
     protected void handleOrganMenuItemAction(ActionEvent event) {
         changeInstrument("Organ");
     }
     
+    /**
+     * Handles the change instrument menu item for Accordion.
+     * 
+     * @param event the menu selection event
+     */    
     @FXML
     protected void handleAccordionMenuItemAction(ActionEvent event) {
         changeInstrument("Accordion");
     }
     
+    /**
+     * Handles the change instrument menu item for Guitar.
+     * 
+     * @param event the menu selection event
+     */    
     @FXML
     protected void handleGuitarMenuItemAction(ActionEvent event) {
         changeInstrument("Guitar");
     }
     
+    /**
+     * Handles the change instrument menu item for Violin.
+     * 
+     * @param event the menu selection event
+     */    
     @FXML
     protected void handleViolinMenuItemAction(ActionEvent event) {
         changeInstrument("Violin");
     }
     
+    /**
+     * Handles the change instrument menu item for FrenchHorn.
+     * 
+     * @param event the menu selection event
+     */    
     @FXML
     protected void handleFrenchHornMenuItemAction(ActionEvent event) {
         changeInstrument("FrenchHorn");
     }
     
+    /**
+     * Handles the change instrument menu item for Bass.
+     * 
+     * @param event the menu selection event
+     */    
     @FXML
     protected void handleBassMenuItemAction(ActionEvent event) {
         changeInstrument("Bass");
     }
     
+    /**
+     * Changes the instrument of the selected SoundObject.
+     * 
+     * @param instrumentName the instrument to be changed to
+     */
     protected void changeInstrument(String instrumentName) {
         compositionPaneController.changeInstrument(instrumentName);
     }
@@ -476,6 +558,12 @@ public class ApplicationController implements Initializable {
         StopMenuItem.setDisable(true);
     }
     
+    /**
+     * Handles the Tempo menu item and brings up a window where the user is
+     * prompted to change the tempo.
+     * 
+     * @param event the menu item selection
+     */
     @FXML
     protected void handleTempoMenuItemAction(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog(Integer.toString(TunePlayer.beatsPerMinute));
