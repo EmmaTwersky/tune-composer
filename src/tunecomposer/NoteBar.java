@@ -8,6 +8,7 @@ import javafx.scene.shape.Rectangle;
 import javax.sound.midi.ShortMessage;
 import tunecomposer.actionclasses.MoveAction;
 import tunecomposer.actionclasses.LengthChangeAction;
+import java.util.Stack;
 
 /**
  * This class creates and edits NoteBar objects to display notes in the tune 
@@ -20,6 +21,7 @@ public final class NoteBar extends SoundObject {
      * pitch, starting value, and duration. 
      */
     public String name;
+    public Stack<String> previousNames = new Stack<>();
     private int instrument;
     public int channel;
     private int pitch;
@@ -35,7 +37,8 @@ public final class NoteBar extends SoundObject {
     */
     private final int PITCH_RANGE = 128;
     private final int NOTE_HEIGHT = 10;
-    private final int VOLUME = 127;
+    private final int HIGHVOLUME = 120;
+    private final int LOWVOLUME = 70;
     
     /**
     * Sets default duration, minimum duration and default click range to edit duration. 
@@ -205,7 +208,26 @@ public final class NoteBar extends SoundObject {
         channel = instrumentInfo.getInstrumentChannel(name);
         visualRectangle.setId(name);
     }
-
+    
+    /**
+     * Sets previous instrument.
+     */
+    @Override
+    public void changeToPreviousInstrument() {
+        name = previousNames.pop();
+        this.instrument = instrumentInfo.getInstrumentValue(name);
+        channel = instrumentInfo.getInstrumentChannel(name);
+        visualRectangle.setId(name);
+    }
+    
+    /**
+     * Sets previous instrument.
+     */
+    @Override
+    public void setPreviousName() {
+        previousNames.push(name);
+    }
+    
     /**
      * Returns pitch.
      * @return the pitch
@@ -421,7 +443,12 @@ public final class NoteBar extends SoundObject {
     @Override
     public void addToMidiPlayer(MidiPlayer player) {
         player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + this.channel, this.getInstrument(), 0, 0, this.channel);
-        player.addNote(this.getPitch(), VOLUME, this.getStartTick(), this.getDuration(), this.channel, 0);
+        if (this.name == "Piano" || this.name == "Harpsichord") {
+            player.addNote(this.getPitch(), HIGHVOLUME, this.getStartTick(), this.getDuration(), this.channel, 0);
+        }
+        else {
+            player.addNote(this.getPitch(), LOWVOLUME, this.getStartTick(), this.getDuration(), this.channel, 0);
+        }
     }
     
     /**

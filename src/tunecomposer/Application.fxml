@@ -123,7 +123,8 @@
                         </MenuItem>
                         <SeparatorMenuItem>
                         </SeparatorMenuItem>
-                        <Menu text = "Change Instrument" >
+                        <Menu text = "Change Instrument" 
+                              fx:id = "ChangeInstrumentMenu">
                             <items>
                                 <MenuItem 
                                     text = "Piano" 
@@ -142,8 +143,8 @@
                                     onAction = "#handleOrganMenuItemAction">
                                 </MenuItem>
                                 <MenuItem 
-                                    text = "Accordian" 
-                                    onAction = "#handleAccordianMenuItemAction">
+                                    text = "Accordion" 
+                                    onAction = "#handleAccordionMenuItemAction">
                                 </MenuItem>
                                 <MenuItem 
                                     text = "Guitar" 

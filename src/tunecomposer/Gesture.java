@@ -104,7 +104,7 @@ public final class Gesture extends SoundObject{
         topY = 1280;
         bottomX = 0;
         bottomY = 0;
-
+                
         containedSoundObjects.forEach((sObj) -> {
             Rectangle r = sObj.visualRectangle;
             if (topX > r.getX()) {
@@ -169,6 +169,26 @@ public final class Gesture extends SoundObject{
     public void changeInstrument(String instrument){
         this.containedSoundObjects.forEach((note) -> {
             note.changeInstrument(instrument);
+        });
+    }
+    
+    /**
+     * Sets previous instrument.
+     */
+    @Override
+    public void changeToPreviousInstrument() {
+        this.containedSoundObjects.forEach((note) -> {
+            note.changeToPreviousInstrument();
+        });
+    }
+    
+    /**
+     * Sets previous instrument.
+     */
+    @Override
+    public void setPreviousName() {
+        this.containedSoundObjects.forEach((note) -> {
+            note.setPreviousName();
         });
     }
     
@@ -375,6 +395,7 @@ public final class Gesture extends SoundObject{
         refreshVisualRectangle();
         soundObjectPane.getChildren().add(visualRectangle);
         setTopGesture();
+        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
     }
     
     
@@ -405,6 +426,7 @@ public final class Gesture extends SoundObject{
      * @param event the mouse click event
      */
     EventHandler<MouseEvent> handleGesturePressed = (MouseEvent event) -> {
+                
         CompositionPaneController.tunePlayerObj.stop();
             
         latestX = event.getX();
@@ -494,9 +516,6 @@ public final class Gesture extends SoundObject{
                 (int) latestX);
         } 
         else {
-//            sObjMoveAction = new MoveAction(
-//                SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
-//                lastXShiftMouseLoc, lastYShiftMouseLoc);
             sObjMoveAction = new MoveAction(
                 SoundObjectPaneController.SELECTED_SOUNDOBJECT_ARRAY,
                 latestX, latestY);
