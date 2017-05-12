@@ -19,9 +19,13 @@ import tunecomposer.actionclasses.UnselectAction;
 public class CompositionPaneController implements Initializable { 
     
     /**
-     * Dimensions of the Composition StackPane.
+     * Width of the Composition StackPane in pixels.
      */
     public static final int PANE_X_MAX = 14400;
+    
+    /**
+     * Height of the composition StackPane in pixels.
+     */
     public static final int PANE_Y_MAX = 1280;
     
     /**
@@ -40,6 +44,10 @@ public class CompositionPaneController implements Initializable {
     @FXML
     public Pane soundObjectPane;
     
+    /**
+     * Pane that holds the scrollbars and manages moving the current view of 
+     * the composition pane.
+     */
     @FXML
     public ScrollPane scrollPane;
     
@@ -200,6 +208,8 @@ public class CompositionPaneController implements Initializable {
     
     /**
      * Adds a major chord to the composition pane.
+     * @param chordType 
+     *              shape description of the cord to be added as an integer array
      */
     public void addChord(ArrayList<Integer> chordType){
         stop();

@@ -42,6 +42,12 @@ public class InstrumentInfo {
      * Initializes the HashMaps to store the value and channel information.
      */
     public HashMap<String, Integer> INSTRUMENT_VALUES = new HashMap();
+    
+    /**
+     * Map instrument names to their MIDI id values.
+     * Instrument names are Strings, and the ids are integers. The ids must
+     * be valid MidiPlayer ids that are recognized by the libarary.
+     */
     public HashMap<String, Integer> INSTRUMENT_CHANNELS = new HashMap();
 
     /**
