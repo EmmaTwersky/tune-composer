@@ -343,6 +343,7 @@ public final class Gesture extends SoundObject{
             sObj.removeFromPane(soundObjectPane);
         });
         soundObjectPane.getChildren().remove(visualRectangle);
+        SoundObjectPaneController.staticUpdateSelectedArray(soundObjectPane);
         //TODO need a method to reset handlers of children to what they would be without this group
     }
     

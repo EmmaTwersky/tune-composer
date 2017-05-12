@@ -491,6 +491,11 @@ public class ApplicationController implements Initializable {
         }   
     }
     
+    @FXML
+    protected void handleOrderPizza(ActionEvent event) {
+        PizzaModule.orderPizza();
+    }
+    
     /**
      * Disables or enables all menu items
      * 

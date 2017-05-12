@@ -219,6 +219,11 @@
                             text = "Tempo" 
                             onAction = "#handleTempoMenuItemAction" >
                         </MenuItem>
+                        <MenuItem 
+                            fx:id = "OrderPizza"
+                            text = "Order Pizza" 
+                            onAction = "#handleOrderPizza">
+                        </MenuItem>
                     </items>
                 </Menu>
             </menus>

@@ -59,7 +59,6 @@ public class ActionManager extends Observable {
         setChanged();
         ArrayList<Action> actionArray = new ArrayList();
         actionArray.add(action);
-        
         redoStack.clear();
         undoStack.push(actionArray);
         notifyObservers();
@@ -111,9 +110,9 @@ public class ActionManager extends Observable {
         ArrayList<Action> undoActions;
         undoActions = undoStack.pop();
         
-        for (Action a : undoActions) {
+        undoActions.forEach((a) -> {
             a.undo();
-        }
+        });
         redoStack.push(undoActions);
         notifyObservers();
     }
@@ -132,9 +131,9 @@ public class ActionManager extends Observable {
         ArrayList<Action> redoActions;
         redoActions = redoStack.pop();
         
-        for (Action a : redoActions) {
-            a.redo();   
-        }
+        redoActions.forEach((a) -> {
+            a.redo();
+        });
         undoStack.push(redoActions);
         notifyObservers();
     }
@@ -146,10 +145,7 @@ public class ActionManager extends Observable {
      * @return boolean if undoStack is empty
      */
     public boolean isUndoStackEmpty() {
-        if (undoStack.isEmpty()) {
-            return true;
-        }
-        return false;
+        return undoStack.isEmpty();
     }
     
     /**
@@ -159,9 +155,6 @@ public class ActionManager extends Observable {
      * @return boolean if redoStack is empty
      */
     public boolean isRedoStackEmpty() {
-        if (redoStack.isEmpty()) {
-            return true;
-        }
-        return false;
+        return redoStack.isEmpty();
     }
 }
