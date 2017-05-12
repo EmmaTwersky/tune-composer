@@ -142,6 +142,7 @@ public final class NoteBar extends SoundObject {
         
         setHandlers();
         select();
+        System.out.println("KJHHDF");
     }
     
     /**
