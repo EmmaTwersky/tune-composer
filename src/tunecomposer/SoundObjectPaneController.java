@@ -25,6 +25,9 @@ import tunecomposer.actionclasses.UnselectAction;
  */
 public class SoundObjectPaneController {
 
+    /**
+     * The pane that the Sound Objects are placed on.
+     */
     @FXML
     public Pane soundObjectPane;
     
@@ -33,6 +36,9 @@ public class SoundObjectPaneController {
      */
     private ActionManager actionManager;
     
+    /**
+     * An instance of the CompositionPaneController.
+     */
     public CompositionPaneController compositionPaneController;
     
     /**
@@ -301,6 +307,12 @@ public class SoundObjectPaneController {
         actionManager = manager;
     }
     
+    /**
+     * Sets the composition pane so that it is not null.
+     * 
+     * @param controller
+     * @throws NullPointerException 
+     */
     public void setCompositionPaneController(CompositionPaneController controller) throws NullPointerException{
         if (controller == null) {
             throw new NullPointerException();

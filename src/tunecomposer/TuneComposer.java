@@ -13,6 +13,9 @@ import javafx.stage.WindowEvent;
  */
 public class TuneComposer extends Application {
     
+    /**
+     * Instance of an ApplicationController.
+     */
     public static ApplicationController appController;
     
     /**
@@ -44,6 +47,10 @@ public class TuneComposer extends Application {
         launch(args);
     }
     
+    /**
+     * Sets the ApplicationController instance.
+     * @param aController 
+     */
     public static void setAppController(ApplicationController aController){
         appController = aController;
     }
