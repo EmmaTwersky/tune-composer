@@ -22,9 +22,6 @@ public class ChangeInstrumentAction extends Action {
     public ChangeInstrumentAction(String instrumentName, 
             ArrayList<SoundObject> selectedObjs, Pane soundObjectPane) {
         affectedObjs = (ArrayList<SoundObject>) selectedObjs.clone();
-        affectedObjs.forEach((sObj) -> {
-            sObj.setPreviousName();
-        });
         this.soundObjectPane = soundObjectPane;
         instrument = instrumentName;
     }
@@ -34,6 +31,9 @@ public class ChangeInstrumentAction extends Action {
      */
     @Override
     public void execute() {
+        affectedObjs.forEach((sObj) -> {
+            sObj.setPreviousName();
+        });
         affectedObjs.forEach((sObj) -> {
             sObj.changeInstrument(instrument);
         });
