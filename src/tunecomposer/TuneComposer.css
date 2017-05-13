@@ -109,8 +109,8 @@ Uses opacity features and drop shadow effects. */
 }
 
 #Guitar{
-    -fx-text-fill: deepskyblue;
-    -fx-fill: deepskyblue;
+    -fx-text-fill: derive(navy, 50%);
+    -fx-fill: derive(navy, 50%);
 }
 
 #Violin{
