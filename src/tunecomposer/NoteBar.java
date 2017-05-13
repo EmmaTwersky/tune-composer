@@ -121,7 +121,8 @@ public final class NoteBar extends SoundObject {
             name = DEFAULT_NAME;
         }
         else {
-            name = InstrumentToolBarController.selectedInstrument; }
+            name = instrumentInfo.getInstName(instrument); }
+        //InstrumentToolBarController.selectedInstrument;
         this.instrument = instrumentInfo.getInstrumentValue(name);
         channel = instrumentInfo.getInstrumentChannel(name);
         actionManager = am;
