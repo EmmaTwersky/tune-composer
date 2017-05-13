@@ -271,10 +271,14 @@ public class SoundObjectPaneController {
  
         int yShift = (int)
             (Math.max(0,  contentHeight - viewportHeight) * (vvalue - vmin) / (vmax - vmin));
- 
-        NoteBar note1 = new NoteBar(100 + xShift, noteData.get(0) + yShift, 80, 5, actionManager, soundObjectPane);
-        NoteBar note2 = new NoteBar(100 + xShift, noteData.get(1) + yShift, 80, 5, actionManager, soundObjectPane);
-        NoteBar note3 = new NoteBar(100 + xShift, noteData.get(2) + yShift, 80, 5, actionManager, soundObjectPane);
+        
+        InstrumentInfo instrumentInfo = new InstrumentInfo();
+        String name = InstrumentToolBarController.selectedInstrument;
+        int instId = instrumentInfo.getInstrumentValue(name);
+
+        NoteBar note1 = new NoteBar(100 + xShift, noteData.get(0) + yShift, 80, instId, actionManager, soundObjectPane);
+        NoteBar note2 = new NoteBar(100 + xShift, noteData.get(1) + yShift, 80, instId, actionManager, soundObjectPane);
+        NoteBar note3 = new NoteBar(100 + xShift, noteData.get(2) + yShift, 80, instId, actionManager, soundObjectPane);
         
         ArrayList<SoundObject> notes = new ArrayList<>(Arrays.asList(note1, note2, note3));
         
