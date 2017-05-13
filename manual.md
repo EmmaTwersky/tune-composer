@@ -1,6 +1,11 @@
 
-## User Manual :
+# User Manual :
 
-# Features:
-  this is a feature
-  
+## Features:
+  -Insert Chords
+  -Set and Change Initial Note Length
+  -Change Instrument of Existing Note
+  -Play Selected Notes
+  -Horizontal and Vertical Snapping into Place
+  -Tempo Change
+  -Pitches on Composition Pane
