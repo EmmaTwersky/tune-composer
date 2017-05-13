@@ -108,7 +108,6 @@ public class InstrumentInfo {
             return key;               // we found it
           }
         }
-        System.out.println("could not find name of specified instrument");
         return "NOT FOUND"; //give default piano
     }
 }
