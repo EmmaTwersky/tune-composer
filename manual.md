@@ -36,7 +36,7 @@
 ### Play Selected Notes
 > Using the Actions dropdown menu, select Play Selected and the redbar will start playing at the first selected note and play through all the selected notes. 
 
-Shortcut: Ctrl + Shift + P
+> Shortcut: Ctrl + Shift + P
 
 ### Horizontal and Vertical Snapping into Place
 > For more usability, notice that notes can only exist on measureable beats and pitches within the staff and measure lines.
