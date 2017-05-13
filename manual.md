@@ -2,7 +2,7 @@
 # User Manual :
 
 ## Features:
-  -Insert Chords
+  -Insert Chords\n
   -Set and Change Initial Note Length
   -Change Instrument of Existing Note
   -Play Selected Notes
