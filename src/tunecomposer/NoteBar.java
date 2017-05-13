@@ -441,7 +441,7 @@ public final class NoteBar extends SoundObject {
     @Override
     public void addToMidiPlayer(MidiPlayer player) {
         player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + this.channel, this.getInstrument(), 0, 0, this.channel);
-        if (this.name == "Piano" || this.name == "Harpsichord") {
+        if (this.name == "Piano" || this.name == "Guitar") {
             player.addNote(this.getPitch(), HIGHVOLUME, this.getStartTick(), this.getDuration(), this.channel, 0);
         }
         else {
