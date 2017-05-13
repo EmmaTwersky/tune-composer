@@ -1,5 +1,5 @@
 
-# User Manual :
+# User Manual
 
 ## Features:
   -Insert Chords
